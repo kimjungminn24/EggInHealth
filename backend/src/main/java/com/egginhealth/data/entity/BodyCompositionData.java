@@ -18,21 +18,30 @@ public class BodyCompositionData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "body_id", nullable = false)
     private int id;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyHeight;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyWeight;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyMuscle;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyFat;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyBmi;
-    @Column(precision = 3, scale = 2)
-    private BigDecimal bodyCompositionScore;
-    @Column(length = 500)
-    private String bodyUrlImg;
-    private LocalDateTime bodyCreatedAt;
+
+    @Column(name = "body_height", precision = 3, scale = 2)
+    private BigDecimal height;
+
+    @Column(name = "body_weight", precision = 3, scale = 2)
+    private BigDecimal weight;
+
+    @Column(name = "body_muscle", precision = 3, scale = 2)
+    private BigDecimal muscle;
+
+    @Column(name = "body_fat", precision = 3, scale = 2)
+    private BigDecimal fat;
+
+    @Column(name = "body_bmi", precision = 3, scale = 2)
+    private BigDecimal bmi;
+
+    @Column(name = "body_composition_score", precision = 3, scale = 2)
+    private BigDecimal compositionScore;
+
+    @Column(name = "body_url_img", length = 500)
+    private String urlImg;
+
+    @Column(name = "body_created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")

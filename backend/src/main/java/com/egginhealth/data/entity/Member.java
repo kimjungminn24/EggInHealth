@@ -17,32 +17,40 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mem_id", nullable = false)
-    private int id; // 회원 아이디
+    private int id;
 
-    @Column(nullable = false, length = 45)
-    private String memName; // 회원 이름
+    @Column(name = "mem_name", nullable = false, length = 45)
+    private String name;
 
-    @Column(nullable = false, length = 325)
-    private String memEmail;    // 회원 이메일
-    @Column(length = 20)
-    private String memPhonenumber;  // 회원 전화번호
-    @Column(length = 100)
-    private String memInfo; // 회원 한줄소개
-    @Column(length = 500)
-    private String memImgUrl;   // 회원 프로필 사진주소
+    @Column(name = "mem_email", nullable = false, length = 325)
+    private String email;
 
-    @Column(nullable = false, columnDefinition = "TINYINT")
-    private int memPtCnt = 0;   // 회원 PT 잔여횟수
-    @Column(nullable = false, length = 1)
-    private String memType; // 회원 타입 // [M,T] member, trainer
-    @Column(nullable = false)
-    private int memTotalEgg = 0;    // 회원 에그 전체 갯수
-    @Column(nullable = false)
-    private LocalDateTime memCreatedAt; // 회원 가입일
-    private LocalDateTime memUpdatedAt; // 회원 수정일
+    @Column(name = "mem_phone_number", length = 20)
+    private String phoneNumber;
+
+    @Column(name = "mem_info", length = 100)
+    private String info;
+
+    @Column(name = "mem_img_url", length = 500)
+    private String imgUrl;
+
+    @Column(name = "mem_pt_cnt", nullable = false, columnDefinition = "TINYINT")
+    private int PTCount = 0;
+
+    @Column(name = "mem_type", nullable = false, length = 1)
+    private String type; // [M,T] member, trainer
+
+    @Column(name = "mem_total_egg", nullable = false)
+    private int totalEgg = 0;
+
+    @Column(name = "mem_created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "mem_updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trainer_id")
+    @JoinColumn(name = "tr_id")
     private Member member;    // 트레이너 아이디
 
     @OneToMany(mappedBy = "member")

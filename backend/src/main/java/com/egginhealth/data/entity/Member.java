@@ -57,6 +57,12 @@ public class Member {
     private List<Member> trMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+    private List<Feedback> feedbackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberStatus> statusList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
     private List<Diet> dietList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")

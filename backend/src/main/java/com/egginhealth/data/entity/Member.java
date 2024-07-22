@@ -56,5 +56,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Member> trMemberList = new ArrayList<>(); // 트레이너의 회원 리스트
 
+    @OneToMany(mappedBy = "member")
+    private List<Feedback> feedbackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberStatus> statusList = new ArrayList<>();
 
 }

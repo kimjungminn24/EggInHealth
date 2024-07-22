@@ -51,15 +51,24 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tr_id")
-    private Member member;    // 트레이너 아이디
+    private Member member;
 
     @OneToMany(mappedBy = "member")
-    private List<Member> trMemberList = new ArrayList<>(); // 트레이너의 회원 리스트
+    private List<Member> trMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Feedback> feedbackList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<MemberStatus> statusList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Diet> dietList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Exercise> exerciseList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<PtPlan> ptPlanList = new ArrayList<>();
 
 }

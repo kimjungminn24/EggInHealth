@@ -1,17 +1,35 @@
-// src/App.jsx
+// src/App.js
 import React from 'react';
-import useStore from './store';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import FoodPage from './pages/UserFood';
 
-function App() {
-    const { count, increment, decrement } = useStore();
+const App = () => {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">홈</Link>
+            </li>
+            <li>
+              <Link to="/userfood">식단</Link>
+            </li>
+          </ul>
+        </nav>
 
-    return (
-        <div>
-            <h1>Count: {count}</h1>
-            <button onClick={increment}>Increment</button>
-            <button onClick={decrement}>Decrement</button>
-        </div>
-    );
-}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/userfood" element={<FoodPage />} />
+          
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+const Home = () => {
+  return <h2>홈</h2>;
+};
 
 export default App;

@@ -1,7 +1,108 @@
-// src/pages/UserFoodPage.js
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStore from '../store';
 import ModalFood from '../components/ModalFood';
+import styled from 'styled-components';
+
+const PageContainer = styled.div`
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const DateInput = styled.input`
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const Tabs = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+const TabButton = styled.button`
+  background-color: ${(props) => (props.active ? '#007BFF' : '#ccc')};
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => (props.active ? '#0056b3' : '#999')};
+  }
+`;
+
+const MealSection = styled.div`
+  text-align: center;
+`;
+
+const MealImage = styled.img`
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+`;
+
+const RegisterButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+const CommentsSection = styled.div`
+  text-align: left;
+  margin-top: 20px;
+`;
+
+const CommentsList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const CommentItem = styled.li`
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+`;
+
+const CommentInput = styled.input`
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const CommentButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 const UserFoodPage = () => {
   const [selectedDate, setSelectedDate] = useState('');
@@ -29,52 +130,55 @@ const UserFoodPage = () => {
   const mealData = meals[selectedDate] ? meals[selectedDate][selectedTab] : null;
 
   return (
-    <div>
-      <h1>식단</h1>
-      <input type="date" onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} />
+    <PageContainer>
+      <Title>식단</Title>
+      <DateInput type="date" onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} />
 
-      <div>
-        <button onClick={() => setSelectedTab('아침')}>아침</button>| 
-        <button onClick={() => setSelectedTab('점심')}>점심</button>|
-        <button onClick={() => setSelectedTab('저녁')}>저녁</button>|
-        <button onClick={() => setSelectedTab('간식')}>간식</button>
-      </div>
+      <Tabs>
+        <TabButton active={selectedTab === '아침'} onClick={() => setSelectedTab('아침')}>아침</TabButton>
+        <TabButton active={selectedTab === '점심'} onClick={() => setSelectedTab('점심')}>점심</TabButton>
+        <TabButton active={selectedTab === '저녁'} onClick={() => setSelectedTab('저녁')}>저녁</TabButton>
+        <TabButton active={selectedTab === '간식'} onClick={() => setSelectedTab('간식')}>간식</TabButton>
+      </Tabs>
+
       {mealData ? (
-        <div>
-          <img src={URL.createObjectURL(mealData.image)} alt={selectedTab} />
+        <MealSection>
+          <MealImage src={URL.createObjectURL(mealData.image)} alt={selectedTab} />
           <Comments date={selectedDate} mealType={selectedTab} />
-        </div>
+        </MealSection>
       ) : (
-        <button onClick={openModal}>등록</button>
+        <RegisterButton onClick={openModal}>등록</RegisterButton>
       )}
 
       {isModalOpen && <ModalFood date={selectedDate} mealType={selectedTab} onClose={closeModal} />}
-    </div>
+    </PageContainer>
   );
 };
 
-const Comments = ({ date, mealIndex }) => {
-    const [comment, setComment] = useState('');
-    const meals = useStore((state) => state.meals);
-    const addComment = useStore((state) => state.addComment);
-  
-    const handleAddComment = () => {
-      addComment(date, mealIndex, comment);
-      setComment('');
-    };
-  
-    return (
-      <div>
-        <h3>댓글</h3>
-        <ul>
-          {meals[date][mealIndex].comments.map((c, i) => (
-            <li key={i}>{c}</li>
-          ))}
-        </ul>
-        <input value={comment} onChange={(e) => setComment(e.target.value)} />
-        <button onClick={handleAddComment}>댓글 남기기</button>
-      </div>
-    );
+const Comments = ({ date, mealType }) => {
+  const [comment, setComment] = useState('');
+  const meals = useStore((state) => state.meals);
+  const addComment = useStore((state) => state.addComment);
+
+  const handleAddComment = () => {
+    addComment(date, mealType, comment);
+    setComment('');
   };
-  
+
+  return (
+    <CommentsSection>
+      <h3>댓글</h3>
+      <CommentsList>
+        {meals[date][mealType].comments.map((c, i) => (
+          <CommentItem key={i}>{c}</CommentItem>
+        ))}
+      </CommentsList>
+      <div>
+        <CommentInput value={comment} onChange={(e) => setComment(e.target.value)} />
+        <CommentButton onClick={handleAddComment}>댓글 남기기</CommentButton>
+      </div>
+    </CommentsSection>
+  );
+};
+
 export default UserFoodPage;

@@ -1,6 +1,9 @@
 // src/App.jsx
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import RedirectURI from './pages/RedirectURI';
+import Select from './pages/Select';
 
 import { Routes,Route } from 'react-router-dom';
 

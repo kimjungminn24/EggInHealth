@@ -33,12 +33,8 @@ function App() {
             </Routes>
             <div className='nav'><UserNavbar/></div>
         </div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/userfood" element={<FoodPage />} />
-        </Routes>
-      </div>
-    </Router>
+
+  
   );
 };
 

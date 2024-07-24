@@ -24,18 +24,18 @@ my-react-app/
 │   │   │     ├── ModalFood.jsx
 │   │   │     ├── ModalExercise.jsx
 │   │   │     └── ModalRegisterQR.jsx
-│   │   ├──  trainer/
-│   │   │     ├── TrainerNavbar.jsx
-│   │   │     ├── TrainerHeader.jsx
-│   │   │     ├── TrainerUserDetailHeader.jsx
-│   │   │     ├── ModalMakeCode.jsx
-│   │   │     ├── ModalMakeQR.jsx
-│   │   │     ├── ModalSchedule.jsx
-│   │   │     ├── ModalAddSchedule.jsx
-│   │   │     ├── ModalEditSchedule.jsx
-│   │   │     ├── ModalPT.jsx
-│   │   │     ├── ModalUserList.jsx
-│   │   │     └── ModalAddUserExercise.jsx
+│   │   └──  trainer/
+│   │         ├── TrainerNavbar.jsx
+│   │         ├── TrainerHeader.jsx
+│   │         ├── TrainerUserDetailHeader.jsx
+│   │         ├── ModalMakeCode.jsx
+│   │         ├── ModalMakeQR.jsx
+│   │         ├── ModalSchedule.jsx
+│   │         ├── ModalAddSchedule.jsx
+│   │         ├── ModalEditSchedule.jsx
+│   │         ├── ModalPT.jsx
+│   │         ├── ModalUserList.jsx
+│   │         └── ModalAddUserExercise.jsx
 │   ├── hooks/
 │   ├── pages/
 │   │   ├── Login.jsx

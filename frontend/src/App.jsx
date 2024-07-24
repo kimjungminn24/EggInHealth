@@ -20,7 +20,6 @@ function App() {
         <div className='mobile'>
             <div className='header'><h4>상단바</h4></div>
             <Routes>
-
                 <Route path="/" element={<Login />} />
                 <Route path="/redirect" element={<RedirectURI />} />
                 <Route path="/select" element={<Select />} />

@@ -45,7 +45,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const FoodModal = ({ date, mealType, onClose }) => {
+const ModalFood = ({ date, mealType, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
   const addFood = useStore((state) => state.addFood);
@@ -77,4 +77,4 @@ const FoodModal = ({ date, mealType, onClose }) => {
   );
 };
 
-export default FoodModal;
+export default ModalFood;

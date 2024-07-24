@@ -111,12 +111,12 @@ const UserFoodPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const meals = useStore((state) => state.meals);
 
+  const today = new Date();
+  today.setHours(today.getHours() + 9); // UTC 시간을 KST로 변환
+  const kstDate = today.toISOString().split('T')[0];
   useEffect(() => {
-    const today = new Date();
-    today.setHours(today.getHours() + 9); // UTC 시간을 KST로 변환
-    const kstDate = today.toISOString().split('T')[0];
     setSelectedDate(kstDate);
-  }, []);
+  }, [kstDate]);
 
   const openModal = () => {
     if (selectedDate) {
@@ -149,9 +149,9 @@ const UserFoodPage = () => {
           <MealImage src={URL.createObjectURL(mealData.image)} alt={selectedTab} />
           <Comments date={selectedDate} mealType={selectedTab} />
         </MealSection>
-      ) : (
+      ) : selectedDate === kstDate ? (
         <RegisterButton onClick={openModal}>등록</RegisterButton>
-      )}
+      ):null}
 
       {isModalOpen && <ModalFood date={selectedDate} mealType={selectedTab} onClose={closeModal} />}
     </PageContainer>

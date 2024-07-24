@@ -19,7 +19,7 @@ const UserNavbar = () => {
           <NavLink to="/userfood" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={Food} alt="식단" />
           </NavLink>
-          <NavLink to="/userprofile" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
+          <NavLink to="/usermain" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={Egg} alt="에그" />
           </NavLink>
           <NavLink to="/usercalender" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
@@ -28,7 +28,7 @@ const UserNavbar = () => {
           <NavLink to="/userexercise" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={WorkOut} alt="운동" />
           </NavLink>
-          <NavLink to="/usermain" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
+          <NavLink to="/userprofile" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={Profile} alt="프로필" />
           </NavLink>
       </div>

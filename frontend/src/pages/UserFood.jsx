@@ -7,6 +7,7 @@ const PageContainer = styled.div`
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
+  background-color: #F8F7F4;
 `;
 
 const Title = styled.h1`
@@ -30,8 +31,8 @@ const Tabs = styled.div`
 `;
 
 const TabButton = styled.button`
-  background-color: ${(props) => (props.active ? '#007BFF' : '#ccc')};
-  color: white;
+  background-color: ${(props) => (props.active ? '#FFD66B' : '#FFFFFF')};
+  color: ${(props) => (props.active ? '#FFFFFF' : '#DFDFDF')};
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -39,7 +40,7 @@ const TabButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.active ? '#0056b3' : '#999')};
+    background-color: ${(props) => (props.active ? '#FFEEB0' : '#999')};
   }
 `;
 
@@ -57,12 +58,12 @@ const RegisterButton = styled.button`
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #28a745;
+  background-color: #FFD66B;
   color: white;
   cursor: pointer;
 
   &:hover {
-    background-color: #218838;
+    background-color: #FFEEB0;
   }
 `;
 
@@ -95,12 +96,12 @@ const CommentButton = styled.button`
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007BFF;
+  background-color: #FFD66B;
   color: white;
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #FFEEB0;
   }
 `;
 
@@ -111,8 +112,10 @@ const UserFoodPage = () => {
   const meals = useStore((state) => state.meals);
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setSelectedDate(today);
+    const today = new Date();
+    today.setHours(today.getHours() + 9); // UTC 시간을 KST로 변환
+    const kstDate = today.toISOString().split('T')[0];
+    setSelectedDate(kstDate);
   }, []);
 
   const openModal = () => {

@@ -40,7 +40,7 @@ const Button = styled.button`
   margin-top: 10px;
   border-radius: 5px;
   border: none;
-  background-color: ${props => props.close ? '#6c757d' : '#007BFF'};
+  background-color: ${props => props.close ? '#6c757d' : '#FFD66B'};
   color: #fff;
   cursor: pointer;
 `;
@@ -51,11 +51,9 @@ const FoodModal = ({ date, mealType, onClose }) => {
   const addFood = useStore((state) => state.addFood);
 
   const handleSubmit = () => {
-    if (image && comment) {
+    if (image) {
       addFood(date, mealType, { image, comments: [comment] });
       onClose();
-    } else {
-      alert('모든 필드를 입력해주세요.');
     }
   };
 

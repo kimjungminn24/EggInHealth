@@ -1,15 +1,14 @@
 // src/App.jsx
 import React from 'react';
-import useStore from './store';
+import './App.css';
 
 function App() {
-    const { count, increment, decrement } = useStore();
 
     return (
-        <div>
-            <h1>Count: {count}</h1>
-            <button onClick={increment}>Increment</button>
-            <button onClick={decrement}>Decrement</button>
+        <div className='mobile'>
+            <div className='header'><h4>상단바</h4></div>
+
+            <div className='nav'> 네브바</div>
         </div>
     );
 }

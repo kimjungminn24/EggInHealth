@@ -32,7 +32,13 @@ function App() {
             </Routes>
             <div className='nav'><UserNavbar/></div>
         </div>
-    );
-}
+
+  
+  );
+};
+
+const Home = () => {
+  return <h2>홈</h2>;
+};
 
 export default App;

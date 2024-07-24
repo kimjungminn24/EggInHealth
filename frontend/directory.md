@@ -10,6 +10,7 @@ my-react-app/
 │   │   │     ├── ButtonProfileEdit.jsx
 │   │   │     ├── ButtonCheckInbody.jsx
 │   │   │     ├── ButtonDisconnect.jsx
+│   │   │     ├── ButtonNaverLogin.jsx
 │   │   │     ├── ButtonPorofile.jsx
 │   │   │     ├── ButtonCamera.jsx
 │   │   │     ├── ButtonSwap.jsx
@@ -39,6 +40,7 @@ my-react-app/
 │   ├── hooks/
 │   ├── pages/
 │   │   ├── Login.jsx
+│   │   ├── RedirectURI.jsx 
 │   │   ├── Select.jsx
 │   │   ├── user/
 │   │   │    ├── UserSurvey.jsx

@@ -1,11 +1,13 @@
+// src/main.jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css'; // 테일윈드 CSS 파일 임포트
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render(
-  <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </BrowserRouter>
 );

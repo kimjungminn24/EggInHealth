@@ -1,16 +1,20 @@
 // src/App.jsx
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import RedirectURI from './pages/RedirectURI';
+import Select from './pages/Select';
 
-function App() {
-
-    return (
-        <div className='mobile'>
-            <div className='header'><h4>상단바</h4></div>
-
-            <div className='nav'> 네브바</div>
-        </div>
-    );
-}
+const App = () => {
+  return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/redirect" element={<RedirectURI />} />
+          <Route path="/select" element={<Select />} />
+        </Routes>
+      </Router>
+  );
+};
 
 export default App;

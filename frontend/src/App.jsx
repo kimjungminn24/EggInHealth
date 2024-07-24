@@ -1,11 +1,12 @@
 // src/App.jsx
 import React from 'react';
-import Login from './pages/Login';
-import RedirectURI from './pages/RedirectURI';
-import Select from './pages/Select';
 import './App.css'
 import { Routes,Route } from 'react-router-dom';
 
+import Login from './pages/Login';
+import RedirectURI from './pages/RedirectURI';
+import Select from './pages/Select';
+import TrainerMain from './pages/trainer/TrainerMain';
 import UserNavbar from "./components/user/UserNavbar"
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/redirect" element={<RedirectURI />} />
                 <Route path="/select" element={<Select />} />
+                <Route path="/trainermain" element={<TrainerMain />} />
                 <Route path="/usercalender" element={<UserCalender />} />
                 <Route path="/userchatroom" element={<UserChatRoom />} />
                 <Route path="/userexercise" element={<UserExercise />} />

@@ -1,7 +1,9 @@
-// src/setupTests.js
-import { server } from './mocks/server';
-import '@testing-library/jest-dom';
+const UserCalender = ()=>{
+    return(
+        <div>
+            캘린더
+        </div>
+    )
+}
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+export default UserCalender

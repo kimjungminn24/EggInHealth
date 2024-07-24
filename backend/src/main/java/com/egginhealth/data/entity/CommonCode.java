@@ -1,22 +1,21 @@
 package com.egginhealth.data.entity;
 
-import jakarta.persistence.*;
+import com.egginhealth.data.entity.key.CommonId;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommonCode {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "common_id")
-    private int id;
-
-    @Id
-    @Column(name = "group_code", length = 4)
-    private String groupCode;
+public class CommonCode implements Serializable {
+    @EmbeddedId
+    private CommonId id;
 
     @Column(name = "type", length = 20)
     private String type;

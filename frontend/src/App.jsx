@@ -14,6 +14,12 @@ import UserFood from "./pages/user/UserFood";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 
+import TrainerNavbar from './components/trainer/TrainerNavbar';
+import TrainerChat from './pages/trainer/TrainerChat';
+import TrainerMain from './pages/trainer/TrainerMain';
+import TrainerProfile from './pages/trainer/TrainerProfile';
+import TrainerUserList from './pages/trainer/TrainerUserList';
+
 function App() {
 
     return (
@@ -29,8 +35,14 @@ function App() {
                 <Route path="/userfood" element={<UserFood />} />
                 <Route path="/usermain" element={<UserMain />} />
                 <Route path="/userprofile" element={<UserProfile />} />
+
+                <Route path="/trainermain" element={<TrainerMain />} />
+                <Route path="/trainerchat" element={<TrainerChat />} />
+                <Route path="/traineruserlist" element={<TrainerUserList />} />
+                <Route path="/trainerprofile" element={<TrainerProfile />} />
             </Routes>
             <div className='nav'><UserNavbar/></div>
+            {/* <div className='nav'><TrainerNavbar/></div> */}
         </div>
 
   

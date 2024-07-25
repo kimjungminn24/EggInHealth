@@ -2,17 +2,13 @@ package com.egginhealth.data.entity.key;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Embeddable
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
 @Data
-public class CommonId {
+public class CommonId implements Serializable {
     @Column(name = "common_id")
     private int id;
 

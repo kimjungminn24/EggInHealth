@@ -8,12 +8,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommonCode implements Serializable {
+public class CommonCode {
     @EmbeddedId
     private CommonId id;
 

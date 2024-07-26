@@ -1,44 +1,60 @@
 import create from 'zustand';
-import { addDiet, addDietComment, updateDiet, deleteDiet } from '../api/api.js';
+// import { addDiet, addDietComment, updateDiet, deleteDiet } from '../api/api.js';
+
+
+const initialFoods = {
+  '2024-07-24': {
+    '아침': {
+      imagePath: './assets/static/egg.png',
+      comments: ['맛있어 보이네요!', '건강해 보여요.']
+    },
+    '점심': {
+      imagePath: null,
+      comments: ['점심도 훌륭해요.']
+    }
+  }
+};
+
+
 
 const useStore = create((set) => ({
-  meals: {},
-  addFood: async (date, meealTyp, { image, comments }) => {
-    const diet = await addDiet(date, mealType, image, comments[0]);
+  foods: {},
+  addFood: async (date, foodType, { image, comments }) => {
+    const diet = await addDiet(date, foodType, image, comments[0]);
     set((state) => ({
-      meals: {
-        ...state.meals,
+      foods: {
+        ...state.foods,
         [date]: {
-          ...state.meals[date],
-          [mealType]: diet,
+          ...state.foods[date],
+          [foodType]: diet,
         },
       },
     }));
   },
-  addComment: async (date, mealType, comment) => {
-    const dietId = state.meals[date][mealType].id;
+  addComment: async (date, foodType, comment) => {
+    const dietId = state.foods[date][foodType].id;
     await addDietComment(dietId, comment);
     set((state) => {
-      const updatedMeals = { ...state.meals };
-      updatedMeals[date][mealType].comments.push(comment);
-      return { meals: updatedMeals };
+      const updatedFoods = { ...state.foods };
+      updatedFoods[date][foodType].comments.push(comment);
+      return { foods: updatedFoods };
     });
   },
   updateFood: async (dietId, data) => {
     const updatedDiet = await updateDiet(dietId, data);
     set((state) => {
-      const updatedMeals = { ...state.meals };
+      const updatedFoods = { ...state.foods };
       // 업데이트된 식단을 상태에 반영하는 로직
-      return { meals: updatedMeals };
+      return { foods: updatedFoods };
     });
   },
-  deleteFood: async (date, mealType) => {
-    const dietId = state.meals[date][mealType].id;
+  deleteFood: async (date, foodType) => {
+    const dietId = state.foods[date][foodType].id;
     await deleteDiet(dietId);
     set((state) => {
-      const updatedMeals = { ...state.meals };
-      delete updatedMeals[date][mealType];
-      return { meals: updatedMeals };
+      const updatedFoods = { ...state.foods };
+      delete updatedFoods[date][foodType];
+      return { foods: updatedFoods };
     });
   },
 }));

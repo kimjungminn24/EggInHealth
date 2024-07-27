@@ -1,7 +1,11 @@
+import UserEgg from '../../assets/useregg.png'
+
 const UserMain = ()=>{
+    const trainer = false
     return(
         <div>
-            에그
+            <img src={UserEgg} alt="" />
+        
         </div>
     )
 }

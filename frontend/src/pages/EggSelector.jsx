@@ -7,20 +7,30 @@ import userEggAfter from '../assets/userEggAfter.png';
 
 const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
   return (
-    <ContainerEgg>
-      <ContainerRow>
-        <Image
-          src={activeImage === 'trainer' ? trainerEggAfter : trainerEggBefore}
-          alt="Trainer Egg"
-          onClick={onTrainerClick}
-        />
-        <Image
-          src={activeImage === 'user' ? userEggAfter : userEggBefore}
-          alt="User Egg"
-          onClick={onUserClick}
-        />
-      </ContainerRow>
-    </ContainerEgg>
+    <div>
+      <h4>이용 목적이 무엇인가요 ?</h4>
+      <ContainerEgg>
+        <ContainerRow>
+          <div>
+            <Image
+              src={activeImage === 'trainer' ? trainerEggAfter : trainerEggBefore}
+              alt="Trainer Egg"
+              onClick={onTrainerClick}
+            />
+            <h4>트레이너</h4>
+          </div>
+          <div>
+            <Image
+              src={activeImage === 'user' ? userEggAfter : userEggBefore}
+              alt="User Egg"
+              onClick={onUserClick}
+            />
+            <h4>회원</h4>
+          </div>
+
+        </ContainerRow>
+      </ContainerEgg>
+    </div>
   );
 };
 

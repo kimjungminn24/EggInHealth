@@ -1,4 +1,4 @@
-import eggImg from '../assets/egg.png';
+import eggImg from '../assets/egg.gif';
 import logo from '../assets/logo.png';
 import styled from 'styled-components';
 import Naver from '../components/common/ButtonNaverLogin';

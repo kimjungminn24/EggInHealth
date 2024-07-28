@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { useState } from 'react';
 
 const ButtonSurvey = (props) => {
+  const [activeButton,setActiveButton] = useState(null)
 
+  const handleActiveButtonClick = () =>{
+    if (activeButton)
+
+  }
   return (
     <Surveybtn>
       <img src={props.lst.logo} alt="" />

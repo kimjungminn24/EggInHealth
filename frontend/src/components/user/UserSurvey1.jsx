@@ -17,6 +17,7 @@ const SurveyPage1 = () => {
     {logo:SurvayIcon3,title:'몸매관리',content:'체중 감량에 집중'},]
   
     return (
+      
     <div>
       <h1>운동 목표가 무엇인가요?</h1>
       {survey.map(function(i,idx){

@@ -19,7 +19,7 @@ const PTBox = styled.div`
 `;
 
 const UserMain = () => {
-  const trainer = 1;
+  const trainer = 0;
   const timebox = [
     { day: '07.18(목)', time: 'AM 11:00 - 12:00' },
     { day: '07.21(일)', time: 'AM 11:00 - 12:00' },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useStore from '../../store/store';
+import useStore from '../../store/foodstore_test';
 import ModalFood from '../../components/user/ModalFood';
 import styled from 'styled-components';
 
@@ -130,7 +130,7 @@ const UserFoodPage = () => {
     setIsModalOpen(false);
   };
 
-  const mealData = meals[selectedDate] ? meals[selectedDate][selectedTab] : null;
+  const dietData = meals[selectedDate] ? meals[selectedDate][selectedTab] : null;
 
   return (
     <PageContainer>
@@ -144,27 +144,27 @@ const UserFoodPage = () => {
         <TabButton active={selectedTab === '간식'} onClick={() => setSelectedTab('간식')}>간식</TabButton>
       </Tabs>
 
-      {mealData ? (
+      {dietData ? (
         <MealSection>
-          <MealImage src={URL.createObjectURL(mealData.image)} alt={selectedTab} />
-          <Comments date={selectedDate} mealType={selectedTab} />
+          <MealImage src={URL.createObjectURL(dietData.image)} alt={selectedTab} />
+          <Comments date={selectedDate} dietType={selectedTab} />
         </MealSection>
       ) : selectedDate === kstDate ? (
         <RegisterButton onClick={openModal}>등록</RegisterButton>
       ):null}
 
-      {isModalOpen && <ModalFood date={selectedDate} mealType={selectedTab} onClose={closeModal} />}
+      {isModalOpen && <ModalFood date={selectedDate} dietType={selectedTab} onClose={closeModal} />}
     </PageContainer>
   );
 };
 
-const Comments = ({ date, mealType }) => {
+const Comments = ({ date, dietType }) => {
   const [comment, setComment] = useState('');
   const meals = useStore((state) => state.meals);
   const addComment = useStore((state) => state.addComment);
 
   const handleAddComment = () => {
-    addComment(date, mealType, comment);
+    addComment(date, dietType, comment);
     setComment('');
   };
 
@@ -172,7 +172,7 @@ const Comments = ({ date, mealType }) => {
     <CommentsSection>
       <h3>댓글</h3>
       <CommentsList>
-        {meals[date][mealType].comments.map((c, i) => (
+        {meals[date][dietType].comments.map((c, i) => (
           <CommentItem key={i}>{c}</CommentItem>
         ))}
       </CommentsList>

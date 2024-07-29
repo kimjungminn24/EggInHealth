@@ -4,6 +4,9 @@ import ButtonSwap from '../../components/common/ButtonSwap';
 import Profile from '../../assets/profile.png';
 import UserPage from '../../components/user/UserPage'
 import InbodyPage from '../../components/user/InbodyPage'
+import InbodyBtn from "../../assets/inbodybutton.png"
+import EditBtn from "../../assets/editbutton.png"
+import ModalInbody from '../../components/common/ModalInbody';
 
 const Container = styled.div`
   width: 100%;
@@ -38,10 +41,27 @@ const ProfilePic = styled.img`
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   return (
     <Container>
-      <ProfilePic src={Profile} alt="Profile" />
+      <div>
+        <ProfilePic src={Profile} alt="Profile" />
+        {activeTab ==='내정보'? 
+        (<img src={EditBtn} alt="EditBtn" />):
+        (<img src={InbodyBtn} alt="InbodyBtn" onClick={openModal} />)
+        }
+      
+        <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal}/>
+      </div>
       <ButtonGroupContainer>
         <ButtonGroup>
           <ButtonSwap 

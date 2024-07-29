@@ -9,7 +9,7 @@ const StatBox = styled.div`
   text-align: center;
   width: 30%;
   cursor: pointer;
-  border: 3px solid ${props => (props.selected ? '#FFD700' : 'transparent')};
+  border: 3px solid ${props => (props.selected ? '#FFD66B' : 'transparent')};
 `;
 
 const StatValue = styled.div`

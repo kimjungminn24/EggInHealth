@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const ButtonSurvey = (props) => {
-  const [activeButton, setActiveButton] = useState(false);
-
-  const handleActiveButtonClick = () => {
-    setActiveButton(!activeButton);
-  }
-
+const ButtonSurvey = ({ lst, isSelected, onClick }) => {
   return (
-    <Surveybtn onClick={handleActiveButtonClick} active={activeButton}>
-      <img src={props.lst.logo} alt="" />
-      <p>{props.lst.title}</p>
-      <p>{props.lst.content}</p>
+    <Surveybtn onClick={onClick} active={isSelected}>
+      <img src={lst.logo} alt="" />
+      <p>{lst.title}</p>
+      <p>{lst.content}</p>
     </Surveybtn>
   );
-}; 
+};
 
 const Surveybtn = styled.div`
-  background-color: ${(props) => (props.active ? '#E0E0E0' : '#FFFFFF')};
+  background-color: #fff;
   border-radius: 20px;
   width: 300px;
   height: 100px;
@@ -28,6 +22,7 @@ const Surveybtn = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 3px solid ${props => (props.active ? '#FFD66B' : 'transparent')};
 
   img {
     max-width: 100%;

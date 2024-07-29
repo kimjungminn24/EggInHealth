@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Spinner from '../assets/egg.png';
+
 
 const RedirectURI = () => {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const RedirectURI = () => {
 
   return (
     <Wrap>
-      <img src={Spinner} alt="로딩 중" width="10%" />
+     
     </Wrap>
   );
 };

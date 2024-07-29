@@ -22,7 +22,7 @@ const SurveyPage4 = () => {
     <div>
       <h1>키와 나이를 입력해 주세요</h1>
       <Surveybtn>
-        <img src={heightIcon} alt="heightIcon" />키
+        <img src={heightIcon} alt="heightIcon" />
         <Input
           type="number"
           value={height}
@@ -31,7 +31,7 @@ const SurveyPage4 = () => {
         />
       </Surveybtn>
       <Surveybtn>
-        <img src={ageIcon} alt="ageIcon" />나이
+        <img src={ageIcon} alt="ageIcon" />
         <Input
           type="number"
           value={age}
@@ -62,7 +62,7 @@ const Input = styled.input`
   border-radius: 5px;
   padding: 10px;
   margin-left: 10px;
-  width: 60px;
+  width: 150px;
   text-align: center;
 `;
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStore from '../../store/store';
+import useStore from '../../store/store_test';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 
@@ -45,6 +45,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const ModalFood = ({ date, foodType, onClose }) => {
 const ModalFood = ({ date, dietType, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
@@ -52,6 +53,7 @@ const ModalFood = ({ date, dietType, onClose }) => {
 
   const handleSubmit = () => {
     if (image) {
+      addFood(date, foodType, { image, comments: [comment] });
       addFood(date, dietType, { image, comments: [comment] });
       onClose();
     }

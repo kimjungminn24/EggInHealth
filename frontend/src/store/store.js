@@ -6,8 +6,8 @@ const useStore = create((set) => ({
   addFood: async (date, dietType, { image, comments }) => {
     const diet = await addDiet(date, dietType, image, comments[0]);
     set((state) => ({
-      meals: {
-        ...state.meals,
+      foods: {
+        ...state.foods,
         [date]: {
           ...state.meals[date],
           [dietType]: diet,
@@ -27,9 +27,9 @@ const useStore = create((set) => ({
   updateFood: async (dietId, data) => {
     const updatedDiet = await updateDiet(dietId, data);
     set((state) => {
-      const updatedMeals = { ...state.meals };
+      const updatedFoods = { ...state.foods };
       // 업데이트된 식단을 상태에 반영하는 로직
-      return { meals: updatedMeals };
+      return { foods: updatedFoods };
     });
   },
   deleteFood: async (date, dietType) => {

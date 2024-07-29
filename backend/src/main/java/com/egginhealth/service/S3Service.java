@@ -78,8 +78,7 @@ public class S3Service {
         String uuid = UUID.randomUUID().toString();
 
         String uuidFilePath = TEMP_FILE_PATH + uuid + "_" + originalFilename.replaceAll("\\s", "_");
-
-        log.info(uuidFilePath);
+        
         File convertFile = new File(uuidFilePath);
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {

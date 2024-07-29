@@ -41,11 +41,11 @@ const TabButton = styled.button`
   }
 `;
 
-const FoodSectionContainer = styled.div`
+const DietSectionContainer = styled.div`
   text-align: center;
 `;
 
-const FoodImage = styled.img`
+const DietImage = styled.img`
   max-width: 100%;
   height: auto;
   margin-bottom: 20px;
@@ -108,8 +108,8 @@ export {
   DateInput,
   TabsContainer,
   TabButton,
-  FoodSectionContainer,
-  FoodImage,
+  DietSectionContainer,
+  DietImage,
   RegisterButtonContainer,
   CommentsSection,
   CommentsList,

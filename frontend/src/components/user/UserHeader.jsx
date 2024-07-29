@@ -1,5 +1,5 @@
 import { create } from "zustand";
 
-const useFoodStore = create((set) => ({
+const useDietStore = create((set) => ({
     
 }))

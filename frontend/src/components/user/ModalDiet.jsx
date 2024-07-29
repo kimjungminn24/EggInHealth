@@ -45,14 +45,14 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalFood = ({ date, foodType, onClose }) => {
+const ModalDiet = ({ date, dietType, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
-  const addFood = useStore((state) => state.addFood);
+  const addDiet = useStore((state) => state.addDiet);
 
   const handleSubmit = () => {
     if (image) {
-      addFood(date, foodType, { image, comments: [comment] });
+      addDiet(date, dietType, { image, comments: [comment] });
       onClose();
     }
   };
@@ -77,4 +77,4 @@ const ModalFood = ({ date, foodType, onClose }) => {
   );
 };
 
-export default ModalFood;
+export default ModalDiet;

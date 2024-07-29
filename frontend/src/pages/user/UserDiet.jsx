@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../../store/store_test';
-import ModalFood from '../../components/user/ModalFood';
+import ModalDiet from '../../components/user/ModalDiet';
 import { PageContainer, Title, DateInput } from '../../components/common/StyledComponents';
 import Tabs from '../../components/user/Tabs';
-import FoodSection from '../../components/user/FoodSection';
+import DietSection from '../../components/user/DietSection';
 import RegisterButton from '../../components/common/RegisterButton';
 
-const UserFoodPage = () => {
+const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTab, setSelectedTab] = useState('아침');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const foods = useStore((state) => state.foods);
+  const diets = useStore((state) => state.diets);
 
   const today = new Date();
   today.setHours(today.getHours() + 9); // UTC 시간을 KST로 변환
@@ -31,8 +31,8 @@ const UserFoodPage = () => {
     setIsModalOpen(false);
   };
 
-  const foodData = foods[selectedDate] ? foods[selectedDate][selectedTab] : null;
-
+  const dietData = diets[selectedDate] ? diets[selectedDate][selectedTab] : null;
+  console.log(dietData)
   return (
     <PageContainer>
       <Title>식단</Title>
@@ -40,15 +40,15 @@ const UserFoodPage = () => {
 
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-      {foodData ? (
-        <FoodSection foodData={foodData} selectedTab={selectedTab} selectedDate={selectedDate} />
+      {dietData ? (
+        <DietSection dietData={dietData} selectedTab={selectedTab} selectedDate={selectedDate} />
       ) : selectedDate === kstDate ? (
         <RegisterButton openModal={openModal} />
       ) : null}
 
-      {isModalOpen && <ModalFood date={selectedDate} foodType={selectedTab} onClose={closeModal} />}
+      {isModalOpen && <ModalDiet date={selectedDate} dietType={selectedTab} onClose={closeModal} />}
     </PageContainer>
   );
 };
 
-export default UserFoodPage;
+export default UserDietPage;

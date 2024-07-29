@@ -3,11 +3,11 @@ import create from 'zustand';
 
 const useStore = create((set) => ({
   meals: {},
-  addFood: async (date, dietType, { image, comments }) => {
+  addDiet: async (date, dietType, { image, comments }) => {
     const diet = await addDiet(date, dietType, image, comments[0]);
     set((state) => ({
-      foods: {
-        ...state.foods,
+      diets: {
+        ...state.diets,
         [date]: {
           ...state.meals[date],
           [dietType]: diet,
@@ -24,15 +24,15 @@ const useStore = create((set) => ({
       return { meals: updatedMeals };
     });
   },
-  updateFood: async (dietId, data) => {
+  updateDiet: async (dietId, data) => {
     const updatedDiet = await updateDiet(dietId, data);
     set((state) => {
-      const updatedFoods = { ...state.foods };
+      const updatedDiets = { ...state.diets };
       // 업데이트된 식단을 상태에 반영하는 로직
-      return { foods: updatedFoods };
+      return { diets: updatedDiets };
     });
   },
-  deleteFood: async (date, dietType) => {
+  deleteDiet: async (date, dietType) => {
     const dietId = state.meals[date][dietType].id;
     await deleteDiet(dietId);
     set((state) => {

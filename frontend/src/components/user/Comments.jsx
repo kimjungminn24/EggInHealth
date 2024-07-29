@@ -4,20 +4,25 @@ import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton
 
 const Comments = ({ date, type, subType = null }) => {
   const [comment, setComment] = useState('');
-  const comments = useStore((state) => state.comments);
+  const comments = useStore((state) => state.comments) || {}; // comments 객체가 undefined일 경우 빈 객체로 초기화
   const addComment = useStore((state) => state.addComment);
 
   const handleAddComment = () => {
-    if (comment.trim()) {
+    if (comment.trim() && date) {
       addComment(date, type, comment, subType);
       setComment('');
     }
   };
 
-  const commentsForDate = comments[date] || {};
-  if (type === 'food') {
-    const commentsForType = commentsForDate[type] || {};
-    const commentsForSubType = commentsForType[subType] || [];
+  if (!date) {
+    return <p>날짜 정보가 없습니다.</p>;
+  }
+
+  const commentsForDate = comments[date] || {}; // 특정 날짜가 없을 경우 빈 객체로 초기화
+  if (type === 'diet') {
+    const commentsForType = commentsForDate[type] || {}; // 타입이 없을 경우 빈 객체로 초기화
+    const commentsForSubType = commentsForType[subType] || []; // 서브타입이 없을 경우 빈 배열로 초기화
+
     return (
       <CommentsSection>
         <h3>댓글</h3>
@@ -31,9 +36,10 @@ const Comments = ({ date, type, subType = null }) => {
           <CommentButton onClick={handleAddComment}>댓글 남기기</CommentButton>
         </div>
       </CommentsSection>
+          
     );
   } else {
-    const commentsForType = commentsForDate[type] || [];
+    const commentsForType = commentsForDate[type] || []; // 타입이 없을 경우 빈 배열로 초기화
     return (
       <CommentsSection>
         <h3>댓글</h3>

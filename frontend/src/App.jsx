@@ -10,7 +10,7 @@ import UserNavbar from "./components/user/UserNavbar"
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
 import UserExercise from "./pages/user/UserExercise";
-import UserFood from "./pages/user/UserFood";
+import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 
@@ -27,7 +27,7 @@ function App() {
                 <Route path="/usercalender" element={<UserCalender />} />
                 <Route path="/userchatroom" element={<UserChatRoom />} />
                 <Route path="/userexercise" element={<UserExercise />} />
-                <Route path="/userfood" element={<UserFood />} />
+                <Route path="/userdiet" element={<UserDiet />} />
                 <Route path="/usermain" element={<UserMain />} />
                 <Route path="/userprofile" element={<UserProfile />} />
             </Routes>

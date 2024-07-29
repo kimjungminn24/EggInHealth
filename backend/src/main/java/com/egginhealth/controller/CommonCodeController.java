@@ -1,4 +1,4 @@
-package com.egginhealth.data.controller;
+package com.egginhealth.controller;
 
 import com.egginhealth.data.dto.CommonCodeDto;
 import com.egginhealth.service.CommonCodeService;

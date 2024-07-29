@@ -1,0 +1,18 @@
+.NavBox {
+    display: flex;
+}
+
+.icon-Off {
+    display: flex;
+    filter: opacity(.2) drop-shadow(0 0 0 gray);
+    width: 90px;
+    height: 56px;
+    justify-content: center;
+}
+
+.icon-On {
+    display: flex;
+    width: 90px;
+    height: 56px;
+    justify-content: center;
+}

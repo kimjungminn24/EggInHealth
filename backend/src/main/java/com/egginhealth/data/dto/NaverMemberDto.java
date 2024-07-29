@@ -24,7 +24,7 @@ public class NaverMemberDto {
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
                 .imgUrl((String) response.get("profile_image"))
-                .phoneNumber((String) response.get("phone_number"))
+                .phoneNumber((String) response.get("mobile"))
                 .role(Role.NONE)
                 .provider("naver")
                 .build();
@@ -37,7 +37,7 @@ public class NaverMemberDto {
                 "name", response.get("name"),
                 "email", response.get("email"),
                 "imgUrl", response.get("profile_image"),
-                "phoneNumber", response.get("phone_number"),
+                "phoneNumber", response.get("mobile"),
                 "role", Role.NONE
         );
     }

@@ -36,6 +36,12 @@ const AddExerciseModal = ({ isOpen, onClose }) => {
           value={exId}
           onChange={(e) => setExId(e.target.value)}
         />
+          <input
+            type="text"
+            placeholder="이름"
+            value={exhName}
+            onChange={(e) => setExhName(e.target.value)}
+          />
         <input
           type="text"
           placeholder="세트"
@@ -47,12 +53,6 @@ const AddExerciseModal = ({ isOpen, onClose }) => {
           placeholder="무게"
           value={exhWeight}
           onChange={(e) => setExhWeight(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="이름"
-          value={exhName}
-          onChange={(e) => setExhName(e.target.value)}
         />
         <input
           type="text"

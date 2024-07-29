@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import useStore from '../../store/store_test';
 import AddExerciseModal from '../../components/trainer/ModalAddUserExercise';
 import Comments from '../../components/user/Comments';
+import SelectedDate from '../../components/common/SelectedDate';
 
 const ExerciseList = () => {
   const exercises = useStore((state) => state.exercises);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState()
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -13,6 +15,7 @@ const ExerciseList = () => {
   return (
     <div>
       <h1>운동 목록</h1>
+      <SelectedDate selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
       <button onClick={openModal}>운동 추가</button>
       <AddExerciseModal isOpen={isModalOpen} onClose={closeModal} />
       {(!exercises || Object.keys(exercises).length === 0) ? (

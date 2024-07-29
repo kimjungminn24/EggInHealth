@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import useStore from '../../store/store_test';
 import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton } from '../common/StyledComponents';
 
+
+
 const Comments = ({ date, type, subType = null }) => {
   const [comment, setComment] = useState('');
   const comments = useStore((state) => state.comments) || {}; // comments 객체가 undefined일 경우 빈 객체로 초기화

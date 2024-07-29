@@ -101,6 +101,47 @@ const CommentButton = styled.button`
     background-color: #FFEEB0;
   }
 `;
+const StyledModal = styled(Modal)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const ImagePreview = styled.img`
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: ${props => props.close ? '#6c757d' : '#FFD66B'};
+  color: #fff;
+  cursor: pointer;
+`;
 
 export {
   PageContainer,
@@ -116,4 +157,8 @@ export {
   CommentItem,
   CommentInput,
   CommentButton,
+  StyledModal,
+  ImagePreview,
+  Textarea,
+  Button
 };

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import useStore from '../../store/store_test';
 import ModalDiet from '../../components/user/ModalDiet';
 import { PageContainer, Title, DateInput } from '../../components/common/StyledComponents';
 import Tabs from '../../components/user/Tabs';
 import DietSection from '../../components/user/DietSection';
 import RegisterButton from '../../components/common/RegisterButton';
+import SelectedDate from '../../components/common/SelectedDate'
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState('');
@@ -12,12 +13,6 @@ const UserDietPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const diets = useStore((state) => state.diets);
 
-  const today = new Date();
-  today.setHours(today.getHours() + 9); // UTC 시간을 KST로 변환
-  const kstDate = today.toISOString().split('T')[0];
-  useEffect(() => {
-    setSelectedDate(kstDate);
-  }, [kstDate]);
 
   const openModal = () => {
     if (selectedDate) {
@@ -36,13 +31,13 @@ const UserDietPage = () => {
   return (
     <PageContainer>
       <Title>식단</Title>
-      <DateInput type="date" onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} />
+      <SelectedDate selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
 
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
       {dietData ? (
         <DietSection dietData={dietData} selectedTab={selectedTab} selectedDate={selectedDate} />
-      ) : selectedDate === kstDate ? (
+      ) : selectedDate === new Date().toISOString().split('T')[0] ? (
         <RegisterButton openModal={openModal} />
       ) : null}
 

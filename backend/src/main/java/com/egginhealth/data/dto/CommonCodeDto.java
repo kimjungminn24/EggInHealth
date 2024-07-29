@@ -3,7 +3,6 @@ package com.egginhealth.data.dto;
 import com.egginhealth.data.entity.CommonCode;
 import lombok.Builder;
 
-// TODO : json 데이터 수정해야함
 @Builder
 public record CommonCodeDto(
         int id,

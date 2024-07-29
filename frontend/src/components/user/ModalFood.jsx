@@ -46,7 +46,6 @@ const Button = styled.button`
 `;
 
 const ModalFood = ({ date, foodType, onClose }) => {
-const ModalFood = ({ date, dietType, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
   const addFood = useStore((state) => state.addFood);
@@ -54,7 +53,6 @@ const ModalFood = ({ date, dietType, onClose }) => {
   const handleSubmit = () => {
     if (image) {
       addFood(date, foodType, { image, comments: [comment] });
-      addFood(date, dietType, { image, comments: [comment] });
       onClose();
     }
   };

@@ -20,4 +20,6 @@ public class MemberStatusController {
     public ResponseEntity<List<MemberStatusDto>> getMonthlyMemberStatus(@PathVariable("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month) {
         return new ResponseEntity<>(memberStatusService.getMemberStatusByMonth(id, year, month), HttpStatus.OK);
     }
+
+    
 }

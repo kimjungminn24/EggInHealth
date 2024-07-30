@@ -34,7 +34,8 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         MemberDto member = memberService.login(NaverMemberDto.from(oAuth2User.getAttributes()));
 
         String type = "ROLE_" + member.getType();
-        String token = jwtUtil.createAccessToken(member.getName(), type, jwtExpired);
+        String token = jwtUtil.createAccessToken(Integer.toString(member.getId()), type, jwtExpired);
+
 
         writeTokenResponse(response, token);
 

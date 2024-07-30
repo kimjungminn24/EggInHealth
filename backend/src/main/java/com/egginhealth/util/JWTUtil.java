@@ -30,6 +30,13 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
+    public String parsingToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        throw new IllegalArgumentException("Invalid Authorization header");
+    }
+
     public String createAccessToken(String id, String role, Long jwtExpired) {
 
         return Jwts.builder()

@@ -37,29 +37,31 @@ const UserHeader = () => {
   const handleScrollLeft = () => {
     if (scrollContainerRef.current) {
       const scrollPos = scrollContainerRef.current.scrollLeft;
+      console.log(scrollPos)
       addItemToStart();
       setScrollPosition(scrollPos - scrollAmount);
     }
   };
 
   const handleScrollRight = () => {
+    console.log(scrollContainerRef.current)
     if (scrollContainerRef.current) {
       const scrollPos = scrollContainerRef.current.scrollLeft;
+      console.log(scrollPos)
       addItemToEnd();
       setScrollPosition(scrollPos + scrollAmount);
     }
   };
 
-
   useEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft += scrollAmount;
+      
       scrollContainerRef.current.scrollTo({
         left: scrollPosition,
         behavior: 'smooth',
       });
     }
-  }, [scrollPosition]);
+  }, [items]);
 
   return (
     <div className='relative'>
@@ -71,15 +73,15 @@ const UserHeader = () => {
         <img src={Arrow} alt="오른쪽화살표" className='w-[13px] h-[24px]'/>
       </div>
       <div 
-        className="relative w-[330px] flex gap-5 snap-x snap-mandatory overflow-x-auto bg-white h-[40px] rounded-full top-0 left-0 right-0 bottom-0 m-auto justify-items-center items-center"
+        className="relative w-[330px] flex gap-5 snap-x overflow-x-auto bg-white h-[40px] rounded-full top-0 left-0 right-0 bottom-0 m-auto justify-items-center items-center"
         ref={scrollContainerRef}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // For Firefox and IE/Edge
       >
         {items.map((item, index) => (
           <div key={index} className="z-20 snap-center shrink-0 first:pl-8 last:pr-8">
-            <div className="w-24 flex justify-center items-center text-neutral-400 text-[20px] font-bold">
-              {item.label}
-            </div>
+              <div className="w-24 flex justify-center items-center text-neutral-400 text-[20px] font-bold">
+                  {item.label}
+              </div>
           </div>
         ))}
       </div>

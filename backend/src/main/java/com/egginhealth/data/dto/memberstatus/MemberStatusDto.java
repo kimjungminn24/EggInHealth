@@ -1,4 +1,4 @@
-package com.egginhealth.data.dto;
+package com.egginhealth.data.dto.memberstatus;
 
 import com.egginhealth.data.entity.MemberStatus;
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/body")
+@RequestMapping("/body")
 @RequiredArgsConstructor
 public class BodyCompositionController {
 

@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.bodycomposition.BodyCompositionDto;
 import com.egginhealth.data.dto.bodycomposition.BodyCompositionInputDto;
 import com.egginhealth.data.entity.BodyCompositionData;
 import com.egginhealth.data.entity.Member;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,4 +41,12 @@ public class BodyCompositionDataService {
 
         bodyCompositionDataRepository.save(bodyCompositionData);
     }
+
+    public List<BodyCompositionDto> getBodyCompositions(int memberId, int year, int month) {
+        return bodyCompositionDataRepository.findByMemberId(memberId, year, month)
+                .stream()
+                .map(BodyCompositionDto::from)
+                .toList();
+    }
+
 }

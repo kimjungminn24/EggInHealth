@@ -1,9 +1,8 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.NaverMemberDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +11,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Member {
 
     @Id
@@ -37,8 +38,9 @@ public class Member {
     @Column(name = "mem_pt_cnt", nullable = false, columnDefinition = "TINYINT")
     private int PTCount = 0;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "mem_type", nullable = false, length = 1)
-    private String type; // [M,T] member, trainer
+    private Role type; 
 
     @Column(name = "mem_total_egg", nullable = false)
     private int totalEgg = 0;
@@ -71,4 +73,15 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<PtPlan> ptPlanList = new ArrayList<>();
 
+
+    public static Member createMember(NaverMemberDto request) {
+        return Member.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .imgUrl(request.getImgUrl())
+                .type(Role.NONE)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 }

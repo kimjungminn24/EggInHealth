@@ -28,7 +28,7 @@ const UserDietPage = () => {
   };
 
   const dietData = diets[selectedDate] ? diets[selectedDate][selectedTab] : null;
-  console.log(dietData)
+  // console.log(dietData)
   return (
     <PageContainer>
       <Title>식단</Title>

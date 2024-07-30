@@ -24,7 +24,7 @@ public class BodyCompositionDataService {
         Member member = memberRepository.findById(bodyCompositionInputDto.memberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-//        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
+        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 
         BodyCompositionData bodyCompositionData = BodyCompositionData.builder()
                 .height(bodyCompositionInputDto.height())
@@ -33,8 +33,7 @@ public class BodyCompositionDataService {
                 .fat(bodyCompositionInputDto.fat())
                 .bmi(bodyCompositionInputDto.bmi())
                 .compositionScore(bodyCompositionInputDto.compositionScore())
-//                .imageUrl(url)
-                .imageUrl("https://i.pinimg.com/236x/6c/e3/e3/6ce3e3487dcbbccc01174e59a9f590ca.jpg")
+                .imageUrl(url)
                 .member(member)
                 .build();
 

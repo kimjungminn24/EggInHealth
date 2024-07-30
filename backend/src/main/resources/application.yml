@@ -33,12 +33,12 @@ spring:
           secretKey: ${S3_SECRET_ACCESS_KEY}
 
 server:
-  port: 6080
+  port: ${SERVER_PORT}
   ssl:
     enabled: false
 
 # LiveKit configuration
 livekit:
   api:
-    key: ${LIVEKIT_API_KEY:devkey}
-    secret: ${LIVEKIT_API_SECRET:secret}
+    key: ${LIVEKIT_API_KEY}
+    secret: ${LIVEKIT_API_SECRET}

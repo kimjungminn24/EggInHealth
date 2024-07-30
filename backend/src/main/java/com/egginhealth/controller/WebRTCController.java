@@ -5,6 +5,8 @@ import io.livekit.server.RoomJoin;
 import io.livekit.server.RoomName;
 import io.livekit.server.WebhookReceiver;
 import livekit.LivekitWebhook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +17,12 @@ import java.util.Map;
 @RestController
 public class WebRTCController {
 
-//    @Value("${LIVEKIT_API_KEY}")
-    private String LIVEKIT_API_KEY = "devkey";
+    private static final Logger log = LoggerFactory.getLogger(WebRTCController.class);
+    @Value("${LIVEKIT_API_KEY}")
+    private String LIVEKIT_API_KEY;
 
-//    @Value("${LIVEKIT_API_SECRET}")
-    private String LIVEKIT_API_SECRET="secret";
+    @Value("${LIVEKIT_API_SECRET}")
+    private String LIVEKIT_API_SECRET;
 
 
     /**
@@ -51,9 +54,9 @@ public class WebRTCController {
         WebhookReceiver webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
         try {
             LivekitWebhook.WebhookEvent event = webhookReceiver.receive(body, authHeader);
-            System.out.println("LiveKit Webhook: " + event.toString());
+            log.info("LiveKit Webhook: {}", event);
         } catch (Exception e) {
-            System.err.println("Error validating webhook event: " + e.getMessage());
+            log.error("Error validating webhook event: {}", e.getMessage());
         }
         return ResponseEntity.ok("ok");
     }

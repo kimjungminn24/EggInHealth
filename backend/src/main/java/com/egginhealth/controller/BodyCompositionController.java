@@ -23,9 +23,8 @@ public class BodyCompositionController {
 
     @PostMapping
     public ResponseEntity<Void> register(@ModelAttribute BodyCompositionInputDto inputData) throws IOException {
-        log.info(inputData.memberId() + "!!!!!!!!!!!!");
         bodyCompositionDataService.save(inputData);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

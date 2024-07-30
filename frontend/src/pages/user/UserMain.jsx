@@ -25,7 +25,7 @@ const UserMain = () => {
     { day: '07.21(일)', time: 'AM 11:00 - 12:00' },
     { day: '07.22(월)', time: 'AM 11:00 - 12:00' },
   ];
-  const eggday = 1
+  const eggday = 0
   return (
     <div>
       <UserEgg trainer={trainer} eggday={eggday}/>

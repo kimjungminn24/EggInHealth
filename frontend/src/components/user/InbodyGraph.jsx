@@ -51,7 +51,7 @@ const InbodyGraph = ({ data }) => {
             dataKey="value" 
             stroke="#CCCCCC" 
             strokeWidth={3} 
-            dot={{ fill: '#FFD700', stroke: '#FFD700', r: 5 }} 
+            dot={{ fill: '#FFD700', stroke: '#FFD700', r: 3 }} 
             activeDot={{ r: 4, stroke: '#FFD700' }}
           />
         </LineChart>

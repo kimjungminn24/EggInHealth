@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import UserEggTray from '../../assets/useregg.png';
+import EmptyEgg from '../../assets/eggs/emptyegg.png'
+import Egg0 from '../../assets/eggs/egg0.png';
 import Egg1 from '../../assets/eggs/egg1.png';
 import Egg2 from '../../assets/eggs/egg2.png';
 import Egg3 from '../../assets/eggs/egg3.png';
@@ -13,81 +14,65 @@ import Egg9 from '../../assets/eggs/egg9.png';
 import Egg10 from '../../assets/eggs/egg10.png';
 import Egg11 from '../../assets/eggs/egg11.png';
 import Egg12 from '../../assets/eggs/egg12.png';
-import Egg13 from '../../assets/eggs/egg13.png';
 
-// 스타일드 컴포넌트 정의
+
 const BoxContainer = styled.div`
   display: inline-block;
   background-color: white;
   border-radius: 20px;
   padding: 20px;
-  margin: 20px;
+  margin: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 `;
 
 const Divider = styled.div`
-  width: 80%;
+  width: 100%;
   height: 4px;
   background-color: #FFD66B;
-  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
-const Tray = styled.div`
-  width: 100vh;
-  height: auto;
-  transform: scale(1.6);
-  transform-origin: center;
-  background-image: url(${UserEggTray});
+const EggGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 40px);
+  grid-gap: 10px;
+  justify-content: center;
+`;
+
+const Egg = styled.div`
+  width: 52px;
+  height: 68px;
+  background-image: ${props => props.image ? `url(${props.image})` : `url(${EmptyEgg})`};
   background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
 `;
-
-const Egg = styled.img`
-  position: absolute;
-  width: 50px;
-  height: 50px;
-`;
-
-const eggImages = [
-  Egg1, Egg2, Egg3, Egg4, Egg5, Egg6, Egg7, Egg8, Egg9,
-  Egg10, Egg11, Egg12, Egg13
-];
-
-const EggTray = () => {
-  const [eggs, setEggs] = useState(Array(30).fill(null));
-
-  useEffect(() => {
-    // 계란 이미지를 랜덤으로 배치
-    const newEggs = eggs.map(() => {
-      const randomIndex = Math.floor(Math.random() * eggImages.length);
-      return eggImages[randomIndex];
-    });
-    setEggs(newEggs);
-  }, []);
-
-  return (
-    <Tray>
-      {eggs.map((egg, index) => (
-        <Egg
-          key={index}
-          src={egg}
-          alt={`Egg ${index}`}
-          style={{
-            top: `${Math.floor(index / 6) * 50}px`,
-            left: `${(index % 6) * 50}px`,
-          }}
-        />
-      ))}
-    </Tray>
-  );
-};
 
 const UserEgg = ({ trainer, eggday }) => {
+  const day = 30
+  
+  const eggImages = [
+    Egg2,Egg1, Egg4, Egg5,Egg11, Egg6, Egg7,Egg12, Egg8, Egg9,
+    Egg10,Egg0,Egg0,Egg0, Egg3
+  ];
+
+
+  const eggsToShow = Array.from({ length: 30 }, (_, index) => {
+    if (index < day) {
+      return eggImages[Math.min(index, eggImages.length )];
+    }
+    return null;
+  });
+
   return (
     <BoxContainer>
-      <EggTray />
+      <EggGrid>
+        {eggsToShow.map((image, index) => (
+          <Egg key={index} image={image} />
+        ))}
+      </EggGrid>
       <Divider />
       {trainer ? (
         <p>{eggday}일째 에그중</p>

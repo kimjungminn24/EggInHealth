@@ -36,8 +36,13 @@ const ProfilePic = styled.img`
   height: 40%;
   border-radius: 50%;
   margin: 0 auto 20px;
+  margin-left: 100px;
 `;
-
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
@@ -53,7 +58,7 @@ const UserProfile = () => {
 
   return (
     <Container>
-      <div>
+      <ProfileContainer>
         <ProfilePic src={Profile} alt="Profile" />
         {activeTab ==='내정보'? 
         (<img src={EditBtn} alt="EditBtn" />):
@@ -61,7 +66,7 @@ const UserProfile = () => {
         }
       
         <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal}/>
-      </div>
+      </ProfileContainer>
       <ButtonGroupContainer>
         <ButtonGroup>
           <ButtonSwap 

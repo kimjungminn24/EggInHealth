@@ -35,11 +35,11 @@ const profileData = {
     { label: '체지방률(%)', value: '16.4', change: '-1.9', graph: '체지방률 그래프' },
   ],
   dataList: [
-    { label: '체중', value: '76.4kg', progress: '70%', change: '+0.9kg' },
-    { label: '골격근량', value: '35.4kg', progress: '80%', change: '+1.2kg' },
+    { label: '체중', value: '76.4kg', progress: '50%', change: '+0.9kg' },
+    { label: '골격근량', value: '35.4kg', progress: '50%', change: '+1.2kg' },
     { label: '체지방률', value: '16.4%', progress: '50%', change: '-1.9%' },
-    { label: 'BMI', value: '23.4', progress: '60%', change: '+0.2' },
-    { label: '체지방량', value: '12.3kg', progress: '40%', change: '-0.8kg' },
+    { label: 'BMI', value: '23.4', progress: '50%', change: '+0.2' },
+    { label: '체지방량', value: '12.3kg', progress: '50%', change: '-0.8kg' },
   ],
   score: 80,
 };

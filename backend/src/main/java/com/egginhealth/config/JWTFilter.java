@@ -30,15 +30,20 @@ public class JWTFilter extends OncePerRequestFilter {
         if (accessToken != null && !jwtUtil.isExpired(accessToken)) {
 
             Map<String, Object> principal = Map.of(
-                    "name", jwtUtil.getId(accessToken),
+                    "id", jwtUtil.getId(accessToken),
                     "role", jwtUtil.getRole(accessToken)
             );
+
 
             Authentication authToken = new UsernamePasswordAuthenticationToken(principal, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
+        } else {
+            filterChain.doFilter(request, response);
+            return;
         }
 
         filterChain.doFilter(request, response);
+
     }
 }

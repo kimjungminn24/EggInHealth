@@ -30,10 +30,10 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createAccessToken(String userId, String role, Long jwtExpired) {
+    public String createAccessToken(String id, String role, Long jwtExpired) {
 
         return Jwts.builder()
-                .claim("id", userId)
+                .claim("id", id)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpired))

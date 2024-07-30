@@ -1,70 +1,46 @@
-// AddExerciseModal.js
 import React, { useState } from 'react';
-import useStore from '../../store/store_test';
+import Modal from 'react-modal';
+import styled from 'styled-components';
+import { ImagePreview } from '../common/StyledComponents';
+import { useStore } from 'zustand';
 
-const AddExerciseModal = ({ isOpen, onClose }) => {
-  const [exhSet, setExhSet] = useState('');
-  const [exhWeight, setExhWeight] = useState('');
-  const [exhName, setExhName] = useState('');
-  const [exTime, setExTime] = useState('');
-  const [exId, setExId] = useState('');
-  const addExercise = useStore((state) => state.addExercise);
+const StyledModal = styled(Modal)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
 
-  const handleAddExercise = () => {
-    const newExercise = {
-      ex_id: exId,
-      exh_set: exhSet,
-      exh_weight: exhWeight,
-      exh_name: exhName,
-      ex_time: exTime,
-    };
-    const date = new Date().toISOString().split('T')[0]; // 현재 날짜 사용
+const ModalExercise = ({ date, onClose }) => {
+  const [img, setImg] = useState(null);
+  const addExImg = useStore((state) => state.addExImg);
 
-    addExercise(date, newExercise);
-    onClose();
+  const handleImgChange = (e) => {
+    setImg(e.target.files[0]);
   };
 
-  if (!isOpen) return null;
+  const handleSubmit = () => {
+    if (img) {
+      addExImg(date, { image: img });
+      onClose();
+    }
+  };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>운동 숙제 등록</h2>
-        <input
-          type="text"
-          placeholder="운동 번호"
-          value={exId}
-          onChange={(e) => setExId(e.target.value)}
-        />
-          <input
-            type="text"
-            placeholder="이름"
-            value={exhName}
-            onChange={(e) => setExhName(e.target.value)}
-          />
-        <input
-          type="text"
-          placeholder="세트"
-          value={exhSet}
-          onChange={(e) => setExhSet(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="무게"
-          value={exhWeight}
-          onChange={(e) => setExhWeight(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="운동 시간"
-          value={exTime}
-          onChange={(e) => setExTime(e.target.value)}
-        />
-        <button onClick={handleAddExercise}>등록</button>
-        <button onClick={onClose}>닫기</button>
-      </div>
-    </div>
+    <StyledModal isOpen onRequestClose={onClose}>
+      <input type="file" onChange={handleImgChange} />
+      {img && <ImagePreview src={URL.createObjectURL(img)} alt="preview" />}
+      <button onClick={handleSubmit}>등록</button>
+      <button onClick={onClose}>닫기</button>
+    </StyledModal>
   );
 };
 
-export default AddExerciseModal;
+export default ModalExercise;

@@ -48,6 +48,8 @@ const Button = styled.button`
 const ModalDiet = ({ date, dietType, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
+  const comments =useStore((state)=>state.comments) ||{};
+  const addComment = useStore((state)=>state.addComments)
   const addDiet = useStore((state) => state.addDiet);
 
   const handleSubmit = () => {

@@ -6,6 +6,7 @@ import Tabs from '../../components/user/Tabs';
 import DietSection from '../../components/user/DietSection';
 import RegisterButton from '../../components/common/RegisterButton';
 import SelectedDate from '../../components/common/SelectedDate'
+import Comments from './../../components/user/Comments';
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState('');
@@ -42,6 +43,8 @@ const UserDietPage = () => {
       ) : null}
 
       {isModalOpen && <ModalDiet date={selectedDate} dietType={selectedTab} onClose={closeModal} />}
+      
+      <Comments date={selectedDate} type="diet" subType={selectedTab}/>
     </PageContainer>
   );
 };

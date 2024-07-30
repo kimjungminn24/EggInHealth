@@ -5,7 +5,7 @@ import Comments from './Comments';
 const DietSection = ({ dietData, selectedTab, selectedDate }) => (
   <DietSectionContainer>
     <DietImage src={URL.createObjectURL(dietData.image)} alt={selectedTab} />
-    <Comments date={selectedDate} dietType={selectedTab} />
+    {/* <Comments date={selectedDate} dietType={selectedTab} /> */}
   </DietSectionContainer>
 );
 

@@ -1,4 +1,24 @@
+/* Modal의 스타일을 오버라이딩할 CSS 파일 */
 import styled from 'styled-components';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root'); // 모달이 열릴 때 접근성을 위해 애플리케이션 루트를 설정합니다.
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '20px',
+    borderRadius: '10px',
+    width: '300px',
+    backgroundColor: 'white',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+  },
+};
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -101,19 +121,6 @@ const CommentButton = styled.button`
     background-color: #FFEEB0;
   }
 `;
-const StyledModal = styled(Modal)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`;
 
 const ImagePreview = styled.img`
   width: 100%;
@@ -142,7 +149,19 @@ const Button = styled.button`
   color: #fff;
   cursor: pointer;
 `;
-
+const StyledModal = styled(Modal)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
 export {
   PageContainer,
   Title,
@@ -157,8 +176,9 @@ export {
   CommentItem,
   CommentInput,
   CommentButton,
-  StyledModal,
+  customStyles as StyledModalStyles,
   ImagePreview,
   Textarea,
-  Button
+  Button,
+  StyledModal
 };

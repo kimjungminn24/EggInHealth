@@ -49,7 +49,10 @@ spring:
           accessKey: ${S3_ACCESS_KEY}
           secretKey: ${S3_SECRET_ACCESS_KEY}
 
+
 server:
+  servlet:
+    context-path: /api
   port: ${SERVER_PORT}
   ssl:
     enabled: false
@@ -59,3 +62,4 @@ livekit:
   api:
     key: ${LIVEKIT_API_KEY}
     secret: ${LIVEKIT_API_SECRET}
+>>>>>>> backend/src/main/resources/application.yml

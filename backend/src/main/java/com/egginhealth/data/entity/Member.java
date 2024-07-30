@@ -40,10 +40,16 @@ public class Member {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "mem_type", nullable = false, length = 1)
-    private Role type; 
+    private Role type;
 
     @Column(name = "mem_total_egg", nullable = false)
     private int totalEgg = 0;
+
+    @Column(name = "mem_age")
+    private int age;
+
+    @Column(name = "mem_height")
+    private int height;
 
     @Column(name = "mem_created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -73,6 +79,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<PtPlan> ptPlanList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "member")
+    private Goal goal;
 
     public static Member createMember(NaverMemberDto request) {
         return Member.builder()
@@ -84,4 +92,5 @@ public class Member {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
 }

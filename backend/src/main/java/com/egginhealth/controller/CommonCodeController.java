@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/common")
+@RequestMapping("/common")
 @RequiredArgsConstructor
 public class CommonCodeController {
 

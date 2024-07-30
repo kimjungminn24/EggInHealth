@@ -62,4 +62,3 @@ livekit:
   api:
     key: ${LIVEKIT_API_KEY}
     secret: ${LIVEKIT_API_SECRET}
->>>>>>> backend/src/main/resources/application.yml

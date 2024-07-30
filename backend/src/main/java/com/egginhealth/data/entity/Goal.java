@@ -34,7 +34,7 @@ public class Goal {
                 .member(member)
                 .exerciseCommonId(goalDto.exerciseCommonId())
                 .dietCommonId(goalDto.dietCommonId())
-                .goalCommonId(goalDto.commonId())
+                .goalCommonId(goalDto.goalCommonId())
                 .build();
     }
 }

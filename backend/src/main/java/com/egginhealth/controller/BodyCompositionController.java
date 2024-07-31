@@ -31,4 +31,15 @@ public class BodyCompositionController {
         return new ResponseEntity<>(bodyCompositionDataService.getBodyCompositions(id, year, month), HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateBodyComposition(@PathVariable int id, @ModelAttribute BodyCompositionInputDto inputData) throws IOException {
+        bodyCompositionDataService.updateBodyComposition(id, inputData);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBodyComposition(@PathVariable int id) {
+        boolean isDelete = bodyCompositionDataService.deleteBodyComposition(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

@@ -4,7 +4,6 @@ import './App.css'
 import { Routes,Route } from 'react-router-dom';
 
 import Login from './pages/Login';
-import RedirectURI from './pages/RedirectURI';
 import Select from './pages/Select';
 import TrainerMain from './pages/trainer/TrainerMain';
 import UserNavbar from "./components/user/UserNavbar"
@@ -14,10 +13,8 @@ import UserExercise from "./pages/user/UserExercise";
 import UserFood from "./pages/user/UserFood";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
-
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
-import TrainerMain from './pages/trainer/TrainerMain';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
@@ -28,7 +25,6 @@ function App() {
             <div className='header'><h4>상단바</h4></div>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/redirect" element={<RedirectURI />} />
                 <Route path="/select" element={<Select />} />
                 <Route path="/trainermain" element={<TrainerMain />} />
                 <Route path="/usercalender" element={<UserCalender />} />
@@ -37,8 +33,6 @@ function App() {
                 <Route path="/userfood" element={<UserFood />} />
                 <Route path="/usermain" element={<UserMain />} />
                 <Route path="/userprofile" element={<UserProfile />} />
-
-                <Route path="/trainermain" element={<TrainerMain />} />
                 <Route path="/trainerchat" element={<TrainerChat />} />
                 <Route path="/traineruserlist" element={<TrainerUserList />} />
                 <Route path="/trainerprofile" element={<TrainerProfile />} />

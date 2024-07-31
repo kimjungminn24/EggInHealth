@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import EggSelector from './EggSelector';
 import SurveyPage1 from '../components/user/UserSurvey1';
 import SurveyPage2 from '../components/user/UserSurvey2';
@@ -72,7 +72,10 @@ const Select = () => {
         <ArrowLeft onClick={handlePrev} disabled={currentStep === 0} />
         <ProgressBarContainer>
           <ProgressBar>
-            <ProgressFill currentStep={currentStep} totalSteps={totalSteps} />
+            <ProgressFill 
+              $currentStep={currentStep} 
+              $totalSteps={totalSteps} 
+            />
           </ProgressBar>
         </ProgressBarContainer>
       </ProgressContainer>
@@ -122,7 +125,9 @@ const ProgressBar = styled.div`
   overflow: hidden;
 `;
 
-const ProgressFill = styled.div`
+const ProgressFill = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['currentStep', 'totalSteps'].includes(prop),
+})`
   background-color: #FFD66B;
   height: 100%;
   width: ${({ currentStep, totalSteps }) => ((currentStep + 1) / totalSteps) * 100}%;

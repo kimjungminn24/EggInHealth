@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useStore from '../../store/store';
+import {useStore} from '../../store/store';
 import ModalFood from '../../components/user/ModalFood';
 import styled from 'styled-components';
 

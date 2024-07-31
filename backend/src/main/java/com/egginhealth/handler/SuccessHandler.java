@@ -5,6 +5,7 @@ import com.egginhealth.data.dto.member.NaverMemberDto;
 import com.egginhealth.service.MemberService;
 import com.egginhealth.util.JWTUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Component
 @RequiredArgsConstructor
@@ -33,9 +33,8 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto member = memberService.login(NaverMemberDto.from(oAuth2User.getAttributes()));
 
-        String type = "ROLE_" + member.getType();
+        String type = member.getType().name();
         String token = jwtUtil.createAccessToken(Integer.toString(member.getId()), type, jwtExpired);
-
 
         writeTokenResponse(response, token);
 
@@ -44,13 +43,24 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private void writeTokenResponse(HttpServletResponse response, String token) throws IOException {
 
-        response.setContentType("text/html;charset=UTF-8");
-        response.addHeader("Authorization", token);
-        response.setContentType("application/json;charset=UTF-8");
+        response.addCookie(createCookie("Authorization", token));
+        String role = jwtUtil.getRole(token);
+        response.addCookie(createCookie("Role", role));
 
-        PrintWriter writer = response.getWriter();
-        writer.println(token);
-        writer.flush();
+        if (role.equals("TRAINER")) response.sendRedirect("http://localhost:5173/trainermain");
+        if (role.equals("MEMBER")) response.sendRedirect("http://localhost:5173/usermain");
+        if (role.equals("NONE")) response.sendRedirect("http://localhost:5173/select");
+
+    }
+
+    private Cookie createCookie(String key, String value) {
+
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(60 * 60 * 60);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        return cookie;
+
     }
 
 }

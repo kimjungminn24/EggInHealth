@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.feedback.FeedbackDto;
 import com.egginhealth.data.dto.feedback.FeedbackInputDto;
 import com.egginhealth.data.entity.Feedback;
 import com.egginhealth.data.entity.Member;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,6 +48,16 @@ public class FeedbackService {
         response.put("feedbackId",feedbackId);
 
         return response;
+    }
+
+    public List<FeedbackDto> getFeedbackList(int id, int memberId){
+        memberRepository.findById(memberId)
+                .orElseThrow(()-> new RuntimeException("Member not found"));
+
+        return feedbackRepository.findById(id)
+                .stream()
+                .map(FeedbackDto::from)
+                .toList();
     }
 
 }

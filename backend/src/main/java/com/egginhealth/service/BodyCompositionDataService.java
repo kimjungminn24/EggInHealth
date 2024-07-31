@@ -7,11 +7,13 @@ import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.repository.BodyCompositionDataRepository;
 import com.egginhealth.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BodyCompositionDataService {
@@ -27,7 +29,6 @@ public class BodyCompositionDataService {
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
-
         BodyCompositionData bodyCompositionData = build(bodyCompositionInputDto, member, url);
 
         bodyCompositionDataRepository.save(bodyCompositionData);
@@ -44,18 +45,24 @@ public class BodyCompositionDataService {
         BodyCompositionData bodyCompositionData = bodyCompositionDataRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BodyComposition not found"));
 
-        s3Service.delete(bodyCompositionData.getImageUrl());
+        String prevUrl = bodyCompositionData.getImageUrl();
+        s3Service.delete(DIR_NAME, prevUrl);
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 
-        BodyCompositionData updateData = build(bodyCompositionInputDto, bodyCompositionData.getMember(), url);
-
-        bodyCompositionDataRepository.save(updateData);
+        bodyCompositionData.setHeight(bodyCompositionInputDto.height());
+        bodyCompositionData.setWeight(bodyCompositionInputDto.weight());
+        bodyCompositionData.setMuscle(bodyCompositionInputDto.muscle());
+        bodyCompositionData.setFat(bodyCompositionInputDto.fat());
+        bodyCompositionData.setBmi(bodyCompositionInputDto.bmi());
+        bodyCompositionData.setCompositionScore(bodyCompositionInputDto.compositionScore());
+        bodyCompositionData.setImageUrl(url);
     }
 
     public boolean deleteBodyComposition(int id) {
-        if (!bodyCompositionDataRepository.existsById(id)) {
-            return false;
-        }
+        BodyCompositionData bodyCompositionData = bodyCompositionDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("BodyComposition not found"));
+
+        s3Service.delete(DIR_NAME, bodyCompositionData.getImageUrl());
         bodyCompositionDataRepository.deleteById(id);
         return true;
     }

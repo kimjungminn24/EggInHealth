@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.UUID;
@@ -78,7 +80,7 @@ public class S3Service {
         String uuid = UUID.randomUUID().toString();
 
         String uuidFilePath = TEMP_FILE_PATH + uuid + "_" + originalFilename.replaceAll("\\s", "_");
-        
+
         File convertFile = new File(uuidFilePath);
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
@@ -87,6 +89,11 @@ public class S3Service {
             return Optional.of(convertFile);
         }
         return Optional.empty();
+    }
+
+    public void delete(String directoryName, String url) {
+        String fileName = directoryName + "/" + URLDecoder.decode(url.substring(url.lastIndexOf("/") + 1), StandardCharsets.UTF_8);
+        delete(fileName);
     }
 
     public void delete(String fileName) {

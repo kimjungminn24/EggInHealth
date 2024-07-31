@@ -40,12 +40,16 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+        
         Map<String, Object> principal = Map.of(
                 "id", jwtUtil.getId(accessToken),
                 "role", jwtUtil.getRole(accessToken)
         );
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(principal, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+
+        String role = "ROLE_" + jwtUtil.getRole(accessToken);
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(principal, null, Collections.singleton(new SimpleGrantedAuthority(role)));
         SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request, response);
 

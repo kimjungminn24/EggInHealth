@@ -99,4 +99,8 @@ public class Member {
         this.height = memberSurveyDto.height();
     }
 
+    public void updateMemberRoleBy(Role role) {
+        this.type = role;
+    }
+
 }

@@ -26,9 +26,20 @@ public class BodyCompositionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{uid}")
-    public ResponseEntity<List<BodyCompositionDto>> getBodyCompositions(@PathVariable("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month) {
+    @GetMapping
+    public ResponseEntity<List<BodyCompositionDto>> getBodyCompositions(@RequestParam("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month) {
         return new ResponseEntity<>(bodyCompositionDataService.getBodyCompositions(id, year, month), HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateBodyComposition(@PathVariable int id, @ModelAttribute BodyCompositionInputDto inputData) throws IOException {
+        bodyCompositionDataService.updateBodyComposition(id, inputData);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBodyComposition(@PathVariable int id) {
+        boolean isDelete = bodyCompositionDataService.deleteBodyComposition(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

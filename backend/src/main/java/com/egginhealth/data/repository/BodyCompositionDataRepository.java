@@ -6,13 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BodyCompositionDataRepository extends JpaRepository<BodyCompositionData, Integer> {
 
-    List<BodyCompositionData> findById(int id);
+    Optional<BodyCompositionData> findById(int id);
 
     @Query("SELECT bc FROM BodyCompositionData bc WHERE bc.member.id = :memberId AND YEAR(bc.createdAt) = :year AND MONTH(bc.createdAt) = :month")
     List<BodyCompositionData> findByMemberId(int memberId, int year, int month);
-
 }

@@ -8,17 +8,9 @@
 }
 
 .header {
-  height: 8vh;
+  height: 40px;
   top: 0;
-  left: 0;
-  right: 0;
-  background-color: gray;
   color: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1px 20px;
-  z-index: 100;
 }
 
 .nav{

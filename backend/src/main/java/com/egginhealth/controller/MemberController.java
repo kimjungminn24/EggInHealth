@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -29,5 +31,14 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+    @PatchMapping("/role")
+    public ResponseEntity<Void> patchMemberRoleBy(@RequestBody Map<String, String> role) {
+
+        memberService.patchMemberRoleBy(role.get("role"), SecurityUtil.getUserId());
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 
 }

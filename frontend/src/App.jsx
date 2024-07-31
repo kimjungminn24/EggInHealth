@@ -20,11 +20,13 @@ import TrainerMain from './pages/trainer/TrainerMain';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
+import UserHeader from './components/user/UserHeader';
+
 function App() {
 
     return (
         <div className='mobile'>
-            <div className='header'><h4>상단바</h4></div>
+            <div className='header'><UserHeader/></div>
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/redirect" element={<RedirectURI />} />
@@ -47,7 +49,7 @@ function App() {
 
   
   );
-};
+}
 
 const Home = () => {
   return <h2>홈</h2>;

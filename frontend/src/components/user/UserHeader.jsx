@@ -3,23 +3,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Arrow from "../../assets/static/Property_Arrow.png";
 
 const initialItems = [
-  { id: 1, label: '운동' },
-  { id: 2, label: '프로필' },
-  { id: 3, label: '채팅' },
-  { id: 4, label: '식단' },
-  { id: 5, label: '에그' },
-  { id: 6, label: '캘린더' },
-  { id: 7, label: '운동' },
-  { id: 8, label: '프로필' },
-  { id: 9, label: '채팅' },
-  { id: 10, label: '식단' },
+  { id: 1, label: '운동', path: '/userexercise' },
+  { id: 2, label: '프로필', path: '/userprofile' },
+  { id: 3, label: '채팅', path: '/userchatroom' },
+  { id: 4, label: '식단', path: '/userfood' },
+  { id: 5, label: '에그', path: '/usermain' },
+  { id: 6, label: '캘린더', path: '/usercalender' },
+  { id: 7, label: '운동', path: '/userexercise' },
+  { id: 8, label: '프로필', path: '/userprofile' },
+  { id: 9, label: '채팅', path: '/userchatroom' },
+  { id: 10, label: '식단', path: '/userfood' },
 ];
 
 const UserHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const scrollContainerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(400); //앱을 키자마자 로그인창을 넘기고 바로 창을 표시하는 현상 존재
+  //로그인 정보를 받을때에 맞는 헤더를 호출하는 형식으로 해결 가능할 것으로 보임.
   const scrollAmount = 100; // 스크롤 양을 조정할 수 있습니다.
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const UserHeader = () => {
 
   useEffect(() => {
     if (scrollContainerRef.current) {
-      console.log('스크롤포스', scrollPosition)
+      // console.log('스크롤포스', scrollPosition)
       // console.log('스크롤레프트',scrollContainerRef.current.scrollLeft)
       scrollContainerRef.current.scrollTo({
         left: scrollPosition,
@@ -122,7 +123,7 @@ const UserHeader = () => {
       >
         {initialItems.map((item, index) => (
           <div key={index} className="z-20 snap-center shrink-0 first:pl-8 last:pr-8">
-            <div className="w-24 flex justify-center items-center text-neutral-400 text-[20px] font-bold">
+            <div className={`w-24 flex justify-center items-center text-[20px] font-bold ${location.pathname === item.path ? 'text-white' : 'text-neutral-400'}`}>
               {item.label}
             </div>
           </div>

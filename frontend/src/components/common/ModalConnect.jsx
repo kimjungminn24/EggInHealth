@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import PlusBtn from '../../assets/plusbutton.png';
-import ModalAddInbody from '../../components/common/ModalAddInbody';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -24,17 +22,25 @@ const ModalContent = styled.div`
   text-align: center;
 `;
 
-const ModalInbody = ({ isOpen, onRequestClose }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+const InputField = styled.input`
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+`;
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
+const ConnectButton = styled.button`
+  padding: 10px 20px;
+  background-color: #ffd66b;
+  border-radius: 10px;
+  color: white;
+  width: 80%;
+  border: none;
+  cursor: pointer;
+`;
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
+const ModalConnect = ({ isOpen, onRequestClose }) => {
   return (
     <StyledModal
       isOpen={isOpen}
@@ -42,12 +48,12 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
       ariaHideApp={false}
     >
       <ModalContent>
-        <img src={PlusBtn} alt="PlusBtn" onClick={openModal} />
-        인바디 모달임
-        <ModalAddInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
+        <h2>인증번호를 입력해주세요</h2>
+        <InputField type="text" placeholder="인증번호 입력" />
+        <ConnectButton>연결하기</ConnectButton>
       </ModalContent>
     </StyledModal>
   );
 };
 
-export default ModalInbody;
+export default ModalConnect;

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import Chat from "./../../assets/static/Property_Chat.png";
 import Egg from "./../../assets/static/Property_Egg.png";
 import Calender from "./../../assets/static/Property_Calender.png";
-import Food from "./../../assets/static/Property_Food.png";
+import Diet from "./../../assets/static/Property_Diet.png";
 import Profile from "./../../assets/static/Property_Profile.png";
 import WorkOut from "./../../assets/static/Property_WorkOut.png";
 import "./UserNavbar.css";
@@ -16,8 +16,8 @@ const UserNavbar = () => {
           <NavLink to="/userchatroom" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={Chat} alt="채팅" />
           </NavLink>
-          <NavLink to="/userfood" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
-            <img src={Food} alt="식단" />
+          <NavLink to="/userdiet" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
+            <img src={Diet} alt="식단" />
           </NavLink>
           <NavLink to="/usermain" className={({ isActive }) => isActive ? "icon-On" : "icon-Off"}>
             <img src={Egg} alt="에그" />

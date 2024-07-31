@@ -7,17 +7,25 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "test": "react-scripts test"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "axios": "^1.7.2",
     "react": "^18.3.1",
+<<<<<<< HEAD
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.25.1",
+=======
+    "react-cookie": "^7.2.0",
+    "react-dom": "^18.3.1",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.25.1",
+    "recharts": "^2.12.7",
+>>>>>>> e8f3f478b2be842c8ca4598774c4ac790c8f9393
     "styled-components": "^6.1.12",
     "zustand": "^4.5.4"
   },

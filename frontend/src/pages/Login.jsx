@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import eggImg from '../assets/egg.gif';
 import logo from '../assets/logo.png';
 import styled from 'styled-components';
 import naverLogin from '../assets/naverLogin.png';
-import { login } from '../api/login';
-import {useStore} from '../store/login'; 
+
+import { useStore } from '../store/login'; 
 
 const Container = styled.div`
     display: flex;
@@ -21,47 +22,40 @@ const Logo = styled.div`
     cursor: pointer;
 `;
 
-const NaverButton = styled.div`
-    width: 200px;
-    height: 100px; 
-    text-align: center;
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; 
+const NaverButton = styled.img`
+    cursor: pointer;
 `;
 
 function Login() {
-  const setToken = useStore((state) => state.setToken); 
+    const setToken = useStore((state) => state.setToken);
+    const [cookies, setCookie] = useCookies(['Authorization']); 
 
-  const naverClick = async () => {
-    try {
-      const responseData = await login();
-      console.log(responseData)
-      console.log(1)
-      const token = responseData.token; 
-   
-      
-      setToken(token);
-      localStorage.setItem('token', token); 
-      console.log('Received token:', token);
-    } catch (error) {
-      console.error('Error during login:', error.message);
-    }
-  };
+    const naverClick = () => {
+        window.location.href = 'http://localhost:8080'; 
+    };
 
-  return (
-    <Container>
-      <Logo>
-        <img src={eggImg} alt="egg img" />
-      </Logo>
-      <Logo > 
-        <img src={logo} alt="logo img" />
-      </Logo>
-      <NaverButton src={naverLogin} onClick={naverClick} />
-    </Container>
-  );
+    useEffect(() => {
+        const authToken = cookies.Authorization;
+
+        if (authToken) {
+            console.log('Authorization Token:', authToken);
+            setToken(authToken); 
+        } else {
+            console.log('Authorization Token이 존재하지 않습니다.');
+        }
+    }, [cookies, setToken]);
+
+    return (
+        <Container>
+            <Logo>
+                <img src={eggImg} alt="egg img" />
+            </Logo>
+            <Logo> 
+                <img src={logo} alt="logo img" />
+            </Logo>
+            <NaverButton src={naverLogin} onClick={naverClick} />
+        </Container>
+    );
 }
 
 export default Login;

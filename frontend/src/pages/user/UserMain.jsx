@@ -4,6 +4,7 @@ import BoxMain from '../../components/common/BoxMain';
 import BoxSchedule from '../../components/common/BoxSchedule';
 import styled from 'styled-components';
 
+
 const PTBox = styled.div`
   display: flex;
   justify-content: center;
@@ -25,7 +26,8 @@ const UserMain = () => {
     { day: '07.21(일)', time: 'AM 11:00 - 12:00' },
     { day: '07.22(월)', time: 'AM 11:00 - 12:00' },
   ];
-  const eggday = 0
+  const eggday = 0;
+
   return (
     <div>
       <UserEgg trainer={trainer} eggday={eggday}/>

@@ -28,16 +28,7 @@ public class BodyCompositionDataService {
 
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 
-        BodyCompositionData bodyCompositionData = BodyCompositionData.builder()
-                .height(bodyCompositionInputDto.height())
-                .weight(bodyCompositionInputDto.weight())
-                .muscle(bodyCompositionInputDto.muscle())
-                .fat(bodyCompositionInputDto.fat())
-                .bmi(bodyCompositionInputDto.bmi())
-                .compositionScore(bodyCompositionInputDto.compositionScore())
-                .imageUrl(url)
-                .member(member)
-                .build();
+        BodyCompositionData bodyCompositionData = build(bodyCompositionInputDto, member, url);
 
         bodyCompositionDataRepository.save(bodyCompositionData);
     }
@@ -56,16 +47,7 @@ public class BodyCompositionDataService {
         s3Service.delete(bodyCompositionData.getImageUrl());
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 
-        BodyCompositionData updateData = BodyCompositionData.builder()
-                .height(bodyCompositionInputDto.height())
-                .weight(bodyCompositionInputDto.weight())
-                .muscle(bodyCompositionInputDto.muscle())
-                .fat(bodyCompositionInputDto.fat())
-                .bmi(bodyCompositionInputDto.bmi())
-                .compositionScore(bodyCompositionInputDto.compositionScore())
-                .imageUrl(url)
-                .member(bodyCompositionData.getMember())
-                .build();
+        BodyCompositionData updateData = build(bodyCompositionInputDto, bodyCompositionData.getMember(), url);
 
         bodyCompositionDataRepository.save(updateData);
     }
@@ -78,4 +60,16 @@ public class BodyCompositionDataService {
         return true;
     }
 
+    private BodyCompositionData build(BodyCompositionInputDto bodyCompositionInputDto, Member member, String imageUrl) {
+        return BodyCompositionData.builder()
+                .height(bodyCompositionInputDto.height())
+                .weight(bodyCompositionInputDto.weight())
+                .muscle(bodyCompositionInputDto.muscle())
+                .fat(bodyCompositionInputDto.fat())
+                .bmi(bodyCompositionInputDto.bmi())
+                .compositionScore(bodyCompositionInputDto.compositionScore())
+                .imageUrl(imageUrl)
+                .member(member)
+                .build();
+    }
 }

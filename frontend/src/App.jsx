@@ -13,7 +13,7 @@ import UserExercise from "./pages/user/UserExercise";
 import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
-
+import UserFeedback from "./pages/user/UserFeedback"
 function App() {
 
     return (
@@ -30,6 +30,7 @@ function App() {
                 <Route path="/userdiet" element={<UserDiet />} />
                 <Route path="/usermain" element={<UserMain />} />
                 <Route path="/userprofile" element={<UserProfile />} />
+                <Route path="/userfeedback" element={<UserFeedback />} />
             </Routes>
             <div className='nav'><UserNavbar/></div>
         </div>

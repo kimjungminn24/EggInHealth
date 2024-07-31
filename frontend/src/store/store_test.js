@@ -10,6 +10,7 @@ const useStore = create((set) => ({
   },
   comments: {},
   exImg: {},
+  feedback:{},
   // 식단 추가 함수
   addDiet: (date, dietType, diet) =>
     set((state) => {
@@ -21,7 +22,7 @@ const useStore = create((set) => ({
   // 운동 숙제 추가
   addExh: (date, exh) =>
     set((state) => {
-      const exhForDate = state.exh_list?.[date] || []; // state.exercise가 존재하는지 확인
+      const exhForDate = state.exh_list?.[date] || []; // 존재하는지 확인
       return {
         exh_list: {
           ...state.exh_list, // state.exh_list 객체 전체를 복사
@@ -32,7 +33,7 @@ const useStore = create((set) => ({
 
   addExImg: (date, img) =>
     set((state) => {
-      const exImg = state.Img[date] || {};
+      const exImg = state.Img?.[date] || [];
       return {
         exImg: {
           ...state.exImg,
@@ -41,9 +42,17 @@ const useStore = create((set) => ({
       };
     }),
 
-  // addFeedback:(date,)=> set(state)=>{
+    addFeedback: (mem_id, video, created_at, memo, read, exercise_id) =>
+      set((state) => {
+        const feedbackForMember = state.feedback?.[mem_id] || [];
+        return {
+          feedback: {
+            ...state.feedback,
+            [mem_id]: [...feedbackForMember, { video, created_at, memo, read, exercise_id }],
+          },
+        };
+      }),
 
-  // }
   // 댓글 추가 함수
   addComment: (date, type, comment, subType = null) =>
     set((state) => {

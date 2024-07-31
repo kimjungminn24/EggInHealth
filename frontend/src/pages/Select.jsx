@@ -6,6 +6,7 @@ import SurveyPage1 from '../components/user/UserSurvey1';
 import SurveyPage2 from '../components/user/UserSurvey2';
 import SurveyPage3 from '../components/user/UserSurvey3';
 import SurveyPage4 from '../components/user/UserSurvey4';
+import { updateUserRole } from '../api/api';
 
 const Select = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -13,12 +14,21 @@ const Select = () => {
   const totalSteps = 5;
   const navigate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 0) {
-      if (activeImage === 'trainer') {
-        navigate('/trainermain');
-      } else if (activeImage === 'user') {
-        setCurrentStep(1);
+      try {
+        // activeImage가 'TRAINER' 또는 'MEMBER'일 경우에만 역할 업데이트
+        if (activeImage) {
+          await updateUserRole(activeImage);
+        }
+        
+        if (activeImage === 'TRAINER') {
+          navigate('/trainermain');
+        } else if (activeImage === 'MEMBER') {
+          setCurrentStep(1);
+        }
+      } catch (error) {
+        console.error("Failed to update user role:", error);
       }
     } else if (currentStep === 4) {
       navigate('/usermain');
@@ -32,14 +42,14 @@ const Select = () => {
   };
 
   const handleTrainerImageClick = () => {
-    if (activeImage !== 'trainer') {
-      setActiveImage('trainer');
+    if (activeImage !== 'TRAINER') {
+      setActiveImage('TRAINER');
     }
   };
 
   const handleUserImageClick = () => {
-    if (activeImage !== 'user') {
-      setActiveImage('user');
+    if (activeImage !== 'MEMBER') {
+      setActiveImage('MEMBER');
     }
   };
 
@@ -84,7 +94,7 @@ const Select = () => {
       </ContentContainer>
       <YellowBtn 
         onClick={handleNext} 
-        disabled={currentStep === totalSteps - 1 && activeImage === null}
+        disabled={currentStep === 0 && activeImage === null} 
       >
         다음
       </YellowBtn>

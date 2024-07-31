@@ -1,25 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useCookies } from 'react-cookie';
 import trainerEggBefore from '../assets/trainerEggBefore.png';
 import trainerEggAfter from '../assets/trainerEggAfter.png';
 import userEggBefore from '../assets/userEggBefore.png';
 import userEggAfter from '../assets/userEggAfter.png';
 
 const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
-  const [cookies] = useCookies(['Authorization']); 
-
-  useEffect(() => {
-    // 쿠키 값 로그 찍기
-    console.log('모든 쿠키:', cookies);
-
-    if (cookies.Authorization) {
-      console.log('Authorization 쿠키 값:', cookies.Authorization); 
-    } else {
-      console.log('Authorization 쿠키가 존재하지 않습니다.'); 
-    }
-  }, [cookies]);
-
+ 
   return (
     <div>
       <h4>이용 목적이 무엇인가요?</h4>
@@ -27,7 +14,7 @@ const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
         <ContainerRow>
           <div>
             <Image
-              src={activeImage === 'trainer' ? trainerEggAfter : trainerEggBefore}
+              src={activeImage === 'TRAINER' ? trainerEggAfter : trainerEggBefore}
               alt="Trainer Egg"
               onClick={onTrainerClick}
             />
@@ -35,7 +22,7 @@ const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
           </div>
           <div>
             <Image
-              src={activeImage === 'user' ? userEggAfter : userEggBefore}
+              src={activeImage === 'MEMBER' ? userEggAfter : userEggBefore}
               alt="User Egg"
               onClick={onUserClick}
             />

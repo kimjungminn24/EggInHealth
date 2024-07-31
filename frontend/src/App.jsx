@@ -18,13 +18,13 @@ import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
-import UserHeader from './components/user/UserHeader';
+// import UserHeader from './components/user/UserHeader';
 
 function App() {
 
     return (
         <div className='mobile'>
-            <div className='header'><UserHeader/></div>
+            {/* <div className='header'><UserHeader/></div> */}
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/select" element={<Select />} />

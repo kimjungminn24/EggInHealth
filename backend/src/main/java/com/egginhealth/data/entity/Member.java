@@ -1,6 +1,7 @@
 package com.egginhealth.data.entity;
 
-import com.egginhealth.data.dto.NaverMemberDto;
+import com.egginhealth.data.dto.member.MemberSurveyDto;
+import com.egginhealth.data.dto.member.NaverMemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -91,6 +92,11 @@ public class Member {
                 .type(Role.NONE)
                 .createdAt(LocalDateTime.now())
                 .build();
+    }
+
+    public void updateMemberBy(MemberSurveyDto memberSurveyDto) {
+        this.age = memberSurveyDto.age();
+        this.height = memberSurveyDto.height();
     }
 
 }

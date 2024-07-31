@@ -1,4 +1,4 @@
-package com.egginhealth.data.dto;
+package com.egginhealth.data.dto.member;
 
 import com.egginhealth.data.entity.Role;
 import lombok.Builder;

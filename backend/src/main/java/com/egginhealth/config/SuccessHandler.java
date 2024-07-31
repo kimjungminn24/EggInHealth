@@ -1,7 +1,7 @@
 package com.egginhealth.config;
 
-import com.egginhealth.data.dto.MemberDto;
-import com.egginhealth.data.dto.NaverMemberDto;
+import com.egginhealth.data.dto.member.MemberDto;
+import com.egginhealth.data.dto.member.NaverMemberDto;
 import com.egginhealth.service.MemberService;
 import com.egginhealth.util.JWTUtil;
 import jakarta.servlet.ServletException;

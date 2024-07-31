@@ -3,13 +3,10 @@ import React from 'react';
 import './App.css'
 import { Routes,Route } from 'react-router-dom';
 
-<<<<<<< HEAD
 import Login from './pages/Login';
 import Select from './pages/Select';
 import TrainerMain from './pages/trainer/TrainerMain';
-=======
 import UserHeader from './components/user/UserHeader';
->>>>>>> fb1dc2794746246ceef222f4daebc5b20c25314f
 import UserNavbar from "./components/user/UserNavbar"
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
@@ -17,34 +14,17 @@ import UserExercise from "./pages/user/UserExercise";
 import UserFood from "./pages/user/UserFood";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
-<<<<<<< HEAD
-=======
-
-import TrainerUserDetailHeader from './components/trainer/TrainerUserDetailHeader';
-import TrainerHeader from './components/trainer/TrainerHeader';
->>>>>>> fb1dc2794746246ceef222f4daebc5b20c25314f
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
-<<<<<<< HEAD
-// import UserHeader from './components/user/UserHeader';
-=======
-
->>>>>>> fb1dc2794746246ceef222f4daebc5b20c25314f
 
 function App() {
 
     return (
         <div className='mobile'>
-<<<<<<< HEAD
-            {/* <div className='header'><UserHeader/></div> */}
-=======
-            {/* <div className='header'><TrainerHeader/></div> */}
-            {/* <div className='header'><TrainerUserDetailHeader/></div> */}
             <div className='header'><UserHeader/></div>
->>>>>>> fb1dc2794746246ceef222f4daebc5b20c25314f
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/select" element={<Select />} />

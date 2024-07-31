@@ -25,14 +25,7 @@ public class WebRTCController {
     private String LIVEKIT_API_SECRET;
 
 
-    /**
-     *
-     *
-     *
-     * @param params JSON object with roomName and participantName
-     * @return JSON object with the JWT token or 사용할 수 없는경우 400 에러
-     */
-    @PostMapping(value = "/token")
+    @PostMapping(value = "/rtctoken")
     public ResponseEntity<Map<String, String>> createToken(@RequestBody Map<String, String> params) {
         String roomName = params.get("roomName");
         String participantName = params.get("participantName");
@@ -46,7 +39,7 @@ public class WebRTCController {
         token.setIdentity(participantName);
         token.addGrants(new RoomJoin(true), new RoomName(roomName));
 
-        return ResponseEntity.ok(Map.of("token", token.toJwt()));
+        return ResponseEntity.ok(Map.of("rtctoken", token.toJwt()));
     }
 
     @PostMapping(value = "/livekit/webhook", consumes = "application/webhook+json")

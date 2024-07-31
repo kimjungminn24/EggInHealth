@@ -6,6 +6,7 @@ import Select from './pages/Select';
 import './App.css'
 import { Routes,Route } from 'react-router-dom';
 
+import UserHeader from './components/user/UserHeader';
 import UserNavbar from "./components/user/UserNavbar"
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
@@ -14,18 +15,22 @@ import UserFood from "./pages/user/UserFood";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 
+import TrainerUserDetailHeader from './components/trainer/TrainerUserDetailHeader';
+import TrainerHeader from './components/trainer/TrainerHeader';
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerMain from './pages/trainer/TrainerMain';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
-import UserHeader from './components/user/UserHeader';
+
 
 function App() {
 
     return (
         <div className='mobile'>
+            {/* <div className='header'><TrainerHeader/></div> */}
+            {/* <div className='header'><TrainerUserDetailHeader/></div> */}
             <div className='header'><UserHeader/></div>
             <Routes>
                 <Route path="/" element={<Login />} />

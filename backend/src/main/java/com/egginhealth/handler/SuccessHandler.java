@@ -1,4 +1,4 @@
-package com.egginhealth.config;
+package com.egginhealth.handler;
 
 import com.egginhealth.data.dto.member.MemberDto;
 import com.egginhealth.data.dto.member.NaverMemberDto;

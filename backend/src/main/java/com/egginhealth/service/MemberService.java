@@ -4,6 +4,7 @@ import com.egginhealth.data.dto.member.MemberDto;
 import com.egginhealth.data.dto.member.MemberSurveyDto;
 import com.egginhealth.data.dto.member.NaverMemberDto;
 import com.egginhealth.data.entity.Member;
+import com.egginhealth.data.entity.Role;
 import com.egginhealth.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,13 @@ public class MemberService {
 
         Member member = memberRepository.getOne(memberId);
         member.updateMemberBy(memberSurveyDto);
+
+    }
+
+    public void patchMemberRoleBy(String roleStr, int memberId) {
+
+        Member member = memberRepository.getOne(memberId);
+        member.updateMemberRoleBy(Role.valueOf(roleStr.trim().toUpperCase()));
 
     }
 

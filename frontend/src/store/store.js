@@ -1,5 +1,5 @@
-import create from 'zustand';
-// import { addDiet, addDietComment, updateDiet, deleteDiet } from '../api/user.js';
+import {create} from 'zustand';
+import { addDiet, addDietComment, updateDiet, deleteDiet } from '../api/api.js';
 
 const useStore = create((set) => ({
   meals: {},
@@ -43,4 +43,4 @@ const useStore = create((set) => ({
   },
 }));
 
-export default useStore;
+export { useStore }; 

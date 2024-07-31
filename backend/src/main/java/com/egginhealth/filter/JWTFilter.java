@@ -3,6 +3,7 @@ package com.egginhealth.filter;
 import com.egginhealth.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -26,21 +28,24 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String accessToken = request.getHeader("Authorization");
+        String accessToken = Arrays.stream(request.getCookies())
+                .filter(cookie -> "Authorization" .equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
 
         if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        accessToken = jwtUtil.parsingToken(accessToken);
 
         if (Boolean.TRUE.equals(jwtUtil.isExpired(accessToken))) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        
+
         Map<String, Object> principal = Map.of(
                 "id", jwtUtil.getId(accessToken),
                 "role", jwtUtil.getRole(accessToken)

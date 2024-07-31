@@ -25,7 +25,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final MemberService memberService;
 
     @Value("${JWT_EXPIRED}")
-    private Long jwtExpired;
+    private int jwtExpired;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -43,9 +43,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private void writeTokenResponse(HttpServletResponse response, String token) throws IOException {
 
-        response.addCookie(createCookie("Authorization", token));
+        response.addCookie(createCookie("Authorization", token, true));
         String role = jwtUtil.getRole(token);
-        response.addCookie(createCookie("Role", role));
+        response.addCookie(createCookie("Role", role, false));
+        response.addCookie(createCookie("Id", jwtUtil.getId(token), false));
 
         if (role.equals("TRAINER")) response.sendRedirect("http://localhost:5173/trainermain");
         if (role.equals("MEMBER")) response.sendRedirect("http://localhost:5173/usermain");
@@ -53,12 +54,11 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     }
 
-    private Cookie createCookie(String key, String value) {
-
+    private Cookie createCookie(String key, String value, Boolean isSecure) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 60);
+        cookie.setMaxAge(jwtExpired);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(isSecure);
         return cookie;
 
     }

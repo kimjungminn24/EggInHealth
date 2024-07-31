@@ -49,4 +49,33 @@ public class BodyCompositionDataService {
                 .toList();
     }
 
+    public void updateBodyComposition(int id, BodyCompositionInputDto bodyCompositionInputDto) throws IOException {
+        BodyCompositionData bodyCompositionData = bodyCompositionDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("BodyComposition not found"));
+
+        s3Service.delete(bodyCompositionData.getImageUrl());
+        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
+
+        BodyCompositionData updateData = BodyCompositionData.builder()
+                .height(bodyCompositionInputDto.height())
+                .weight(bodyCompositionInputDto.weight())
+                .muscle(bodyCompositionInputDto.muscle())
+                .fat(bodyCompositionInputDto.fat())
+                .bmi(bodyCompositionInputDto.bmi())
+                .compositionScore(bodyCompositionInputDto.compositionScore())
+                .imageUrl(url)
+                .member(bodyCompositionData.getMember())
+                .build();
+
+        bodyCompositionDataRepository.save(updateData);
+    }
+
+    public boolean deleteBodyComposition(int id) {
+        if (!bodyCompositionDataRepository.existsById(id)) {
+            return false;
+        }
+        bodyCompositionDataRepository.deleteById(id);
+        return true;
+    }
+
 }

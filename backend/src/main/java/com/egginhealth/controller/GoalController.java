@@ -21,13 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoalController {
 
     private final GoalService goalService;
-    private final SecurityUtil securityUtil;
 
 
     @PostMapping
     public ResponseEntity<Void> postGoalBy(@RequestBody @Valid GoalDto goalDto) {
 
-        goalService.saveGoal(goalDto, securityUtil.getUserId());
+        goalService.saveGoal(goalDto, SecurityUtil.getUserId());
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }

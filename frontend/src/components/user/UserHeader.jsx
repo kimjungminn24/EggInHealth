@@ -3,16 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Arrow from "../../assets/static/Property_Arrow.png";
 
 const initialItems = [
-  { id: 1, label: '운동' },
-  { id: 2, label: '프로필' },
-  { id: 3, label: '채팅' },
-  { id: 4, label: '식단' },
-  { id: 5, label: '에그' },
-  { id: 6, label: '캘린더' },
-  { id: 7, label: '운동' },
-  { id: 8, label: '프로필' },
-  { id: 9, label: '채팅' },
-  { id: 10, label: '식단' },
+  { id: 1, label: '운동', path: '/userexercise' },
+  { id: 2, label: '프로필', path: '/userprofile' },
+  { id: 3, label: '채팅', path: '/userchatroom' },
+  { id: 4, label: '식단', path: '/userfood' },
+  { id: 5, label: '에그', path: '/usermain' },
+  { id: 6, label: '캘린더', path: '/usercalender' },
+  { id: 7, label: '운동', path: '/userexercise' },
+  { id: 8, label: '프로필', path: '/userprofile' },
+  { id: 9, label: '채팅', path: '/userchatroom' },
+  { id: 10, label: '식단', path: '/userfood' },
 ];
 
 const UserHeader = () => {
@@ -68,7 +68,7 @@ const UserHeader = () => {
 
   useEffect(() => {
     if (scrollContainerRef.current) {
-      console.log('스크롤포스', scrollPosition)
+      // console.log('스크롤포스', scrollPosition)
       // console.log('스크롤레프트',scrollContainerRef.current.scrollLeft)
       scrollContainerRef.current.scrollTo({
         left: scrollPosition,
@@ -122,7 +122,7 @@ const UserHeader = () => {
       >
         {initialItems.map((item, index) => (
           <div key={index} className="z-20 snap-center shrink-0 first:pl-8 last:pr-8">
-            <div className="w-24 flex justify-center items-center text-neutral-400 text-[20px] font-bold">
+            <div className={`w-24 flex justify-center items-center text-[20px] font-bold ${location.pathname === item.path ? 'text-white' : 'text-neutral-400'}`}>
               {item.label}
             </div>
           </div>

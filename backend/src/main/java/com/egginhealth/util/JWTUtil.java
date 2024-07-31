@@ -37,7 +37,7 @@ public class JWTUtil {
         throw new IllegalArgumentException("Invalid Authorization header");
     }
 
-    public String createAccessToken(String id, String role, Long jwtExpired) {
+    public String createAccessToken(String id, String role, int jwtExpired) {
 
         return Jwts.builder()
                 .claim("id", id)

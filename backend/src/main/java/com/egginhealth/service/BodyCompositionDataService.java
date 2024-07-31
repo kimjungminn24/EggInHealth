@@ -7,11 +7,13 @@ import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.repository.BodyCompositionDataRepository;
 import com.egginhealth.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BodyCompositionDataService {
@@ -27,17 +29,7 @@ public class BodyCompositionDataService {
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
-
-        BodyCompositionData bodyCompositionData = BodyCompositionData.builder()
-                .height(bodyCompositionInputDto.height())
-                .weight(bodyCompositionInputDto.weight())
-                .muscle(bodyCompositionInputDto.muscle())
-                .fat(bodyCompositionInputDto.fat())
-                .bmi(bodyCompositionInputDto.bmi())
-                .compositionScore(bodyCompositionInputDto.compositionScore())
-                .imageUrl(url)
-                .member(member)
-                .build();
+        BodyCompositionData bodyCompositionData = build(bodyCompositionInputDto, member, url);
 
         bodyCompositionDataRepository.save(bodyCompositionData);
     }
@@ -49,4 +41,42 @@ public class BodyCompositionDataService {
                 .toList();
     }
 
+    public void updateBodyComposition(int id, BodyCompositionInputDto bodyCompositionInputDto) throws IOException {
+        BodyCompositionData bodyCompositionData = bodyCompositionDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("BodyComposition not found"));
+
+        String prevUrl = bodyCompositionData.getImageUrl();
+        s3Service.delete(DIR_NAME, prevUrl);
+        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
+
+        bodyCompositionData.setHeight(bodyCompositionInputDto.height());
+        bodyCompositionData.setWeight(bodyCompositionInputDto.weight());
+        bodyCompositionData.setMuscle(bodyCompositionInputDto.muscle());
+        bodyCompositionData.setFat(bodyCompositionInputDto.fat());
+        bodyCompositionData.setBmi(bodyCompositionInputDto.bmi());
+        bodyCompositionData.setCompositionScore(bodyCompositionInputDto.compositionScore());
+        bodyCompositionData.setImageUrl(url);
+    }
+
+    public boolean deleteBodyComposition(int id) {
+        BodyCompositionData bodyCompositionData = bodyCompositionDataRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("BodyComposition not found"));
+
+        s3Service.delete(DIR_NAME, bodyCompositionData.getImageUrl());
+        bodyCompositionDataRepository.deleteById(id);
+        return true;
+    }
+
+    private BodyCompositionData build(BodyCompositionInputDto bodyCompositionInputDto, Member member, String imageUrl) {
+        return BodyCompositionData.builder()
+                .height(bodyCompositionInputDto.height())
+                .weight(bodyCompositionInputDto.weight())
+                .muscle(bodyCompositionInputDto.muscle())
+                .fat(bodyCompositionInputDto.fat())
+                .bmi(bodyCompositionInputDto.bmi())
+                .compositionScore(bodyCompositionInputDto.compositionScore())
+                .imageUrl(imageUrl)
+                .member(member)
+                .build();
+    }
 }

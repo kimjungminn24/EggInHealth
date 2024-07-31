@@ -2,16 +2,16 @@ package com.egginhealth.data.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "diet")
+@Builder
 public class Diet {
 
     @Id
@@ -27,9 +27,6 @@ public class Diet {
 
     @Column(name = "diet_img_url", length = 500)
     private String imgUrl;
-
-    @Column(name = "common_id", nullable = false)
-    private int commonId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")

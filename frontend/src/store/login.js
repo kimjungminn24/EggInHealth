@@ -1,8 +1,9 @@
+
 import {create} from 'zustand';
 
 const useStore = create((set) => ({
-  token: null,
-  setToken: (token) => set({ token }),
+  refreshToken: null,
+  setRefreshToken: (token) => set({ refreshToken: token }),
 }));
 
-export { useStore }; 
+export default useStore;

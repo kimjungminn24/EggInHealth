@@ -34,6 +34,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 .findFirst()
                 .orElse(null);
 
+        System.out.println(accessToken);
         if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;

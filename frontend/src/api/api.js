@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8080';
 
 export const addDiet = async (date, mealType, image, comment) => {
   try {
@@ -52,8 +52,8 @@ export const updateUserRole = async (role) => {
   console.log(role);
   try {
     const response = await axios.patch(
-      `${API_BASE_URL}/user`, 
-      { "role": role }, 
+      `${API_BASE_URL}/api/user/role`, 
+      { role }, 
       {
         headers: {
           'Content-Type': 'application/json',

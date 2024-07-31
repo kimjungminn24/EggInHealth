@@ -11,7 +11,7 @@ import UserNavbar from "./components/user/UserNavbar"
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
 import UserExercise from "./pages/user/UserExercise";
-import UserFood from "./pages/user/UserFood";
+import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 import TrainerNavbar from './components/trainer/TrainerNavbar';
@@ -20,6 +20,7 @@ import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
 
+import UserFeedback from "./pages/user/UserFeedback"
 function App() {
 
     return (
@@ -32,12 +33,13 @@ function App() {
                 <Route path="/usercalender" element={<UserCalender />} />
                 <Route path="/userchatroom" element={<UserChatRoom />} />
                 <Route path="/userexercise" element={<UserExercise />} />
-                <Route path="/userfood" element={<UserFood />} />
+                <Route path="/userdiet" element={<UserDiet />} />
                 <Route path="/usermain" element={<UserMain />} />
                 <Route path="/userprofile" element={<UserProfile />} />
                 <Route path="/trainerchat" element={<TrainerChat />} />
                 <Route path="/traineruserlist" element={<TrainerUserList />} />
                 <Route path="/trainerprofile" element={<TrainerProfile />} />
+                <Route path="/userfeedback" element={<UserFeedback />} />
             </Routes>
             <div className='nav'><UserNavbar/></div>
             {/* <div className='nav'><TrainerNavbar/></div> */}

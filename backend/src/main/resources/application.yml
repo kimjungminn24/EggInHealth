@@ -52,7 +52,6 @@ spring:
 
 server:
   servlet:
-    context-path: /api
   port: ${SERVER_PORT}
   ssl:
     enabled: false

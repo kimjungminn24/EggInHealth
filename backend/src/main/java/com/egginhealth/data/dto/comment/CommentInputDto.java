@@ -1,13 +1,10 @@
 package com.egginhealth.data.dto.comment;
 
-import java.time.LocalDateTime;
-
 public record CommentInputDto(
         String content,
-        LocalDateTime createdAt,
+        String createdAt,
         int boardId,
-        String boardType,
-        int memberId
+        String boardType
 ) {
 
 }

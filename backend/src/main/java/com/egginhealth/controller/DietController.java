@@ -1,5 +1,6 @@
 package com.egginhealth.controller;
 
+import com.egginhealth.data.dto.comment.CommentInputDto;
 import com.egginhealth.data.dto.diet.DietInputDto;
 import com.egginhealth.service.DietService;
 import com.egginhealth.util.SecurityUtil;
@@ -27,6 +28,14 @@ public class DietController {
     public ResponseEntity<Map<String,Integer>> register(@ModelAttribute DietInputDto inputData) throws IOException {
         return new ResponseEntity<>(dietService.save(inputData, SecurityUtil.getUserId()), HttpStatus.CREATED);
     }
+
+    @PostMapping("/comment")
+    public ResponseEntity<Void> registerComment(@ModelAttribute CommentInputDto inputData) throws IOException
+    {
+        dietService.saveComment(inputData,SecurityUtil.getUserId());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
 
 }

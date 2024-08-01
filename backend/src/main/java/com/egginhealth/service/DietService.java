@@ -2,6 +2,7 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.comment.CommentInputDto;
 import com.egginhealth.data.dto.diet.DietInputDto;
+import com.egginhealth.data.dto.diet.DietSetDto;
 import com.egginhealth.data.entity.Comment;
 import com.egginhealth.data.entity.Diet;
 import com.egginhealth.data.entity.Member;
@@ -81,9 +82,8 @@ public class DietService {
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(dietInputDto.date());
 
-        diet.setType(dietInputDto.type());
-        diet.setDate(dateTime);
-        diet.setImgUrl(url);
+        DietSetDto dietSetDto = DietSetDto.from(dietInputDto,dateTime,url);
+        diet.updateDietBy(dietSetDto);
     }
 
     public boolean deleteDiet(int id){

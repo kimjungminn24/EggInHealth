@@ -3,6 +3,7 @@ package com.egginhealth.data.dto.bodycomposition;
 import com.egginhealth.data.entity.BodyCompositionData;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record BodyCompositionDto(
         int id,
@@ -11,7 +12,8 @@ public record BodyCompositionDto(
         BigDecimal muscle,
         BigDecimal bmi,
         BigDecimal compositionScore,
-        String imageUrl
+        String imageUrl,
+        LocalDateTime createdAt
 ) {
 
     public static BodyCompositionDto from(BodyCompositionData bodyCompositionData) {
@@ -22,6 +24,7 @@ public record BodyCompositionDto(
                 bodyCompositionData.getMuscle(),
                 bodyCompositionData.getBmi(),
                 bodyCompositionData.getCompositionScore(),
-                bodyCompositionData.getImageUrl());
+                bodyCompositionData.getImageUrl(),
+                bodyCompositionData.getCreatedAt());
     }
 }

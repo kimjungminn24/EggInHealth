@@ -1,6 +1,6 @@
 import React from 'react';
-import { DietSectionContainer, DietImage } from '../common/StyledComponents';
-import Comments from './Comments';
+import { DietSectionContainer, DietImage } from '../../common/StyledComponents';
+import Comments from '../Comments';
 
 const DietSection = ({ dietData, selectedTab, selectedDate }) => (
   <DietSectionContainer>

@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 import styled  from 'styled-components'
-import CameraBtn from '../../assets/camerabutton.png'
+import CameraBtn from '../../../assets/camerabutton.png'
 import BoxInbody from './BoxInbody';
 const StyledModal = styled(Modal)`
   display: flex;

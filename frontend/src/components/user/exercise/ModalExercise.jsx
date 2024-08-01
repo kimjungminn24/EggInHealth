@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { ImagePreview } from '../common/StyledComponents';
-import useStore from '../../store/store_test'; // zustand store 가져오기
+import { ImagePreview } from '../../common/StyledComponents';
+import useStore from '../../../store/store_test'; // zustand store 가져오기
 
 const StyledModal = styled(Modal)`
   position: absolute;

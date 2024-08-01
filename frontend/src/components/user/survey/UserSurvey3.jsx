@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import ButtonSurvey from '../common/ButtonSurvey';
-import oneIcon from "../../assets/one.png";
-import twoIcon from "../../assets/two.png";
-import threeIcon from "../../assets/three.png";
+import oneIcon from "../../../assets/one.png";
+import twoIcon from "../../../assets/two.png";
+import threeIcon from "../../../assets/three.png";
+import ButtonSurvey from './../../common/button/ButtonSurvey';
 
 const SurveyPage3 = () => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);

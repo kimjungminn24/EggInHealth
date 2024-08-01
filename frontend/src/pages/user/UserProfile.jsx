@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ButtonSwap from '../../components/common/ButtonSwap';
+import ButtonSwap from '../../components/common/button/ButtonSwap';
 import Profile from '../../assets/profile.png';
-import UserPage from '../../components/user/UserPage'
-import InbodyPage from '../../components/user/InbodyPage'
+import UserInfo from '../../components/user/info/UserInfo'
+import InbodyPage from '../../components/user/inbody/InbodyPage'
 import InbodyBtn from "../../assets/inbodybutton.png"
 import EditBtn from "../../assets/editbutton.png"
-import ModalInbody from '../../components/common/ModalInbody';
+import ModalInbody from './../../components/user/inbody/ModalInbody';
+
 
 const Container = styled.div`
   width: 100%;
@@ -83,7 +84,7 @@ const UserProfile = () => {
           </ButtonSwap>
         </ButtonGroup>
       </ButtonGroupContainer>
-      {activeTab === '내정보' ? <UserPage /> : <InbodyPage />}
+      {activeTab === '내정보' ? <UserInfo /> : <InbodyPage />}
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RegisterButtonContainer } from './StyledComponents';
+import { RegisterButtonContainer } from '../StyledComponents';
 
 const RegisterButton = ({ openModal }) => (
   <RegisterButtonContainer onClick={openModal}>

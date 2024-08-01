@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import useStore from '../../../store/store_test';
 import Modal from 'react-modal';
 import styled from 'styled-components';
+import { addDiet } from './../../../api/diet';
+import useDietStore from '../../../store/store';
+
+
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -45,20 +49,25 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalDiet = ({ date, dietType, onClose }) => {
+const ModalDiet = ({ date, type, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
-  const comments =useStore((state)=>state.comments) ||{};
-  const addComment = useStore((state)=>state.addComments)
-  const addDiet = useStore((state) => state.addDiet);
+  const addDiet = useDietStore((state)=> state.addDiet)
+  const addComment = useDietStore((state)=> state.addComment)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (image) {
-      addDiet(date, dietType, { image, comments: [comment] });
+      const imgUrl = URL.createObjectURL(image);
+      const newDiet = await addDiet(type, date, imgUrl);
+      
+      // 새로운 다이어트가 성공적으로 등록되었을 때 댓글 등록
+      if (newDiet && comment) {
+        await addComment(comment, new Date().toISOString(), newDiet.DietId, 'diet');
+      }
+      
       onClose();
     }
   };
-
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };

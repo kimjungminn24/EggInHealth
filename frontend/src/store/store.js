@@ -1,46 +1,43 @@
-import {create} from 'zustand';
-import { addDiet, addDietComment, updateDiet, deleteDiet } from '../api/api.js';
+import create from 'zustand';
+import { registerDiet, registerComment, updateDiet, deleteDiet } from './api';
 
-const useStore = create((set) => ({
-  meals: {},
-  addDiet: async (date, dietType, { image, comments }) => {
-    const diet = await addDiet(date, dietType, image, comments[0]);
+const useDietStore = create((set) => ({
+  diets: [],
+  comments: [],
+  
+  fetchDiets: async () => {
+    // 회원 상세 완성되면 API 호출하여 다이어트 데이터를 가져오는 로직 추가
+  },
+
+  addDiet: async (type, date, imgUrl) => {
+    const newDiet = await registerDiet(type, date, imgUrl);
     set((state) => ({
-      diets: {
-        ...state.diets,
-        [date]: {
-          ...state.meals[date],
-          [dietType]: diet,
-        },
-      },
+      diets: [...state.diets, newDiet],
     }));
   },
-  addComment: async (date, dietType, comment) => {
-    const dietId = state.meals[date][dietType].id;
-    await addDietComment(dietId, comment);
-    set((state) => {
-      const updatedMeals = { ...state.meals };
-      updatedMeals[date][dietType].comments.push(comment);
-      return { meals: updatedMeals };
-    });
+
+  updateDiet: async (dietId, dietType, dietDate, dietUrl) => {
+    const updatedDiet = await updateDiet(dietId, dietType, dietDate, dietUrl);
+    set((state) => ({
+      diets: state.diets.map((diet) =>
+        diet.DietId === dietId ? updatedDiet : diet
+      ),
+    }));
   },
-  updateDiet: async (dietId, data) => {
-    const updatedDiet = await updateDiet(dietId, data);
-    set((state) => {
-      const updatedDiets = { ...state.diets };
-      // 업데이트된 식단을 상태에 반영하는 로직
-      return { diets: updatedDiets };
-    });
-  },
-  deleteDiet: async (date, dietType) => {
-    const dietId = state.meals[date][dietType].id;
+
+  deleteDiet: async (dietId) => {
     await deleteDiet(dietId);
-    set((state) => {
-      const updatedMeals = { ...state.meals };
-      delete updatedMeals[date][dietType];
-      return { meals: updatedMeals };
-    });
+    set((state) => ({
+      diets: state.diets.filter((diet) => diet.DietId !== dietId),
+    }));
+  },
+
+  addComment: async (content, createdAt, boardId, boardType) => {
+    const comments = await registerComment(content, createdAt, boardId, boardType);
+    set(() => ({
+      comments,
+    }));
   },
 }));
 
-export { useStore }; 
+export default useDietStore;

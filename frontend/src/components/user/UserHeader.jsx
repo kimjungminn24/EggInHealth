@@ -6,13 +6,13 @@ const initialItems = [
   { id: 1, label: '운동', path: '/userexercise' },
   { id: 2, label: '프로필', path: '/userprofile' },
   { id: 3, label: '채팅', path: '/userchatroom' },
-  { id: 4, label: '식단', path: '/userfood' },
+  { id: 4, label: '식단', path: '/userdiet' },
   { id: 5, label: '에그', path: '/usermain' },
   { id: 6, label: '캘린더', path: '/usercalender' },
   { id: 7, label: '운동', path: '/userexercise' },
   { id: 8, label: '프로필', path: '/userprofile' },
   { id: 9, label: '채팅', path: '/userchatroom' },
-  { id: 10, label: '식단', path: '/userfood' },
+  { id: 10, label: '식단', path: '/userdiet' },
 ];
 
 const UserHeader = () => {
@@ -34,7 +34,7 @@ const UserHeader = () => {
         setScrollPosition(200); // 원하는 위치로 설정
         }
         break;
-      case '/userfood':
+      case '/userdiet':
         setScrollPosition(300);
         break;
       case '/usermain':
@@ -84,13 +84,13 @@ const UserHeader = () => {
       else if (scrollPosition >= 810) {
         scrollContainerRef.current.scrollLeft = 140;
         setScrollPosition(300);
-        navigate('/userfood')
+        navigate('/userdiet')
       }
       else if (scrollPosition == 200 || scrollPosition ==800){
         navigate('/userchatroom')
       }
       else if (scrollPosition == 300){
-        navigate('/userfood')
+        navigate('/userdiet')
       }
       else if (scrollPosition == 400){
         navigate('/usermain')

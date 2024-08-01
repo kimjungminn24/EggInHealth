@@ -2,6 +2,7 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.feedback.FeedbackDto;
 import com.egginhealth.data.dto.feedback.FeedbackInputDto;
+import com.egginhealth.data.dto.feedback.FeedbackSetDto;
 import com.egginhealth.data.dto.feedback.FeedbackUpdateDto;
 import com.egginhealth.data.entity.Feedback;
 import com.egginhealth.data.entity.Member;
@@ -70,11 +71,8 @@ public class FeedbackService {
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(feedbackUpdateDto.updatedAt());
 
-        feedback.setMotionSimilarity(feedbackUpdateDto.motionSimilarity());
-        feedback.setMemo(feedbackUpdateDto.memo());
-        feedback.setExerciseId(feedbackUpdateDto.exerciseId());
-        feedback.setVideoUrl(url);
-        feedback.setUpdatedAt(dateTime);
+        FeedbackSetDto feedbackSetDto = FeedbackSetDto.from(feedbackUpdateDto,dateTime, url);
+        feedback.updateFeedbackBy(feedbackSetDto);
     }
 
     public boolean deleteFeedback(int id){

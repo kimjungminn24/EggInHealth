@@ -1,5 +1,6 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.feedback.FeedbackSetDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,4 +44,12 @@ public class Feedback {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
+
+    public void updateFeedbackBy(FeedbackSetDto feedbackSetDto){
+        this.motionSimilarity = feedbackSetDto.motionSimilarity();
+        this.memo = feedbackSetDto.memo();
+        this.exerciseId = feedbackSetDto.exerciseId();
+        this.updatedAt = feedbackSetDto.updatedAt();
+        this.videoUrl = feedbackSetDto.url();
+    }
 }

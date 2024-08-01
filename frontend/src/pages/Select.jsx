@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import EggSelector from './EggSelector';
-import SurveyPage1 from '../components/user/UserSurvey1';
-import SurveyPage2 from '../components/user/UserSurvey2';
-import SurveyPage3 from '../components/user/UserSurvey3';
-import SurveyPage4 from '../components/user/UserSurvey4';
+import SurveyPage1 from '../components/user/survey/UserSurvey1';
+import SurveyPage2 from '../components/user/survey/UserSurvey2';
+import SurveyPage3 from '../components/user/survey/UserSurvey3';
+import SurveyPage4 from '../components/user/survey/UserSurvey4';
 import { updateUserRole } from '../api/api';
 
 const Select = () => {

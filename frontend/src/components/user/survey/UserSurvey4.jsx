@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import heightIcon from '../../assets/height.png';
-import ageIcon from '../../assets/age.png';
+import heightIcon from '../../../assets/height.png';
+import ageIcon from '../../../assets/age.png';
 
 const SurveyPage4 = () => {
 

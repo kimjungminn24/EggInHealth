@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ButtonPlus from './ButtonPlus';
-import ModalConnect from '../common/ModalConnect';
+import ButtonPlus from '../../common/button/ButtonPlus';
+import ModalConnect from '../../common/modal/ModalConnect';
 
 const Box = styled.div`
   display: flex;

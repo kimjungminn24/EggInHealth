@@ -3,9 +3,9 @@ import useStore from '../../store/store_test';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
-import VideoModal from '../../components/user/ModalFbVid';
-import FeedbackModal from '../../components/user/ModalFeedback';
-import FeedbackList from '../../components/user/FeedBackList';
+import VideoModal from '../../components/user/feedback/ModalFbVid';
+import FeedbackModal from '../../components/user/feedback/ModalFeedback';
+import FeedbackList from '../../components/user/feedback/FeedBackList';
 
 const UserFeedback = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);

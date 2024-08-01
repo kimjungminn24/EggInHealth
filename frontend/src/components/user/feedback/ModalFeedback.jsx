@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import useStore from '../../store/store_test';
+import useStore from '../../../store/store_test';
 
 const FeedbackModal = ({ isOpen, onRequestClose, onSubmit }) => {
     const addFeedback = useStore((state)=>state.addFeedback)

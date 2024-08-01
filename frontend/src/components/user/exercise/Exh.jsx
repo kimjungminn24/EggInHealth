@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useStore from '../../store/store_test';
-import AddExerciseModal from '../../components/trainer/ModalAddUserExercise';
+import useStore from '../../../store/store_test';
+import AddExerciseModal from '../../trainer/ModalAddUserExercise';
 
 const ExerciseList = ({ selectedDate }) => { //props로 selectedDate 받기
   const exh = useStore((state) => state.exh_list) || {}; // exh가 undefined인 경우 빈 객체로 초기화

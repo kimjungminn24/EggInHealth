@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import useStore from '../../store/store_test';
+import useStore from '../../../store/store_test';
 
 
 const FeedbackList = ({ onVideoClick }) => {

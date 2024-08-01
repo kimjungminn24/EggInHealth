@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import ButtonSurvey from '../common/ButtonSurvey';
-import SurvayIcon0 from '../../assets/surveyicon0.png';
-import SurvayIcon1 from '../../assets/surveyicon1.png';
-import SurvayIcon2 from '../../assets/surveyicon2.png';
-import SurvayIcon3 from '../../assets/surveyicon3.png';
+import SurvayIcon0 from '../../../assets/surveyicon0.png';
+import SurvayIcon1 from '../../../assets/surveyicon1.png';
+import SurvayIcon2 from '../../../assets/surveyicon2.png';
+import SurvayIcon3 from '../../../assets/surveyicon3.png';
+import ButtonSurvey from './../../common/button/ButtonSurvey';
 
 const SurveyPage1 = () => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);

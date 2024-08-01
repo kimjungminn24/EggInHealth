@@ -1,7 +1,7 @@
 import React from "react";
-import useStore from "../../store/store_test";
+import useStore from "../../../store/store_test";
 
-const UserPage = () => {
+const UserInfo = () => {
   const profile = useStore((state) => state.profile);
 const goal = useStore((state)=>state.goal)
   return (
@@ -19,4 +19,4 @@ const goal = useStore((state)=>state.goal)
   );
 };
 
-export default UserPage;
+export default UserInfo;

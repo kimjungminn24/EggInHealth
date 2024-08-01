@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "diet")
 @Builder
+
 public class Diet {
 
     @Id

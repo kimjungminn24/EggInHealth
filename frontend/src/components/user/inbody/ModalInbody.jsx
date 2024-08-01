@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import PlusBtn from '../../assets/plusbutton.png';
-import ModalAddInbody from '../../components/common/ModalAddInbody';
+import PlusBtn from '../../../assets/plusbutton.png';
+import ModalAddInbody from './ModalAddInbody';
 
 const StyledModal = styled(Modal)`
   display: flex;

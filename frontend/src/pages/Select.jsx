@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import EggSelector from './EggSelector';
-import SurveyPage1 from '../components/user/UserSurvey1';
-import SurveyPage2 from '../components/user/UserSurvey2';
-import SurveyPage3 from '../components/user/UserSurvey3';
-import SurveyPage4 from '../components/user/UserSurvey4';
-import { updateUserRole } from '../api/api';
+import SurveyPage1 from '../components/user/survey/UserSurvey1';
+import SurveyPage2 from '../components/user/survey/UserSurvey2';
+import SurveyPage3 from '../components/user/survey/UserSurvey3';
+import SurveyPage4 from '../components/user/survey/UserSurvey4';
+import { updateUserRole } from '../api/survey';
 
 const Select = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -17,7 +17,6 @@ const Select = () => {
   const handleNext = async () => {
     if (currentStep === 0) {
       try {
-        // activeImage가 'TRAINER' 또는 'MEMBER'일 경우에만 역할 업데이트
         if (activeImage) {
           await updateUserRole(activeImage);
         }

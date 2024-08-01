@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabsContainer, TabButton } from '../common/StyledComponents';
+import { TabsContainer, TabButton } from '../../common/StyledComponents';
 
 const Tabs = ({ selectedTab, setSelectedTab }) => (
   <TabsContainer>

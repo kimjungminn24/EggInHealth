@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStore from '../../store/store_test';
+import useStore from '../../../store/store_test';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 

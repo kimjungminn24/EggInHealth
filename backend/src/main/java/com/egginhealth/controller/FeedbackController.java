@@ -2,6 +2,7 @@ package com.egginhealth.controller;
 
 import com.egginhealth.data.dto.feedback.FeedbackDto;
 import com.egginhealth.data.dto.feedback.FeedbackInputDto;
+import com.egginhealth.data.dto.feedback.FeedbackUpdateDto;
 import com.egginhealth.service.FeedbackService;
 import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("feedback")
+@RequestMapping("/feedback")
 @RequiredArgsConstructor
 public class FeedbackController {
 
@@ -29,6 +30,18 @@ public class FeedbackController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<FeedbackDto>> getFeedbackList(@PathVariable int id){
-        return new ResponseEntity<>(feedbackService.getFeedbackList(id,SecurityUtil.getUserId()), HttpStatus.OK);
+        return new ResponseEntity<>(feedbackService.getFeedbackList(id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> registerUpdate(@PathVariable int id, @ModelAttribute FeedbackUpdateDto updateData) throws IOException{
+        feedbackService.updateFeedback(updateData,id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> registerDelete(@PathVariable int id){
+        boolean isDelete = feedbackService.deleteFeedback(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

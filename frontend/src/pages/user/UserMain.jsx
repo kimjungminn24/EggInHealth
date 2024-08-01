@@ -1,8 +1,8 @@
 import React from 'react';
-import UserEgg from '../../components/user/UserEgg';
-import BoxMain from '../../components/common/BoxMain';
-import BoxSchedule from '../../components/common/BoxSchedule';
+import UserEgg from '../../components/user/main/UserEgg';
 import styled from 'styled-components';
+import BoxMain from './../../components/user/main/BoxMain';
+import BoxSchedule from './../../components/user/main/BoxSchedule';
 
 
 const PTBox = styled.div`

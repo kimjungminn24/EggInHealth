@@ -29,12 +29,11 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String accessToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> "Authorization" .equals(cookie.getName()))
+                .filter(cookie -> "Authorization".equals(cookie.getName()))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
 
-        System.out.println(accessToken);
         if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;

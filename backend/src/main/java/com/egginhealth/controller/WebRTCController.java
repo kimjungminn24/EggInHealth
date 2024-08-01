@@ -18,11 +18,16 @@ import java.util.Map;
 public class WebRTCController {
 
     private static final Logger log = LoggerFactory.getLogger(WebRTCController.class);
-    @Value("${LIVEKIT_API_KEY}")
-    private String LIVEKIT_API_KEY;
 
-    @Value("${LIVEKIT_API_SECRET}")
-    private String LIVEKIT_API_SECRET;
+    private final String LIVE_KIT_API_KEY;
+    private final String LIVE_KIT_API_SECRET;
+
+    public WebRTCController(
+            @Value("${LIVEKIT_API_KEY}") String liveKitApiKey,
+            @Value("${LIVEKIT_API_SECRET}") String liveKitApiSecret) {
+        this.LIVE_KIT_API_KEY = liveKitApiKey;
+        this.LIVE_KIT_API_SECRET = liveKitApiSecret;
+    }
 
 
     @PostMapping(value = "/rtctoken")
@@ -34,7 +39,7 @@ public class WebRTCController {
             return ResponseEntity.badRequest().body(Map.of("errorMessage", "roomName and participantName are required"));
         }
 
-        AccessToken token = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
+        AccessToken token = new AccessToken(LIVE_KIT_API_KEY, LIVE_KIT_API_SECRET);
         token.setName(participantName);
         token.setIdentity(participantName);
         token.addGrants(new RoomJoin(true), new RoomName(roomName));
@@ -44,7 +49,7 @@ public class WebRTCController {
 
     @PostMapping(value = "/livekit/webhook", consumes = "application/webhook+json")
     public ResponseEntity<String> receiveWebhook(@RequestHeader("Authorization") String authHeader, @RequestBody String body) {
-        WebhookReceiver webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
+        WebhookReceiver webhookReceiver = new WebhookReceiver(LIVE_KIT_API_KEY, LIVE_KIT_API_SECRET);
         try {
             LivekitWebhook.WebhookEvent event = webhookReceiver.receive(body, authHeader);
             log.info("LiveKit Webhook: {}", event);

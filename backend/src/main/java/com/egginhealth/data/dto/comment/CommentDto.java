@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public record CommentDto(
         int id,
         String content,
-        LocalDateTime localDateTime,
+        LocalDateTime createdAt,
         int boardId,
         String boardType
     ) {
@@ -17,7 +17,7 @@ public record CommentDto(
             return CommentDto.builder()
                     .id(comment.getId())
                     .content(comment.getContent())
-                    .localDateTime(comment.getCreatedAt())
+                    .createdAt(comment.getCreatedAt())
                     .boardId(comment.getBoardId())
                     .boardType(comment.getBoardType())
                     .build();

@@ -19,7 +19,7 @@ const UserHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const scrollContainerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(400); //앱을 키자마자 로그인창을 넘기고 바로 창을 표시하는 현상 존재
+  const [scrollPosition, setScrollPosition] = useState(); //앱을 키자마자 로그인창을 넘기고 바로 창을 표시하는 현상 존재
   //로그인 정보를 받을때에 맞는 헤더를 호출하는 형식으로 해결 가능할 것으로 보임.
   const scrollAmount = 100; // 스크롤 양을 조정할 수 있습니다.
 
@@ -49,9 +49,9 @@ const UserHeader = () => {
       case '/userprofile':
         setScrollPosition(700);
         break;
-      default:
-        setScrollPosition(400);
-        break;
+      // default:
+      //   setScrollPosition(400);
+      //   break;
     }
   }, [location.pathname]);
 

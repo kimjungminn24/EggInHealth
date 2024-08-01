@@ -22,7 +22,7 @@ my-react-app/
 │   │   ├──  user/
 │   │   │     ├── UserNavbar.jsx
 │   │   │     ├── UserHeader.jsx
-│   │   │     ├── ModalFood.jsx
+│   │   │     ├── ModalDiet.jsx
 │   │   │     ├── ModalExercise.jsx
 │   │   │     └── ModalRegisterQR.jsx
 │   │   └──  trainer/
@@ -45,7 +45,7 @@ my-react-app/
 │   │   ├── user/
 │   │   │    ├── UserSurvey.jsx
 │   │   │    ├── UserMain.jsx
-│   │   │    ├── UserFood.jsx
+│   │   │    ├── UserDiet.jsx
 │   │   │    ├── UserChatRoom.jsx
 │   │   │    ├── UserCalender.jsx
 │   │   │    ├── UserExercise.jsx

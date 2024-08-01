@@ -4,13 +4,44 @@ const useStore = create((set) => ({
   diets: {},
   exh_list: {
     "2024-07-30": [
-      { exh_name: "런닝머신", exh_set: null, exh_weight: null, ex_time: "30분",exh_rep:null },
-      { exh_name: "벤치프레스", exh_set: 5, exh_weight: "60kg", exh_rep:5,ex_time: null },
+      {
+        exh_name: "런닝머신",
+        exh_set: null,
+        exh_weight: null,
+        ex_time: "30분",
+        exh_rep: null,
+      },
+      {
+        exh_name: "벤치프레스",
+        exh_set: 5,
+        exh_weight: "60kg",
+        exh_rep: 5,
+        ex_time: null,
+      },
     ],
   },
   comments: {},
   exImg: {},
-  feedback:{},
+  feedback: {},
+  profile: {
+    Name: "김에그",
+    Email: "egg@naver.com",
+    PhoneNumber: "010-2222-2222",
+    ImgUrl: "/images/2",
+    PtCnt: 2,
+    Info: "안녕하세요 김에그입니다",
+    Type: "M",
+    TotalEgg: 12,
+    Age: 20,
+    TrainerId: "dadfa24", //트레이너라면 null
+    CreatedAt: "2011-10-05T14:48:00.000Z", //ISOString()
+    UpdatedAt: "2011-10-05T14:48:00.000Z", //ISOString()
+  },
+  goal: {
+    ExerciseCommonId: 1, //운동 강도 아이디
+    DietCommonId: 2, // 식단 조절 아이디
+    CommonId: 2, // 목표 아이디
+  },
   // 식단 추가 함수
   addDiet: (date, dietType, diet) =>
     set((state) => {
@@ -42,16 +73,19 @@ const useStore = create((set) => ({
       };
     }),
 
-    addFeedback: (mem_id, video, created_at, memo, read, exercise_id) =>
-      set((state) => {
-        const feedbackForMember = state.feedback?.[mem_id] || [];
-        return {
-          feedback: {
-            ...state.feedback,
-            [mem_id]: [...feedbackForMember, { video, created_at, memo, read, exercise_id }],
-          },
-        };
-      }),
+  addFeedback: (mem_id, video, created_at, memo, read, exercise_id) =>
+    set((state) => {
+      const feedbackForMember = state.feedback?.[mem_id] || [];
+      return {
+        feedback: {
+          ...state.feedback,
+          [mem_id]: [
+            ...feedbackForMember,
+            { video, created_at, memo, read, exercise_id },
+          ],
+        },
+      };
+    }),
 
   // 댓글 추가 함수
   addComment: (date, type, comment, subType = null) =>

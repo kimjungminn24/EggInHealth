@@ -1,6 +1,7 @@
 package com.egginhealth.controller;
 
 
+import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
 import com.egginhealth.data.dto.exercise.ExerciseInputDto;
 import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
 import com.egginhealth.service.ExerciseService;
@@ -32,6 +33,14 @@ public class ExerciseController {
     public ResponseEntity<Void> postExerciseReportBy(@ModelAttribute ExerciseReportInputDto inputData) throws IOException {
 
         exerciseService.saveExerciseReport(inputData);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<Void> postExerciseCommentBy(@RequestBody ExerciseCommentDto inputData) {
+
+        exerciseService.saveExerciseComment(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }

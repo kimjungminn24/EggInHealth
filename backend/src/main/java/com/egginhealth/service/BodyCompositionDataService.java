@@ -55,6 +55,7 @@ public class BodyCompositionDataService {
         bodyCompositionData.setWeight(bodyCompositionInputDto.weight());
         bodyCompositionData.setMuscle(bodyCompositionInputDto.muscle());
         bodyCompositionData.setFat(bodyCompositionInputDto.fat());
+        bodyCompositionData.setFatPercentage(bodyCompositionInputDto.fatPercentage());
         bodyCompositionData.setBmi(bodyCompositionInputDto.bmi());
         bodyCompositionData.setCompositionScore(bodyCompositionInputDto.compositionScore());
         bodyCompositionData.setImageUrl(url);
@@ -75,6 +76,7 @@ public class BodyCompositionDataService {
                 .weight(bodyCompositionInputDto.weight())
                 .muscle(bodyCompositionInputDto.muscle())
                 .fat(bodyCompositionInputDto.fat())
+                .fatPercentage(bodyCompositionInputDto.fatPercentage())
                 .bmi(bodyCompositionInputDto.bmi())
                 .compositionScore(bodyCompositionInputDto.compositionScore())
                 .imageUrl(imageUrl)

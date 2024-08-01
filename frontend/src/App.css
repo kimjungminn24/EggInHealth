@@ -5,11 +5,16 @@
   margin-left: auto;
   margin-right: auto;
   background-color: #F8F7F4;
+  padding-top: 40px;
+  padding-bottom: 56px;
 }
 
 .header {
-  height: 40px;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
   color: black;
 }
 

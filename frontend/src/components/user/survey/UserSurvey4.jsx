@@ -3,19 +3,22 @@ import styled from 'styled-components';
 import heightIcon from '../../../assets/height.png';
 import ageIcon from '../../../assets/age.png';
 
-const SurveyPage4 = () => {
-
+const SurveyPage4 = ({ setweight, setage }) => {
   const [height, setHeight] = useState('');
   const [age, setAge] = useState('');
 
-
   const handleHeightChange = (e) => {
     setHeight(e.target.value);
+    if (setweight) {
+      setweight(e.target.value); 
+    }
   };
-
 
   const handleAgeChange = (e) => {
     setAge(e.target.value);
+    if (setage) {
+      setage(e.target.value); 
+    }
   };
 
   return (
@@ -43,7 +46,6 @@ const SurveyPage4 = () => {
   );
 };
 
-
 const Surveybtn = styled.div`
   background-color: #ffffff;
   border-radius: 20px;
@@ -55,7 +57,6 @@ const Surveybtn = styled.div`
   padding: 0 20px;
   box-sizing: border-box;
 `;
-
 
 const Input = styled.input`
   border: 1px solid #ddd;

@@ -5,7 +5,7 @@ import SurvayIcon2 from '../../../assets/surveyicon2.png';
 import SurvayIcon3 from '../../../assets/surveyicon3.png';
 import ButtonSurvey from './../../common/button/ButtonSurvey';
 
-const SurveyPage1 = () => {
+const SurveyPage1 = ({ setexerciseCommonId }) => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
   const survey = [
@@ -15,6 +15,13 @@ const SurveyPage1 = () => {
     { logo: SurvayIcon3, title: '몸매관리', content: '체중 감량에 집중', id: 4 },
   ];
 
+  const handleSurveySelect = (id) => {
+    setSelectedSurveyId(id);
+    if (setexerciseCommonId) {
+      setexerciseCommonId(id); 
+    }
+  };
+
   return (
     <div>
       <h1>운동 목표가 무엇인가요?</h1>
@@ -23,7 +30,7 @@ const SurveyPage1 = () => {
           key={item.id}
           lst={item}
           isSelected={selectedSurveyId === item.id}
-          onClick={() => setSelectedSurveyId(item.id)}
+          onClick={() => handleSurveySelect(item.id)}
         />
       ))}
     </div>

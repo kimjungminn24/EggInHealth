@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import oneIcon from "../../../assets/one.png";
-import twoIcon from "../../../assets/two.png";
-import threeIcon from "../../../assets/three.png";
+import oneIcon from '../../../assets/one.png';
+import twoIcon from '../../../assets/two.png';
+import threeIcon from '../../../assets/three.png';
 import ButtonSurvey from './../../common/button/ButtonSurvey';
 
-const SurveyPage3 = () => {
+const SurveyPage3 = ({ setgoalCommonId }) => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
   const survey = [
@@ -12,6 +12,13 @@ const SurveyPage3 = () => {
     { logo: twoIcon, title: '중', content: '적당한 식단 관리', id: 2 },
     { logo: threeIcon, title: '하', content: '식단 관리를 하지 않음', id: 3 },
   ];
+
+  const handleSurveySelect = (id) => {
+    setSelectedSurveyId(id);
+    if (setgoalCommonId) {
+      setgoalCommonId(id);
+    }
+  };
 
   return (
     <div>
@@ -21,7 +28,7 @@ const SurveyPage3 = () => {
           key={item.id}
           lst={item}
           isSelected={selectedSurveyId === item.id}
-          onClick={() => setSelectedSurveyId(item.id)}
+          onClick={() => handleSurveySelect(item.id)}
         />
       ))}
     </div>

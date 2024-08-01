@@ -5,7 +5,7 @@ import useStore from '../../../store/store_test';
 
 const FeedbackList = ({ onVideoClick }) => {
  const feedback = useStore((state)=> state.feedback) || {}
- console.log(feedback)   
+//  console.log(feedback)   
  return (
     <div>
       {Object.values(feedback).flat().map((item, index) => (

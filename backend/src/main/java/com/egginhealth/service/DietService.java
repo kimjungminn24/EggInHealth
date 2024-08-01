@@ -52,7 +52,7 @@ public class DietService {
         return response;
     }
 
-    public void saveComment(CommentInputDto commentInputDto, int memberId) throws IOException{
+    public void saveComment(CommentInputDto commentInputDto, int memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
@@ -67,5 +67,29 @@ public class DietService {
                 .build();
 
         commentRepository.save(comment);
+    }
+
+    public void updateDiet(DietInputDto dietInputDto, int id) throws IOException {
+        Diet diet = dietRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Diet not found"));
+
+        String prevUrl = diet.getImgUrl();
+        s3Service.delete(DIR_NAME,prevUrl);
+        String url = s3Service.upload(dietInputDto.image(), DIR_NAME);
+
+        LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(dietInputDto.date());
+
+        diet.setType(dietInputDto.type());
+        diet.setDate(dateTime);
+        diet.setImgUrl(url);
+    }
+
+    public boolean deleteDiet(int id){
+        Diet diet = dietRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Diet not found"));
+
+        s3Service.delete(DIR_NAME,diet.getImgUrl());
+        dietRepository.deleteById(id);
+        return true;
     }
 }

@@ -2,6 +2,7 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.feedback.FeedbackDto;
 import com.egginhealth.data.dto.feedback.FeedbackInputDto;
+import com.egginhealth.data.dto.feedback.FeedbackUpdateDto;
 import com.egginhealth.data.entity.Feedback;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.repository.FeedbackRepository;
@@ -52,14 +53,37 @@ public class FeedbackService {
         return response;
     }
 
-    public List<FeedbackDto> getFeedbackList(int id, int memberId){
-        memberRepository.findById(memberId)
-                .orElseThrow(()-> new RuntimeException("Member not found"));
-
-        return feedbackRepository.findById(id)
+    public List<FeedbackDto> getFeedbackList(int id){
+        return feedbackRepository.findByMemberId(id)
                 .stream()
                 .map(FeedbackDto::from)
                 .toList();
+    }
+
+    public void updateFeedback(FeedbackUpdateDto feedbackUpdateDto, int id) throws IOException{
+        Feedback feedback = feedbackRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("feedback not found"));
+
+        String prevUrl = feedback.getVideoUrl();
+        s3Service.delete(DIR_NAME,prevUrl);
+        String url = s3Service.upload(feedbackUpdateDto.record(), DIR_NAME);
+
+        LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(feedbackUpdateDto.updatedAt());
+
+        feedback.setMotionSimilarity(feedbackUpdateDto.motionSimilarity());
+        feedback.setMemo(feedbackUpdateDto.memo());
+        feedback.setExerciseId(feedbackUpdateDto.exerciseId());
+        feedback.setVideoUrl(url);
+        feedback.setUpdatedAt(dateTime);
+    }
+
+    public boolean deleteFeedback(int id){
+        Feedback feedback = feedbackRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("feedback not found"));
+
+        s3Service.delete(DIR_NAME,feedback.getVideoUrl());
+        feedbackRepository.deleteById(id);
+        return true;
     }
 
 }

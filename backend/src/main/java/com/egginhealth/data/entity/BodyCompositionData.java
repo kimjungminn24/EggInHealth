@@ -32,6 +32,9 @@ public class BodyCompositionData {
     @Column(name = "body_fat", precision = 5, scale = 2)
     private BigDecimal fat;
 
+    @Column(name = "body_fat_percentage", precision = 5, scale = 2)
+    private BigDecimal fatPercentage;
+
     @Column(name = "body_bmi", precision = 4, scale = 2)
     private BigDecimal bmi;
 

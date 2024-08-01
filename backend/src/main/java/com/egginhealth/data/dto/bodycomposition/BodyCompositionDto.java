@@ -11,6 +11,7 @@ public record BodyCompositionDto(
         BigDecimal weight,
         BigDecimal muscle,
         BigDecimal bmi,
+        BigDecimal fat,
         BigDecimal compositionScore,
         String imageUrl,
         LocalDateTime createdAt
@@ -23,6 +24,7 @@ public record BodyCompositionDto(
                 bodyCompositionData.getWeight(),
                 bodyCompositionData.getMuscle(),
                 bodyCompositionData.getBmi(),
+                bodyCompositionData.getFat(),
                 bodyCompositionData.getCompositionScore(),
                 bodyCompositionData.getImageUrl(),
                 bodyCompositionData.getCreatedAt());

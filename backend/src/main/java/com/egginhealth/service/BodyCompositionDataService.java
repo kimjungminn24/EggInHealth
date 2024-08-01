@@ -2,6 +2,7 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.bodycomposition.BodyCompositionDto;
 import com.egginhealth.data.dto.bodycomposition.BodyCompositionInputDto;
+import com.egginhealth.data.dto.bodycomposition.BodyCompositionSetDto;
 import com.egginhealth.data.entity.BodyCompositionData;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.repository.BodyCompositionDataRepository;
@@ -51,14 +52,8 @@ public class BodyCompositionDataService {
         s3Service.delete(DIR_NAME, prevUrl);
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 
-        bodyCompositionData.setHeight(bodyCompositionInputDto.height());
-        bodyCompositionData.setWeight(bodyCompositionInputDto.weight());
-        bodyCompositionData.setMuscle(bodyCompositionInputDto.muscle());
-        bodyCompositionData.setFat(bodyCompositionInputDto.fat());
-        bodyCompositionData.setFatPercentage(bodyCompositionInputDto.fatPercentage());
-        bodyCompositionData.setBmi(bodyCompositionInputDto.bmi());
-        bodyCompositionData.setCompositionScore(bodyCompositionInputDto.compositionScore());
-        bodyCompositionData.setImageUrl(url);
+        BodyCompositionSetDto bodyCompositionSetDto = BodyCompositionSetDto.from(bodyCompositionInputDto,url);
+        bodyCompositionData.updateBodyCompositionDataBy(bodyCompositionSetDto);
     }
 
     public boolean deleteBodyComposition(int id) {

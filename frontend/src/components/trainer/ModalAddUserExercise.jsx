@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import useStore from '../../store/store_test';
 import { StyledModal } from '../common/StyledComponents';
 
-const AddExerciseModal = ({ isOpen, onClose }) => {
+
+const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
   const [exhSet, setExhSet] = useState('');
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
@@ -19,9 +20,9 @@ const AddExerciseModal = ({ isOpen, onClose }) => {
         ? { exh_set: exhSet, exh_weight: exhWeight }
         : { ex_time: exTime }),
     };
-    const date = new Date().toISOString().split('T')[0]; // 현재 날짜 사용
+    // const date = new Date().toISOString().split('T')[0]; // 현재 날짜 사용
 
-    addExercise(date, newExercise);
+    addExercise(selectedDate, newExercise);
     onClose();
   };
 

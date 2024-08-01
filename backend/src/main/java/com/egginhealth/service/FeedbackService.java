@@ -9,6 +9,7 @@ import com.egginhealth.data.repository.MemberRepository;
 import com.egginhealth.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FeedbackService {
 
     private static final String DIR_NAME = "feedback";

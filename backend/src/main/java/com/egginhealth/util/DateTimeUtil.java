@@ -10,6 +10,9 @@ public class DateTimeUtil {
     }
 
     public static LocalDateTime getStringToDateTime(String strDate){
+        if(strDate.contains(".")){
+            strDate = strDate.substring(0, strDate.indexOf("."));
+        }
         return formatDateTime(strDate,"yyyy-MM-dd'T'HH:mm:ss");
     }
 

@@ -1,5 +1,6 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,4 +34,14 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")
     private Member member;
+
+    public static Comment createComment(ExerciseCommentDto dto, Member member) {
+        Comment comment = new Comment();
+        comment.content = dto.content();
+        comment.boardId = dto.boardId();
+        comment.boardType = dto.boardType();
+        comment.member = member;
+        comment.createdAt = LocalDateTime.now();
+        return comment;
+    }
 }

@@ -5,6 +5,7 @@ import BoxMain from './../../components/user/main/BoxMain';
 import BoxSchedule from './../../components/user/main/BoxSchedule';
 import { useCookies } from 'react-cookie';
 import { useUserInfoStore } from '../../store/store';
+import { useStore } from '../../store/store';
 
 const PTBox = styled.div`
   display: flex;
@@ -21,28 +22,29 @@ const PTBox = styled.div`
 `;
 
 const UserMain = () => {
-  const [cookies] = useCookies(['cookie_name']);
-  const { userData, fetchData } = useUserInfoStore();
-
-  const trainer = userData?.trId;
+  const [cookies] = useCookies(['cookie_name'])
+  const { userData, fetchData } = useUserInfoStore()
+  const { userUpdate } = useStore()
+  const trainer = userData?.trId
   
   const timebox = [
     { day: '07.18(목)', time: 'AM 11:00 - 12:00' },
     { day: '07.21(일)', time: 'AM 11:00 - 12:00' },
     { day: '07.22(월)', time: 'AM 11:00 - 12:00' },
-  ];
+  ]
   const eggday = 0;
 
   useEffect(() => {
-    const userId = cookies.Id;
+    const userId = cookies.Id
+    const userType = cookies.Role
     const today = new Date();
     const formatMonth = `${today.getMonth() + 1}`
     const formatYear = `${today.getFullYear()}`
 
-
-    fetchData(userId, formatMonth, formatYear);
-  }, [cookies.Id, fetchData])
-
+    userUpdate(userId,userType)
+    fetchData(userId, formatMonth, formatYear)
+  }, [cookies.Id, fetchData,cookies.Role])
+  
 
   return (
     <div>

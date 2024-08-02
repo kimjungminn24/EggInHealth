@@ -22,7 +22,7 @@ export const userInfo = async (Id) => {
   export const userEgg = async (Id,Month,Year) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/user/${Id}`, 
+        `${API_BASE_URL}/total?uid=${Id}&year=${Year}&month=${Month}`, 
         {
           headers: {
             'Content-Type': 'application/json',

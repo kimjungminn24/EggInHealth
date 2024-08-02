@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserInfoStore } from '../../../store/store';
 import { styled } from 'styled-components';
 import EmptyEgg from '../../../assets/eggs/emptyegg.png';
@@ -67,15 +67,9 @@ const Egg = styled.div`
 `;
 
 const UserEgg = () => {
-  const { userData } = useUserInfoStore();
-  
-  const userEggData = [
-    0,1,0,1,0,1,0,1,0,1,
-    0,1,0,1,0,1,0,1,0,1,
-    -1,-1,-1,-1,-1,-1,-1,-1,-1,-1
-  ];
-  
-  const eggsToShow = userEggData.slice(0, 30).map(item => eggImagesMap[item] || EmptyEgg);
+  const { userData, userEggData } = useUserInfoStore();
+
+  const eggsToShow = Array.isArray(userEggData) ? userEggData.slice(0, 30).map(item => eggImagesMap[item] || EmptyEgg) : [];
 
   return (
     <BoxContainer>

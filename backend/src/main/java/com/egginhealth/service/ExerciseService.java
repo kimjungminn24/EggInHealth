@@ -1,11 +1,14 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
 import com.egginhealth.data.dto.exercise.ExerciseInputDto;
 import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
+import com.egginhealth.data.entity.Comment;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.exercise.ExerciseHomework;
 import com.egginhealth.data.entity.exercise.ExerciseReport;
 import com.egginhealth.data.entity.exercise.ExerciseSet;
+import com.egginhealth.data.repository.CommentRepository;
 import com.egginhealth.data.repository.MemberRepository;
 import com.egginhealth.data.repository.exercise.ExerciseHomeworkRepository;
 import com.egginhealth.data.repository.exercise.ExerciseReportRepository;
@@ -33,6 +36,7 @@ public class ExerciseService {
     private final ExerciseReportRepository exerciseReportRepository;
     private final S3Service s3Service;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     public void saveExerciseSet(ExerciseInputDto exerciseInputDto) {
 
@@ -58,6 +62,15 @@ public class ExerciseService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, exerciseReportInputDto.date()));
+    }
+
+    public void saveExerciseComment(ExerciseCommentDto exerciseCommentDto) {
+
+        Member member = memberRepository.findById(SecurityUtil.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+
+        commentRepository.save(Comment.createComment(exerciseCommentDto, member));
+
     }
 
 

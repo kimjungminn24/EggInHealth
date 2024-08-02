@@ -1,16 +1,16 @@
-import create from 'zustand';
-import { registerDiet, registerComment, updateDiet, deleteDiet } from './api';
+import {create} from 'zustand';
+import { registerDiet, registerComment, updateDiet, deleteDiet } from '../api/diet';
 
-const useDietStore = create((set) => ({
+export const useDietStore = create((set) => ({
   diets: [],
   comments: [],
   
   fetchDiets: async () => {
     // 회원 상세 완성되면 API 호출하여 다이어트 데이터를 가져오는 로직 추가
   },
-
-  addDiet: async (type, date, imgUrl) => {
-    const newDiet = await registerDiet(type, date, imgUrl);
+  
+  addDiet: async (type, date, img) => {
+    const newDiet = await registerDiet(type, date, img);
     set((state) => ({
       diets: [...state.diets, newDiet],
     }));
@@ -31,13 +31,15 @@ const useDietStore = create((set) => ({
       diets: state.diets.filter((diet) => diet.DietId !== dietId),
     }));
   },
-
+  
+  
   addComment: async (content, createdAt, boardId, boardType) => {
-    const comments = await registerComment(content, createdAt, boardId, boardType);
-    set(() => ({
-      comments,
+    const newComment = await registerComment(content, createdAt, boardId, boardType);
+    set((state) => ({
+      comments:[...state.comments, newComment]
     }));
   },
 }));
 
-export default useDietStore;
+
+

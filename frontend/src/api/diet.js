@@ -4,24 +4,33 @@ const BASE_URL = 'http://localhost:8080';
 
 axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
-export const addDiet = async (type, date, imgUrl) => {
-  const response = await axios.post(
+export const registerDiet = async (type, date, img) => {
+  console.log(type,date,img)
+  const formData = new FormData()
+  formData.append('image',img)
+  formData.append('date',date);
+  formData.append('type',type)
+  const res = await axios.post(
     `${BASE_URL}/diet`,
-    {
-      type,
-      date,
-      imgUrl,
-    },
+    formData,
     {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     }
   );
-  return response.data;
-};
+  return res.data;
+  //  await axios({
+  //   method: 'post',
+  //   url: `${BASE_URL}/diet`,
+  //   data: formData, 
+  //   withCredentials: true,
+  //   }
+  // ); 
+}
 
-export const addComment = async (content, createdAt, boardId, boardType) => {
+export const registerComment = async (content, createdAt, boardId, boardType) => {
   const response = await axios.post(
     `${BASE_URL}/diet/comment`,
     {

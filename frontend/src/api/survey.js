@@ -6,7 +6,7 @@ export const updateUserRole = async (role) => {
   console.log(role);
   try {
     const response = await axios.patch(
-      `${API_BASE_URL}/api/user/role`, 
+      `${API_BASE_URL}/user/role`, 
       { role }, 
       {
         headers: {

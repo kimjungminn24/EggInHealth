@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import useStore from '../../../store/store_test';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { addDiet } from './../../../api/diet';
-import useDietStore from '../../../store/store';
+import {useDietStore} from '../../../store/store';
 
 
 
@@ -54,15 +52,21 @@ const ModalDiet = ({ date, type, onClose }) => {
   const [comment, setComment] = useState('');
   const addDiet = useDietStore((state)=> state.addDiet)
   const addComment = useDietStore((state)=> state.addComment)
+  
+  console.log('ModalDiet date:', date);
+  console.log('ModalDiet type:', type);
 
   const handleSubmit = async () => {
     if (image) {
-      const imgUrl = URL.createObjectURL(image);
-      const newDiet = await addDiet(type, date, imgUrl);
+      console.log(image);
+      date
+      type
+      const newDiet = await addDiet(type, date, image);
       
       // 새로운 다이어트가 성공적으로 등록되었을 때 댓글 등록
       if (newDiet && comment) {
-        await addComment(comment, new Date().toISOString(), newDiet.DietId, 'diet');
+        await addComment(comment, date, newDiet.dietId, 'D');
+        console.log(comment)
       }
       
       onClose();

@@ -10,11 +10,32 @@ import DietSection from './../../components/user/diet/DietSection';
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTab, setSelectedTab] = useState('아침');
+  const [selectedTab, setSelectedTab] = useState('1');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const diets = useStore((state) => state.diets);
 
 
+  const getKrDate=()=>{
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kstTime = new Date(now.getTime()+kstOffset);
+    
+    const year = kstTime.getUTCFullYear();
+    const month = String(kstTime.getUTCMonth()+1).padStart(2,'0');
+    const day = String(kstTime.getUTCDate()).padStart(2,'0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getKoreanISOString = () => {
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const kstDate = new Date(now.getTime() + kstOffset);
+
+    return kstDate.toISOString();
+  };
+
+
+  
   const openModal = () => {
     if (selectedDate) {
       setIsModalOpen(true);
@@ -28,25 +49,26 @@ const UserDietPage = () => {
   };
 
   const dietData = diets[selectedDate] ? diets[selectedDate][selectedTab] : null;
+  const today = getKrDate();
   // console.log(dietData)
   return (
     <PageContainer>
-      <Title>식단</Title>
       <SelectedDate selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
 
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
       {dietData ? (
         <DietSection dietData={dietData} selectedTab={selectedTab} selectedDate={selectedDate} />
-      ) : selectedDate === new Date().toISOString().split('T')[0] ? (
+      ) : selectedDate <= today ? (
         <RegisterButton openModal={openModal} />
       ) : null}
 
-      {isModalOpen && <ModalDiet date={selectedDate} dietType={selectedTab} onClose={closeModal} />}
+      {isModalOpen && <ModalDiet date={getKoreanISOString(selectedDate)} type={selectedTab} onClose={closeModal} />}
       
       <Comments date={selectedDate} type="diet" subType={selectedTab}/>
     </PageContainer>
   );
 };
+
 
 export default UserDietPage;

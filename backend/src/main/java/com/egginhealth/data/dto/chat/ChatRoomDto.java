@@ -1,4 +1,4 @@
-package com.egginhealth.data.dto;
+package com.egginhealth.data.dto.chat;
 
 import com.egginhealth.data.entity.ChatRoom;
 import lombok.Builder;

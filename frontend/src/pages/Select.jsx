@@ -24,7 +24,7 @@ const Select = () => {
     if (currentStep === 0) {
       try {
         if (activeImage) {
-          // await updateUserRole(activeImage);
+          await updateUserRole(activeImage);
         }
         
         if (activeImage === 'TRAINER') {

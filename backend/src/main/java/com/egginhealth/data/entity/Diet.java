@@ -1,6 +1,7 @@
 package com.egginhealth.data.entity;
 
 
+import com.egginhealth.data.dto.diet.DietSetDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "diet")
@@ -33,5 +33,11 @@ public class Diet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")
     private Member member;
+
+    public void updateDietBy(DietSetDto dietSetDto){
+        this.type = dietSetDto.type();
+        this.date = dietSetDto.date();
+        this.imgUrl = dietSetDto.url();
+    }
 
 }

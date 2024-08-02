@@ -60,9 +60,9 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tr_id")
-    private Member member;
+    private Member trainer;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "trainer")
     private List<Member> trMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")

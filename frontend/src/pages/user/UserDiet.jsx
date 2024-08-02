@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Component } from 'react';
 import useStore from '../../store/store_test';
-import ModalDiet from '../../components/user/ModalDiet';
+import ModalDiet from '../../components/user/diet/ModalDiet';
 import { PageContainer, Title, DateInput } from '../../components/common/StyledComponents';
-import Tabs from '../../components/user/Tabs';
-import DietSection from '../../components/user/DietSection';
-import RegisterButton from '../../components/common/RegisterButton';
+import Tabs from '../../components/user/diet/Tabs';
+import RegisterButton from '../../components/common/button/RegisterButton';
 import SelectedDate from '../../components/common/SelectedDate'
 import Comments from './../../components/user/Comments';
+import DietSection from './../../components/user/diet/DietSection';
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState('');

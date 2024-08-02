@@ -78,7 +78,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<PtPlan> ptPlanList = new ArrayList<>();
 
-    
+    @OneToMany(mappedBy = "member")
+    private List<Comment> commentList = new ArrayList<>();
+
     @OneToOne(mappedBy = "member")
     private Goal goal;
 

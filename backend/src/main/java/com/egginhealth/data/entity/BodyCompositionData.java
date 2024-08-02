@@ -1,5 +1,6 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.bodycomposition.BodyCompositionSetDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +32,9 @@ public class BodyCompositionData {
     @Column(name = "body_fat", precision = 5, scale = 2)
     private BigDecimal fat;
 
+    @Column(name = "body_fat_percentage", precision = 5, scale = 2)
+    private BigDecimal fatPercentage;
+
     @Column(name = "body_bmi", precision = 4, scale = 2)
     private BigDecimal bmi;
 
@@ -52,4 +55,16 @@ public class BodyCompositionData {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public void updateBodyCompositionDataBy(BodyCompositionSetDto bodyCompositionSetDto){
+        this.height = bodyCompositionSetDto.height();
+        this.weight = bodyCompositionSetDto.weight();
+        this.muscle = bodyCompositionSetDto.muscle();
+        this.fat = bodyCompositionSetDto.fat();
+        this.fatPercentage = bodyCompositionSetDto.fatPercentage();
+        this.bmi = bodyCompositionSetDto.bmi();
+        this.compositionScore = bodyCompositionSetDto.compositionScore();
+        this.imageUrl = bodyCompositionSetDto.imageUrl();
+    }
+
 }

@@ -6,11 +6,17 @@ import SurveyPage1 from '../components/user/survey/UserSurvey1';
 import SurveyPage2 from '../components/user/survey/UserSurvey2';
 import SurveyPage3 from '../components/user/survey/UserSurvey3';
 import SurveyPage4 from '../components/user/survey/UserSurvey4';
-import { updateUserRole } from '../api/survey';
+import { updateUserRole, updateUserGole, updateUserInfo } from '../api/survey';
 
 const Select = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeImage, setActiveImage] = useState(null);
+  const [exerciseCommonId, setexerciseCommonId] = useState(null);
+  const [dietCommonId, setdietCommonId] = useState(null);
+  const [goalCommonId, setgoalCommonId] = useState(null);
+  const [height, setheight] = useState(null);
+  const [age, setage] = useState(null);
+
   const totalSteps = 5;
   const navigate = useNavigate();
 
@@ -30,6 +36,8 @@ const Select = () => {
         console.error("Failed to update user role:", error);
       }
     } else if (currentStep === 4) {
+      await updateUserGole(exerciseCommonId, dietCommonId, goalCommonId);
+      await updateUserInfo(height, age);
       navigate('/usermain');
     } else if (currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
@@ -63,13 +71,13 @@ const Select = () => {
           />
         );
       case 1:
-        return <SurveyPage1 />;
+        return <SurveyPage1 setexerciseCommonId={setexerciseCommonId} />
       case 2:
-        return <SurveyPage2 />;
+        return <SurveyPage2 setdietCommonId={setdietCommonId}/>;
       case 3:
-        return <SurveyPage3 />;
+        return <SurveyPage3 setgoalCommonId={setgoalCommonId}/>;
       case 4:
-        return <SurveyPage4 />;
+        return <SurveyPage4 setweight={setheight} setage={setage} />;
       default:
         return null;
     }
@@ -134,15 +142,16 @@ const ProgressBar = styled.div`
   overflow: hidden;
 `;
 
-const ProgressFill = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['currentStep', 'totalSteps'].includes(prop),
-})`
+const ProgressFill = styled.div`
   background-color: #FFD66B;
   height: 100%;
-  width: ${({ currentStep, totalSteps }) => ((currentStep + 1) / totalSteps) * 100}%;
+  width: ${({ $currentStep, $totalSteps }) => {
+    if ($totalSteps <= 0) return '0%';
+    const percentage = (($currentStep + 1) / $totalSteps) * 100;
+    return `${Math.min(percentage, 100)}%`; 
+  }};
   transition: width 0.4s ease;
   position: absolute;
-  top: 0;
   left: 0;
 `;
 

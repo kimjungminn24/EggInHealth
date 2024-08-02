@@ -35,7 +35,7 @@ public class ExerciseReport {
     public static ExerciseReport createExerciseReport(Member member, String imgUrl, String date) {
         return ExerciseReport.builder()
                 .imgUrl(imgUrl)
-                .date(DateTimeUtil.getStringToDateTime(date))
+                .date(DateTimeUtil.convertToLocalDateTime(date))
                 .member(member)
                 .build();
     }

@@ -55,9 +55,8 @@ public class ExerciseService {
     }
 
     public void saveExerciseSet(ExerciseSetDto exerciseSetDto) {
-
         int memberId = SecurityUtil.getUserId();
-        LocalDateTime date = DateTimeUtil.getStringToDateTime(exerciseSetDto.date());
+        LocalDateTime date = DateTimeUtil.convertToLocalDateTime(exerciseSetDto.date());
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
@@ -68,7 +67,6 @@ public class ExerciseService {
         });
 
         exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetDto, homework));
-
     }
 
     public void saveExerciseReport(ExerciseReportInputDto exerciseReportInputDto) throws IOException {

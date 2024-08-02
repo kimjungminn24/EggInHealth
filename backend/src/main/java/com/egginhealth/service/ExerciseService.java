@@ -86,5 +86,13 @@ public class ExerciseService {
         return true;
     }
 
+    public ExerciseSetDto updateExerciseSet(ExerciseSetDto exerciseSetDto) {
+
+        ExerciseSet exerciseSet = exerciseSetRepository.findById(exerciseSetDto.setId())
+                .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
+        exerciseSet.updateExerciseSet(exerciseSetDto);
+        return ExerciseSetDto.from(exerciseSet);
+    }
+
 
 }

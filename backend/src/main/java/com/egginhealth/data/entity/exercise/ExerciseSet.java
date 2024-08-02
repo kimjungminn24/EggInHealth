@@ -1,5 +1,6 @@
 package com.egginhealth.data.entity.exercise;
 
+import com.egginhealth.data.dto.exercise.ExerciseSetDto;
 import com.egginhealth.data.dto.exercise.ExerciseSetInputDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,5 +44,13 @@ public class ExerciseSet {
                 .exerciseHomework(exerciseHomework)
                 .build();
     }
+
+    public void updateExerciseSet(ExerciseSetDto exerciseSetDto) {
+        this.set = exerciseSetDto.set();
+        this.weight = exerciseSetDto.weight();
+        this.name = exerciseSetDto.name();
+        this.time = exerciseSetDto.time();
+    }
+
 
 }

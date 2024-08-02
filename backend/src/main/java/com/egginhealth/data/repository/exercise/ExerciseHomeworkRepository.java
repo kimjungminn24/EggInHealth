@@ -11,6 +11,11 @@ import java.util.Optional;
 public interface ExerciseHomeworkRepository extends JpaRepository<ExerciseHomework, Integer> {
 
     @Query("SELECT e FROM ExerciseHomework e WHERE e.member.id = :memberId AND e.date = :date")
-    Optional<ExerciseHomework> findByMemberIdAndDate(@Param("memberId") int memberId, @Param("date") LocalDateTime date);
+    Optional<ExerciseHomework> findByMemberIdAndLocalDate(@Param("memberId") int memberId, @Param("date") LocalDateTime date);
+
+
+    @Query("SELECT eh FROM ExerciseHomework eh WHERE eh.member.id = :memberId AND YEAR(eh.date) = :year AND MONTH(eh.date) = :month AND DAY(eh.date) = :day")
+    Optional<ExerciseHomework> findByMemberIdAndDate(@Param("memberId") int memberId, @Param("year") int year, @Param("month") int month, @Param("day") int day);
+
 
 }

@@ -1,8 +1,10 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.comment.CommentDto;
 import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseInputDto;
+import com.egginhealth.data.dto.exercise.ExerciseDto;
 import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
+import com.egginhealth.data.dto.exercise.ExerciseSetDto;
 import com.egginhealth.data.entity.Comment;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.exercise.ExerciseHomework;
@@ -23,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,20 +41,33 @@ public class ExerciseService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
-    public void saveExerciseSet(ExerciseInputDto exerciseInputDto) {
+
+    public ExerciseDto getExercise(int uid, int year, int month, int day) {
+        Member member = memberRepository.findById(uid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+
+        ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(uid, year, month, day).get();
+        List<ExerciseSetDto> sets = homework.getExerciseSetList().stream().map(ExerciseSetDto::from).toList();
+        List<CommentDto> comment = commentRepository.findByBoardIdAndBoardType(homework.getId(), "E").stream().map(CommentDto::from).toList();
+        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(uid, year, month, day).get();
+ 
+        return ExerciseDto.from(member, sets, comment, report);
+    }
+
+    public void saveExerciseSet(ExerciseSetDto exerciseSetDto) {
 
         int memberId = SecurityUtil.getUserId();
-        LocalDateTime date = DateTimeUtil.getStringToDateTime(exerciseInputDto.date());
+        LocalDateTime date = DateTimeUtil.getStringToDateTime(exerciseSetDto.date());
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
-        exerciseHomeworkRepository.findByMemberIdAndDate(memberId, date).orElseGet(() -> {
-            ExerciseHomework newExerciseHomework = ExerciseHomework.createExerciseHomework(date, member);
+        ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndLocalDate(memberId, date).orElseGet(() -> {
+            ExerciseHomework newExerciseHomework = ExerciseHomework.createExerciseHomework(member);
             return exerciseHomeworkRepository.save(newExerciseHomework);
         });
 
-        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseInputDto));
+        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetDto, homework));
 
     }
 

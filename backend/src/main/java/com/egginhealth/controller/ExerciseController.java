@@ -2,8 +2,9 @@ package com.egginhealth.controller;
 
 
 import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseInputDto;
+import com.egginhealth.data.dto.exercise.ExerciseDto;
 import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
+import com.egginhealth.data.dto.exercise.ExerciseSetDto;
 import com.egginhealth.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,17 @@ public class ExerciseController {
 
     private final ExerciseService exerciseService;
 
-    @PostMapping()
-    public ResponseEntity<Void> postExerciseSetBy(@RequestBody ExerciseInputDto inputData) {
+    @GetMapping("/{uid}")
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable int uid, @RequestParam int year, @RequestParam int month, @RequestParam int day) {
+
+        ExerciseDto exerciseDto = exerciseService.getExercise(uid, year, month, day);
+        System.out.println(exerciseDto.comments());
+        return new ResponseEntity<>(exerciseDto, HttpStatus.OK);
+
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> postExerciseSetBy(@RequestBody ExerciseSetDto inputData) {
 
         exerciseService.saveExerciseSet(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -34,7 +44,6 @@ public class ExerciseController {
 
         exerciseService.saveExerciseReport(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
     @PostMapping("/comment")

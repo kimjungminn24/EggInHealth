@@ -27,7 +27,7 @@ public class DietController {
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Void> registerComment(@ModelAttribute CommentInputDto inputData)
+    public ResponseEntity<Void> registerComment(@RequestBody CommentInputDto inputData)
     {
         dietService.saveComment(inputData,SecurityUtil.getUserId());
         return new ResponseEntity<>(HttpStatus.CREATED);

@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import EmptyEgg from '../../../assets/eggs/emptyegg.png'
+import React, { useEffect, useState } from 'react';
+import { useUserInfoStore } from '../../../store/store';
+import { styled } from 'styled-components';
+import EmptyEgg from '../../../assets/eggs/emptyegg.png';
 import Egg0 from '../../../assets/eggs/egg0.png';
 import Egg1 from '../../../assets/eggs/egg1.png';
 import Egg2 from '../../../assets/eggs/egg2.png';
@@ -15,6 +16,21 @@ import Egg10 from '../../../assets/eggs/egg10.png';
 import Egg11 from '../../../assets/eggs/egg11.png';
 import Egg12 from '../../../assets/eggs/egg12.png';
 
+const eggImagesMap = {
+  0: Egg0,
+  1: Egg1,
+  2: Egg2,
+  3: Egg3,
+  4: Egg4,
+  5: Egg5,
+  6: Egg6,
+  7: Egg7,
+  8: Egg8,
+  9: Egg9,
+  10: Egg10,
+  11: Egg11,
+  12: Egg12,
+};
 
 const BoxContainer = styled.div`
   display: inline-block;
@@ -50,21 +66,10 @@ const Egg = styled.div`
   background-size: cover;
 `;
 
-const UserEgg = ({ trainer, eggday }) => {
-  const day = 30
-  
-  const eggImages = [
-    Egg2,Egg1, Egg4, Egg5,Egg11, Egg6, Egg7,Egg12, Egg8, Egg9,
-    Egg10,Egg0,Egg0,Egg0, Egg3
-  ];
+const UserEgg = () => {
+  const { userData, userEggData } = useUserInfoStore();
 
-
-  const eggsToShow = Array.from({ length: 30 }, (_, index) => {
-    if (index < day) {
-      return eggImages[Math.min(index, eggImages.length )];
-    }
-    return null;
-  });
+  const eggsToShow = Array.isArray(userEggData) ? userEggData.slice(0, 30).map(item => eggImagesMap[item] || EmptyEgg) : [];
 
   return (
     <BoxContainer>
@@ -74,8 +79,8 @@ const UserEgg = ({ trainer, eggday }) => {
         ))}
       </EggGrid>
       <Divider />
-      {trainer ? (
-        <p>{eggday}일째 에그중</p>
+      {userData && userData.trainer ? (
+        <p>{userData.totalEgg}일째 에그중</p>
       ) : (
         <p>운동과 식단을 기록하고<br /> 에그를 모아보세요!</p>
       )}

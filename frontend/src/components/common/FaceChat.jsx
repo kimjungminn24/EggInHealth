@@ -1,7 +1,13 @@
-const FaceChat = ()=>{
+import React from 'react';
+import Modal from 'react-modal';
+
+const FaceChat = ({isOpen, })=>{
+
     return(
         <div>
-            화상채팅
+            <Modal>
+                
+            </Modal>
         </div>
     )
 }

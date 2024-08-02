@@ -50,8 +50,8 @@ public class ExerciseService {
         List<ExerciseSetDto> sets = homework.getExerciseSetList().stream().map(ExerciseSetDto::from).toList();
         List<CommentDto> comment = commentRepository.findByBoardIdAndBoardType(homework.getId(), "E").stream().map(CommentDto::from).toList();
         ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(uid, year, month, day).get();
- 
-        return ExerciseDto.from(member, sets, comment, report);
+
+        return ExerciseDto.from(homework, member, sets, comment, report);
     }
 
     public void saveExerciseSet(ExerciseSetDto exerciseSetDto) {

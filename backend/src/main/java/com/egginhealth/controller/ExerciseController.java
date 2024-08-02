@@ -26,7 +26,6 @@ public class ExerciseController {
     public ResponseEntity<ExerciseDto> getExercise(@PathVariable int uid, @RequestParam int year, @RequestParam int month, @RequestParam int day) {
 
         ExerciseDto exerciseDto = exerciseService.getExercise(uid, year, month, day);
-        System.out.println(exerciseDto.comments());
         return new ResponseEntity<>(exerciseDto, HttpStatus.OK);
 
     }

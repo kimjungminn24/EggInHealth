@@ -51,7 +51,7 @@ public class ExerciseService {
         return ExerciseDto.from(homework, member, sets, comment, report);
     }
 
-    public void saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
+    public ExerciseSetDto saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
         int memberId = SecurityUtil.getUserId();
         LocalDateTime date = DateTimeUtil.convertToLocalDateTime(exerciseSetInputDto.date());
 
@@ -63,7 +63,7 @@ public class ExerciseService {
             return exerciseHomeworkRepository.save(newExerciseHomework);
         });
 
-        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetInputDto, homework));
+        return ExerciseSetDto.from(exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetInputDto, homework)));
     }
 
     public void saveExerciseReport(ExerciseReportInputDto exerciseReportInputDto) throws IOException {

@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.member.MemberDetailDto;
 import com.egginhealth.data.dto.member.MemberDto;
 import com.egginhealth.data.dto.member.MemberSurveyDto;
 import com.egginhealth.data.dto.member.NaverMemberDto;
@@ -40,11 +41,11 @@ public class MemberService {
 
     }
 
-    public MemberDto getMemberDetail(int memberId){
+    public MemberDetailDto getMemberDetail(int memberId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new RuntimeException("not found Member"));
 
-        return MemberDto.from(member);
+        return MemberDetailDto.from(member,member.getTrainer());
     }
 
 

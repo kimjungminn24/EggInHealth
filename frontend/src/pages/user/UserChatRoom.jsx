@@ -1,11 +1,22 @@
 import TrainerImg from '../../assets/static/img_TrainerKim.png'
 import Camera from '../../assets/static/Property_Camera.png'
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import OffCall from '../../assets/static/Property_OffCall.png'
+import FatCat from '../../assets/static/img_FatCat.png'
+
+Modal.setAppElement('#root')
 
 const UserChatRoom = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const openModal = () => setModalIsOpen(true);
+    const closeModal = () => setModalIsOpen(false);
+
     return (
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto p-4">
-                <div className="flex items-start gap-2.5 ml-[10px] mt-[33px] mr-[80px]">
+                <div className="flex items-start gap-2.5 ml-[10px] mr-[80px] mb-[12px]">
                     <img className="w-[45px] h-[45px] rounded-full" src={TrainerImg} alt="TrainerImg" />
                     <div className="flex flex-col gap-1 w-full max-w-[320px]">
                         <div className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -13,18 +24,18 @@ const UserChatRoom = () => {
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
                         </div>
                         <div className="flex flex-col leading-1.5 p-4 border-gray-200 bg-white rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                            <p className="text-sm text-gray-900 dark:text-white font-bold">그렇게 살면 10살까지 밖에 못살아요. 어? 왜 살아있지?</p>
+                            <p className="text-sm text-gray-900 dark:text-white font-bold">그렇게 드시면 10살까지 밖에 못살아요. 어? 왜 살아있지?</p>
                         </div>
                         <span className="text-sm font-normal text-gray-500 dark:text-gray-400">확인함</span>
                     </div>
                 </div>
-                <div className="flex items-start gap-2.5 ml-[80px] mt-[33px] mr-[10px]">
+                <div className="flex items-start gap-2.5 ml-[80px] mr-[10px] mb-[12px]">
                     <div className="flex flex-col gap-1 w-full max-w-[320px]">
                         <div className="flex items-center space-x-2 rtl:space-x-reverse mr-[0px]">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
                         </div>
                         <div className="flex flex-col leading-1.5 p-4 border-gray-200 bg-yellow-400 rounded-b-xl rounded-l-xl dark:bg-gray-700">
-                            <p className="text-sm font-bold text-white dark:text-white">허허 세상만사 새옹지마 아니겠습니까</p>
+                            <p className="text-sm font-bold text-white dark:text-white">아직까지 살아있는 기념으로 마라탕먹어도 되죠?</p>
                         </div>
                         <span className="text-sm font-normal text-gray-500 dark:text-gray-400">확인함</span>
                     </div>
@@ -32,9 +43,23 @@ const UserChatRoom = () => {
             </div>
             <div className='flex flex-row bg-white h-[48px]'>
                 <div className='m-auto w-[45p] h-[39px]'>
-                    <button>
+                    <button onClick={openModal}>
                         <img src={Camera} alt="카메라" />
                     </button>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={closeModal}
+                        className="relative bg-white w-[360px] h-[800px]"
+                        overlayClassName="fixed inset-0 bg-black flex items-center justify-center"
+                    >
+                        <img src={TrainerImg} alt="김계란" className='absolute w-full h-[750px] z-0'/>
+                        <img src={FatCat} alt='회원님' className='absolute z-10 bottom-[56px]'/>
+                        <div className='fixed bg-black w-[360px] h-[56px] bottom-0 flex items-center justify-center'>
+                        <button onClick={closeModal} className="w-[61px] h-[50px] rounded-[12px] bg-red-500 text-white rounded">
+                            <img src={OffCall} alt="전화끊기" className='m-auto'/>
+                        </button>
+                        </div>
+                    </Modal>
                 </div>
                 <div className="w-[300px] m-auto pl-[4px]">
                     <input

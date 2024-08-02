@@ -31,7 +31,9 @@ public class BodyCompositionDataService {
         Member member = memberRepository.findById(bodyCompositionInputDto.memberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
+//        String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
+
+        String url = "https://mblogthumb-phinf.pstatic.net/MjAyMjEwMjRfMzEg/MDAxNjY2NTQxNTAxMjI0.RhytWD5-mXEpvmEeHPGoUAF_13-Vt49BNtSDSLHHnEUg.9QJBhdPgjBi41U32bNlzOwFNDrl4Um10svPzZvagnYEg.JPEG.gogoa25/IMG_7092.JPG?type=w800";
         BodyCompositionData bodyCompositionData = build(bodyCompositionInputDto, member, url);
 
         bodyCompositionDataRepository.save(bodyCompositionData);

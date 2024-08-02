@@ -1,5 +1,45 @@
 import {create} from 'zustand';
+import { userInfo, userEgg } from '../api/main';
 import { registerDiet, registerComment, updateDiet, deleteDiet } from '../api/diet';
+
+
+export const useStore = create((set) => ({
+  userId : null,
+  userType : null,
+  userUpdate : (id,type) =>{
+    {
+      set({
+        userId : id,
+        userType : type
+      })
+    }
+  }
+}))
+
+
+export const useUserInfoStore = create((set) => ({
+  userData: null,
+  userEggData : null,
+ 
+  fetchData: async (userId,formatMonth,formatYear) =>{
+  try {
+    const infoRet = await userInfo(userId);
+    const eggRet = await userEgg(userId, formatMonth, formatYear);
+    set({
+      userData: infoRet,
+      userEggData: eggRet,
+      loading: false,
+    })
+    
+  } catch (error) {
+    set({
+      error: error.message,
+      loading: false,
+    })
+  }
+},
+}))
+
 
 export const useDietStore = create((set) => ({
   diets: [],

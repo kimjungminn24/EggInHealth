@@ -40,5 +40,12 @@ public class MemberService {
 
     }
 
+    public MemberDto getMemberDetail(int memberId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new RuntimeException("not found Member"));
+
+        return MemberDto.from(member);
+    }
+
 
 }

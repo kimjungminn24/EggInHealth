@@ -1,26 +1,23 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.feedback.FeedbackSetDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feedback {
 
     @Id
     @Column(name = "fb_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "mem_id", nullable = false)
-    private Member member;
 
     @Column(name = "fb_motion_similarity")
     private BigDecimal motionSimilarity;
@@ -34,12 +31,25 @@ public class Feedback {
     @Column(name = "fb_video_url", length = 500)
     private String videoUrl;
 
-    @Column(name = "fb_read")
-    private boolean isRead = false;
+    // Getter이용해서 사용하면 에러남 isRead사용할것.
+    @Column(name = "fb_read", nullable = false, columnDefinition = "tinyint(1) default 0")
+    private boolean read = false;
 
     @Column(name = "fb_created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "fb_updated_at")
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_id", nullable = false)
+    private Member member;
+
+    public void updateFeedbackBy(FeedbackSetDto feedbackSetDto){
+        this.motionSimilarity = feedbackSetDto.motionSimilarity();
+        this.memo = feedbackSetDto.memo();
+        this.exerciseId = feedbackSetDto.exerciseId();
+        this.updatedAt = feedbackSetDto.updatedAt();
+        this.videoUrl = feedbackSetDto.url();
+    }
 }

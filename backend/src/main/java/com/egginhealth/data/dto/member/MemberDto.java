@@ -23,7 +23,7 @@ public class MemberDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    static public MemberDto from(Member member) {
+    public static MemberDto from(Member member) {
 
         return MemberDto.builder()
                 .id(member.getId())

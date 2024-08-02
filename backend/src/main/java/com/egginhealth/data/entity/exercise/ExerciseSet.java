@@ -1,6 +1,6 @@
 package com.egginhealth.data.entity.exercise;
 
-import com.egginhealth.data.dto.exercise.ExerciseSetDto;
+import com.egginhealth.data.dto.exercise.ExerciseSetInputDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,13 +33,13 @@ public class ExerciseSet {
     @JoinColumn(name = "exh_id")
     private ExerciseHomework exerciseHomework;
 
-    public static ExerciseSet createExerciseSet(ExerciseSetDto exerciseSetDto, ExerciseHomework exerciseHomework) {
+    public static ExerciseSet createExerciseSet(ExerciseSetInputDto exerciseSetInputDto, ExerciseHomework exerciseHomework) {
 
         return ExerciseSet.builder()
-                .set(exerciseSetDto.set())
-                .weight(exerciseSetDto.weight())
-                .name(exerciseSetDto.name())
-                .time(exerciseSetDto.time())
+                .set(exerciseSetInputDto.set())
+                .weight(exerciseSetInputDto.weight())
+                .name(exerciseSetInputDto.name())
+                .time(exerciseSetInputDto.time())
                 .exerciseHomework(exerciseHomework)
                 .build();
     }

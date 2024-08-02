@@ -4,7 +4,7 @@ package com.egginhealth.controller;
 import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
 import com.egginhealth.data.dto.exercise.ExerciseDto;
 import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
-import com.egginhealth.data.dto.exercise.ExerciseSetDto;
+import com.egginhealth.data.dto.exercise.ExerciseSetInputDto;
 import com.egginhealth.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> postExerciseSetBy(@RequestBody ExerciseSetDto inputData) {
+    public ResponseEntity<Void> postExerciseSetBy(@RequestBody ExerciseSetInputDto inputData) {
 
         exerciseService.saveExerciseSet(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);

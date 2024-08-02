@@ -1,10 +1,7 @@
 package com.egginhealth.service;
 
 import com.egginhealth.data.dto.comment.CommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseDto;
-import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
-import com.egginhealth.data.dto.exercise.ExerciseSetDto;
+import com.egginhealth.data.dto.exercise.*;
 import com.egginhealth.data.entity.Comment;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.exercise.ExerciseHomework;
@@ -54,9 +51,9 @@ public class ExerciseService {
         return ExerciseDto.from(homework, member, sets, comment, report);
     }
 
-    public void saveExerciseSet(ExerciseSetDto exerciseSetDto) {
+    public void saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
         int memberId = SecurityUtil.getUserId();
-        LocalDateTime date = DateTimeUtil.convertToLocalDateTime(exerciseSetDto.date());
+        LocalDateTime date = DateTimeUtil.convertToLocalDateTime(exerciseSetInputDto.date());
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
@@ -66,7 +63,7 @@ public class ExerciseService {
             return exerciseHomeworkRepository.save(newExerciseHomework);
         });
 
-        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetDto, homework));
+        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetInputDto, homework));
     }
 
     public void saveExerciseReport(ExerciseReportInputDto exerciseReportInputDto) throws IOException {

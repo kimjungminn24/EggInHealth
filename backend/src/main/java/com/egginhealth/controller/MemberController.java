@@ -1,7 +1,7 @@
 package com.egginhealth.controller;
 
 
-import com.egginhealth.data.dto.member.MemberDto;
+import com.egginhealth.data.dto.member.MemberDetailDto;
 import com.egginhealth.data.dto.member.MemberSurveyDto;
 import com.egginhealth.service.MemberService;
 import com.egginhealth.util.SecurityUtil;
@@ -39,7 +39,7 @@ public class MemberController {
     }
 
     @GetMapping("/{uid}")
-    public ResponseEntity<MemberDto> getMemberDetail(@PathVariable("uid")int id){
+    public ResponseEntity<MemberDetailDto> getMemberDetail(@PathVariable("uid")int id){
         return new ResponseEntity<>(memberService.getMemberDetail(id),HttpStatus.OK);
     }
 

@@ -67,21 +67,23 @@ public class ExerciseService {
     }
 
     public void saveExerciseReport(ExerciseReportInputDto exerciseReportInputDto) throws IOException {
-
         String url = s3Service.upload(exerciseReportInputDto.image(), DIR_NAME);
         Member member = memberRepository.findById(SecurityUtil.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
-
         exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, exerciseReportInputDto.date()));
     }
 
     public void saveExerciseComment(ExerciseCommentDto exerciseCommentDto) {
-
         Member member = memberRepository.findById(SecurityUtil.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
-
         commentRepository.save(Comment.createComment(exerciseCommentDto, member));
+    }
 
+    public boolean deleteExerciseSet(int setId) {
+        ExerciseSet exerciseSet = exerciseSetRepository.findById(setId)
+                .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
+        exerciseSetRepository.delete(exerciseSet);
+        return true;
     }
 
 

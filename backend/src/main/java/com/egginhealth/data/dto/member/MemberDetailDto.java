@@ -12,6 +12,8 @@ public record MemberDetailDto(
         String name,
         String email,
         String phoneNumber,
+        int age,
+        int height,
         String info,
         String imgUrl,
         int PTCount,
@@ -30,6 +32,8 @@ public record MemberDetailDto(
                 .name(member.getName())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
+                .age(member.getAge())
+                .height(member.getHeight())
                 .info(member.getInfo())
                 .imgUrl(member.getImgUrl())
                 .PTCount(member.getPTCount())

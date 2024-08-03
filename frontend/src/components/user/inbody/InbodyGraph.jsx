@@ -12,8 +12,8 @@ const GraphContainer = styled.div`
   align-items: center;
 `;
 
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length) {
+const CustomTooltip = ({ active, payload = [] }) => {
+  if (active && payload.length) {
     return (
       <div style={{ 
         backgroundColor: 'white', 
@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload }) => {
         fontSize: '14px'
       }}>
         <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>{payload[0].payload.date}</p>
-        <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#333', margin: 0 }}>{`${payload[0].value}KG`}</p>
+        <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#333', margin: 0 }}>{`${payload[0].value} KG`}</p>
       </div>
     );
   }
@@ -32,13 +32,23 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const InbodyGraph = ({ data }) => {
+  const yDomain = [
+    Math.min(...data.map(d => d.value)) - 1,
+    Math.max(...data.map(d => d.value)) + 1
+  ];
+
   return (
     <GraphContainer>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-          <XAxis dataKey="date" tick={{ fontSize: 12, fill: '#999' }} tickLine={false} padding={{ left: 0, right: 0 }} />
+          <XAxis 
+            dataKey="date" 
+            tick={{ fontSize: 12, fill: '#999' }} 
+            tickLine={false} 
+            padding={{ left: 0, right: 0 }} 
+          />
           <YAxis 
-            domain={[Math.min(...data.map(d => d.value)) - 1, Math.max(...data.map(d => d.value)) + 1]} 
+            domain={yDomain} 
             tick={{ fontSize: 12, fill: '#999' }} 
             tickLine={false} 
             axisLine={false} 

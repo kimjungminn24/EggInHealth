@@ -37,7 +37,7 @@ function Login() {
                 <img src={eggImg} alt="egg img" />
             </Logo>
             <Logo> 
-                <img src={logo} alt="logo img" />
+                <img src={logo} alt="logo img" /> 
             </Logo>
             <NaverButton src={naverLogin} onClick={naverClick} />
         </Container>

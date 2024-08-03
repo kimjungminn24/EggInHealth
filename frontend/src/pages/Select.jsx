@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import EggSelector from './EggSelector';
@@ -7,10 +7,12 @@ import SurveyPage2 from '../components/user/survey/UserSurvey2';
 import SurveyPage3 from '../components/user/survey/UserSurvey3';
 import SurveyPage4 from '../components/user/survey/UserSurvey4';
 import { updateUserRole, updateUserGole, updateUserInfo } from '../api/survey';
+import { useStore } from '../store/store';  
 
 const Select = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [activeImage, setActiveImage] = useState(null);
+  const { userType } = useStore((state) => state);
+  const [currentStep, setCurrentStep] = useState(userType === 'MEMBER' ? 1 : 0);
+  const [activeImage, setActiveImage] = useState(userType || null);
   const [exerciseCommonId, setexerciseCommonId] = useState(null);
   const [dietCommonId, setdietCommonId] = useState(null);
   const [goalCommonId, setgoalCommonId] = useState(null);
@@ -19,6 +21,12 @@ const Select = () => {
 
   const totalSteps = 5;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userType) {
+      setActiveImage(userType);
+    }
+  }, [userType]);
 
   const handleNext = async () => {
     if (currentStep === 0) {
@@ -69,7 +77,7 @@ const Select = () => {
             onTrainerClick={handleTrainerImageClick}
             onUserClick={handleUserImageClick}
           />
-        );
+        );  
       case 1:
         return <SurveyPage1 setexerciseCommonId={setexerciseCommonId} />
       case 2:

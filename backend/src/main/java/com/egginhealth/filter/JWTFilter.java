@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -39,24 +40,20 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-
         if (Boolean.TRUE.equals(jwtUtil.isExpired(accessToken))) {
             filterChain.doFilter(request, response);
             return;
         }
-
 
         Map<String, Object> principal = Map.of(
                 "id", jwtUtil.getId(accessToken),
                 "role", jwtUtil.getRole(accessToken)
         );
 
-
-        String role = "ROLE_" + jwtUtil.getRole(accessToken);
-
-        Authentication authToken = new UsernamePasswordAuthenticationToken(principal, null, Collections.singleton(new SimpleGrantedAuthority(role)));
+        Set<SimpleGrantedAuthority> singleton = Collections.singleton(new SimpleGrantedAuthority(jwtUtil.getRole(accessToken)));
+        Authentication authToken = new UsernamePasswordAuthenticationToken(principal, null, singleton);
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        filterChain.doFilter(request, response);
 
+        filterChain.doFilter(request, response);
     }
 }

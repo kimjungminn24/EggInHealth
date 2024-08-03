@@ -11,15 +11,17 @@ public record CommentDto(
         String content,
         LocalDateTime createdAt,
         int boardId,
-        String boardType
-    ) {
-        public static CommentDto from(Comment comment){
-            return CommentDto.builder()
-                    .id(comment.getId())
-                    .content(comment.getContent())
-                    .createdAt(comment.getCreatedAt())
-                    .boardId(comment.getBoardId())
-                    .boardType(comment.getBoardType())
-                    .build();
-        }
+        String boardType,
+        int memberId
+) {
+    public static CommentDto from(Comment comment) {
+        return CommentDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .createdAt(comment.getCreatedAt())
+                .boardId(comment.getBoardId())
+                .boardType(comment.getBoardType())
+                .memberId(comment.getMember().getId())
+                .build();
     }
+}

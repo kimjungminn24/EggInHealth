@@ -1,5 +1,6 @@
 package com.egginhealth.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,6 +29,12 @@ public class DateTimeUtil {
     public static String formatString(LocalDateTime dateTime, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return dateTime.format(formatter);
+    }
+
+    public static LocalDateTime convertToLocalDateTime(String date) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, dateFormatter);
+        return localDate.atStartOfDay();
     }
 
 }

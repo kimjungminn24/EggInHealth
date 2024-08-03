@@ -32,9 +32,9 @@ public class ExerciseHomework {
     @OneToMany(mappedBy = "exerciseHomework")
     private List<ExerciseSet> exerciseSetList = new ArrayList<>();
 
-    public static ExerciseHomework createExerciseHomework(LocalDateTime date, Member member) {
+    public static ExerciseHomework createExerciseHomework(Member member) {
         return ExerciseHomework.builder()
-                .date(date)
+                .date(LocalDateTime.now())
                 .member(member)
                 .build();
     }

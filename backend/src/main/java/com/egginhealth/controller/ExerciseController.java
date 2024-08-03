@@ -1,9 +1,7 @@
 package com.egginhealth.controller;
 
 
-import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseInputDto;
-import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
+import com.egginhealth.data.dto.exercise.*;
 import com.egginhealth.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,29 +19,36 @@ public class ExerciseController {
 
     private final ExerciseService exerciseService;
 
-    @PostMapping()
-    public ResponseEntity<Void> postExerciseSetBy(@RequestBody ExerciseInputDto inputData) {
+    @GetMapping("/{uid}")
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable int uid, @RequestParam int year, @RequestParam int month, @RequestParam int day) {
+        return new ResponseEntity<>(exerciseService.getExercise(uid, year, month, day), HttpStatus.OK);
+    }
 
-        exerciseService.saveExerciseSet(inputData);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
+    @PostMapping
+    public ResponseEntity<ExerciseSetDto> postExerciseSetBy(@RequestBody ExerciseSetInputDto inputData) {
+        return new ResponseEntity<>(exerciseService.saveExerciseSet(inputData), HttpStatus.CREATED);
     }
 
     @PostMapping("/report")
     public ResponseEntity<Void> postExerciseReportBy(@ModelAttribute ExerciseReportInputDto inputData) throws IOException {
-
         exerciseService.saveExerciseReport(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
     @PostMapping("/comment")
     public ResponseEntity<Void> postExerciseCommentBy(@RequestBody ExerciseCommentDto inputData) {
-
         exerciseService.saveExerciseComment(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteExerciseSetBy(@RequestParam int setId) {
+        boolean isDelete = exerciseService.deleteExerciseSet(setId);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
+    @PatchMapping
+    public ResponseEntity<ExerciseSetDto> patchExerciseSetBy(@RequestBody ExerciseSetDto inputData) {
+        return new ResponseEntity<>(exerciseService.updateExerciseSet(inputData), HttpStatus.CREATED);
+    }
 }

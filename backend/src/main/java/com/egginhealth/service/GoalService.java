@@ -23,4 +23,10 @@ public class GoalService {
         goalRepository.save(Goal.createGoal(goalDto, member));
     }
 
+    public GoalDto getGoal(int uid) {
+        Goal goal = goalRepository.findByMemberId(uid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 목표가 없습니다."));
+        return GoalDto.from(goal);
+    }
+
 }

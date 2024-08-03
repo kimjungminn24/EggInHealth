@@ -26,9 +26,9 @@ const NaverButton = styled.img`
 `;
 
 function Login() {
-    
+    const BASE_URL = import.meta.env.VITE_API_URL;
     const naverClick = () => {
-        window.location.href = 'http://localhost:8080'; 
+        window.location.href = BASE_URL; 
     };
 
     return (
@@ -37,7 +37,7 @@ function Login() {
                 <img src={eggImg} alt="egg img" />
             </Logo>
             <Logo> 
-                <img src={logo} alt="logo img" />
+                <img src={logo} alt="logo img" /> 
             </Logo>
             <NaverButton src={naverLogin} onClick={naverClick} />
         </Container>

@@ -1,8 +1,7 @@
 package com.egginhealth.service;
 
-import com.egginhealth.data.dto.exercise.ExerciseCommentDto;
-import com.egginhealth.data.dto.exercise.ExerciseInputDto;
-import com.egginhealth.data.dto.exercise.ExerciseReportInputDto;
+import com.egginhealth.data.dto.comment.CommentDto;
+import com.egginhealth.data.dto.exercise.*;
 import com.egginhealth.data.entity.Comment;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.exercise.ExerciseHomework;
@@ -23,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,39 +38,60 @@ public class ExerciseService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
-    public void saveExerciseSet(ExerciseInputDto exerciseInputDto) {
 
+    public ExerciseDto getExercise(int uid, int year, int month, int day) {
+        Member member = memberRepository.findById(uid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+
+        ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(uid, year, month, day).get();
+        List<ExerciseSetDto> sets = homework.getExerciseSetList().stream().map(ExerciseSetDto::from).toList();
+        List<CommentDto> comment = commentRepository.findByDietCommentToDay(homework.getId(), "E").stream().map(CommentDto::from).toList();
+        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(uid, year, month, day).get();
+
+        return ExerciseDto.from(homework, member, sets, comment, report);
+    }
+
+    public ExerciseSetDto saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
         int memberId = SecurityUtil.getUserId();
-        LocalDateTime date = DateTimeUtil.getStringToDateTime(exerciseInputDto.date());
+        LocalDateTime date = DateTimeUtil.convertToLocalDateTime(exerciseSetInputDto.date());
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
-        exerciseHomeworkRepository.findByMemberIdAndDate(memberId, date).orElseGet(() -> {
-            ExerciseHomework newExerciseHomework = ExerciseHomework.createExerciseHomework(date, member);
+        ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndLocalDate(memberId, date).orElseGet(() -> {
+            ExerciseHomework newExerciseHomework = ExerciseHomework.createExerciseHomework(member);
             return exerciseHomeworkRepository.save(newExerciseHomework);
         });
 
-        exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseInputDto));
-
+        return ExerciseSetDto.from(exerciseSetRepository.save(ExerciseSet.createExerciseSet(exerciseSetInputDto, homework)));
     }
 
     public void saveExerciseReport(ExerciseReportInputDto exerciseReportInputDto) throws IOException {
-
         String url = s3Service.upload(exerciseReportInputDto.image(), DIR_NAME);
         Member member = memberRepository.findById(SecurityUtil.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
-
         exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, exerciseReportInputDto.date()));
     }
 
     public void saveExerciseComment(ExerciseCommentDto exerciseCommentDto) {
-
         Member member = memberRepository.findById(SecurityUtil.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
-
         commentRepository.save(Comment.createComment(exerciseCommentDto, member));
+    }
 
+    public boolean deleteExerciseSet(int setId) {
+        ExerciseSet exerciseSet = exerciseSetRepository.findById(setId)
+                .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
+        exerciseSetRepository.delete(exerciseSet);
+        return true;
+    }
+
+    public ExerciseSetDto updateExerciseSet(ExerciseSetDto exerciseSetDto) {
+
+        ExerciseSet exerciseSet = exerciseSetRepository.findById(exerciseSetDto.setId())
+                .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
+        exerciseSet.updateExerciseSet(exerciseSetDto);
+        return ExerciseSetDto.from(exerciseSet);
     }
 
 

@@ -45,7 +45,7 @@ public class ExerciseService {
 
         ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(uid, year, month, day).get();
         List<ExerciseSetDto> sets = homework.getExerciseSetList().stream().map(ExerciseSetDto::from).toList();
-        List<CommentDto> comment = commentRepository.findByBoardIdAndBoardType(homework.getId(), "E").stream().map(CommentDto::from).toList();
+        List<CommentDto> comment = commentRepository.findByDietCommentToDay(homework.getId(), "E").stream().map(CommentDto::from).toList();
         ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(uid, year, month, day).get();
 
         return ExerciseDto.from(homework, member, sets, comment, report);

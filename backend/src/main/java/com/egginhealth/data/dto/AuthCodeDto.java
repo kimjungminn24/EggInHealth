@@ -1,9 +1,7 @@
 package com.egginhealth.data.dto;
 
 import com.egginhealth.data.entity.AuthCode;
-import lombok.Builder;
 
-@Builder
 public record AuthCodeDto(
         String authCode
 ) {

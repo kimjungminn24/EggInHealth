@@ -74,7 +74,7 @@ const DietImage = styled.img`
 const RegisterButtonContainer = styled.button`
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: #FFD66B;
   color: white;
   cursor: pointer;

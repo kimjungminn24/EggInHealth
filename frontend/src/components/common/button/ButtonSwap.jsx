@@ -6,9 +6,9 @@ const StyledButton = styled.button`
   padding: 10px 0;
   border: none;
   cursor: pointer;
-  color: ${({ active }) => (active ? 'white' : '#DFDFDF')};
-  background-color: ${({ active }) => (active ? '#FFD66B' : 'transparent')};
-  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
+  color: ${({ active }) => (active === 'true' ? 'white' : '#DFDFDF')};
+  background-color: ${({ active }) => (active === 'true' ? '#FFD66B' : 'transparent')};
+  font-weight: ${({ active }) => (active === 'true' ? 'bold' : 'normal')};
   font-size: 16px;
   border-radius: 50px;
   transition: background-color 0.3s;
@@ -16,7 +16,7 @@ const StyledButton = styled.button`
 
 const ButtonSwap = ({ active, onClick, children }) => {
   return (
-    <StyledButton active={active} onClick={onClick}>
+    <StyledButton active={active.toString()} onClick={onClick}>
       {children}
     </StyledButton>
   );

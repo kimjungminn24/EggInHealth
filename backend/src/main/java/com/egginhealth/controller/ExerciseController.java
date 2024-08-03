@@ -31,6 +31,7 @@ public class ExerciseController {
 
     @PostMapping("/report")
     public ResponseEntity<Void> postExerciseReportBy(@ModelAttribute ExerciseReportInputDto inputData) throws IOException {
+        exerciseService.saveExerciseReport(inputData);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

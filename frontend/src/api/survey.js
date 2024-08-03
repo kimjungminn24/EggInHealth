@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const updateUserRole = async (role) => {
   try {
     const response = await axios.patch(
-      `${API_BASE_URL}/user/role`, 
+      `${BASE_URL}/user/role`, 
       { role }, 
       {
         headers: {
@@ -24,7 +24,7 @@ export const updateUserGole = async (exerciseCommonId,dietCommonId,goalCommonId)
   try {
     console.log(exerciseCommonId,dietCommonId,goalCommonId);
     const response = await axios.post(
-      `${API_BASE_URL}/goal`, 
+      `${BASE_URL}/goal`, 
       {exerciseCommonId,dietCommonId,goalCommonId}, 
       {
         headers: {
@@ -43,7 +43,7 @@ export const updateUserInfo = async (height,age) => {
   try {
     console.log(height,age);
     const response = await axios.patch(
-      `${API_BASE_URL}/user`, 
+      `${BASE_URL}/user`, 
       { height ,age}, 
       {
         headers: {

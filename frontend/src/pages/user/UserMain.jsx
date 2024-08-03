@@ -32,9 +32,10 @@ const UserMain = () => {
   const { userData, fetchData } = useUserInfoStore();
   const { userUpdate } = useStore();
   const [timebox, setTimebox] = useState([]);
-  // const trainer = userData?.trId;
-  const trainer = 1
-  const eggday = 0;
+  const trainer = userData?.trId;
+  // const trainer = 1
+  
+  const eggday = userData?.totalEgg;
 
   useEffect(() => {
     const userId = cookies.Id;
@@ -49,9 +50,7 @@ const UserMain = () => {
     if (trainer) {
       userSchedule(userId)
         .then(response => {
-          console.log(response);
-          
-          const convertedTimebox = response.data.map(schedule => {
+          const convertedTimebox = response.map(schedule => {
             const date = new Date(schedule.date);
             const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]})`;
             const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} - ${date.getHours() + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
@@ -61,7 +60,7 @@ const UserMain = () => {
           setTimebox(convertedTimebox);
         })
         .catch(error => {
-          console.error("API 호출 중 오류 발생:", error);
+          console.error(error);
         });
     }
   }, [cookies.Id, fetchData, cookies.Role, trainer, userUpdate]);

@@ -39,7 +39,7 @@ export const userInfo = async (Id) => {
   export const userSchedule = async (Id) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/pt/plan/top?id${Id}=&cnt=3`, 
+        `${API_BASE_URL}/pt/plan/top?id=${Id}&cnt=3`, 
         {
           headers: {
             'Content-Type': 'application/json',

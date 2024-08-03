@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUserInfoStore } from "../../../store/store";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import ButtonDisconnect from '../../common/button/ButtonDisconnect';
 import ButtonCheckPTcount from '../../common/button/ButtonCheckPTcount';
+import ModalSchedule from '../../common/modal/ModalSchedule'; 
 import phone from '../../../assets/info/phone.png';
 import trainer from '../../../assets/info/trainer.png';
 import schedule from '../../../assets/info/schedule.png';
@@ -41,12 +42,26 @@ const InfoText = styled.div`
   color: #333;
 `;
 
+const InfoContainer = styled.div`
+  margin-bottom: 50px;
+`;
+
 const UserInfo = () => {
   const { userData } = useUserInfoStore();
+  const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
+
+  const handleScheduleClick = () => {
+    setModalScheduleOpen(true);
+  };
+
+  const handleCloseModalSchedule = () => {
+    setModalScheduleOpen(false);
+  };
+
   console.log(userData);
 
   return (
-    <div>
+    <InfoContainer>
       <InfoBox>
         <img src={phone} alt="phone" />
         <InfoText>{userData.phoneNumber || '없음'}</InfoText>
@@ -54,7 +69,7 @@ const UserInfo = () => {
       <InfoBox>
         <img src={trainer} alt="trainer" />
         <InfoText>{userData.trName || '없음'}</InfoText>
-        <img src={schedule} alt="schedule" />
+        <img src={schedule} alt="schedule" onClick={handleScheduleClick} style={{ cursor: 'pointer' }} />
         <ButtonDisconnect />
       </InfoBox>
       <InfoBox>
@@ -76,7 +91,7 @@ const UserInfo = () => {
       </InfoBox>
       <InfoBox>
         <p>식단조절</p>
-        <img src={medal[userData.medal] || one} alt="phone" />
+        <img src={medal[userData.medal] || one} alt="medal" />
         <InfoText>{userData.PTCount || '0'}</InfoText>
       </InfoBox>
       <InfoBox>
@@ -84,7 +99,8 @@ const UserInfo = () => {
         <InfoText>{userData.PTCount || '0'}</InfoText>
         <ButtonCheckPTcount />
       </InfoBox>
-    </div>
+      {isModalScheduleOpen && <ModalSchedule onClose={handleCloseModalSchedule} />}
+    </InfoContainer>
   );
 };
 

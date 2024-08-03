@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import ModalCheckPTcount from '../modal/ModalCheckPTcount';
 
-// 스타일드 컴포넌트를 이용하여 버튼 스타일 정의
 const ConfirmButton = styled.button`
   background-color: #FFD66B;
   color: white;
@@ -25,14 +25,23 @@ const ConfirmButton = styled.button`
   }
 `;
 
-// 버튼 컴포넌트
 const ButtonCheckPTcount = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const handleClick = () => {
-    // 버튼 클릭 시 수행할 작업을 여기에 추가
-    alert('기록을 확인했습니다.');
+    setModalOpen(true);
   };
 
-  return <ConfirmButton onClick={handleClick}>기록확인</ConfirmButton>;
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <>
+      <ConfirmButton onClick={handleClick}>기록확인</ConfirmButton>
+      {isModalOpen && <ModalCheckPTcount onClose={handleClose} />}
+    </>
+  );
 };
 
 export default ButtonCheckPTcount;

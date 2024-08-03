@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.TimeToLive;
 @RedisHash("authCode")
 public class AuthCode {
 
-    private static final Long TTL = 6L;
+    private static final Long TTL = 3600L;
 
     @Id
     private String authCode;

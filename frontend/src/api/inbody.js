@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 export const checkInbodyData = async (id, year, month) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/api/user/body?uid=${id}&year=${year}&month=${month}`, 
+      `${BASE_URL}/api/user/body?uid=${id}&year=${year}&month=${month}`, 
       {
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const uploadInbodyData = async (data) => {
     formData.append('image', data.imageFile);
     console.log('image', data.imageFile);
     
-    const response = await axios.post(`${API_BASE_URL}/body`, formData, {
+    const response = await axios.post(`${BASE_URL}/body`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -50,7 +50,7 @@ export const uploadInbodyData = async (data) => {
 
 export const fetchBodyData = async (uid, year, month) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/body`, {
+    const response = await axios.get(`${BASE_URL}/body`, {
       params: {
         uid,
         year,

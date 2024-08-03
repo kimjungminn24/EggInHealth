@@ -1,7 +1,7 @@
 // src/api/index.js
 import axios from 'axios';
 
-const BASE_URL = 'https://[경로미정]';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const fetchUserInfo = async (uid, type, date, token) => {
   const response = await axios.get(`${BASE_URL}/info/${uid}`, {

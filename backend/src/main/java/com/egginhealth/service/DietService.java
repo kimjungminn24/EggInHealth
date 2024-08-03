@@ -1,6 +1,8 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.comment.CommentDietDto;
 import com.egginhealth.data.dto.comment.CommentInputDto;
+import com.egginhealth.data.dto.diet.DietDayOutputDto;
 import com.egginhealth.data.dto.diet.DietInputDto;
 import com.egginhealth.data.dto.diet.DietSetDto;
 import com.egginhealth.data.entity.Comment;
@@ -17,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class DietService {
     private final MemberRepository memberRepository;
     private final DietRepository dietRepository;
     private final CommentRepository commentRepository;
+    private final CommentService commentService;
     private final S3Service s3Service;
 
     public Map<String,Integer> save(DietInputDto dietInputDto,int memberId) throws IOException{
@@ -93,5 +98,15 @@ public class DietService {
         s3Service.delete(DIR_NAME,diet.getImgUrl());
         dietRepository.deleteById(id);
         return true;
+    }
+
+    public List<DietDayOutputDto> getDayRegister(int memberId, int year, int month, int day){
+        return dietRepository.findByDietDayList(memberId, year, month, day)
+                .stream()
+                .map(diet -> {
+                    List<CommentDietDto> commentList = commentService.getDietCommentToDay(diet.getId(),"D");
+                    return DietDayOutputDto.from(diet,commentList);
+                })
+                .collect(Collectors.toList());
     }
 }

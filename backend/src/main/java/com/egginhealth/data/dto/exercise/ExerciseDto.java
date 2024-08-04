@@ -6,6 +6,7 @@ import com.egginhealth.data.entity.exercise.ExerciseHomework;
 import com.egginhealth.data.entity.exercise.ExerciseReport;
 import lombok.Builder;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -27,8 +28,8 @@ public record ExerciseDto(
                 .trainerId(member.getTrainer() == null ? null : member.getTrainer().getId())
                 .memberId(member.getId())
                 .reportImgUrl(report == null ? null : report.getImgUrl())
-                .sets(sets.isEmpty() ? null : sets)
-                .comments(comments.isEmpty() ? null : comments)
+                .sets(sets != null ? sets : Collections.emptyList())
+                .comments(comments != null ? comments : Collections.emptyList())
                 .build();
     }
 

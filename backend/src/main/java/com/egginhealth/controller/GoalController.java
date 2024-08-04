@@ -20,8 +20,8 @@ public class GoalController {
     private final GoalService goalService;
 
 
-    @PostMapping
-    public ResponseEntity<Void> postGoalBy(@RequestBody @Valid GoalDto goalDto) {
+    @PutMapping
+    public ResponseEntity<Void> putGoalBy(@RequestBody @Valid GoalDto goalDto) {
         goalService.saveGoal(goalDto, SecurityUtil.getUserId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -30,5 +30,5 @@ public class GoalController {
     public ResponseEntity<GoalDto> GetGoalBy(@PathVariable int uid) {
         return new ResponseEntity<>(goalService.getGoal(uid), HttpStatus.OK);
     }
-    
+
 }

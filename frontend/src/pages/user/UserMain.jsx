@@ -50,13 +50,15 @@ const UserMain = () => {
     if (trainer) {
       userSchedule(userId)
         .then(response => {
+          
           const convertedTimebox = response.map(schedule => {
+          
             const date = new Date(schedule.date);
             const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]})`;
             const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} - ${date.getHours() + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
             return { day: formattedDate, time: formattedTime };
           });
-
+          
           setTimebox(convertedTimebox);
         })
         .catch(error => {

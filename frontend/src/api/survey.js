@@ -4,6 +4,8 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const updateUserRole = async (role) => {
   try {
+   
+    
     const response = await axios.patch(
       `${BASE_URL}/user/role`, 
       { role }, 
@@ -22,8 +24,7 @@ export const updateUserRole = async (role) => {
 
 export const updateUserGole = async (exerciseCommonId,dietCommonId,goalCommonId) => {
   try {
-    console.log(exerciseCommonId,dietCommonId,goalCommonId);
-    const response = await axios.post(
+    const response = await axios.put(
       `${BASE_URL}/goal`, 
       {exerciseCommonId,dietCommonId,goalCommonId}, 
       {

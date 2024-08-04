@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import {useDietStore} from '../../../store/store';
-
-
+import { useDietStore } from '../../../store/store';
+import { registerComment, registerDiet } from '../../../api/diet';
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -50,28 +49,39 @@ const Button = styled.button`
 const ModalDiet = ({ date, type, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
-  const addDiet = useDietStore((state)=> state.addDiet)
-  const addComment = useDietStore((state)=> state.addComment)
+  const addDiet = useDietStore((state) => state.addDiet);
+  const addComment = useDietStore((state) => state.addComment);
   
   console.log('ModalDiet date:', date);
   console.log('ModalDiet type:', type);
 
   const handleSubmit = async () => {
     if (image) {
-      console.log(image);
-      date
-      type
-      const newDiet = await addDiet(type, date, image);
-      
-      // 새로운 다이어트가 성공적으로 등록되었을 때 댓글 등록
-      if (newDiet && comment) {
-        await addComment(comment, date, newDiet.dietId, 'D');
-        console.log(comment)
+      try {
+        console.log('이미지 파일:', image);
+        console.log('날짜:', date);
+        console.log('타입:', type);
+        
+        const newDiet = await registerDiet(type, date, image);
+        console.log('새로운 다이어트:', newDiet);
+
+        if (newDiet && comment) {
+          console.log('새로운 다이어트 ID:', newDiet.dietId);
+          await registerComment(comment, date, newDiet.dietId, 'D');
+          console.log('댓글 등록 성공');
+        } else {
+          console.log('새로운 다이어트가 생성되지 않았거나 댓글이 비어있음');
+        }
+
+        onClose();
+      } catch (error) {
+        console.error('다이어트 등록 중 에러 발생:', error);
       }
-      
-      onClose();
+    } else {
+      console.log('이미지가 선택되지 않음');
     }
   };
+
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };

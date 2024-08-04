@@ -18,6 +18,15 @@ const Exercise = () => {
 
   const selectedDateImg = exImg[selectedDate] || [];
   
+  const getKoreanISOString = () => {
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const kstDate = new Date(now.getTime() + kstOffset);
+
+    return kstDate.toISOString();
+  };
+
+
   const navigate = useNavigate();
 
   const handleFeedbackClick = () => {
@@ -41,7 +50,7 @@ const Exercise = () => {
             )}
         <button onClick={handleFeedbackClick}>사용자 피드백</button>
         {isModalOpen && (
-          <ModalExercise date={selectedDate} onClose={closeModal} />
+          <ModalExercise date={getKoreanISOString} onClose={closeModal} />
         )}
       </div>
       <Comments date={selectedDate} type="exercise" />

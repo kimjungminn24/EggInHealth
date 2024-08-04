@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import { userInfo, userEgg } from '../api/main';
-import { registerDiet, registerComment, updateDiet, deleteDiet } from '../api/diet';
+import { registerDiet, registerComment, updateDiet, deleteDiet, getDiet } from '../api/diet';
+import { registerExh } from '../api/exercise';
 
 
 export const useStore = create((set) => ({
@@ -40,22 +41,38 @@ export const useUserInfoStore = create((set) => ({
 },
 }))
 
-
 export const useDietStore = create((set) => ({
   diets: [],
   comments: [],
-  
-  fetchDiets: async () => {
-    // 회원 상세 완성되면 API 호출하여 다이어트 데이터를 가져오는 로직 추가
-  },
-  
-  addDiet: async (type, date, img) => {
-    const newDiet = await registerDiet(type, date, img);
-    set((state) => ({
-      diets: [...state.diets, newDiet],
-    }));
+
+  fetchDiets: async (userId, year, month, day) => {
+    try {
+      const response = await getDiet(userId, year, month, day);
+      set((state) => ({
+        diets: response.map(diet => ({
+          id: diet.id,
+          type: diet.type,
+          date: diet.date,
+          imgurl: diet.imgurl,
+          comments: diet.commentList
+        })),
+        comments: response.flatMap(diet => diet.commentList)
+      }));
+    } catch (error) {
+      console.error('Error fetching diets:', error);
+    }
   },
 
+  addDiet: async (type, date, img, userId, year, month, day) => {
+    try {
+      await registerDiet(type, date, img);
+      // 새로운 식단이 추가된 후 전체 식단 목록을 다시 가져옴
+      await getDiet(userId, year, month, day);
+    } catch (error) {
+      console.error('식단등록 에러', error);
+    }
+  },
+  
   updateDiet: async (dietId, dietType, dietDate, dietUrl) => {
     const updatedDiet = await updateDiet(dietId, dietType, dietDate, dietUrl);
     set((state) => ({
@@ -65,21 +82,34 @@ export const useDietStore = create((set) => ({
     }));
   },
 
-  deleteDiet: async (dietId) => {
+  deleteDiet: async (dietId, userId, year, month, day) => {
     await deleteDiet(dietId);
-    set((state) => ({
-      diets: state.diets.filter((diet) => diet.DietId !== dietId),
-    }));
+    // 식단 삭제 후 전체 식단 목록을 다시 가져옴
+    await getDiet(userId, year, month, day);
   },
-  
-  
-  addComment: async (content, createdAt, boardId, boardType) => {
-    const newComment = await registerComment(content, createdAt, boardId, boardType);
-    set((state) => ({
-      comments:[...state.comments, newComment]
-    }));
+
+  addComment: async (content, createdAt, boardId, boardType, userId, year, month, day) => {
+    try {
+      await registerComment(content, createdAt, boardId, boardType);
+      // 새로운 댓글이 추가된 후 전체 식단 목록을 다시 가져옴
+      await getDiet(userId, year, month, day);
+    } catch (error) {
+      console.error('댓글등록 에러', error);
+    }
   },
 }));
 
 
+export const useExStore = create((set)=>({
+  exh:[],
+  comments:[],
 
+
+  addExh : async (exhset,weight,name,time,date) => {
+    const newExh = await registerExh(exhset,weight,name,time,date)
+    set((state)=>({
+      exh:[...state.exh,newExh]
+    }))
+  }
+
+}))

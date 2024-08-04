@@ -1,6 +1,7 @@
 package com.egginhealth.controller;
 
 import com.egginhealth.data.dto.comment.CommentInputDto;
+import com.egginhealth.data.dto.diet.DietDayOutputDto;
 import com.egginhealth.data.dto.diet.DietInputDto;
 import com.egginhealth.service.DietService;
 import com.egginhealth.util.SecurityUtil;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,6 +46,11 @@ public class DietController {
     public ResponseEntity<Void> registerDelete(@PathVariable int id){
         boolean isDelete = dietService.deleteDiet(id);
         return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<DietDayOutputDto>> getDayRegister(@PathVariable int id, @RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day){
+        return new ResponseEntity<>(dietService.getDayRegister(id,year,month,day),HttpStatus.OK);
     }
 
 }

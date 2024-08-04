@@ -4,6 +4,17 @@ const BASE_URL = 'http://localhost:8080';
 
 axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
+
+
+export const getDiet = async (uid,year,month,day) => {
+  const res = await axios.get(
+    `${BASE_URL}/diet/${uid}?year=${year}&month=${month}&day=${day}`
+  );
+  console.log(res);
+  return res.data;
+}
+
+
 export const registerDiet = async (type, date, img) => {
   console.log(type,date,img)
   const formData = new FormData()
@@ -21,13 +32,6 @@ export const registerDiet = async (type, date, img) => {
     }
   );
   return res.data;
-  //  await axios({
-  //   method: 'post',
-  //   url: `${BASE_URL}/diet`,
-  //   data: formData, 
-  //   withCredentials: true,
-  //   }
-  // ); 
 }
 
 export const registerComment = async (content, createdAt, boardId, boardType) => {

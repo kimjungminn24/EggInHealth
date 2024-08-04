@@ -3,9 +3,9 @@ package com.egginhealth.handler;
 import com.egginhealth.data.dto.member.MemberDto;
 import com.egginhealth.data.dto.member.NaverMemberDto;
 import com.egginhealth.service.MemberService;
+import com.egginhealth.util.CookieUtil;
 import com.egginhealth.util.JWTUtil;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
     private final MemberService memberService;
+    private final CookieUtil cookieUtil;
 
     @Value("${JWT_EXPIRED}")
     private int jwtExpired;
@@ -43,24 +44,15 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private void writeTokenResponse(HttpServletResponse response, String token) throws IOException {
 
-        response.addCookie(createCookie("Authorization", token, true));
         String role = jwtUtil.getRole(token);
-        response.addCookie(createCookie("Role", role, false));
-        response.addCookie(createCookie("Id", jwtUtil.getId(token), false));
+
+        response.addCookie(cookieUtil.createCookie("Authorization", token, true));
+        response.addCookie(cookieUtil.createCookie("Role", role, false));
+        response.addCookie(cookieUtil.createCookie("Id", jwtUtil.getId(token), false));
 
         if (role.equals("TRAINER")) response.sendRedirect("http://localhost:5173/trainermain");
         if (role.equals("MEMBER")) response.sendRedirect("http://localhost:5173/usermain");
         if (role.equals("NONE")) response.sendRedirect("http://localhost:5173/select");
 
     }
-
-    private Cookie createCookie(String key, String value, Boolean isSecure) {
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(jwtExpired);
-        cookie.setPath("/");
-        cookie.setHttpOnly(isSecure);
-        return cookie;
-
-    }
-
 }

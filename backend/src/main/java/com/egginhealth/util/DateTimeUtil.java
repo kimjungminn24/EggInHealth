@@ -1,5 +1,7 @@
 package com.egginhealth.util;
 
+import com.egginhealth.data.dto.DateDto;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +37,12 @@ public class DateTimeUtil {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, dateFormatter);
         return localDate.atStartOfDay();
+    }
+
+
+    public static DateDto splitDate(String dateString) {
+        String[] parts = dateString.split("-");
+        return new DateDto(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
 }

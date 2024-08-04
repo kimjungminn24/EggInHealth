@@ -37,4 +37,10 @@ public class Goal {
                 .goalCommonId(goalDto.goalCommonId())
                 .build();
     }
+
+    public void updateGoal(GoalDto goalDto) {
+        this.exerciseCommonId = goalDto.exerciseCommonId();
+        this.dietCommonId = goalDto.dietCommonId();
+        this.goalCommonId = goalDto.goalCommonId();
+    }
 }

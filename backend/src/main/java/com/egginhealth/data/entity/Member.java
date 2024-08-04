@@ -107,4 +107,8 @@ public class Member {
         this.type = role;
     }
 
+    public void updateMemberTrainerBy(Member trainer) {
+        this.trainer = trainer;
+    }
+
 }

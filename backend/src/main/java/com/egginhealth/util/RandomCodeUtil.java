@@ -3,12 +3,14 @@ package com.egginhealth.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class RandomCodeUtil {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -19,6 +19,7 @@ export const registerExh = async (set, weight, name, time, date) =>{
             'Content-Type':'aplication/json'
         },
     }
+    
    ) 
    return response.data
 }

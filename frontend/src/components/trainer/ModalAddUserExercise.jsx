@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import useStore from '../../store/store_test';
+import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
+import { useExStore } from '../../store/store';
 
 
 const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
@@ -8,23 +8,34 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
-  const [exId, setExId] = useState('');
-  const [inputType, setInputType] = useState('setWeight'); // 추가된 상태
-  const addExercise = useStore((state) => state.addExh);
+  const [inputType, setInputType] = useState('setWeight');
+  const addExh = useExStore((state) => state.addExh);
 
-  const handleAddExercise = () => {
-    const newExercise = {
-      ex_id: exId,
-      exh_name: exhName,
-      ...(inputType === 'setWeight'
-        ? { exh_set: exhSet, exh_weight: exhWeight }
-        : { ex_time: exTime }),
-    };
-    // const date = new Date().toISOString().split('T')[0]; // 현재 날짜 사용
 
-    addExercise(selectedDate, newExercise);
+
+  useEffect(() => {
+    if (inputType === 'setWeight') {
+      setExTime(0);
+    } else {
+      setExTime('');
+      setExhWeight(0)
+      setExhSet(0)
+    }
+  }, [inputType]);
+
+
+  const handleAddExercise = async () => {
+    await addExh(
+      inputType === 'setWeight' ? exhSet : null,
+      inputType === 'setWeight' ? exhWeight : null,
+      exhName,
+      inputType === 'time' ? exTime : 0,
+      selectedDate
+    );
+   
     onClose();
   };
+  console.log(exhSet,exhWeight,exhName,exTime,selectedDate)
 
   return (
     <StyledModal isOpen={isOpen} onRequestClose={onClose}>

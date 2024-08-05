@@ -83,19 +83,8 @@ const RenderDaysForTrainer = ({ id, year, month }) => {
         weekDays.push(
         <div key={`${week}-${day}`} className="flex-1 flex flex-col items-center justify-center h-[33px] mt-[4px]">
             <p className="text-sm font-bold text-gray-800">{formatdayCount}</p>
-            <div className='flex flex-row gap-1 w-[18px]'>
-                {/* 임시데이터 수정필요 */}
-                {/* 데이터 렌더링 조건 반전되어 있음*/}
-                {/* {foodForTheDay && foodForTheDay.length > 0 ? '':<img src={FoodOn} alt="Food" /> }
-                {ExerForTheDay && ExerForTheDay.length > 0 ? '':<img src={ExerOn} alt="Food" /> } */}
+            <div className='flex flex-row gap-1 w-full'>
             </div>
-            {/* 임시데이터 수정필요 */}
-            {/* 데이터 렌더링 조건 반전되어 있음. 데이터 내부의 시간이 아닌 내가 지정한 값으로만 렌더링 되게 되어있음 */}
-            {/* {ExerDateForTheDay ? <div>운동 날짜</div> : <div className="w-full h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px]">
-                <div className='font-bold text-white text-[10px]'>
-                    08:00
-                    </div>
-                    </div>} */}
         </div>
         );
         dayCount++;

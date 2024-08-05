@@ -1,9 +1,9 @@
 package com.egginhealth.config;
 
+import com.egginhealth.filter.ExceptionHandlerFilter;
 import com.egginhealth.filter.JWTFilter;
 import com.egginhealth.handler.SuccessHandler;
 import com.egginhealth.service.AuthService;
-import com.egginhealth.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,9 @@ public class SecurityConfig {
 
     private final AuthService authService;
     private final SuccessHandler successHandler;
-    private final JWTUtil jwtUtil;
+
+    private final JWTFilter jwtFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Value("${FRONT_URL}")
     private String frontUrl;
@@ -48,7 +50,8 @@ public class SecurityConfig {
 
         http.cors(withDefaults());
 
-        http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login/**").permitAll()

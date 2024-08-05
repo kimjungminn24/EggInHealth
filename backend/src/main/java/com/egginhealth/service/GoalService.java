@@ -18,9 +18,12 @@ public class GoalService {
     private final MemberRepository memberRepository;
 
 
-    public void saveGoal(GoalDto goalDto, int userId) {
-        Member member = memberRepository.getOne(userId);
-        goalRepository.save(Goal.createGoal(goalDto, member));
+    public void saveGoal(GoalDto goalDto, int uid) {
+        Member member = memberRepository.findById(uid)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found for ID: " + uid));
+        Goal goal = goalRepository.findByMemberId(uid).orElse(Goal.createGoal(goalDto, member));
+        goal.updateGoal(goalDto);
+        goalRepository.save(goal);
     }
 
     public GoalDto getGoal(int uid) {

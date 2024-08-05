@@ -78,8 +78,8 @@ const UserInfo = () => {
   useEffect(() => {
     const fetchUserGoal = async () => {
       try {
-        const data = await checkGoal(userData.id);
-        setGoal(data);
+        const goalData = await checkGoal(userData.id);
+        setGoal(goalData);
       } catch (error) {
         console.error(error);
       }

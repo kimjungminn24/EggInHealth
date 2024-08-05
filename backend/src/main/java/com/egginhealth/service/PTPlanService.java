@@ -1,6 +1,6 @@
 package com.egginhealth.service;
 
-import com.egginhealth.data.dto.PtPlanDto;
+import com.egginhealth.data.dto.pt.PtPlanDto;
 import com.egginhealth.data.repository.PtPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

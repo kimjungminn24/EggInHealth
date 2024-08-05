@@ -62,8 +62,8 @@ export const fetchBodyData = async (uid, year, month) => {
   }
 };
 
-const OCR_URL = 'api/custom/v1/32884/fa4314946f5fe7e19cd6f459d2db635accc0924cbf5d4323ea46b8d52a2f089a/general';
-const secret_key = 'dmdVQ2lQYkxteHd0TVVkUmFUaGlCUEt4VWpBdVdVTmw=';
+const OCR_URL = import.meta.env.OCR_URL
+const secret_key = import.meta.env.SECRET_KEY
 
 export const uploadOCR = async (imageFile) => {
   const formData = new FormData();

@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton } from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
 
-const Comments = ({ date, type, dietData, reloadComments }) => {
+const Comments = ({ date, type, dietData, dietType,fetch }) => {
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
 
-  // dietData가 null 또는 undefined일 경우 빈 객체로 초기화하고, commentList가 없는 경우 빈 배열로 초기화합니다.
-  const comments = (dietData && dietData.commentList) ? dietData.commentList : [];
+  const extractDate = (dateTimeString) => {
+    return dateTimeString.split("T")[0];
+  };
+
+  useEffect(() => {
+    if (dietData) {
+      const filteredItems = dietData.filter(
+        (item) => extractDate(item.date) === date && item.type === dietType
+      );
+      if (filteredItems.length > 0) {
+        setComments(filteredItems[0].commentList || []);
+      } else {
+        setComments([]);
+      }
+    }
+  }, [dietData, date, dietType]);
 
   const handleAddComment = async () => {
-    if (comment.trim() && dietData.id) {
+    console.log('코멘트', dietData[0]);
+    if (comment.trim()) {
       try {
-        await registerComment(comment, date, dietData.id, type);
+        await registerComment(comment, date+`T00:00:00Z`, dietData[0].id, type);
         setComment('');
-        // 댓글 등록 후 댓글 목록을 다시 로드합니다.
-        reloadComments();
+        fetch()
       } catch (error) {
         console.error('댓글 등록 실패:', error);
       }
@@ -25,9 +40,13 @@ const Comments = ({ date, type, dietData, reloadComments }) => {
     <CommentsSection>
       <h3>댓글</h3>
       <CommentsList>
-        {comments.map((c) => (
-          <CommentItem key={c.id}>{c.content}</CommentItem>
-        ))}
+        {comments.length > 0 ? (
+          comments.map((c) => (
+            <CommentItem key={c.id}>{c.content}</CommentItem>
+          ))
+        ) : (
+          <p>댓글이 없습니다.</p>
+        )}
       </CommentsList>
       <div>
         <CommentInput value={comment} onChange={(e) => setComment(e.target.value)} />

@@ -49,25 +49,21 @@ const Button = styled.button`
 const ModalDiet = ({ date, type, onClose }) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
-  const addDiet = useDietStore((state) => state.addDiet);
-  const addComment = useDietStore((state) => state.addComment);
-  
-  console.log('ModalDiet date:', date);
-  console.log('ModalDiet type:', type);
+
+
+  const dateChange = date+'T00:00:00Z'
+
 
   const handleSubmit = async () => {
     if (image) {
       try {
-        console.log('이미지 파일:', image);
-        console.log('날짜:', date);
-        console.log('타입:', type);
-        
-        const newDiet = await registerDiet(type, date, image);
+
+        const newDiet = await registerDiet(type, dateChange, image);
         console.log('새로운 다이어트:', newDiet);
 
         if (newDiet && comment) {
           console.log('새로운 다이어트 ID:', newDiet.dietId);
-          await registerComment(comment, date, newDiet.dietId, 'D');
+          await registerComment(comment, dateChange, newDiet.dietId, 'D');
           console.log('댓글 등록 성공');
         } else {
           console.log('새로운 다이어트가 생성되지 않았거나 댓글이 비어있음');

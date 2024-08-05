@@ -10,13 +10,11 @@ export const getDiet = async (uid,year,month,day) => {
   const res = await axios.get(
     `${BASE_URL}/diet/${uid}?year=${year}&month=${month}&day=${day}`
   );
-  console.log(res);
   return res.data;
 }
 
 
 export const registerDiet = async (type, date, img) => {
-  console.log(type,date,img)
   const formData = new FormData()
   formData.append('image',img)
   formData.append('date',date);

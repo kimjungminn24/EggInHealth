@@ -15,11 +15,12 @@ import { getDiet } from "../../api/diet";
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTab, setSelectedTab] = useState("1");
+  const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const userId = useUserInfoStore((state) => state.userData);
   const [dietData, setDietData] = useState(null);
+  const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
 
   const getKrDate = () => {
     const now = new Date();
@@ -43,19 +44,18 @@ const UserDietPage = () => {
   const fetchDietData = async () => {
     if (selectedDate && userId) {
       try {
-        console.log(userId, selectedDate);
         const [year, month, day] = selectedDate.split("-");
-        const data = await getDiet(userId, year, month, day);
-        console.log("식단 조회", data); // 반환된 데이터를 콘솔에 출력
+        const data = await getDiet(userId.id, year, month, day);
         setDietData(data);
       } catch (error) {
         console.error("식단조회 실패:", error);
       }
     }
   };
+
   useEffect(() => {
     fetchDietData();
-  }, [selectedDate, userId]);
+  }, [selectedDate, userId, selectedTab, isModalOpen]);
 
   const openModal = () => {
     if (selectedDate) {
@@ -71,7 +71,6 @@ const UserDietPage = () => {
 
   const today = getKrDate();
 
-  
   return (
     <PageContainer>
       <SelectedDate
@@ -85,15 +84,16 @@ const UserDietPage = () => {
         dietData={dietData}
         selectedTab={selectedTab}
         selectedDate={selectedDate}
+        setHasImages={setHasImages} // 이미지 유무 상태 설정 함수 전달
       />
 
-      {selectedDate <= today ? (
+      {selectedDate <= today && !hasImages ? (
         <RegisterButton openModal={openModal} />
       ) : null}
 
       {isModalOpen && (
         <ModalDiet
-          date={getKoreanISOString(selectedDate)}
+          date={selectedDate}
           type={selectedTab}
           onClose={closeModal}
         />
@@ -103,7 +103,8 @@ const UserDietPage = () => {
         date={selectedDate}
         type="D"
         dietData={dietData}
-        reloadComments={fetchDietData}
+        dietType={selectedTab}
+        fetch={fetchDietData()}
       />
     </PageContainer>
   );

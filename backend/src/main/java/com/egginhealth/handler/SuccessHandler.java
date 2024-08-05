@@ -55,7 +55,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.addCookie(cookieUtil.createCookie("Id", jwtUtil.getId(token), false));
 
         if (role.equals("TRAINER")) response.sendRedirect(frontUrl + "/trainermain");
-        if (role.equals("MEMBER")) response.sendRedirect(frontUrl + "/membermain");
+        if (role.equals("MEMBER")) response.sendRedirect(frontUrl + "/usermain");
         if (role.equals("NONE")) response.sendRedirect(frontUrl + "/select");
 
     }

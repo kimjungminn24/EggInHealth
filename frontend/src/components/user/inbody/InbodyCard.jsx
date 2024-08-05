@@ -25,7 +25,11 @@ const StatLabel = styled.div`
 
 const StatChange = styled.div`
   font-size: 14px;
-  color: ${props => (props.change.startsWith('+') ? '#4CAF50' : '#F44336')};
+  color: ${props => {
+    const changeValue = props.change;
+    const changeString = typeof changeValue === 'number' ? (changeValue >= 0 ? `+${changeValue}` : `${changeValue}`) : changeValue;
+    return changeString.startsWith('+') ? '#4CAF50' : '#F44336';
+  }};
 `;
 
 const InbodyCard = ({ stats, selectedStat, setSelectedStat }) => {
@@ -39,7 +43,9 @@ const InbodyCard = ({ stats, selectedStat, setSelectedStat }) => {
         >
           <StatValue>{stat.value}</StatValue>
           <StatLabel>{stat.label}</StatLabel>
-          <StatChange change={stat.change}>{stat.change}</StatChange>
+          <StatChange change={stat.change}>
+            {typeof stat.change === 'number' ? (stat.change >= 0 ? `+${stat.change}` : `${stat.change}`) : stat.change}
+          </StatChange>
         </StatBox>
       ))}
     </>

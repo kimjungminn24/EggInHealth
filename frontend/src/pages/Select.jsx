@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import EggSelector from './EggSelector';
@@ -6,18 +6,31 @@ import SurveyPage1 from '../components/user/survey/UserSurvey1';
 import SurveyPage2 from '../components/user/survey/UserSurvey2';
 import SurveyPage3 from '../components/user/survey/UserSurvey3';
 import SurveyPage4 from '../components/user/survey/UserSurvey4';
-import { updateUserRole } from '../api/api';
+import { updateUserRole, updateUserGole, updateUserInfo } from '../api/survey';
+import { useStore } from '../store/store';  
 
 const Select = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [activeImage, setActiveImage] = useState(null);
+  const { userType } = useStore((state) => state);
+  const [currentStep, setCurrentStep] = useState(userType === 'MEMBER' ? 1 : 0);
+  const [activeImage, setActiveImage] = useState(userType || null);
+  const [exerciseCommonId, setexerciseCommonId] = useState(null);
+  const [dietCommonId, setdietCommonId] = useState(null);
+  const [goalCommonId, setgoalCommonId] = useState(null);
+  const [height, setheight] = useState(null);
+  const [age, setage] = useState(null);
+
   const totalSteps = 5;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userType) {
+      setActiveImage(userType);
+    }
+  }, [userType]);
 
   const handleNext = async () => {
     if (currentStep === 0) {
       try {
-        // activeImage가 'TRAINER' 또는 'MEMBER'일 경우에만 역할 업데이트
         if (activeImage) {
           await updateUserRole(activeImage);
         }
@@ -31,6 +44,8 @@ const Select = () => {
         console.error("Failed to update user role:", error);
       }
     } else if (currentStep === 4) {
+      await updateUserGole(exerciseCommonId, dietCommonId, goalCommonId);
+      await updateUserInfo(height, age);
       navigate('/usermain');
     } else if (currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
@@ -62,15 +77,15 @@ const Select = () => {
             onTrainerClick={handleTrainerImageClick}
             onUserClick={handleUserImageClick}
           />
-        );
+        );  
       case 1:
-        return <SurveyPage1 />;
+        return <SurveyPage1 setexerciseCommonId={setexerciseCommonId} />
       case 2:
-        return <SurveyPage2 />;
+        return <SurveyPage2 setdietCommonId={setdietCommonId}/>;
       case 3:
-        return <SurveyPage3 />;
+        return <SurveyPage3 setgoalCommonId={setgoalCommonId}/>;
       case 4:
-        return <SurveyPage4 />;
+        return <SurveyPage4 setweight={setheight} setage={setage} />;
       default:
         return null;
     }
@@ -135,15 +150,16 @@ const ProgressBar = styled.div`
   overflow: hidden;
 `;
 
-const ProgressFill = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['currentStep', 'totalSteps'].includes(prop),
-})`
+const ProgressFill = styled.div`
   background-color: #FFD66B;
   height: 100%;
-  width: ${({ currentStep, totalSteps }) => ((currentStep + 1) / totalSteps) * 100}%;
+  width: ${({ $currentStep, $totalSteps }) => {
+    if ($totalSteps <= 0) return '0%';
+    const percentage = (($currentStep + 1) / $totalSteps) * 100;
+    return `${Math.min(percentage, 100)}%`; 
+  }};
   transition: width 0.4s ease;
   position: absolute;
-  top: 0;
   left: 0;
 `;
 

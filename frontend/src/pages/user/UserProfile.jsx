@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonSwap from '../../components/common/button/ButtonSwap';
 import Profile from '../../assets/profile.png';
-import UserInfo from '../../components/user/info/UserInfo'
-import InbodyPage from '../../components/user/inbody/InbodyPage'
-import InbodyBtn from "../../assets/inbodybutton.png"
-import EditBtn from "../../assets/editbutton.png"
-import ModalInbody from './../../components/user/inbody/ModalInbody';
-
+import UserInfo from '../../components/user/info/UserInfo';
+import InbodyPage from '../../components/user/inbody/InbodyPage';
+import ModalInbody from '../../components/user/inbody/ModalInbody';
+import ButtonInbodyEdit from'../../components/common/button/ButtonInbodyEdit'
+import ButtonProfileEdit from'../../components/common/button/ButtonProfileEdit'
 
 const Container = styled.div`
   width: 100%;
@@ -39,11 +38,12 @@ const ProfilePic = styled.img`
   margin: 0 auto 20px;
   margin-left: 100px;
 `;
+
 const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
@@ -61,22 +61,22 @@ const UserProfile = () => {
     <Container>
       <ProfileContainer>
         <ProfilePic src={Profile} alt="Profile" />
-        {activeTab ==='내정보'? 
-        (<img src={EditBtn} alt="EditBtn" />):
-        (<img src={InbodyBtn} alt="InbodyBtn" onClick={openModal} />)
-        }
-      
-        <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal}/>
+        {activeTab === '내정보' ? (
+          <ButtonProfileEdit />
+        ) : (
+          <ButtonInbodyEdit openModal={openModal} />
+        )}
+        <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
       </ProfileContainer>
       <ButtonGroupContainer>
         <ButtonGroup>
-          <ButtonSwap 
+          <ButtonSwap
             active={activeTab === '내정보'}
             onClick={() => setActiveTab('내정보')}
           >
             내정보
           </ButtonSwap>
-          <ButtonSwap 
+          <ButtonSwap
             active={activeTab === '체성분'}
             onClick={() => setActiveTab('체성분')}
           >

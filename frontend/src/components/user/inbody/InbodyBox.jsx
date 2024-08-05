@@ -20,13 +20,12 @@ const DataItem = styled.div`
 const DataTitle = styled.div`
   font-size: 16px;
   color: #333;
-  flex: 1;
 `;
 
 const DataDetails = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 0.4;
 `;
 
 const DataValue = styled.div`
@@ -36,12 +35,16 @@ const DataValue = styled.div`
 
 const DataChange = styled.div`
   font-size: 14px;
-  color: ${props => (props.change.startsWith('+') ? '#4CAF50' : '#F44336')};
   margin-top: 5px;
+  color: ${props => {
+    const changeValue = props.change;
+    const changeString = typeof changeValue === 'number' ? (changeValue >= 0 ? `+${changeValue}` : `${changeValue}`) : changeValue;
+    return changeString.startsWith('+') ? '#4CAF50' : '#F44336';
+  }};
 `;
 
 const ProgressBarContainer = styled.div`
-  flex: 2;
+  flex: 1;
   height: 10px;
   background-color: #e0e0e0;
   border-radius: 5px;
@@ -62,13 +65,13 @@ const InbodyBox = ({ dataList }) => {
           <DataDetails>
             <DataTitle>{item.label}</DataTitle>
             <DataValue>{item.value}</DataValue>
-            <DataChange change={item.change}>{item.change}</DataChange>
+            <DataChange change={item.change}>
+              {typeof item.change === 'number' ? (item.change >= 0 ? `+${item.change}` : `${item.change}`) : item.change}
+            </DataChange>
           </DataDetails>
-         
           <ProgressBarContainer>
             <ProgressBar width={item.progress} />
           </ProgressBarContainer>
-       
         </DataItem>
       ))}
     </DataList>

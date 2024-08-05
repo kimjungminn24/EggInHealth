@@ -1,20 +1,20 @@
 package com.egginhealth.controller;
 
 
+import com.egginhealth.data.dto.member.MemberDetailDto;
+import com.egginhealth.data.dto.member.MemberRoleAndIdDto;
+import com.egginhealth.data.dto.member.MemberRoleDto;
 import com.egginhealth.data.dto.member.MemberSurveyDto;
 import com.egginhealth.service.MemberService;
+import com.egginhealth.util.CookieUtil;
 import com.egginhealth.util.SecurityUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
 
+    private final CookieUtil cookieUtil;
     private final MemberService memberService;
 
     @PatchMapping
@@ -33,12 +34,25 @@ public class MemberController {
     }
 
     @PatchMapping("/role")
-    public ResponseEntity<Void> patchMemberRoleBy(@RequestBody Map<String, String> role) {
+    public ResponseEntity<Void> patchMemberRoleBy(@RequestBody MemberRoleDto roleDto, HttpServletResponse response) {
+        memberService.patchMemberRoleBy(roleDto.role(), SecurityUtil.getUserId());
 
-        memberService.patchMemberRoleBy(role.get("role"), SecurityUtil.getUserId());
+        //TODO : 프론트 수정시 삭제
+        response.addCookie(cookieUtil.createCookie("Role", roleDto.role(), false));
+
+        response.addCookie(cookieUtil.createCookieAccessToken(roleDto.role()));
+        SecurityUtil.updateRoleInSecurityContext(roleDto.role());
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
+    @GetMapping("/{uid}")
+    public ResponseEntity<MemberDetailDto> getMemberDetail(@PathVariable("uid") int id) {
+        return new ResponseEntity<>(memberService.getMemberDetail(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<MemberRoleAndIdDto> getMemberDetail() {
+        return new ResponseEntity<>(memberService.getMemberRoleAndId(), HttpStatus.OK);
+    }
 
 }

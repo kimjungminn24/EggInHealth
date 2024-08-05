@@ -1,10 +1,43 @@
 services:
   frontend:
     build: ./frontend
+    networks:
+      - mynetwork
     ports:
       - 5173:5173
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
 
   backend:
     build: ./backend
+    networks:
+      - mynetwork
     ports:
-      - 8080:8080
+      - 8000:8000
+    environment:
+      - MYSQL_URL=${MYSQL_URL}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRED=${JWT_EXPIRED}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
+      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
+      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
+      - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      - SERVER_PORT=${SERVER_PORT}
+      - FRONT_URL=${FRONT_URL}
+      - OPEN_VIDU_URL=${OPEN_VIDU_URL}
+      - VITE_NAVER_URL=${VITE_NAVER_URL}
+
+
+
+networks:
+  mynetwork:
+    external: true

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import InbodyCard from './InbodyCard';
 import InbodyGraph from './InbodyGraph';
@@ -27,64 +27,130 @@ const Score = styled.div`
   margin-bottom: 30px;
 `;
 
-const profileData = {
-  profilePic: 'profile_pic_url', 
-  stats: [
-    { label: '체중(kg)', value: '76.4', change: '+0.9', graph: '체중 그래프' },
-    { label: '골격근량(kg)', value: '35.4', change: '+1.2', graph: '골격근량 그래프' },
-    { label: '체지방률(%)', value: '16.4', change: '-1.9', graph: '체지방률 그래프' },
-  ],
-  dataList: [
-    { label: '체중', value: '76.4kg', progress: '50%', change: '+0.9kg' },
-    { label: '골격근량', value: '35.4kg', progress: '50%', change: '+1.2kg' },
-    { label: '체지방률', value: '16.4%', progress: '50%', change: '-1.9%' },
-    { label: 'BMI', value: '23.4', progress: '50%', change: '+0.2' },
-    { label: '체지방량', value: '12.3kg', progress: '50%', change: '-0.8kg' },
-  ],
-  score: 80,
-};
-
-const weightData = [
-  { date: '2023-07-10', value: 74.0 },
-  { date: '2023-07-11', value: 74.5 },
-  { date: '2023-07-12', value: 75.0 },
-  { date: '2023-07-13', value: 75.5 },
-  { date: '2023-07-14', value: 76.0 },
-  { date: '2023-07-15', value: 76.2 },
-  { date: '2023-07-18', value: 76.4 },
-];
-
-const muscleData = [
-  { date: '2023-07-10', value: 34.0 },
-  { date: '2023-07-11', value: 34.2 },
-  { date: '2023-07-12', value: 34.6 },
-  { date: '2023-07-13', value: 34.9 },
-  { date: '2023-07-14', value: 35.2 },
-  { date: '2023-07-15', value: 35.3 },
-  { date: '2023-07-18', value: 35.4 },
-];
-
-const fatData = [
-  { date: '2023-07-10', value: 18.5 },
-  { date: '2023-07-11', value: 18.3 },
-  { date: '2023-07-12', value: 18.0 },
-  { date: '2023-07-13', value: 17.7 },
-  { date: '2023-07-14', value: 17.3 },
-  { date: '2023-07-15', value: 16.9 },
-  { date: '2023-07-18', value: 16.4 },
+const data = [
+  {
+    "id": 1,
+    "height": 100.20,
+    "weight": 58.00,
+    "muscle": 25.00,
+    "bmi": 20.00,
+    "compositionScore": 39.00,
+    "imageUrl": "",
+    "fat": 20.00,
+    "fatPercentage": 20.00,
+    "createdAt": "2024-08-01T11:39:26.249707"
+  },
+  {
+    "id": 2,
+    "height": 100.20,
+    "weight": 68.00,
+    "muscle": 35.00,
+    "bmi": 20.00,
+    "compositionScore": 49.00,
+    "imageUrl": "",
+    "fat": 30.00,
+    "fatPercentage": 30.00,
+    "createdAt": "2024-08-02T11:39:26.249707"
+  },
+  {
+    "id": 3,
+    "height": 100.20,
+    "weight": 78.00,
+    "muscle": 45.00,
+    "bmi": 20.00,
+    "compositionScore": 59.00,
+    "imageUrl": "",
+    "fat": 40.00,
+    "fatPercentage": 40.00,
+    "createdAt": "2024-08-03T11:39:26.249707"
+  },
+  {
+    "id": 4,
+    "height": 100.20,
+    "weight": 88.00,
+    "muscle": 55.00,
+    "bmi": 20.00,
+    "compositionScore": 69.00,
+    "imageUrl": "",
+    "fat": 50.00,
+    "fatPercentage": 50.00,
+    "createdAt": "2024-08-04T11:39:26.249707" 
+  },
+  {
+    "id": 5,
+    "height": 111.20,
+    "weight": 98.00,
+    "muscle": 65.00,
+    "bmi": 20.00,
+    "compositionScore": 79.00,
+    "imageUrl": "",
+    "fat": 60.00,
+    "fatPercentage": 60.00,
+    "createdAt": "2024-08-05T11:39:26.249707" 
+  }
 ];
 
 const InbodyPage = () => {
-  const [selectedStat, setSelectedStat] = useState(profileData.stats[0].graph);
+  const [selectedStat, setSelectedStat] = useState('체중 그래프');
+  const [profileData, setProfileData] = useState({ stats: [], dataList: [], score: 0 });
+  const [weightData, setWeightData] = useState([]);
+  const [muscleData, setMuscleData] = useState([]);
+  const [fatPercentageData, setFatPercentageData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const weightData = [];
+      const muscleData = [];
+      const fatPercentageData = [];
+
+      data.forEach((entry) => {
+        const date = entry.createdAt.substring(0, 10);
+        weightData.push({ date, value: entry.weight });
+        muscleData.push({ date, value: entry.muscle });
+        fatPercentageData.push({ date, value: entry.fatPercentage });
+      });
+
+      const lastData = data[data.length - 1];
+      const prevData = data[data.length - 2] || lastData;
+ 
+      setProfileData({
+        stats: [
+          { label: '체중(kg)', value: lastData.weight, change: lastData.weight - prevData.weight, graph: '체중 그래프' },
+          { label: '골격근량(kg)', value: lastData.muscle, change: lastData.muscle - prevData.muscle, graph: '골격근량 그래프' },
+          { label: '체지방률(%)', value: lastData.fatPercentage, change: lastData.fatPercentage - prevData.fatPercentage, graph: '체지방률 그래프' },
+        ],
+        dataList: [
+          { label: '체중', value: lastData.weight+"kg", progress: '50%', change: lastData.weight - prevData.weight },
+          { label: '골격근량', value: lastData.muscle+"kg", progress: '50%', change: lastData.muscle - prevData.muscle },
+          { label: '체지방률', value: lastData.fatPercentage+"%", progress: '50%', change: lastData.fatPercentage - prevData.fatPercentage },
+          { label: 'BMI', value: lastData.bmi+"kg/m²", progress: '50%', change: lastData.bmi - prevData.bmi },
+          { label: '체지방량', value: lastData.fat+'kg', progress: '50%', change: lastData.fat - prevData.fat },
+        ],
+        score: lastData.compositionScore,
+      });
+
+      setWeightData(weightData);
+      setMuscleData(muscleData);
+      setFatPercentageData(fatPercentageData);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   const getData = (stat) => {
-    switch(stat) {
+    switch (stat) {
       case '체중 그래프':
         return weightData;
       case '골격근량 그래프':
         return muscleData;
       case '체지방률 그래프':
-        return fatData;
+        return fatPercentageData;
       default:
         return [];
     }

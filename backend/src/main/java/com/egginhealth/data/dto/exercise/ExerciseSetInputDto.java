@@ -1,6 +1,9 @@
 package com.egginhealth.data.dto.exercise;
 
-public record ExerciseInputDto(
+import lombok.Builder;
+
+@Builder
+public record ExerciseSetInputDto(
         int set,
         int weight,
         int time,

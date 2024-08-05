@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 const ButtonSurvey = ({ lst, isSelected, onClick }) => {
   return (
-    <Surveybtn onClick={onClick} active={isSelected}>
-      <img src={lst.logo} alt="" />
+    <Surveybtn onClick={onClick} active={isSelected ? 'true' : 'false'}>
+      <img src={lst.logo} alt={lst.title} />
       <p>{lst.title}</p>
       <p>{lst.content}</p>
     </Surveybtn>
@@ -22,7 +22,7 @@ const Surveybtn = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 3px solid ${props => (props.active ? '#FFD66B' : 'transparent')};
+  border: 3px solid ${props => (props.active === 'true' ? '#FFD66B' : 'transparent')};
 
   img {
     max-width: 100%;

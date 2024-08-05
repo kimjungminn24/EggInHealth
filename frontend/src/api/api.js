@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080';
 
-export const addDiet = async (date, mealType, image, comment) => {
+export const registerDiet = async (date, mealType, image, comment) => {
   try {
     const formData = new FormData();
     formData.append('date', date);
@@ -21,7 +21,7 @@ export const addDiet = async (date, mealType, image, comment) => {
   }
 };
 
-export const addDietComment = async (dietId, comment) => {
+export const registerDietComment = async (dietId, comment) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/diet/comment`, { dietId, comment });
     return response.data;
@@ -52,7 +52,7 @@ export const updateUserRole = async (role) => {
   console.log(role);
   try {
     const response = await axios.patch(
-      `${API_BASE_URL}/api/user/role`, 
+      `${API_BASE_URL}/user/role`, 
       { role }, 
       {
         headers: {

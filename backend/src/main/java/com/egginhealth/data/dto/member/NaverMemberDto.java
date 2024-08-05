@@ -20,11 +20,12 @@ public class NaverMemberDto {
 
 
     public static NaverMemberDto from(Map<String, Object> response) {
+
         return NaverMemberDto.builder()
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
-                .imgUrl((String) response.get("profile_image"))
-                .phoneNumber((String) response.get("mobile"))
+                .imgUrl((String) response.get("imgUrl"))
+                .phoneNumber((String) response.get("phoneNumber"))
                 .role(Role.NONE)
                 .provider("naver")
                 .build();

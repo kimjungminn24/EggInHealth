@@ -60,9 +60,9 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tr_id")
-    private Member member;
+    private Member trainer;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "trainer")
     private List<Member> trMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
@@ -78,7 +78,12 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<PtPlan> ptPlanList = new ArrayList<>();
 
-    
+    @OneToMany(mappedBy = "member")
+    private List<PtLog> ptLogList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> commentList = new ArrayList<>();
+
     @OneToOne(mappedBy = "member")
     private Goal goal;
 
@@ -100,6 +105,10 @@ public class Member {
 
     public void updateMemberRoleBy(Role role) {
         this.type = role;
+    }
+
+    public void updateMemberTrainerBy(Member trainer) {
+        this.trainer = trainer;
     }
 
 }

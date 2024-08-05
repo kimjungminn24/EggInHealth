@@ -9,6 +9,7 @@ public record BodyCompositionInputDto(
         BigDecimal weight,
         BigDecimal muscle,
         BigDecimal fat,
+        BigDecimal fatPercentage,
         BigDecimal bmi,
         BigDecimal compositionScore,
         MultipartFile image,

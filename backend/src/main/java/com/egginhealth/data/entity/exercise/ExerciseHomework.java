@@ -2,6 +2,7 @@ package com.egginhealth.data.entity.exercise;
 
 
 import com.egginhealth.data.entity.Member;
+import com.egginhealth.util.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,9 +33,9 @@ public class ExerciseHomework {
     @OneToMany(mappedBy = "exerciseHomework")
     private List<ExerciseSet> exerciseSetList = new ArrayList<>();
 
-    public static ExerciseHomework createExerciseHomework(LocalDateTime date, Member member) {
+    public static ExerciseHomework createExerciseHomework(Member member, String date) {
         return ExerciseHomework.builder()
-                .date(date)
+                .date(DateTimeUtil.convertToLocalDateTime(date))
                 .member(member)
                 .build();
     }

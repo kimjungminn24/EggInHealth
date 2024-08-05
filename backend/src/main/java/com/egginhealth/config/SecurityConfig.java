@@ -1,9 +1,9 @@
 package com.egginhealth.config;
 
+import com.egginhealth.filter.ExceptionHandlerFilter;
 import com.egginhealth.filter.JWTFilter;
 import com.egginhealth.handler.SuccessHandler;
 import com.egginhealth.service.AuthService;
-import com.egginhealth.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,9 @@ public class SecurityConfig {
 
     private final AuthService authService;
     private final SuccessHandler successHandler;
-    private final JWTUtil jwtUtil;
+
+    private final JWTFilter jwtFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthService authSerivce) throws Exception {
@@ -32,7 +34,8 @@ public class SecurityConfig {
 
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-        http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login/**").permitAll()

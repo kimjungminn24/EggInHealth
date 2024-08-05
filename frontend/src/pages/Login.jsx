@@ -28,7 +28,7 @@ const NaverButton = styled.img`
 function Login() {
     const BASE_URL = import.meta.env.VITE_NAVER_URL;
     const naverClick = () => {
-        window.location.href = BASE_URL; 
+        window.location.href = BASE_URL ; 
     };
 
     return (

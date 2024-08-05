@@ -11,6 +11,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     @Query("SELECT co FROM Comment co WHERE co.boardId = :boardId AND co.boardType = :boardType ORDER BY co.createdAt ASC")
-    List<Comment> findByDietCommentToDay(int boardId, String boardType);
+    List<Comment> findCommentsByBoardIdAndBoardType(int boardId, String boardType);
 
 }

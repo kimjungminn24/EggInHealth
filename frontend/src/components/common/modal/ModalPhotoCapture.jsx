@@ -73,8 +73,7 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const { userId } = useStore(state => ({ userId: state.userId }))
-  console.log(userId)
-  
+
   useEffect(() => {
     if (isOpen) {
       startCamera()

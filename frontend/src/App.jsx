@@ -14,6 +14,7 @@ import UserExercise from "./pages/user/UserExercise";
 import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
+import TrainerHeader from './components/trainer/TrainerHeader';
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerProfile from './pages/trainer/TrainerProfile';
@@ -21,11 +22,29 @@ import TrainerUserList from './pages/trainer/TrainerUserList';
 
 
 import UserFeedback from "./pages/user/UserFeedback"
+import { useStore } from './store/store.js';
 function App() {
+    const userType = useStore(state => state.userType);
+    const renderHeader = ()=>{
+      switch(userType){
+        case 'MEMBER':
+          return <UserHeader/>
+        case 'TRAINER':
+          return <TrainerHeader/>
+      }
+    }
+    const renderNavbar = ()=>{
+      switch(userType){
+        case 'MEMBER':
+          return <UserNavbar/>
+        case 'TRAINER':
+          return <TrainerNavbar/>
+      }
+    }
 
     return (
         <div className='mobile'>
-            <div className='header'><UserHeader/></div>
+            <div className='header'>{renderHeader()}</div>
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/select" element={<Select />} />
@@ -41,16 +60,11 @@ function App() {
                 <Route path="/trainerprofile" element={<TrainerProfile />} />
                 <Route path="/userfeedback" element={<UserFeedback />} />
             </Routes>
-            <div className='nav'><UserNavbar/></div>
-            {/* <div className='nav'><TrainerNavbar/></div> */}
+            <div className='nav'>{renderNavbar()}</div>
         </div>
 
   
   );
 }
-
-const Home = () => {
-  return <h2>홈</h2>;
-};
 
 export default App;

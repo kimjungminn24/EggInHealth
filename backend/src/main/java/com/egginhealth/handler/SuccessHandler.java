@@ -28,6 +28,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${JWT_EXPIRED}")
     private int jwtExpired;
 
+    @Value("${FRONT_URL}")
+    private String frontUrl;
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -50,9 +54,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.addCookie(cookieUtil.createCookie("Role", role, false));
         response.addCookie(cookieUtil.createCookie("Id", jwtUtil.getId(token), false));
 
-        if (role.equals("TRAINER")) response.sendRedirect("http://localhost:5173/trainermain");
-        if (role.equals("MEMBER")) response.sendRedirect("http://localhost:5173/usermain");
-        if (role.equals("NONE")) response.sendRedirect("http://localhost:5173/select");
+        if (role.equals("TRAINER")) response.sendRedirect(frontUrl + "/trainermain");
+        if (role.equals("MEMBER")) response.sendRedirect(frontUrl + "/membermain");
+        if (role.equals("NONE")) response.sendRedirect(frontUrl + "/select");
 
     }
 }

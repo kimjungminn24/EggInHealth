@@ -1,12 +1,10 @@
 package com.egginhealth.service;
 
-import com.egginhealth.data.dto.member.MemberDetailDto;
-import com.egginhealth.data.dto.member.MemberDto;
-import com.egginhealth.data.dto.member.MemberSurveyDto;
-import com.egginhealth.data.dto.member.NaverMemberDto;
+import com.egginhealth.data.dto.member.*;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.Role;
 import com.egginhealth.data.repository.MemberRepository;
+import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +39,18 @@ public class MemberService {
 
     }
 
-    public MemberDetailDto getMemberDetail(int memberId){
+    public MemberDetailDto getMemberDetail(int memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new RuntimeException("not found Member"));
+                .orElseThrow(() -> new RuntimeException("not found Member"));
 
-        return MemberDetailDto.from(member,member.getTrainer());
+        return MemberDetailDto.from(member, member.getTrainer());
+    }
+
+    public MemberRoleAndIdDto getMemberRoleAndId() {
+        int memberID = SecurityUtil.getUserId();
+        Member member = memberRepository.findById(memberID)
+                .orElseThrow(() -> new IllegalArgumentException("not found Member"));
+        return MemberRoleAndIdDto.from(member.getType().name(), member.getId());
     }
 
 

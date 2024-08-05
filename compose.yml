@@ -34,6 +34,7 @@ services:
       - SERVER_PORT=${SERVER_PORT}
       - FRONT_URL=${FRONT_URL}
       - OPEN_VIDU_URL=${OPEN_VIDU_URL}
+      - VITE_NAVER_URL=${VITE_NAVER_URL}
 
 
 

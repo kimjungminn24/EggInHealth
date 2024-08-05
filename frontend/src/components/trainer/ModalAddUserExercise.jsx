@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
 import { useExStore } from '../../store/store';
+import { registerExh } from '../../api/exercise';
 
 
 const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
@@ -9,7 +10,7 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
   const [inputType, setInputType] = useState('setWeight');
-  const addExh = useExStore((state) => state.addExh);
+  // const addExh = useExStore((state) => state.addExh);
 
 
 
@@ -25,12 +26,13 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
 
 
   const handleAddExercise = async () => {
-    await addExh(
+    await registerExh(
       inputType === 'setWeight' ? exhSet : null,
       inputType === 'setWeight' ? exhWeight : null,
       exhName,
       inputType === 'time' ? exTime : 0,
       selectedDate
+      
     );
    
     onClose();

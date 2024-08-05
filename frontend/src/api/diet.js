@@ -7,11 +7,10 @@ axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
 
 export const getDiet = async (uid,year,month,day) => {
-  console.log(uid,year,month,day)
+  
   const res = await axios.get(
     `${BASE_URL}/diet/${uid}?year=${year}&month=${month}&day=${day}`
   );
-  console.log(res)
   return res.data;
 }
 
@@ -52,15 +51,14 @@ export const registerComment = async (content, createdAt, boardId, boardType) =>
   return response.data;
 };
 
-export const updateDiet = async (dietId, dietType, dietDate, dietUrl) => {
+export const updateDiet = async (type,date,img) => {
+  const formData = new FormData()
+  formData.append('image',img)
+  formData.append('date',date);
+  formData.append('type',type)
   const response = await axios.patch(
     `${BASE_URL}/api/diet`,
-    {
-      DietId: dietId,
-      DietType: dietType,
-      DietDate: dietDate,
-      DietUrl: dietUrl,
-    },
+    formData,
     {
       headers: {
         'Content-Type': 'application/json',

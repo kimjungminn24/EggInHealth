@@ -10,7 +10,7 @@ import RegisterButton from "../../components/common/button/RegisterButton";
 import SelectedDate from "../../components/common/SelectedDate";
 import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
-import { useDietStore, useStore, useUserInfoStore } from "../../store/store";
+import {  useStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
 
 const UserDietPage = () => {
@@ -21,6 +21,8 @@ const UserDietPage = () => {
   const userId = useStore((state) => state.userId);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
+
+
   const getKrDate = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000;
@@ -103,7 +105,7 @@ const UserDietPage = () => {
         type="D"
         dietData={dietData}
         dietType={selectedTab}
-        fetch={fetchDietData()}
+        fetchDiet={fetchDietData()}
       />
     </PageContainer>
   );

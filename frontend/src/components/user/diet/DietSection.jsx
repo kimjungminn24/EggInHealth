@@ -7,7 +7,6 @@ const DietSection = ({ dietData, selectedTab, selectedDate, setHasImages }) => {
   const extractDate = (dateTimeString) => {
     return dateTimeString.split("T")[0];
   };
-  console.log(dietData)
   useEffect(() => {
     if (dietData) {
       const filtered = dietData.filter(

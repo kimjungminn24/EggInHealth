@@ -49,9 +49,11 @@ spring:
           accessKey: ${S3_ACCESS_KEY}
           secretKey: ${S3_SECRET_ACCESS_KEY}
 
+  error:
+    printStackTrace: false
 
 server:
-  port: 8080
+  port: ${SERVER_PORT}
   ssl:
     enabled: false
 

@@ -21,7 +21,6 @@ def upload_video():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        print(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         return jsonify({'result': 'File uploaded successfully', 'filename': filename}), 201
     return jsonify({'error': 'Invalid file type'}), 400

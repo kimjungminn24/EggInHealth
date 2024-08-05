@@ -29,7 +29,7 @@ public class BodyCompositionDataService {
 
     public void save(BodyCompositionInputDto bodyCompositionInputDto) throws IOException {
         Member member = memberRepository.findById(bodyCompositionInputDto.memberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
         String url = s3Service.upload(bodyCompositionInputDto.image(), DIR_NAME);
 

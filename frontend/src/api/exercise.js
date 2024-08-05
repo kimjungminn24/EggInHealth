@@ -23,3 +23,13 @@ export const registerExh = async (set, weight, name, time, date) =>{
    ) 
    return response.data
 }
+
+
+
+export const getExh = async (uid,year,month,day) => {
+    const res = await axios.get(
+      `${BASE_URL}/exercise/${uid}?year=${year}&month=${month}&day=${day}`
+    );
+    return res.data;
+  }
+  

@@ -44,13 +44,49 @@ const CloseButton = styled.button`
     background-color: #FFB02E;
   }
 `
-
+const Content = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
 
 const ModalCheckPTcount = ({ onClose }) => {  
   const { userId } = useStore(state => ({ userId: state.userId }))
-  const {userPtCount,setuserPtCount} = useState() 
-
+  const [userPtCount,setuserPtCount] = useState() 
+  const data = [
+    {
+      id: 1,
+      change: 10,
+      remainingPt: 90,
+      updatedAt: '2023-08-04 12:00:00.000000'
+    },
+    {
+      id: 2,
+      change: -5,
+      remainingPt: 85,
+      updatedAt: '2023-08-04 12:05:00.000000'
+    },
+    {
+      id: 3,
+      change: 15,
+      remainingPt: 100,
+      updatedAt: '2023-08-04 12:10:00.000000'
+    },
+    {
+      id: 4,
+      change: -10,
+      remainingPt: 90,
+      updatedAt: '2023-08-04 12:15:00.000000'
+    },
+    {
+      id: 5,
+      change: 20,
+      remainingPt: 110,
+      updatedAt: '2023-08-04 12:20:00.000000'
+    }
+  ];
   useEffect(() =>{
+
     const fetchPtCount = async () =>{
       try { 
       const ptCountData =  await checkPtLog(userId)
@@ -60,13 +96,28 @@ const ModalCheckPTcount = ({ onClose }) => {
     }}
     fetchPtCount()
   },[userId])
-  console.log(userPtCount);
 
 
   return(
     <ModalOverlay>
     <ModalContent>
-      <p>기록이 적힐 모달.</p>
+
+    {data.length > 0 ? (
+  <>
+    <p>날짜 횟수</p>
+    {data.map((i, idx) => (
+      <Content key={idx}>
+        {i.updatedAt.substring(0, 10)}
+        {i.change}
+        {i.remainingPt}
+      </Content>
+    ))}
+  </>
+) : (
+  <p>스케줄을 등록해주세요</p>
+)}
+
+      
       <CloseButton onClick={onClose}>닫기</CloseButton>
     </ModalContent>
   </ModalOverlay>

@@ -94,9 +94,7 @@ const DropdownItem = styled.div`
 `;
 
 const PlusButton = styled.img`
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  margin-left: 300px;
   cursor: pointer;
 `;
 

@@ -23,7 +23,6 @@ public class GoalService {
                 .orElseThrow(() -> new IllegalArgumentException("Member not found for ID: " + uid));
         Goal goal = goalRepository.findByMemberId(uid).orElse(Goal.createGoal(goalDto, member));
         goal.updateGoal(goalDto);
-
     }
 
     public GoalDto getGoal(int uid) {

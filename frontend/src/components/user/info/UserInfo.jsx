@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserInfoStore } from "../../../store/store";
 import styled from "styled-components";
 import ButtonDisconnect from '../../common/button/ButtonDisconnect';
 import ButtonCheckPTcount from '../../common/button/ButtonCheckPTcount';
-import ModalSchedule from '../../common/modal/ModalSchedule'; 
+import ModalSchedule from '../../common/modal/ModalSchedule';
 import phone from '../../../assets/info/phone.png';
 import trainer from '../../../assets/info/trainer.png';
 import schedule from '../../../assets/info/schedule.png';
@@ -16,9 +16,21 @@ import gole4 from '../../../assets/info/gole4.png';
 import one from '../../../assets/info/one.png';
 import two from '../../../assets/info/two.png';
 import three from '../../../assets/info/three.png';
+import { checkGoal } from '../../../api/user';
 
-const gole = { 1: gole1, 2: gole2, 3: gole3, 4: gole4 };
-const medal = { 1: one, 2: two, 3: three };
+
+const gole = {
+  1: { img: gole1, title: '다이어트' },
+  2: { img: gole2, title: '근육량증가' },
+  3: { img: gole3, title: '체력증진' },
+  4: { img: gole4, title: '몸매관리' }
+};
+
+const medal = {
+  1: { img: one, title: '상' },
+  2: { img: two, title: '중' },
+  3: { img: three, title: '하' }
+};
 
 const InfoBox = styled.div`
   display: flex;
@@ -49,6 +61,11 @@ const InfoContainer = styled.div`
 const UserInfo = () => {
   const { userData } = useUserInfoStore();
   const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
+  const [userGoal, setGoal] = useState({
+    exerciseCommonId: 0,
+    dietCommonId: 0,
+    goalCommonId: 0,
+  });
 
   const handleScheduleClick = () => {
     setModalScheduleOpen(true);
@@ -58,7 +75,17 @@ const UserInfo = () => {
     setModalScheduleOpen(false);
   };
 
-  console.log(userData);
+  useEffect(() => {
+    const fetchUserGoal = async () => {
+      try {
+        const goalData = await checkGoal(userData.id);
+        setGoal(goalData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserGoal();
+  }, [userData]);
 
   return (
     <InfoContainer>
@@ -81,18 +108,36 @@ const UserInfo = () => {
       </InfoBox>
       <InfoBox>
         <p>운동목표</p>
-        <img src={gole[userData.gole] || gole1} alt="goal" />
-        <InfoText>{userData.gole || '없음'}</InfoText>
+        {userGoal.exerciseCommonId === 0 ? (
+          <InfoText>를 등록해주세요</InfoText>
+        ) : (
+          <>
+            <img src={gole[userGoal.exerciseCommonId].img} alt="goal" />
+            <InfoText>{gole[userGoal.exerciseCommonId].title}</InfoText>
+          </>
+        )}
       </InfoBox>
       <InfoBox>
         <p>운동강도</p>
-        <img src={medal[userData.medal] || one} alt="medal" />
-        <InfoText>{userData.medal || '없음'}</InfoText>
+        {userGoal.goalCommonId === 0 ? (
+          <InfoText>를 등록해주세요</InfoText>
+        ) : (
+          <>
+            <img src={medal[userGoal.goalCommonId].img} alt="medal" />
+            <InfoText>{medal[userGoal.goalCommonId].title}</InfoText>
+          </>
+        )}
       </InfoBox>
       <InfoBox>
         <p>식단조절</p>
-        <img src={medal[userData.medal] || one} alt="medal" />
-        <InfoText>{userData.PTCount || '0'}</InfoText>
+        {userGoal.dietCommonId === 0 ? (
+          <InfoText>를 등록해주세요</InfoText>
+        ) : (
+          <>
+            <img src={medal[userGoal.dietCommonId].img} alt="medal" />
+            <InfoText>{medal[userGoal.dietCommonId].title}</InfoText>
+          </>
+        )}
       </InfoBox>
       <InfoBox>
         <p>PT남은 횟수</p>

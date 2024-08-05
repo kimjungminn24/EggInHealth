@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react'
-import Modal from 'react-modal'
-import styled from 'styled-components'
-import ButtonCapture from '../button/ButtonCapture'
-import ButtonCloseCamera from '../button/ButtonCloseCamera'
-import { uploadInbodyData } from '../../../api/inbody'
-import { useStore } from '../../../store/store'
+import React, { useRef, useState, useEffect } from 'react';
+import Modal from 'react-modal';
+import styled from 'styled-components';
+import ButtonCapture from '../button/ButtonCapture';
+import ButtonCloseCamera from '../button/ButtonCloseCamera';
+import { uploadInbodyData, uploadOCR } from '../../../api/inbody';
+import { useStore } from '../../../store/store';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -23,7 +23,7 @@ const StyledModal = styled(Modal)`
   outline: none;
 `;
 
-const ModalContent = styled.div`
+  const ModalContent = styled.div`
   text-align: center;
   position: relative;
   width: 100%;
@@ -68,60 +68,61 @@ const ButtonContainer = styled.div`
 `;
 
 const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
-  const [stream, setStream] = useState(null)
-  const [photo, setPhoto] = useState(null)
-  const videoRef = useRef(null)
-  const canvasRef = useRef(null)
-  const { userId } = useStore(state => ({ userId: state.userId }))
-  console.log(userId)
-  
+  const [stream, setStream] = useState(null);
+  const [photo, setPhoto] = useState(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const { userId } = useStore(state => ({ userId: state.userId }));
+
   useEffect(() => {
     if (isOpen) {
-      startCamera()
+      startCamera();
     } else {
-      stopCamera()
+      stopCamera();
     }
-    return stopCamera 
-  }, [isOpen])
+    return stopCamera;
+  }, [isOpen]);
 
   const startCamera = async () => {
     try {
-      const userStream = await navigator.mediaDevices.getUserMedia({ video: true })
-      setStream(userStream)
+      const userStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStream(userStream);
       if (videoRef.current) {
-        videoRef.current.srcObject = userStream
-        videoRef.current.play()
+        videoRef.current.srcObject = userStream;
+        videoRef.current.play();
       }
     } catch (error) {
-      console.error("Error accessing camera:", error)
+      console.error("Error accessing camera:", error);
     }
-  }
+  };
 
   const stopCamera = () => {
     if (stream) {
-      const tracks = stream.getTracks()
-      tracks.forEach(track => track.stop())
-      setStream(null)
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
+      setStream(null);
     }
-  }
+  };
 
   const capturePhoto = () => {
     if (videoRef.current && canvasRef.current) {
-      const context = canvasRef.current.getContext('2d')
-      canvasRef.current.width = videoRef.current.videoWidth
-      canvasRef.current.height = videoRef.current.videoHeight
-      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height)
+      const context = canvasRef.current.getContext('2d');
+      canvasRef.current.width = videoRef.current.videoWidth;
+      canvasRef.current.height = videoRef.current.videoHeight;
+      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
 
-      const dataUrl = canvasRef.current.toDataURL('image/png')
-      
-      setPhoto(dataUrl)
-      uploadPhoto(dataUrl)
+      const dataUrl = canvasRef.current.toDataURL('image/png');
+
+      setPhoto(dataUrl);
+      uploadPhoto(dataUrl);
     }
-  }
+  };
 
   const uploadPhoto = async (dataUrl) => {
     try {
-      const file = dataURLtoFile(dataUrl, 'captured-photo.png')
+      const file = dataURLtoFile(dataUrl, 'captured-photo.png');
+      const ocrResult = await uploadOCR(file);
+
       const data = {
         height: '0',
         weight: '0',
@@ -131,31 +132,29 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
         compositionScore: '0',
         memberId: userId,
         imageFile: file,
-      }
-      console.log(data)
-      
-      await uploadInbodyData(data)
+      };
 
-      onRequestClose() 
+      await uploadInbodyData(data)
+      onRequestClose();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const dataURLtoFile = (dataUrl, filename) => {
-    const arr = dataUrl.split(',')
+    const arr = dataUrl.split(',');
     if (arr.length !== 2) {
-      throw new Error('Invalid data URL format')
+      throw new Error('Invalid data URL format');
     }
-    const mime = arr[0].match(/:(.*?);/)[1]
-    const bstr = atob(arr[1])
-    let n = bstr.length
-    const u8arr = new Uint8Array(n)
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
     while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, { type: mime })
-  }
+    return new File([u8arr], filename, { type: mime });
+  };
 
   return (
     <StyledModal isOpen={isOpen} onRequestClose={onRequestClose} ariaHideApp={false}>
@@ -176,7 +175,7 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
         </ButtonContainer>
       </ModalContent>
     </StyledModal>
-  )
-}
+  );
+};
 
-export default PhotoCaptureModal
+export default PhotoCaptureModal;

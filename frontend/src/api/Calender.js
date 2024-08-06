@@ -56,3 +56,20 @@ export const CheckFood = async (id, year, month, day) => {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
 };
+
+export const GetMembers = async (year, month) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/pt/plan?year=${year}&month=${month}`, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+  }
+};

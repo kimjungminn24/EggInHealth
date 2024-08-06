@@ -7,6 +7,7 @@ public record ExerciseSetInputDto(
         int set,
         int weight,
         int time,
+        int ref,
         String name,
         String date
 ) {

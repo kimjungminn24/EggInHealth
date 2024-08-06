@@ -6,6 +6,7 @@ import com.egginhealth.data.entity.exercise.ExerciseHomework;
 import com.egginhealth.data.entity.exercise.ExerciseReport;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public record ExerciseDto(
         Integer trainerId,
         Integer memberId,
         String reportImgUrl,
+        LocalDateTime date,
         List<ExerciseSetDto> sets,
         List<CommentDto> comments
 ) {
@@ -24,6 +26,7 @@ public record ExerciseDto(
 
         // TODO : 트레이너 연결 API 구현 후  예외처리 변경
         return ExerciseDto.builder()
+                .date(homework == null ? null : homework.getDate())
                 .boardId(homework == null ? null : homework.getId())
                 .trainerId(member.getTrainer() == null ? null : member.getTrainer().getId())
                 .memberId(member.getId())

@@ -10,11 +10,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface PtPlanRepository extends JpaRepository<PtPlan,Integer> {
+public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
 
-    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC" )
+    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC")
     List<PtPlan> findByMemberId(int memberId, int year, int month);
 
-    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND pp.date > :specificDate ORDER BY pp.date ASC" )
+    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND pp.date > :specificDate ORDER BY pp.date ASC")
     List<PtPlan> findByMemberTopNow(int memberId, LocalDateTime specificDate, Pageable pageable);
+
+    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.trainer.id = :trainerId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC")
+    List<PtPlan> findByTrainerMemberId(int trainerId, int year, int month);
 }

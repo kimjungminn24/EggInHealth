@@ -41,11 +41,18 @@ public class MemberService {
 
     }
 
-    public MemberDetailDto getMemberDetail(int memberId){
+    public MemberDetailDto getMemberDetail(int memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new RuntimeException("not found Member"));
+                .orElseThrow(() -> new RuntimeException("not found Member"));
 
-        return MemberDetailDto.from(member,member.getTrainer());
+        return MemberDetailDto.from(member, member.getTrainer());
+    }
+
+    public boolean isMember(int memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("not found Member"));
+
+        return member.getType() == Role.MEMBER;
     }
 
 

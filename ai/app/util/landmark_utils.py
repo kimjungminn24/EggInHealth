@@ -9,13 +9,14 @@ def get_mediapipe_pose(
         min_detection_confidence=0.5,
         min_tracking_confidence=0.5
 ):
-    return mp.solutions.pose.Pose(
+    pose = mp.solutions.pose.Pose(
         static_image_mode=static_image_mode,
         model_complexity=model_complexity,
         smooth_landmarks=smooth_landmarks,
         min_detection_confidence=min_detection_confidence,
         min_tracking_confidence=min_tracking_confidence
     )
+    return pose
 
 
 def get_landmark_array(pose_landmark, key, frame_width, frame_height):

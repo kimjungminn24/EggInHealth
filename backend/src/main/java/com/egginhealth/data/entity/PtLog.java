@@ -30,4 +30,13 @@ public class PtLog {
     @JoinColumn(name = "mem_id")
     private Member member;
 
+    public static PtLog createPtLog(int change, Member member, int remainingPt) {
+        PtLog ptLog = new PtLog();
+        ptLog.change = change;
+        ptLog.remainingPt = remainingPt;
+        ptLog.member = member;
+        ptLog.updatedAt = LocalDateTime.now();
+        return ptLog;
+    }
+
 }

@@ -5,6 +5,7 @@ import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.Role;
 import com.egginhealth.data.repository.MemberRepository;
 import com.egginhealth.util.SecurityUtil;
+import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,13 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("not found Member"));
 
         return MemberDetailDto.from(member, member.getTrainer());
+    }
+
+    public boolean isMember(int memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("not found Member"));
+
+        return member.getType() == Role.MEMBER;
     }
 
     public MemberRoleAndIdDto getMemberRoleAndId() {

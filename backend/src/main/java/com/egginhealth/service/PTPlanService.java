@@ -2,7 +2,6 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.pt.PtLogUpdateDto;
 import com.egginhealth.data.dto.pt.PtPlanDto;
-import com.egginhealth.data.entity.PtPlan;
 import com.egginhealth.data.repository.PtPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -41,11 +40,12 @@ public class PTPlanService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(30);
 
-        List<PtPlan> list = ptPlanRepository.findPtPlanOlderThan(start, now);
+        ptPlanRepository.findPtPlanOlderThan(start, now)
+                .filter(list -> !list.isEmpty())
+                .ifPresent(list -> list.stream()
+                        .map(plan -> PtLogUpdateDto.from(plan.getMember().getId(), -1))
+                        .forEach(ptLogService::updatePtLog));
 
-        list.stream()
-                .map(plan -> PtLogUpdateDto.from(plan.getMember().getId(), -1))
-                .forEach(ptLogUpdateDto -> ptLogService.updatePtLog(ptLogUpdateDto));
     }
 
 }

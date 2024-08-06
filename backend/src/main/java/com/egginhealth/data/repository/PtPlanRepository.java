@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
@@ -20,5 +21,5 @@ public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
     List<PtPlan> findByMemberTopNow(int memberId, LocalDateTime specificDate, Pageable pageable);
 
     @Query("SELECT pp FROM PtPlan pp WHERE pp.date >= :start AND pp.date < :now")
-    List<PtPlan> findPtPlanOlderThan(@Param("start") LocalDateTime start, @Param("now") LocalDateTime now);
+    Optional<List<PtPlan>> findPtPlanOlderThan(@Param("start") LocalDateTime start, @Param("now") LocalDateTime now);
 }

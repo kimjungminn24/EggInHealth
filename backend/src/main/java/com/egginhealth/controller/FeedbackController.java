@@ -24,23 +24,23 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
     @PostMapping
-    public ResponseEntity<Map<String,Integer>> register(@ModelAttribute FeedbackInputDto inputData) throws IOException{
+    public ResponseEntity<Map<String, Integer>> register(@ModelAttribute FeedbackInputDto inputData) throws IOException {
         return new ResponseEntity<>(feedbackService.save(inputData, SecurityUtil.getUserId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<FeedbackDto>> getFeedbackList(@PathVariable int id){
+    public ResponseEntity<List<FeedbackDto>> getFeedbackList(@PathVariable("id") int id) {
         return new ResponseEntity<>(feedbackService.getFeedbackList(id), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> registerUpdate(@PathVariable int id, @ModelAttribute FeedbackUpdateDto updateData) throws IOException{
-        feedbackService.updateFeedback(updateData,id);
+    public ResponseEntity<Void> registerUpdate(@PathVariable("id") int id, @ModelAttribute FeedbackUpdateDto updateData) throws IOException {
+        feedbackService.updateFeedback(updateData, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> registerDelete(@PathVariable int id){
+    public ResponseEntity<Void> registerDelete(@PathVariable("id") int id) {
         boolean isDelete = feedbackService.deleteFeedback(id);
         return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

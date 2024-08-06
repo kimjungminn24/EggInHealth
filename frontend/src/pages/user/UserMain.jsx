@@ -43,7 +43,6 @@ const UserMain = () => {
     const today = new Date();
     const formatMonth = `${today.getMonth() + 1}`;
     const formatYear = `${today.getFullYear()}`;
-
     userUpdate(userId, userType);
     fetchData(userId, formatMonth, formatYear);
 

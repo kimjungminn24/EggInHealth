@@ -2,6 +2,7 @@ package com.egginhealth.controller;
 
 
 import com.egginhealth.data.dto.member.MemberDetailDto;
+import com.egginhealth.data.dto.member.MemberRoleAndIdDto;
 import com.egginhealth.data.dto.member.MemberRoleDto;
 import com.egginhealth.data.dto.member.MemberSurveyDto;
 import com.egginhealth.service.MemberService;
@@ -49,5 +50,9 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMemberDetail(id), HttpStatus.OK);
     }
 
+    @GetMapping("/role")
+    public ResponseEntity<MemberRoleAndIdDto> getMemberDetail() {
+        return new ResponseEntity<>(memberService.getMemberRoleAndId(), HttpStatus.OK);
+    }
 
 }

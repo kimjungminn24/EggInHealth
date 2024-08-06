@@ -7,19 +7,18 @@ import ExerciseList from "./../../components/user/exercise/ExerciseList";
 import { ImagePreview } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
 import RegisterButton from './../../components/common/button/RegisterButton';
-import {useStore} from './../../store/store';
+import { useStore } from './../../store/store';
 import { getExercise } from './../../api/exercise';
+import { ExerciseImg } from './../../components/user/exercise/ExerciseImg';
 
 const Exercise = () => {
-  const exImg = useStore((state) => state.exImg);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const userId = useStore((state)=>state.userId)
-  // const selectedDateImg = exImg[selectedDate] || [];
-  const [exData,setExData] = useState(null)
-
+  const userId = useStore((state) => state.userId);
+  const [exData, setExData] = useState([]);
+  const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
 
   const getKoreanISOString = () => {
     const now = new Date();
@@ -29,35 +28,29 @@ const Exercise = () => {
     return kstDate.toISOString();
   };
 
-
-
   const fetchExData = async () => {
-    if (selectedDate && userId){
+    if (selectedDate && userId) {
       console.log(selectedDate);
       try {
-        const [year,month,day] = selectedDate.split('-')
-        const data = await getExercise(userId,year,month,day)
-        console.log(data)
+        const [year, month, day] = selectedDate.split('-');
+        const data = await getExercise(userId, year, month, day);
+        console.log(data);
         setExData(data);
       } catch (error) {
-        console.error('운동조회 실패', error)
+        console.error('운동 조회 실패', error);
       }
     }
-  }
+  };
 
   useEffect(() => {
     fetchExData();
-  }, [selectedDate, userId,ExerciseList]);
-
-
+  }, [selectedDate, userId]);
 
   const navigate = useNavigate();
 
   const handleFeedbackClick = () => {
     navigate("/userfeedback");
   };
-
-  const selectedDateImg = exImg[selectedDate] || [];
 
   return (
     <div>
@@ -68,19 +61,17 @@ const Exercise = () => {
       />
       <ExerciseList selectedDate={selectedDate} exData={exData} />
       <div>
-        {selectedDateImg.length > 0
-          ? selectedDateImg.map((img, index) => (
-              <ImagePreview key={index} src={img} alt={`exercise-${index}`} />
-            ))
-          : selectedDate === new Date().toISOString().split("T")[0] && (
-              <RegisterButton openModal={openModal} />
-            )}
+        <ExerciseImg exData={exData} selectedDate={selectedDate} setHasImages={setHasImages} />
+        {selectedDate <= getKoreanISOString() && !hasImages ? (
+          <RegisterButton openModal={openModal} />
+        ) : null}
+
         <button onClick={handleFeedbackClick}>사용자 피드백</button>
         {isModalOpen && (
           <ModalExercise date={selectedDate} onClose={closeModal} />
         )}
       </div>
-      <Comments date={selectedDate} type="E" exData={exData} fetchEx={fetchExData()} />
+      <Comments date={selectedDate} type="E" exData={exData} fetchEx={fetchExData} />
     </div>
   );
 };

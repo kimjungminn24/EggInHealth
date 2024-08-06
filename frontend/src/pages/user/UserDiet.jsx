@@ -10,7 +10,7 @@ import RegisterButton from "../../components/common/button/RegisterButton";
 import SelectedDate from "../../components/common/SelectedDate";
 import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
-import {  useStore } from "../../store/store";
+import { useStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
 
 const UserDietPage = () => {
@@ -22,12 +22,11 @@ const UserDietPage = () => {
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
 
-
   const getKrDate = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000;
     const kstTime = new Date(now.getTime() + kstOffset);
-    
+
     const year = kstTime.getUTCFullYear();
     const month = String(kstTime.getUTCMonth() + 1).padStart(2, "0");
     const day = String(kstTime.getUTCDate()).padStart(2, "0");
@@ -44,7 +43,7 @@ const UserDietPage = () => {
 
   const fetchDietData = async () => {
     if (selectedDate && userId) {
-      console.log(selectedDate,userId)
+      console.log(userId)
       try {
         const [year, month, day] = selectedDate.split("-");
         const data = await getDiet(userId, year, month, day);
@@ -106,7 +105,7 @@ const UserDietPage = () => {
         type="D"
         dietData={dietData}
         dietType={selectedTab}
-        fetchDiet={fetchDietData()}
+        fetchDiet={fetchDietData} // 함수 자체를 전달
       />
     </PageContainer>
   );

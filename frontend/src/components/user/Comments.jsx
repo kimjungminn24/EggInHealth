@@ -18,10 +18,8 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         ).flatMap(item => item.commentList || [])
       : [];
 
-    const filteredExerciseComments = exData
-      ? exData.filter(
-          (item) => extractDate(item.date) === date
-        ).flatMap(item => item.comments || [])
+    const filteredExerciseComments = exData && exData.date === date
+       ? (exData.comments || [])
       : [];
 
     setComments([...filteredDietComments, ...filteredExerciseComments]);
@@ -34,7 +32,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
           await registerComment(comment, date + `T00:00:00Z`, dietData[0].id, type);
           fetchDiet();
         } else if (type === 'E') { // 운동 댓글
-          await registerExComment(comment, exData[0].boardId,type);
+          await registerExComment(comment, exData.boardId,type);
           fetchExData();
         }
         setComment('');

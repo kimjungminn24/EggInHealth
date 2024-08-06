@@ -20,8 +20,8 @@ const FeedbackModal = ({ isOpen, onRequestClose, name ,date}) => {
   const handleFileUpload = () => {
     if (file) {
         const record = URL.createObjectURL(file);
-        const created_at = date
-        registerFeedback(motionSimilarity,memo,exerciseId,record,created_at)
+        const createdAt = date
+        registerFeedback(motionSimilarity,memo,exerciseId,record,createdAt)
       onRequestClose();
       setExerciseId('');
       setMemo('');

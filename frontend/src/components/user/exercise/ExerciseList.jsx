@@ -5,7 +5,7 @@ import { DataTable } from '../../common/DataTable';
 
 const ExerciseList = ({ selectedDate, exData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log(exData.sets)
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -20,7 +20,7 @@ const ExerciseList = ({ selectedDate, exData }) => {
     },
     {
       text: 'REP',
-      value: 'rep'
+      value: 'ref'
     },
     {
       text: 'WEIGHT',
@@ -59,7 +59,7 @@ const ExerciseList = ({ selectedDate, exData }) => {
       {selectedDate && exData ? (
         <div>
           <DataTable headers={timeHeaders}>
-            {exData.sets.filter(set => set.time > 0).map((set, index) => (
+            {exData.sets?.filter(set => set.time > 0).map((set, index) => (
               <tr key={index}>
                 <td>{set.name}</td>
                 <td>{set.time}</td>
@@ -67,11 +67,11 @@ const ExerciseList = ({ selectedDate, exData }) => {
             ))}
           </DataTable>
           <DataTable headers={headers}>
-            {exData.sets.filter(set => set.set > 0).map((set, index) => (
+            {exData.sets?.filter(set => set.set > 0).map((set, index) => (
               <tr key={index}>
                 <td>{set.name}</td>
                 <td>{set.set}</td>
-                <td>{set.rep}</td>
+                <td>{set.ref}</td>
                 <td>{set.weight}</td>
               </tr>
             ))}

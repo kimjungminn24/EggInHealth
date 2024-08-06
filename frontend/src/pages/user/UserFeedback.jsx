@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import useStore from '../../store/store_test';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
 import VideoModal from '../../components/user/feedback/ModalFbVid';
 import FeedbackModal from '../../components/user/feedback/ModalFeedback';
 import FeedbackList from '../../components/user/feedback/FeedBackList';
-import { useUserInfoStore ,useSotre} from '../../store/store';
+import { useUserInfoStore ,useStore} from '../../store/store';
 import { fetchFeedback, registerFeedback } from '../../api/exercise';
 
 const UserFeedback = () => {
@@ -55,7 +54,7 @@ const UserFeedback = () => {
     const minutes = String(kstDate.getUTCMinutes()).padStart(2, '0');
     const seconds = String(kstDate.getUTCSeconds()).padStart(2, '0');
   
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
 
   

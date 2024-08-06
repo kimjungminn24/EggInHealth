@@ -48,6 +48,7 @@ public class DietController {
 
     @GetMapping("/{uid}")
     public ResponseEntity<List<DietDayOutputDto>> getDayRegister(@PathVariable("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day) {
+        System.out.println(id+" "+month+" "+day+" "+year);
         return new ResponseEntity<>(dietService.getDayRegister(id, year, month, day), HttpStatus.OK);
     }
 

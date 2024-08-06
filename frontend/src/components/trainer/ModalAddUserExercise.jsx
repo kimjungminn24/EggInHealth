@@ -9,6 +9,7 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
+  const [exhRep, setExhRep] = useState('');
   const [inputType, setInputType] = useState('setWeight');
   // const addExh = useExStore((state) => state.addExh);
 
@@ -21,6 +22,7 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
       setExTime('');
       setExhWeight(0)
       setExhSet(0)
+      setExhRep(0)
     }
   }, [inputType]);
 
@@ -29,6 +31,7 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
     await registerExh(
       inputType === 'setWeight' ? exhSet : null,
       inputType === 'setWeight' ? exhWeight : null,
+      inputType === 'setWeight' ? exhRep : null,
       exhName,
       inputType === 'time' ? exTime : 0,
       selectedDate
@@ -61,6 +64,12 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
               value={exhSet}
               onChange={(e) => setExhSet(e.target.value)}
             />
+              <input
+                type="text"
+                placeholder="횟수"
+                value={exhRep}
+                onChange={(e) => setExhRep(e.target.value)}
+              />
             <input
               type="text"
               placeholder="무게"

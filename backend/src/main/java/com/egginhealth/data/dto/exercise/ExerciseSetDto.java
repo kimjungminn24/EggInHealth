@@ -10,6 +10,7 @@ public record ExerciseSetDto(
         int set,
         int weight,
         int time,
+        int ref,
         String name
 ) {
 
@@ -18,6 +19,7 @@ public record ExerciseSetDto(
                 .setId(exerciseSet.getId())
                 .set(exerciseSet.getSet())
                 .weight(exerciseSet.getWeight())
+                .ref(exerciseSet.getRef())
                 .time(exerciseSet.getTime())
                 .name(exerciseSet.getName())
                 .build();

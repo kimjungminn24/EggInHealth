@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
@@ -13,10 +13,21 @@ const UserFeedback = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [feedback,setFeedback] = useState([])
   const userId = useStore((state) => state.userId);  
   const userData = useUserInfoStore(state=> state.userData)
-  const feedback = fetchFeedback(userId)
+  
+ const fetchFeedbackData= async() => {
+  if (userId){
+    const data = await fetchFeedback(userId)
+    setFeedback(data)
+    console.log(data);
+  }
+ } 
+
+ useEffect(()=>{
+  fetchFeedbackData()
+ },[selectedDate])
 
   const openModal = (video) => {
     setSelectedVideo(video);

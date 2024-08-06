@@ -5,7 +5,6 @@ import { DataTable } from '../../common/DataTable';
 
 const ExerciseList = ({ selectedDate, exData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(exData.sets)
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -40,7 +39,6 @@ const ExerciseList = ({ selectedDate, exData }) => {
   ];
 
   const today = new Date().toISOString().split('T')[0];
-  console.log(today);
 
   const getKoreanISOString = () => {
     const now = new Date();

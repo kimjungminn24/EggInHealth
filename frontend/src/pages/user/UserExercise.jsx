@@ -30,11 +30,9 @@ const Exercise = () => {
 
   const fetchExData = async () => {
     if (selectedDate && userId) {
-      console.log(selectedDate);
       try {
         const [year, month, day] = selectedDate.split('-');
         const data = await getExercise(userId, year, month, day);
-        console.log(data);
         setExData(data);
       } catch (error) {
         console.error('운동 조회 실패', error);
@@ -44,7 +42,7 @@ const Exercise = () => {
 
   useEffect(() => {
     fetchExData();
-  }, [selectedDate, userId]);
+  }, [selectedDate, userId,ExerciseImg,isModalOpen]);
 
   const navigate = useNavigate();
 
@@ -71,7 +69,7 @@ const Exercise = () => {
           <ModalExercise date={selectedDate} onClose={closeModal} />
         )}
       </div>
-      <Comments date={selectedDate} type="E" exData={exData} fetchEx={fetchExData} />
+      <Comments date={selectedDate} type="E" exData={exData} fetchExData={fetchExData} />
     </div>
   );
 };

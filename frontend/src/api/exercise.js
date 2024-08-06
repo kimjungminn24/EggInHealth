@@ -5,7 +5,6 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
 export const getExercise = async (uid, year, month, day) => {
-  console.log(uid, year, month, day);
   const res = await axios.get(
     `${BASE_URL}/exercise/${uid}?year=${year}&month=${month}&day=${day}`
   );

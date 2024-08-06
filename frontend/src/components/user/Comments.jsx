@@ -8,7 +8,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
   const [comments, setComments] = useState([]);
 
   const extractDate = (dateTimeString) => {
-    return dateTimeString.split("T")[0];
+    return dateTimeString?.split("T")[0];
   };
 
   useEffect(() => {
@@ -18,12 +18,12 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         ).flatMap(item => item.commentList || [])
       : [];
 
-    const filteredExerciseComments = exData && exData.date === date
+    const filteredExerciseComments = exData && extractDate(exData.date) === date
        ? (exData.comments || [])
       : [];
 
     setComments([...filteredDietComments, ...filteredExerciseComments]);
-  }, [dietData, exData, date, dietType]);
+  }, [dietData, exData, date, dietType,type]);
 
   const handleAddComment = async () => {
     if (comment.trim()) {

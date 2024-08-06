@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton } from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
-import { registerExerciseComment } from '../../api/exercise'; // 운동 댓글 등록 API
+import { registerExComment } from '../../api/exercise'; // 운동 댓글 등록 API
 
 const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExData }) => {
   const [comment, setComment] = useState('');
@@ -20,7 +20,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
 
     const filteredExerciseComments = exData
       ? exData.filter(
-          (item) => extractDate(item.createdAt) === date
+          (item) => extractDate(item.date) === date
         ).flatMap(item => item.comments || [])
       : [];
 
@@ -34,7 +34,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
           await registerComment(comment, date + `T00:00:00Z`, dietData[0].id, type);
           fetchDiet();
         } else if (type === 'E') { // 운동 댓글
-          await registerExerciseComment(comment, exData[0].boardId,type);
+          await registerExComment(comment, exData[0].boardId,type);
           fetchExData();
         }
         setComment('');

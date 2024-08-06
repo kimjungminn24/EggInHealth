@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import useStore from '../../../store/store_test';
+import {  registerFeedback } from './../../../api/exercise';
 
-const FeedbackModal = ({ isOpen, onRequestClose, onSubmit }) => {
-    const addFeedback = useStore((state)=>state.addFeedback)
+const FeedbackModal = ({ isOpen, onRequestClose, name ,date}) => {
   const [exerciseId, setExerciseId] = useState('');
   const [memo, setMemo] = useState('');
   const [file, setFile] = useState(null);
@@ -15,12 +15,13 @@ const FeedbackModal = ({ isOpen, onRequestClose, onSubmit }) => {
     }
   };
 
+  const motionSimilarity = 0 
+
   const handleFileUpload = () => {
     if (file) {
-        const videoUrl = URL.createObjectURL(file);
-        const created_at = new Date().toISOString();
-        const mem_id = '강동형'
-        addFeedback(mem_id,videoUrl,created_at,memo,false,exerciseId)
+        const record = URL.createObjectURL(file);
+        const created_at = date
+        registerFeedback(motionSimilarity,memo,exerciseId,record,created_at)
       onRequestClose();
       setExerciseId('');
       setMemo('');

@@ -65,6 +65,7 @@ const ModalDiet = ({ date, type, onClose }) => {
         } 
 
         onClose();
+        console.log('다이어트 등록')
       } catch (error) {
         console.error('다이어트 등록 중 에러 발생:', error);
       }

@@ -44,6 +44,7 @@ const UserDietPage = () => {
 
   const fetchDietData = async () => {
     if (selectedDate && userId) {
+      console.log(selectedDate,userId)
       try {
         const [year, month, day] = selectedDate.split("-");
         const data = await getDiet(userId, year, month, day);

@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ModalDisconnect from '../modal/ModalDisconnect';
+import ModalConnect from '../modal/ModalConnect';
 
-const DisconnectButton = styled.button`
-  background-color: #FF6B6B;
+const ConnectButton = styled.button`
+  background-color: #FFD66B;
+  color: white;
   color: white;
   border: none;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 12px;
+  margin-left: 20px;
   cursor: pointer;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &:hover {
-    background-color: #FF5757;
+    background-color: #ffca28;
   }
 
 `;
 
-const ButtonDisconnect = () => {
+const ButtonConnect = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = () => {;
     setModalOpen(true);
   };
 
@@ -30,10 +32,10 @@ const ButtonDisconnect = () => {
 
   return (
     <>
-      <DisconnectButton onClick={handleClick}>연결끊기</DisconnectButton>
-      {isModalOpen && <ModalDisconnect onClose={handleClose} />}
+      <ConnectButton onClick={handleClick}>연결하기</ConnectButton>
+      {isModalOpen && <ModalConnect isOpen={isModalOpen}  onRequestClose={handleClose} />}
     </>
   );
 };
 
-export default ButtonDisconnect;
+export default ButtonConnect;

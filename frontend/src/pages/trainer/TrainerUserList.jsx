@@ -4,6 +4,7 @@ import profile from '../../assets/profile.png';
 import foodIcon from '../../assets/food.png';
 import exerciseIcon from '../../assets/exercise.png'; 
 import videoIcon from '../../assets/feedback.png'; 
+import arrow from '../../assets/arrow.png'
 
 const Container = styled.div`
   padding: 20px;
@@ -14,6 +15,7 @@ const Container = styled.div`
 
 const UserList = styled.div`
   margin-top: 20px;
+
 `;
 
 const UserItem = styled.div`
@@ -23,8 +25,11 @@ const UserItem = styled.div`
   background-color: #fff;
   padding: 15px;
   margin: 10px 0;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -35,8 +40,6 @@ const UserInfo = styled.div`
 const UserImage = styled.img`
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
   margin-right: 15px;
 `;
 
@@ -63,16 +66,18 @@ const UserStats = styled.div`
 const StatIcon = styled.img`
   width: 40px;
   height: 40px;
-  margin: 0 5px;
 `;
 
+const Arrow = styled.img`
+  
+`
 const users = [
-  { id: 1, name: '이하윤', remaining: 25, img: 'path/to/image1.jpg' },
-  { id: 2, name: '김지윤', remaining: 619, img: 'path/to/image2.jpg' },
-  { id: 3, name: '신지윤', remaining: 33, img: 'path/to/image3.jpg' },
-  { id: 4, name: '한유진', remaining: 258, img: 'path/to/image4.jpg' },
-  { id: 5, name: '최하은', remaining: 467, img: 'path/to/image5.jpg' },
-  { id: 6, name: '강민주', remaining: 865, img: 'path/to/image6.jpg' },
+  { id: 1, name: '김민주', remaining: 25, img: 'path/to/image1.jpg' },
+  { id: 2, name: '김정민', remaining: 619, img: 'path/to/image2.jpg' },
+  { id: 3, name: '이지영', remaining: 33, img: 'path/to/image3.jpg' },
+  { id: 4, name: '고충원', remaining: 258, img: 'path/to/image4.jpg' },
+  { id: 5, name: '강동형', remaining: 467, img: 'path/to/image5.jpg' },
+  { id: 6, name: '신재건', remaining: 865, img: 'path/to/image6.jpg' },
 ];
 
 const TrainerUserList = () => {
@@ -94,6 +99,7 @@ const TrainerUserList = () => {
               <StatIcon src={exerciseIcon} alt="운동 아이콘" />
               <StatIcon src={videoIcon} alt="영상 아이콘" />
             </UserStats>
+            <Arrow src={arrow}/>
           </UserItem>
         ))}
       </UserList>

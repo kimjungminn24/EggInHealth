@@ -7,14 +7,16 @@ const ConfirmButton = styled.button`
   color: white;
   border: none;
   border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 20px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   outline: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-left: 100px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background-color: #FFC947;

@@ -37,13 +37,14 @@ const ButtonContainer = styled.div`
 `;
 
 const ConnectButton = styled.button`
-  background-color: #FC5555;
+  background-color: #FF6B6B;
   color: white;
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
   margin-right: 10px;
   font-size: 14px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
   cursor: pointer;
   outline: none;
@@ -52,9 +53,6 @@ const ConnectButton = styled.button`
     background-color: #FF4C4C;
   }
 
-  &:active {
-    background-color: #FF3F3F;
-  }
 `;
 
 const CancelButton = styled.button`
@@ -67,13 +65,10 @@ const CancelButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   outline: none;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background-color: #FFC94C;
-  }
-
-  &:active {
-    background-color: #FFB32C;
   }
 `;
 

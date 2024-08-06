@@ -17,7 +17,7 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  background-color: #fff;
+  background-color: #f8f8f8;
   border-radius: 15px;
   padding: 20px;
   width: 350px;
@@ -27,7 +27,7 @@ const ModalContainer = styled.div`
 
 const UserList = styled.div`
   margin: 20px 0;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
 `;
 
@@ -36,18 +36,22 @@ const UserItem = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
+  background: #ffffff;
+  margin-bottom: 10px;
+  border-radius: 20px;
   cursor: pointer;
-
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
     background-color: #f0f0f0;
+
   }
 
   &.selected {
-    border: 2px solid #ffd700;
-    border-radius: 10px;
+    border: 2px solid #FFD66B;
+    border-radius: 20px;
     padding: 13px;
   }
+
 `;
 
 const UserInfo = styled.div`
@@ -68,7 +72,7 @@ const ArrowImage = styled.img`
 `;
 
 const AddButton = styled.button`
-  background-color: #ffd700;
+  background-color: #FFD66B;
   border: none;
   border-radius: 10px;
   padding: 15px;
@@ -84,10 +88,10 @@ const AddButton = styled.button`
 `;
 
 const users = [
-  { id: 1, name: '이하윤', remaining: 25, img: profile },
-  { id: 2, name: '신도윤', remaining: 24, img: profile },
-  { id: 3, name: '윤시우', remaining: 1, img: profile },
-  { id: 4, name: '신지윤', remaining: 28, img: profile },
+  { id: 1, name: '강동형', remaining: 25, img: profile },
+  { id: 2, name: '김민주', remaining: 24, img: profile },
+  { id: 3, name: '김정민', remaining: 1, img: profile },
+  { id: 4, name: '신재건', remaining: 28, img: profile },
 ];
 
 const ModalUserList = ({ onClose }) => {
@@ -106,7 +110,7 @@ const ModalUserList = ({ onClose }) => {
           {users.map((user) => (
             <UserItem key={user.id}>
               <UserInfo>
-                <UserImage src={user.img} alt={user.name} />
+                <UserImage src={profile} alt={user.name} />
                 <span>{user.name}</span>
               </UserInfo>
               <span>남은 횟수: {user.remaining}</span>

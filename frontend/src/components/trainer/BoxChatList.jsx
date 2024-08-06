@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png'
+import arrow from '../../assets/arrow.png'
 
 const ChatListContainer = styled.div`
   margin-top: 20px;
@@ -14,6 +15,10 @@ const ChatItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 const UserInfo = styled.div`
@@ -33,6 +38,7 @@ const UserName = styled.span`
 `;
 
 const UserMessage = styled.span`
+  font-size: 12px;
   color: #888;
 `;
 
@@ -41,6 +47,17 @@ const TimeStamp = styled.span`
   margin-left: 10px;
 `;
 
+const NameMessage = styled.div `
+  display: flex;
+  flex-direction: column;
+`
+
+const Arrow = styled.img`
+  /* width: ;
+  height: ; */
+`
+
+
 const BoxChatList = ({ chats }) => {
   return (
     <ChatListContainer>
@@ -48,13 +65,15 @@ const BoxChatList = ({ chats }) => {
         <ChatItem key={index}>
           <UserInfo>
             <UserImage src={profile} alt={chat.name} />
-            <div>
+            <NameMessage>
               <UserName>{chat.name}</UserName>
               <UserMessage>{chat.message}</UserMessage>
-            </div>
+            </NameMessage>
           </UserInfo>
           <TimeStamp>{chat.time}</TimeStamp>
+          <Arrow src={arrow}/>
         </ChatItem>
+
       ))}
     </ChatListContainer>
   );

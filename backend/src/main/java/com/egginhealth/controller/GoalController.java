@@ -27,7 +27,7 @@ public class GoalController {
     }
 
     @GetMapping("/{uid}")
-    public ResponseEntity<GoalDto> GetGoalBy(@PathVariable int uid) {
+    public ResponseEntity<GoalDto> GetGoalBy(@PathVariable("uid") int uid) {
         return new ResponseEntity<>(goalService.getGoal(uid), HttpStatus.OK);
     }
 

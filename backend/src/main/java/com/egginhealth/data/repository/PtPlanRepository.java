@@ -21,5 +21,5 @@ public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
     List<PtPlan> findByMemberTopNow(int memberId, LocalDateTime specificDate, Pageable pageable);
 
     @Query("SELECT pp FROM PtPlan pp WHERE pp.date >= :start AND pp.date < :now")
-    Optional<List<PtPlan>> findPtPlanOlderThan(@Param("start") LocalDateTime start, @Param("now") LocalDateTime now);
+    Optional<List<PtPlan>> findPtPlansByTimeRange(@Param("start") LocalDateTime start, @Param("now") LocalDateTime now);
 }

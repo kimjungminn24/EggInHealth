@@ -36,11 +36,11 @@ public class PTPlanService {
                 .toList();
     }
 
-    public void decreasePtPlanCount() {
+    public void checkPtPlan() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(30);
 
-        ptPlanRepository.findPtPlanOlderThan(start, now)
+        ptPlanRepository.findPtPlansByTimeRange(start, now)
                 .filter(list -> !list.isEmpty())
                 .ifPresent(list -> list.stream()
                         .map(plan -> PtLogUpdateDto.from(plan.getMember().getId(), -1))

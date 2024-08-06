@@ -14,9 +14,9 @@ public class PtPlanSchedulerConfig {
     private final PTPlanService ptPlanService;
 
     @Scheduled(cron = "0 0/30 * * * *")
-    public void ptPlanCheck() {
+    public void checkPtPlan() {
         log.info("Decrease PT Plan Count");
-        ptPlanService.decreasePtPlanCount();
+        ptPlanService.checkPtPlan();
     }
 
 }

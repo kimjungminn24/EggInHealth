@@ -1,14 +1,36 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.chat.ChatDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import lombok.NoArgsConstructor;
 
-@RedisHash("chat")
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 @Getter
-public class Chat {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Chat implements Serializable {
 
-    @Id
-    private int id;
-    private ChatRoom chatRoom;
+    private String id;
+
+    private String content;
+
+    private String senderId;
+
+    private String receiverId;
+
+    private LocalDateTime createdAt;
+
+    private boolean isRead;
+
+    public Chat(ChatDto chatDto) {
+        this.id = chatDto.id();
+        this.content = chatDto.content();
+        this.senderId = chatDto.senderId();
+        this.receiverId = chatDto.receiverId();
+        this.createdAt = chatDto.createdAt();
+        this.isRead = chatDto.isRead();
+    }
 }

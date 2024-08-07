@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FeedbackRepository extends JpaRepository<Feedback,Integer> {
+public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 
     Optional<Feedback> findById(int id);
 
     @Query("SELECT fb FROM Feedback fb WHERE fb.member.id = :memberId")
     public List<Feedback> findByMemberId(@Param("memberId") int memberId);
+
+    @Query("SELECT fb FROM Feedback fb WHERE fb.id IN :ids AND fb.read = false")
+    List<Feedback> findUnreadFeedbacksByIds(@Param("ids") List<Integer> ids);
+
 }

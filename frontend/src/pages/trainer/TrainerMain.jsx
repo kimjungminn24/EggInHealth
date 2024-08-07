@@ -10,6 +10,7 @@ const TrainerMain = () => {
   const { userUpdate } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [mouseStartY, setMouseStartY] = useState(null);
+  const [selectedMemDate, setSelectedMemDate] = useState(null);
 
   useEffect(() => {
     const userId = cookies.Id;
@@ -39,6 +40,10 @@ const TrainerMain = () => {
     }
   };
 
+  const handleDateChange = (memDateForTheDay) => {
+    setSelectedMemDate(memDateForTheDay);
+};
+
   return (
     <div
       onMouseDown={handleMouseDown}
@@ -61,7 +66,7 @@ const TrainerMain = () => {
               <p className="h-full text-[10px] font-medium text-gray-400 w-full">토</p>
             </div>
             <div className="flex flex-col items-start justify-start w-full">
-              <RenderDaysForTrainer id={1} year={2024} month={8} />
+              <RenderDaysForTrainer year={2024} month={8} onDateChange={handleDateChange}/>
             </div>
           </div>
         </div>
@@ -72,7 +77,7 @@ const TrainerMain = () => {
             <img src={SheduleLogo} alt="" />
           </div>
           <div className="flex item-center justify-center mt-[50px]">
-            <BtnRegister />
+            {selectedMemDate ? <BtnRegister /> : selectedMemDate}
           </div>
         </>
       )}

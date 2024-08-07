@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetMembers } from "../../../api/Calender";
 
-const RenderDaysForTrainer = ({ year, month }) => {
+const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState(null);
     const [ memDate, setMemDate] = useState([])
@@ -17,6 +17,7 @@ const RenderDaysForTrainer = ({ year, month }) => {
     const handleChangeDate = (dayCount) => {
         setSelectedDay(dayCount);
         console.log(dayCount);
+        onDateChange(memDate[dayCount])
         return dayCount;
     }
 
@@ -26,18 +27,24 @@ const RenderDaysForTrainer = ({ year, month }) => {
                 const promise = []
 
                 promise.push(GetMembers(year,month))
-
+                console.log('내위에 아님')
                 const results = await Promise.all(promise)
+
                 const memberMap = {}
-                results.forEach((result, index)=>{
-                    memberMap[index+1]=result
+                results[0].forEach((result)=>{
+                    const date = new Date(result.data)
+                    const day = date.getDate()
+                    memberMap[day] = result
                 })
+
+                setMemDate(memberMap)
             }
             catch(error){
                 console.log('에러',year,month)
             }
         }
-    })
+        fetchData()
+    },[year,month])
 
     const days = [];
     let dayCount = 1;
@@ -61,8 +68,8 @@ const RenderDaysForTrainer = ({ year, month }) => {
                             selectedDay === formatdayCount ? 'bg-blue-200' : ''
                         }`}
                     >
-                        <p className="text-sm font-bold text-gray-800">{formatdayCount}</p>
-                        <div className='flex flex-row gap-1 w-full'>
+                        <div className="font-bold">
+                        {formatdayCount}
                         </div>
                     </button>
                 );

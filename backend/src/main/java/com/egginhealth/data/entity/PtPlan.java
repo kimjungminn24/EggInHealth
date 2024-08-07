@@ -1,14 +1,14 @@
 package com.egginhealth.data.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "pt_plan")
 public class PtPlan {
@@ -30,5 +30,10 @@ public class PtPlan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id")
     private Member member;
+
+    public void updatePtPlanBy(LocalDateTime date) {
+        this.date = date;
+        this.updatedAt = date;
+    }
 
 }

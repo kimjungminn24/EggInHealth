@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@RequestMapping("/rtc")
 @RestController
 public class WebRTCController {
 
@@ -30,7 +30,7 @@ public class WebRTCController {
     }
 
 
-    @PostMapping(value = "/rtctoken")
+    @PostMapping("/rtctoken")
     public ResponseEntity<Map<String, String>> createToken(@RequestBody Map<String, String> params) {
         String roomName = params.get("roomName");
         String participantName = params.get("participantName");
@@ -39,12 +39,12 @@ public class WebRTCController {
             return ResponseEntity.badRequest().body(Map.of("errorMessage", "roomName and participantName are required"));
         }
 
-        AccessToken token = new AccessToken(LIVE_KIT_API_KEY, LIVE_KIT_API_SECRET);
-        token.setName(participantName);
-        token.setIdentity(participantName);
-        token.addGrants(new RoomJoin(true), new RoomName(roomName));
+        AccessToken rtctoken = new AccessToken(LIVE_KIT_API_KEY, LIVE_KIT_API_SECRET);
+        rtctoken.setName(participantName);
+        rtctoken.setIdentity(participantName);
+        rtctoken.addGrants(new RoomJoin(true), new RoomName(roomName));
 
-        return ResponseEntity.ok(Map.of("rtctoken", token.toJwt()));
+        return ResponseEntity.ok(Map.of("rtctoken", rtctoken.toJwt()));
     }
 
     @PostMapping(value = "/livekit/webhook", consumes = "application/webhook+json")

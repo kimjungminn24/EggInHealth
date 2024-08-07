@@ -111,4 +111,8 @@ public class Member {
         this.trainer = trainer;
     }
 
+    public void updateMemberPtCountBy(int ptCount) {
+        this.PTCount = ptCount;
+    }
+
 }

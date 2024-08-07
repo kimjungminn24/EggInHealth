@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
 import { useExStore } from '../../store/store';
+import { registerExh } from '../../api/exercise';
 
 
 const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
@@ -8,10 +9,8 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
+  const [exhRep, setExhRep] = useState('');
   const [inputType, setInputType] = useState('setWeight');
-  const addExh = useExStore((state) => state.addExh);
-
-
 
   useEffect(() => {
     if (inputType === 'setWeight') {
@@ -20,22 +19,22 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
       setExTime('');
       setExhWeight(0)
       setExhSet(0)
+      setExhRep(0)
     }
   }, [inputType]);
 
-
   const handleAddExercise = async () => {
-    await addExh(
+    await registerExh(
       inputType === 'setWeight' ? exhSet : null,
       inputType === 'setWeight' ? exhWeight : null,
+      inputType === 'setWeight' ? exhRep : null,
       exhName,
       inputType === 'time' ? exTime : 0,
       selectedDate
+      
     );
-   
-    onClose();
+       onClose();
   };
-  console.log(exhSet,exhWeight,exhName,exTime,selectedDate)
 
   return (
     <StyledModal isOpen={isOpen} onRequestClose={onClose}>
@@ -59,6 +58,12 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
               value={exhSet}
               onChange={(e) => setExhSet(e.target.value)}
             />
+              <input
+                type="text"
+                placeholder="횟수"
+                value={exhRep}
+                onChange={(e) => setExhRep(e.target.value)}
+              />
             <input
               type="text"
               placeholder="무게"

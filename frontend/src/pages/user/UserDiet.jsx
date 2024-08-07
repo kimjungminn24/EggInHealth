@@ -10,7 +10,7 @@ import RegisterButton from "../../components/common/button/RegisterButton";
 import SelectedDate from "../../components/common/SelectedDate";
 import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
-import { useDietStore, useStore, useUserInfoStore } from "../../store/store";
+import { useStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
 
 const UserDietPage = () => {
@@ -18,7 +18,7 @@ const UserDietPage = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const userId = useUserInfoStore((state) => state.userData);
+  const userId = useStore((state) => state.userId);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
 
@@ -43,9 +43,10 @@ const UserDietPage = () => {
 
   const fetchDietData = async () => {
     if (selectedDate && userId) {
+      console.log(userId)
       try {
         const [year, month, day] = selectedDate.split("-");
-        const data = await getDiet(userId.id, year, month, day);
+        const data = await getDiet(userId, year, month, day);
         setDietData(data);
       } catch (error) {
         console.error("식단조회 실패:", error);
@@ -104,7 +105,7 @@ const UserDietPage = () => {
         type="D"
         dietData={dietData}
         dietType={selectedTab}
-        fetch={fetchDietData()}
+        fetchDiet={fetchDietData} // 함수 자체를 전달
       />
     </PageContainer>
   );

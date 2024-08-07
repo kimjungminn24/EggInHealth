@@ -59,17 +59,13 @@ const ModalDiet = ({ date, type, onClose }) => {
       try {
 
         const newDiet = await registerDiet(type, dateChange, image);
-        console.log('새로운 다이어트:', newDiet);
 
         if (newDiet && comment) {
-          console.log('새로운 다이어트 ID:', newDiet.dietId);
           await registerComment(comment, dateChange, newDiet.dietId, 'D');
-          console.log('댓글 등록 성공');
-        } else {
-          console.log('새로운 다이어트가 생성되지 않았거나 댓글이 비어있음');
-        }
+        } 
 
         onClose();
+        console.log('다이어트 등록')
       } catch (error) {
         console.error('다이어트 등록 중 에러 발생:', error);
       }

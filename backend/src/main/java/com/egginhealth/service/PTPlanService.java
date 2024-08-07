@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.pt.PtLogUpdateDto;
 import com.egginhealth.data.dto.pt.PtPlanDto;
 import com.egginhealth.data.dto.pt.PtPlanInputDto;
 import com.egginhealth.data.dto.pt.PtPlanUpdateDto;
@@ -25,6 +26,7 @@ import java.util.List;
 public class PTPlanService {
 
     private final PtPlanRepository ptPlanRepository;
+    private final PtLogService ptLogService;
     private final MemberRepository memberRepository;
 
     public List<PtPlanDto> getPTPlans(int memberId, int year, int month) {
@@ -41,6 +43,19 @@ public class PTPlanService {
                 .map(PtPlanDto::from)
                 .toList();
     }
+
+    public void checkPtPlan() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.minusMinutes(30);
+
+        ptPlanRepository.findPtPlansByTimeRange(start, now)
+                .filter(list -> !list.isEmpty())
+                .ifPresent(list -> list.stream()
+                        .map(plan -> PtLogUpdateDto.from(plan.getMember().getId(), -1))
+                        .forEach(ptLogService::updatePtLog));
+
+    }
+
 
     public List<PtTrainerPlanDto> getTrainerPTPlans(int trainerId, int year, int month) {
         return ptPlanRepository.findByTrainerMemberId(trainerId, year, month)

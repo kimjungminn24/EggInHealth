@@ -8,13 +8,18 @@ public record PtLogDto(
         int id,
         int change,
         int remainingPt,
+        int memberId,
         LocalDateTime updatedAt
 ) {
-    public static PtLogDto from(PtLog ptLog){
+
+    public static PtLogDto from(PtLog ptLog) {
         return new PtLogDto(
                 ptLog.getId(),
                 ptLog.getChange(),
                 ptLog.getRemainingPt(),
+                ptLog.getMember().getId(),
                 ptLog.getUpdatedAt());
     }
+
+
 }

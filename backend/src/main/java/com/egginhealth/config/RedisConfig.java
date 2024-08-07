@@ -33,21 +33,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
-
-        // 키 직렬화 설정
+        template.setConnectionFactory(connectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
-        // 값 직렬화 설정
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-        // 해시 키 직렬화 설정
-        template.setHashKeySerializer(new StringRedisSerializer());
-        // 해시 값 직렬화 설정
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-
         return template;
     }
 }

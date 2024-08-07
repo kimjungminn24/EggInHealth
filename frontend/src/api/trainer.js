@@ -18,11 +18,11 @@ export const checkCode = async () => {
   }
 
   export const checkMemberList = async () => {
+    const formatMonth = String(new Date().getMonth() + 1).padStart(2, '0')
+    const formatYear = String(new Date().getFullYear())
+    const formatDay = String(new Date().getDate()).padStart(2, '0')
     try {
-      const formatMonth = new Date().getMonth() + 1; 
-      const formatYear = new Date().getFullYear().padStart(2, '0');
-      const formatday = new Date().getDate().padStart(2, '0');
-      const response = await axios.get(`${BASE_URL}/status/trainer/member?year=${formatYear}&month=${formatMonth}&day=${formatday}`, {
+      const response = await axios.get(`${BASE_URL}/status/trainer/member?year=${formatYear}&month=${formatMonth}&day=${formatDay}`, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -31,7 +31,7 @@ spring:
             client-secret: ${NAVER_CLIENT_SECRET}
             redirect-uri: ${NAVER_REDIRECT_URI}
             authorization-grant-type: authorization_code
-            scope: name, email, profile_image, mobile, birthday, gender, age, birthyear
+            scope: name, email, profile_image, mobile
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -52,6 +52,10 @@ spring:
   error:
     printStackTrace: true
 
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 server:
   port: ${SERVER_PORT}

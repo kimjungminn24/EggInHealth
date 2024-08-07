@@ -45,11 +45,15 @@ public class Feedback {
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
 
-    public void updateFeedbackBy(FeedbackSetDto feedbackSetDto){
+    public void updateFeedbackBy(FeedbackSetDto feedbackSetDto) {
         this.motionSimilarity = feedbackSetDto.motionSimilarity();
         this.memo = feedbackSetDto.memo();
         this.exerciseId = feedbackSetDto.exerciseId();
         this.updatedAt = feedbackSetDto.updatedAt();
         this.videoUrl = feedbackSetDto.url();
+    }
+
+    public void updateFeedbackRead() {
+        this.read = true;
     }
 }

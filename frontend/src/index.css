@@ -3,3 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Pretendard-Bold";
+    font-weight: normal;
+    src: url("./fonts/Pretendard-Bold.ttf") format("truetype");
+  }
+  
+  body {
+    font-family: "Pretendard-Bold";
+  }

@@ -47,11 +47,27 @@ export const userInfo = async (Id) => {
           withCredentials: true,
         }
       );
-      
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   };
 
-  
+
+export const connectCode = async (authCode) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/code`, 
+      {authCode}, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+  }
+};

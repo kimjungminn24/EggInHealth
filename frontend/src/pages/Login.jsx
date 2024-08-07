@@ -30,7 +30,7 @@ function Login() {
     const naverClick = () => {
         
         window.location.href = BASE_URL ; 
-    };
+    }; 
 
     return (
         <Container>

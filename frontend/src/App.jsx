@@ -27,7 +27,7 @@ function App() {
     const userType = useStore(state => state.userType);
 
     const renderHeader = useMemo(() => {
-      console.log(userType)
+    //   console.log(userType)
         switch (userType) {
             case 'MEMBER':
                 return <UserHeader />;

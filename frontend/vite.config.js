@@ -22,7 +22,7 @@ export default defineConfig({
             },
             {
                 "src": 'src/assets/icons/maskable_icon_x72.png',
-                "sizes": `72x72`,
+                "sizes": '72x72',
                 "type": "image/png"
             },
             {
@@ -39,7 +39,7 @@ export default defineConfig({
               "src": 'src/assets/icons/maskable_icon_x192.png',
               "sizes": '192x192',
               "type": "image/png"
-          },
+            },
             {
                 "src": 'src/assets/icons/maskable_icon_x384.png',
                 "sizes": "384x384",

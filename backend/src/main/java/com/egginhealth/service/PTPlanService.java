@@ -2,6 +2,7 @@ package com.egginhealth.service;
 
 import com.egginhealth.data.dto.pt.PtPlanDto;
 import com.egginhealth.data.dto.pt.PtPlanInputDto;
+import com.egginhealth.data.dto.pt.PtPlanUpdateDto;
 import com.egginhealth.data.dto.pt.PtTrainerPlanDto;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.PtPlan;
@@ -62,5 +63,19 @@ public class PTPlanService {
                 .build();
 
         ptPlanRepository.save(planData);
+    }
+
+    public void registerUpdatePTPlan(PtPlanUpdateDto ptPlanUpdateDto) {
+        LocalDateTime date = DateTimeUtil.getStringToDateTime(ptPlanUpdateDto.date());
+
+        PtPlan ptPlan = ptPlanRepository.findById(ptPlanUpdateDto.id())
+                .orElseThrow(() -> new RuntimeException("PTPlan not found"));
+
+        ptPlan.updatePtPlanBy(date);
+    }
+
+    public boolean registerDelete(int id) {
+        ptPlanRepository.deleteById(id);
+        return true;
     }
 }

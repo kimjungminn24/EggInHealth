@@ -1,9 +1,6 @@
 package com.egginhealth.controller;
 
-import com.egginhealth.data.dto.pt.PtLogDto;
-import com.egginhealth.data.dto.pt.PtPlanDto;
-import com.egginhealth.data.dto.pt.PtPlanInputDto;
-import com.egginhealth.data.dto.pt.PtTrainerPlanDto;
+import com.egginhealth.data.dto.pt.*;
 import com.egginhealth.service.PTPlanService;
 import com.egginhealth.service.PtLogService;
 import com.egginhealth.util.SecurityUtil;
@@ -48,6 +45,18 @@ public class PTController {
     public ResponseEntity<Void> registerPTPlan(@RequestBody PtPlanInputDto ptPlanInputDto) {
         ptPlanService.registerPTPlan(ptPlanInputDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/plan")
+    public ResponseEntity<Void> registerUpdatePTPlan(@RequestBody PtPlanUpdateDto ptPlanUpdateDto) {
+        ptPlanService.registerUpdatePTPlan(ptPlanUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/plan/{id}")
+    public ResponseEntity<Void> registerDelete(@PathVariable("id") int id) {
+        boolean isDelete = ptPlanService.registerDelete(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

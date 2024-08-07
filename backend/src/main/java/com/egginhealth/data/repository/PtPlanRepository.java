@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
+
+    Optional<PtPlan> findById(int id);
 
     @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC")
     List<PtPlan> findByMemberId(int memberId, int year, int month);

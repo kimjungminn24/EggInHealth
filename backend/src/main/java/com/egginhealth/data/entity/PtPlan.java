@@ -31,4 +31,9 @@ public class PtPlan {
     @JoinColumn(name = "mem_id")
     private Member member;
 
+    public void updatePtPlanBy(LocalDateTime date) {
+        this.date = date;
+        this.updatedAt = date;
+    }
+
 }

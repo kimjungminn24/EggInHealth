@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import { ImagePreview } from '../../common/StyledComponents';
-import useStore from '../../../store/store_test'; // zustand store 가져오기
+import { registerEximg } from '../../../api/exercise';
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -22,16 +22,20 @@ const StyledModal = styled(Modal)`
 
 const ModalExercise = ({ date, onClose }) => {
   const [img, setImg] = useState(null);
-  const addExImg = useStore((state) => state.addExImg);
 
   const handleImgChange = (e) => {
     setImg(e.target.files[0]);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (img) {
-      addExImg(date, URL.createObjectURL(img));
-      onClose();
+      try {
+        await registerEximg(date, img);
+        onClose();
+        
+      } catch (error) {
+        console.error('운동 인증 에러')
+      }
     }
   };
 

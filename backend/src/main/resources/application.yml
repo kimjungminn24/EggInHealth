@@ -50,7 +50,8 @@ spring:
           secretKey: ${S3_SECRET_ACCESS_KEY}
 
   error:
-    printStackTrace: false
+    printStackTrace: true
+
 
   servlet:
     multipart:

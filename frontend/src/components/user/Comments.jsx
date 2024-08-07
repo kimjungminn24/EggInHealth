@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton } from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
+import { registerExComment } from '../../api/exercise'; // 운동 댓글 등록 API
 
-const Comments = ({ date, type, dietData, dietType,fetch }) => {
+const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExData }) => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
 
   const extractDate = (dateTimeString) => {
-    return dateTimeString.split("T")[0];
+    return dateTimeString?.split("T")[0];
   };
 
   useEffect(() => {
-    if (dietData) {
-      const filteredItems = dietData.filter(
-        (item) => extractDate(item.date) === date && item.type === dietType
-      );
-      if (filteredItems.length > 0) {
-        setComments(filteredItems[0].commentList || []);
-      } else {
-        setComments([]);
-      }
-    }
-  }, [dietData, date, dietType]);
+    const filteredDietComments = dietData
+      ? dietData.filter(
+          (item) => extractDate(item.date) === date && item.type === dietType
+        ).flatMap(item => item.commentList || [])
+      : [];
+
+    const filteredExerciseComments = exData && extractDate(exData.date) === date
+       ? (exData.comments || [])
+      : [];
+
+    setComments([...filteredDietComments, ...filteredExerciseComments]);
+  }, [dietData, exData, date, dietType,type]);
 
   const handleAddComment = async () => {
-    console.log('코멘트', dietData[0]);
     if (comment.trim()) {
       try {
-        await registerComment(comment, date+`T00:00:00Z`, dietData[0].id, type);
+        if (type === 'D') { // 다이어트 댓글
+          await registerComment(comment, date + `T00:00:00Z`, dietData[0].id, type);
+          fetchDiet();
+        } else if (type === 'E') { // 운동 댓글
+          await registerExComment(comment, exData.boardId,type);
+          fetchExData();
+        }
         setComment('');
-        fetch()
       } catch (error) {
         console.error('댓글 등록 실패:', error);
       }

@@ -2,7 +2,7 @@ import os
 
 import cv2
 import app.model.processors.squat_frame_processor as squat_frame_processor
-import app.thresholds.squat as squat_threshold
+import app.model.thresholds as thresholds
 import app.util.landmark_utils as landmark_utils
 
 from flask import Flask, current_app
@@ -16,7 +16,7 @@ def detect(file_name):
 
     cap = cv2.VideoCapture(input_path)
     pose = landmark_utils.get_mediapipe_pose()
-    threshold = squat_threshold.get_thresholds_beginner()
+    threshold = thresholds.get_squat_threshold()
 
     upload_process_frame = squat_frame_processor.ProcessFrame(thresholds=threshold)
 

@@ -27,7 +27,6 @@ const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
                 const promise = []
 
                 promise.push(GetMembers(year,month))
-                console.log('내위에 아님')
                 const results = await Promise.all(promise)
 
                 const memberMap = {}
@@ -36,7 +35,6 @@ const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
                     const day = date.getDate()
                     memberMap[day] = result
                 })
-
                 setMemDate(memberMap)
             }
             catch(error){

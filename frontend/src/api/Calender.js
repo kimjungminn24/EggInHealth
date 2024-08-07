@@ -58,6 +58,7 @@ export const CheckFood = async (id, year, month, day) => {
 };
 
 export const GetMembers = async (year, month) => {
+
   try {
     const response = await axios.get(
       `${BASE_URL}/pt/plan?year=${year}&month=${month}`, 

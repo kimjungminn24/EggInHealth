@@ -14,7 +14,7 @@ const TrainerMain = () => {
 
   useEffect(() => {
     const userId = cookies.Id;
-    const userType = cookies.Role;
+    const userType = cookies.Role; 
     userUpdate(userId, userType);
   }, [cookies.Id, cookies.Role, userUpdate]);
 
@@ -27,14 +27,31 @@ const TrainerMain = () => {
     setMouseStartY(e.clientY);
   };
 
+  const handleTouchStart = (e) => {
+    setMouseStartY(e.touches[0].clientY);
+  };
+
   const handleMouseUp = (e) => {
     if (mouseStartY !== null) {
       const mouseEndY = e.clientY;
       if (mouseStartY - mouseEndY > 50) { // Upward drag
-        setIsExpanded(true);
+        setIsExpanded(false);
       }
       if (mouseStartY - mouseEndY < -50) { // Downward drag
+        setIsExpanded(true);
+      }
+      setMouseStartY(null);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (mouseStartY !== null) {
+      const mouseEndY = e.changedTouches[0].clientY;
+      if (mouseStartY - mouseEndY > 50) { // Upward drag
         setIsExpanded(false);
+      }
+      if (mouseStartY - mouseEndY < -50) { // Downward drag
+        setIsExpanded(true);
       }
       setMouseStartY(null);
     }
@@ -42,16 +59,18 @@ const TrainerMain = () => {
 
   const handleDateChange = (memDateForTheDay) => {
     setSelectedMemDate(memDateForTheDay);
-};
+  };
 
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className={`transition-all duration-500 ease-in-out ${isExpanded ? 'h-screen' : 'h-auto'} overflow-hidden`}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className={`transition-all duration-500 ease-in-out ${isExpanded ? 'h-full' : 'h-auto'} overflow-hidden`}
     >
-      <div className={`transition-transform duration-500 ease-in-out ${isExpanded ? 'scale-105' : 'scale-100'}`}>
-        <div className="w-[313px] h-[286px] bg-white rounded-[20px] mt-[26px] m-auto overflow-hidden">
+      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'h-[800px]' : 'h-auto'}`}>
+        <div className="w-[313px] h-full bg-white rounded-[20px] mt-[26px] m-auto overflow-hidden">
           <p className="w-full m-auto text-left py-[6px] pl-[16px]">
             <span className="text-[32px]">{formatMonth}월 </span>
           </p>
@@ -77,7 +96,7 @@ const TrainerMain = () => {
             <img src={SheduleLogo} alt="" />
           </div>
           <div className="flex item-center justify-center mt-[50px]">
-            {selectedMemDate ? <BtnRegister /> : selectedMemDate}
+            {selectedMemDate || <BtnRegister /> }
           </div>
         </>
       )}

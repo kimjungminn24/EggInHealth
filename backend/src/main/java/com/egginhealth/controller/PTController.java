@@ -1,9 +1,9 @@
 package com.egginhealth.controller;
 
-import com.egginhealth.data.dto.pt.PtLogDto;
-import com.egginhealth.data.dto.pt.PtPlanDto;
+import com.egginhealth.data.dto.pt.*;
 import com.egginhealth.service.PTPlanService;
 import com.egginhealth.service.PtLogService;
+import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,6 +34,29 @@ public class PTController {
     @GetMapping("/log/{uid}")
     public ResponseEntity<List<PtLogDto>> getPTLogs(@PathVariable("uid") int uid) {
         return new ResponseEntity<>(ptLogService.getPtLogs(uid), HttpStatus.OK);
+    }
+
+    @GetMapping("/plan")
+    public ResponseEntity<List<PtTrainerPlanDto>> getTrainerPTPlans(@RequestParam("year") int year, @RequestParam("month") int month) {
+        return new ResponseEntity<>(ptPlanService.getTrainerPTPlans(SecurityUtil.getUserId(), year, month), HttpStatus.OK);
+    }
+
+    @PostMapping("/plan")
+    public ResponseEntity<Void> registerPTPlan(@RequestBody PtPlanInputDto ptPlanInputDto) {
+        ptPlanService.registerPTPlan(ptPlanInputDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/plan")
+    public ResponseEntity<Void> registerUpdatePTPlan(@RequestBody PtPlanUpdateDto ptPlanUpdateDto) {
+        ptPlanService.registerUpdatePTPlan(ptPlanUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/plan/{id}")
+    public ResponseEntity<Void> registerDelete(@PathVariable("id") int id) {
+        boolean isDelete = ptPlanService.registerDelete(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

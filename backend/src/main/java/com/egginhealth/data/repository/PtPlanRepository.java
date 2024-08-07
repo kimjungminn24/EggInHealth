@@ -14,6 +14,8 @@ import java.util.Optional;
 @Repository
 public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
 
+    Optional<PtPlan> findById(int id);
+
     @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC")
     List<PtPlan> findByMemberId(int memberId, int year, int month);
 
@@ -22,4 +24,7 @@ public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
 
     @Query("SELECT pp FROM PtPlan pp WHERE pp.date >= :start AND pp.date < :now")
     Optional<List<PtPlan>> findPtPlansByTimeRange(@Param("start") LocalDateTime start, @Param("now") LocalDateTime now);
+
+    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.trainer.id = :trainerId AND YEAR(pp.date) = :year AND MONTH(pp.date) = :month ORDER BY pp.date ASC")
+    List<PtPlan> findByTrainerMemberId(int trainerId, int year, int month);
 }

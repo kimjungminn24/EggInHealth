@@ -21,8 +21,7 @@ export const useStore = create((set) => ({
 export const useUserInfoStore = create((set) => ({
   userData: null,
   userEggData : null,
-  userId : null,
-  userType : null,
+
   fetchData: async (userId,formatMonth,formatYear) =>{
   try {
     const infoRet = await userInfo(userId);

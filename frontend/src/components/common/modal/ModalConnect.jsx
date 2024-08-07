@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-
+import { connectCode } from '../../../api/main';
+import { useUserInfoStore } from '../../../store/store';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -42,6 +43,30 @@ const ConnectButton = styled.button`
 `;
 
 const ModalConnect = ({ isOpen, onRequestClose }) => {
+  const [authCode, setAuthCode] = useState('');
+  const { fetchData } = useUserInfoStore();
+
+  const handleInputChange = (event) => {
+    setAuthCode(event.target.value); 
+  };
+
+  const handleConnect = async () => {
+    try {
+      const response = await connectCode(authCode); 
+      console.log(response);
+      if (response && response.data) {
+        const userId = response.data.userId; 
+        const formatMonth = new Date().getMonth() + 1; 
+        const formatYear = new Date().getFullYear(); 
+
+        await fetchData(userId, formatMonth, formatYear);
+      }
+      onRequestClose(); 
+    } catch (error) {
+      console.error("연결 중 오류 발생:", error);
+    }
+  };
+
   return (
     <StyledModal
       isOpen={isOpen}
@@ -50,8 +75,13 @@ const ModalConnect = ({ isOpen, onRequestClose }) => {
     >
       <ModalContent>
         <h2>인증번호를 입력해주세요</h2>
-        <InputField type="text" placeholder="인증번호 입력" />
-        <ConnectButton>연결하기</ConnectButton>
+        <InputField 
+          type="text" 
+          placeholder="인증번호 입력" 
+          value={authCode} 
+          onChange={handleInputChange} 
+        />
+        <ConnectButton onClick={handleConnect}>연결하기</ConnectButton>
       </ModalContent>
     </StyledModal>
   );

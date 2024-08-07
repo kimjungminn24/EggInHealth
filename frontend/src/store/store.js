@@ -23,7 +23,6 @@ export const useUserInfoStore = create((set) => ({
   userEggData : null,
   userId : null,
   userType : null,
- 
   fetchData: async (userId,formatMonth,formatYear) =>{
   try {
     const infoRet = await userInfo(userId);
@@ -33,6 +32,7 @@ export const useUserInfoStore = create((set) => ({
       userEggData: eggRet,
       loading: false,
     })
+
     
   } catch (error) {
     set({

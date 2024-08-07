@@ -3,7 +3,7 @@ import Profile from '../../assets/profile.png';
 import phone from '../../assets/info/phone.png';
 import styled from 'styled-components';
 import { useUserInfoStore } from '../../store/store';
-
+import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
 
 
 const Container = styled.div`
@@ -53,11 +53,35 @@ const InfoText = styled.div`
 const InfoImg = styled.img`
   margin-left: 1cqw;
 `;
+
+const YellowBtn = styled.button`
+  align-items: center;
+  background-color: #FFD66B;
+  border-radius: 20px;
+  display: flex;
+  width: 232px;
+  height: 64px;
+  justify-content: center;
+  padding: 8px 16px;
+  margin-top: 20px;
+  color: white;
+`;
+
 const TrainerProfile = ()=>{
     // const userProfile = useUserInfoStore((state) => state.userData.imgUrl)
     const userProfile = 0
     const userData = [{}]
+    const [ModalIsOpen,setModalIsOpen] =  useState(false)
+    const openModal = () =>{
+      setModalIsOpen(true)
+    }
+    const closeModal = () =>{
+      setModalIsOpen(false)
+    }
 
+    const handleConnect = () =>{
+
+    }
 
     return(
         <Container>
@@ -68,6 +92,8 @@ const TrainerProfile = ()=>{
                 <InfoImg src={phone} alt="phone" />
                 <InfoText>{userData.phoneNumber || '전화번호를 등록해주세요'}</InfoText>
             </InfoBox>
+          <YellowBtn onClick={openModal}>연결하기</YellowBtn>
+          <ModalMakeCode isOpen = {ModalIsOpen} isClose={closeModal}/>
         </Container>
     
     )

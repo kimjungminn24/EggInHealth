@@ -33,7 +33,7 @@ const UserMain = () => {
   const { userUpdate } = useStore();
   const [timebox, setTimebox] = useState([]);
   const trainer = userData?.trId;
-  // const trainer = 1
+  console.log(userData);
   
   const eggday = userData?.totalEgg;
 

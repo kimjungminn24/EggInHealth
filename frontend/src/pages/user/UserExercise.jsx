@@ -10,6 +10,7 @@ import RegisterButton from './../../components/common/button/RegisterButton';
 import { useStore } from './../../store/store';
 import { getExercise } from './../../api/exercise';
 import { ExerciseImg } from './../../components/user/exercise/ExerciseImg';
+import { Datepicker } from '@mobiscroll/react';
 
 const Exercise = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
@@ -53,6 +54,9 @@ const Exercise = () => {
   return (
     <div>
       <h1>운동 목록</h1>
+      <div>
+
+      </div>
       <SelectedDate
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}

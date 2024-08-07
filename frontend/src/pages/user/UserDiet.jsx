@@ -12,13 +12,14 @@ import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
 import { useStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
+import { useParams } from "react-router-dom";
+
 
 const UserDietPage = () => {
+  const { userId } = useParams(); // useParams를 사용하여 userId를 가져옴
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const userId = useStore((state) => state.userId);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
 
@@ -35,7 +36,7 @@ const UserDietPage = () => {
 
   const getKoreanISOString = () => {
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const kstOffset = 9 * 60 * 60 * 1000; 
     const kstDate = new Date(now.getTime() + kstOffset);
 
     return kstDate.toISOString();
@@ -43,7 +44,6 @@ const UserDietPage = () => {
 
   const fetchDietData = async () => {
     if (selectedDate && userId) {
-      console.log(userId)
       try {
         const [year, month, day] = selectedDate.split("-");
         const data = await getDiet(userId, year, month, day);
@@ -72,9 +72,12 @@ const UserDietPage = () => {
 
   const today = getKrDate();
 
+
+
   return (
     <PageContainer>
-      <SelectedDate
+
+        <SelectedDate
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />

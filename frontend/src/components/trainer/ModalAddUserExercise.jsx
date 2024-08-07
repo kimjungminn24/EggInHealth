@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
-import { useExStore } from '../../store/store';
 import { registerExh } from '../../api/exercise';
 
 

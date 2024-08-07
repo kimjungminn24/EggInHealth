@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { useDietStore } from '../../../store/store';
 import { registerComment, registerDiet } from '../../../api/diet';
 
 const StyledModal = styled(Modal)`

@@ -45,7 +45,7 @@ class ProcessFrame:
         self.font = cv2.FONT_HERSHEY_SIMPLEX
 
         # line type
-        self.linetype = cv2.LINE_AA
+        self.line_type = cv2.LINE_AA
 
         # set radius to draw arc
         self.radius = 20
@@ -54,7 +54,7 @@ class ProcessFrame:
         self.COLORS = features.get_colors()
 
         self.dict_features = features.get_dict_features()
-        
+
         # For tracking counters and sharing states in and out of callbacks.
         self.state_tracker = {
             'state_seq': [],
@@ -117,10 +117,10 @@ class ProcessFrame:
         frame_height, frame_width, _ = frame.shape
 
         # Process the image.
-        keyPoints = pose.process(frame)
+        key_points = pose.process(frame)
 
-        if keyPoints.pose_landmarks:
-            ps_lm = keyPoints.pose_landmarks
+        if key_points.pose_landmarks:
+            ps_lm = key_points.pose_landmarks
 
             nose_coord = get_landmark_features(ps_lm.landmark, self.dict_features, 'nose', frame_width, frame_height)
             left_shldr_coord, left_elbow_coord, left_wrist_coord, left_hip_coord, left_knee_coord, left_ankle_coord, left_foot_coord = \
@@ -245,7 +245,7 @@ class ProcessFrame:
                 hip_vertical_angle = find_angle(shldr_coord, np.array([hip_coord[0], 0]), hip_coord)
                 cv2.ellipse(frame, hip_coord, (30, 30),
                             angle=0, startAngle=-90, endAngle=-90 + multiplier * hip_vertical_angle,
-                            color=self.COLORS['white'], thickness=3, lineType=self.linetype)
+                            color=self.COLORS['white'], thickness=3, lineType=self.line_type)
 
                 draw_dotted_line(frame, hip_coord, start=hip_coord[1] - 80, end=hip_coord[1] + 20,
                                  line_color=self.COLORS['blue'])
@@ -253,7 +253,7 @@ class ProcessFrame:
                 knee_vertical_angle = find_angle(hip_coord, np.array([knee_coord[0], 0]), knee_coord)
                 cv2.ellipse(frame, knee_coord, (20, 20),
                             angle=0, startAngle=-90, endAngle=-90 - multiplier * knee_vertical_angle,
-                            color=self.COLORS['white'], thickness=3, lineType=self.linetype)
+                            color=self.COLORS['white'], thickness=3, lineType=self.line_type)
 
                 draw_dotted_line(frame, knee_coord, start=knee_coord[1] - 50, end=knee_coord[1] + 20,
                                  line_color=self.COLORS['blue'])
@@ -261,7 +261,7 @@ class ProcessFrame:
                 ankle_vertical_angle = find_angle(knee_coord, np.array([ankle_coord[0], 0]), ankle_coord)
                 cv2.ellipse(frame, ankle_coord, (30, 30),
                             angle=0, startAngle=-90, endAngle=-90 + multiplier * ankle_vertical_angle,
-                            color=self.COLORS['white'], thickness=3, lineType=self.linetype)
+                            color=self.COLORS['white'], thickness=3, lineType=self.line_type)
 
                 draw_dotted_line(frame, ankle_coord, start=ankle_coord[1] - 50, end=ankle_coord[1] + 20,
                                  line_color=self.COLORS['blue'])
@@ -269,21 +269,21 @@ class ProcessFrame:
                 # ------------------------------------------------------------
 
                 # Join landmarks.
-                cv2.line(frame, shldr_coord, elbow_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
-                cv2.line(frame, wrist_coord, elbow_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
-                cv2.line(frame, shldr_coord, hip_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
-                cv2.line(frame, knee_coord, hip_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
-                cv2.line(frame, ankle_coord, knee_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
-                cv2.line(frame, ankle_coord, foot_coord, self.COLORS['light_blue'], 4, lineType=self.linetype)
+                cv2.line(frame, shldr_coord, elbow_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
+                cv2.line(frame, wrist_coord, elbow_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
+                cv2.line(frame, shldr_coord, hip_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
+                cv2.line(frame, knee_coord, hip_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
+                cv2.line(frame, ankle_coord, knee_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
+                cv2.line(frame, ankle_coord, foot_coord, self.COLORS['light_blue'], 4, lineType=self.line_type)
 
                 # Plot landmark points
-                cv2.circle(frame, shldr_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, elbow_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, wrist_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, hip_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, knee_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, ankle_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
-                cv2.circle(frame, foot_coord, 7, self.COLORS['yellow'], -1, lineType=self.linetype)
+                cv2.circle(frame, shldr_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, elbow_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, wrist_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, hip_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, knee_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, ankle_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
+                cv2.circle(frame, foot_coord, 7, self.COLORS['yellow'], -1, lineType=self.line_type)
 
                 current_state = self._get_state(int(knee_vertical_angle))
                 self.state_tracker['curr_state'] = current_state
@@ -385,11 +385,11 @@ class ProcessFrame:
                     self.state_tracker['INACTIVE_TIME'] = 0.0
 
                 cv2.putText(frame, str(int(hip_vertical_angle)), (hip_text_coord_x, hip_coord[1]), self.font, 0.6,
-                            self.COLORS['light_green'], 2, lineType=self.linetype)
+                            self.COLORS['light_green'], 2, lineType=self.line_type)
                 cv2.putText(frame, str(int(knee_vertical_angle)), (knee_text_coord_x, knee_coord[1] + 10), self.font,
-                            0.6, self.COLORS['light_green'], 2, lineType=self.linetype)
+                            0.6, self.COLORS['light_green'], 2, lineType=self.line_type)
                 cv2.putText(frame, str(int(ankle_vertical_angle)), (ankle_text_coord_x, ankle_coord[1]), self.font, 0.6,
-                            self.COLORS['light_green'], 2, lineType=self.linetype)
+                            self.COLORS['light_green'], 2, lineType=self.line_type)
 
                 draw_text(
                     frame,

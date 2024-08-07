@@ -90,7 +90,8 @@ const UserFeedback = () => {
         isOpen={isFeedbackModalOpen}
         onRequestClose={closeFeedbackModal}
         name={userData.name}
-        date= {getKoreanISOString}
+        getKoreanISOString= {getKoreanISOString}
+        fetchFeedbackData={fetchFeedbackData}
       />
     </div>
   );

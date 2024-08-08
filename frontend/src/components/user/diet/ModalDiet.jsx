@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { registerComment, registerDiet } from '../../../api/diet';
+import { registerComment, registerDiet, updateDiet } from '../../../api/diet';
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -45,26 +45,34 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalDiet = ({ date, type, onClose }) => {
+const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
 
 
-  const dateChange = date+'T00:00:00Z'
+  useEffect(() => {
+    setHasImages(hasImages);
+  }, [hasImages, setHasImages]);
 
+  const dateChange = date+'T00:00:00Z'
+  console.log(filteredData)
+  console.log(type)
 
   const handleSubmit = async () => {
     if (image) {
       try {
-
-        const newDiet = await registerDiet(type, dateChange, image);
-
-        if (newDiet && comment) {
-          await registerComment(comment, dateChange, newDiet.dietId, 'D');
-        } 
-
+        if (hasImages){
+          await updateDiet(type,dateChange,image,filteredData[0].id)
+        }
+        else{
+          const newDiet = await registerDiet(type, dateChange, image);
+          
+          if (newDiet && comment) {
+            await registerComment(comment, dateChange, newDiet.dietId, 'D');
+          } 
+          console.log('다이어트 등록')
+        }
         onClose();
-        console.log('다이어트 등록')
       } catch (error) {
         console.error('다이어트 등록 중 에러 발생:', error);
       }
@@ -82,12 +90,15 @@ const ModalDiet = ({ date, type, onClose }) => {
       <h2>식사 등록</h2>
       <input type="file" onChange={handleImageChange} />
       {image && <ImagePreview src={URL.createObjectURL(image)} alt="preview" />}
-      <Textarea
-        placeholder="댓글을 입력하세요"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-      />
-      <Button onClick={handleSubmit}>등록</Button>
+      
+      {!hasImages && (
+        <Textarea
+          placeholder="댓글을 입력하세요"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      )}
+      <Button onClick={handleSubmit}>{hasImages ? '수정' : '등록'}</Button>
       <Button close onClick={onClose}>닫기</Button>
     </StyledModal>
   );

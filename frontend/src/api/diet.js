@@ -51,17 +51,18 @@ export const registerComment = async (content, createdAt, boardId, boardType) =>
   return response.data;
 };
 
-export const updateDiet = async (type,date,img) => {
+export const updateDiet = async (type,date,img,id) => {
   const formData = new FormData()
   formData.append('image',img)
   formData.append('date',date);
   formData.append('type',type)
+  console.log(img,date,type,id)
   const response = await axios.patch(
-    `${BASE_URL}/api/diet`,
+    `${BASE_URL}/diet/${id}`,
     formData,
     {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     }
   );
@@ -69,7 +70,7 @@ export const updateDiet = async (type,date,img) => {
 };
 
 export const deleteDiet = async (dietId) => {
-  const response = await axios.delete(`${BASE_URL}/api/diet/${dietId}`, {
+  const response = await axios.delete(`${BASE_URL}/diet/${dietId}`, {
     headers: {
       'Content-Type': 'application/json',
     },

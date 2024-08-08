@@ -1,9 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import profile from '../../assets/profile.png'
-import arrow from '../../assets/arrow.png'
-import { Datepicker } from "@mobiscroll/react";;
+import React from "react";
+import styled from "styled-components";
+import profile from "../../assets/profile.png";
+import arrow from "../../assets/arrow.png";
+import { Datepicker } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import { useUserInfoStore } from "../../store/store";
+import SelectedDate from './../common/SelectedDate';
 
 
 const ChatListContainer = styled.div`
@@ -50,34 +52,52 @@ const TimeStamp = styled.span`
   margin-left: 10px;
 `;
 
-const NameMessage = styled.div `
+const NameMessage = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Arrow = styled.img`
   /* width: ;
   height: ; */
-`
-
+`;
 
 const BoxUser = ({ userData }) => {
-    const profileImg = userData.imgUrl
-    const profileName = userData.name
+    
+    const profileImg = userData.imgUrl;
+   const profileName = userData.name;
+   const props = { placeholder: 'Please Select...' };
   return (
     <ChatListContainer>
-      
-        <ChatItem >
-          <UserInfo>
-            <UserImage src={profileImg} alt={userData.name} />
-            <Datepicker
-    controls={['date']}
-    display="inline"
-    touchUi={true}
- />
-          </UserInfo>
-        </ChatItem>
-
+      <ChatItem>
+        <UserInfo>
+          <UserImage src={profileImg} alt={profileName} />
+          <UserName>
+            {userData.name}
+          </UserName>
+          <Datepicker
+    responsive={{
+        xsmall: {
+            controls: ['date'],
+            display: 'bottom',
+            touchUi: true
+        },
+        small: {
+            controls: ['date'],
+            display: 'anchored',
+            touchUi: true
+        },
+        custom: { // Custom breakpoint
+            breakpoint: 800,
+            controls: ['date'],
+            display: 'anchored',
+            touchUi: false
+        }
+    }}
+/>
+          {/* <SelectedDate/> */}
+        </UserInfo>
+      </ChatItem>
     </ChatListContainer>
   );
 };

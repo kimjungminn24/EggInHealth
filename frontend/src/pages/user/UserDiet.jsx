@@ -10,18 +10,22 @@ import RegisterButton from "../../components/common/button/RegisterButton";
 import SelectedDate from "../../components/common/SelectedDate";
 import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
-import { useStore } from "../../store/store";
+import { useStore, useUserInfoStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
 import { useParams } from "react-router-dom";
-
+import { Datepicker } from "@mobiscroll/react";
+import BoxUser from "./../../components/trainer/BoxUser";
+import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
 
 const UserDietPage = () => {
-  const { userId } = useParams(); // useParams를 사용하여 userId를 가져옴
+  const userId = useStore((state) => state.userId);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
+  const [filteredData, setFilteredData] = useState([]);
+  const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false)
 
   const getKrDate = () => {
     const now = new Date();
@@ -36,7 +40,7 @@ const UserDietPage = () => {
 
   const getKoreanISOString = () => {
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000; 
+    const kstOffset = 9 * 60 * 60 * 1000;
     const kstDate = new Date(now.getTime() + kstOffset);
 
     return kstDate.toISOString();
@@ -56,7 +60,7 @@ const UserDietPage = () => {
 
   useEffect(() => {
     fetchDietData();
-  }, [selectedDate, userId, selectedTab, isModalOpen]);
+  }, [selectedDate, userId, selectedTab, isModalOpen,isDeleteModalOpen]);
 
   const openModal = () => {
     if (selectedDate) {
@@ -70,14 +74,25 @@ const UserDietPage = () => {
     setIsModalOpen(false);
   };
 
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
   const today = getKrDate();
 
+  const { userData } = useUserInfoStore();
+  console.log(userData);
 
+  console.log(filteredData)
+  console.log(hasImages)
 
   return (
     <PageContainer>
-
-        <SelectedDate
+      {/* <BoxUser userData={userData}/> */}
+      <SelectedDate
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
@@ -88,11 +103,18 @@ const UserDietPage = () => {
         dietData={dietData}
         selectedTab={selectedTab}
         selectedDate={selectedDate}
-        setHasImages={setHasImages} // 이미지 유무 상태 설정 함수 전달
+        setHasImages={setHasImages} 
+        setFilteredData={setFilteredData}
+
       />
 
-      {selectedDate <= today && !hasImages ? (
-        <RegisterButton openModal={openModal} />
+      {selectedDate <= today ? (
+        <RegisterButton
+          openModal={openModal}
+          setHasImages={setHasImages}
+          hasImages={hasImages}
+          onDelete={openDeleteModal}
+        />
       ) : null}
 
       {isModalOpen && (
@@ -100,9 +122,18 @@ const UserDietPage = () => {
           date={selectedDate}
           type={selectedTab}
           onClose={closeModal}
+          setHasImages={setHasImages}
+          hasImages={hasImages}
+          filteredData={filteredData}
         />
       )}
-
+      {isDeleteModalOpen && (
+        <ModalDeleteDiet
+          filteredData={filteredData}
+          onClose={closeDeleteModal}
+          // 삭제 핸들러 추가
+        />
+      )}
       <Comments
         date={selectedDate}
         type="D"

@@ -4,6 +4,7 @@ import { useStore } from "../../store/store.js";
 import RenderDaysForTrainer from "../../components/trainer/Calender/RenderDaysForTrainer.jsx";
 import SheduleLogo from '../../assets/static/Property_Schedule.png'
 import BtnRegister from "../../components/trainer/BtnRegister.jsx";
+import RenderDaysForTrainerExpand from "../../components/trainer/Calender/RenderDaysForTrainerExpand.jsx";
 
 const TrainerMain = () => {
   const [cookies] = useCookies(['cookie_name']);
@@ -67,10 +68,9 @@ const TrainerMain = () => {
       onMouseUp={handleMouseUp}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className={`transition-all duration-500 ease-in-out ${isExpanded ? 'h-full' : 'h-auto'} overflow-hidden`}
     >
-      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'h-[800px]' : 'h-auto'}`}>
-        <div className="w-[313px] h-full bg-white rounded-[20px] mt-[26px] m-auto overflow-hidden">
+      <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'h-[650px]' : 'h-[300px]'}`}>
+        <div className="w-[313px] h-full bg-white rounded-[20px] mt-[26px] m-auto overflow-hidden"> 
           <p className="w-full m-auto text-left py-[6px] pl-[16px]">
             <span className="text-[32px]">{formatMonth}월 </span>
           </p>
@@ -85,7 +85,8 @@ const TrainerMain = () => {
               <p className="h-full text-[10px] font-medium text-gray-400 w-full">토</p>
             </div>
             <div className="flex flex-col items-start justify-start w-full">
-              <RenderDaysForTrainer year={2024} month={8} onDateChange={handleDateChange}/>
+              {isExpanded ? <RenderDaysForTrainerExpand yeaer={2024} month={8} /> :
+              <RenderDaysForTrainer year={2024} month={8} onDateChange={handleDateChange}/> }
             </div>
           </div>
         </div>

@@ -32,6 +32,7 @@ export const useUserInfoStore = create((set) => ({
       userEggData: eggRet,
       loading: false,
     })
+
     
   } catch (error) {
     set({
@@ -67,7 +68,6 @@ export const useDietStore = create((set) => ({
   addDiet: async (type, date, img, userId, year, month, day) => {
     try {
       await registerDiet(type, date, img);
-      // 새로운 식단이 추가된 후 전체 식단 목록을 다시 가져옴
       await getDiet(userId, year, month, day);
     } catch (error) {
       console.error('식단등록 에러', error);

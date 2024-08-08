@@ -1,101 +1,198 @@
-import TrainerImg from '../../assets/static/img_TrainerKim.png'
-import Camera from '../../assets/static/Property_Camera.png'
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import OffCall from '../../assets/static/Property_OffCall.png'
-import FatCat from '../../assets/static/img_FatCat.png'
+import {
+    LocalVideoTrack,
+    RemoteParticipant,
+    RemoteTrack,
+    RemoteTrackPublication,
+    Room,
+    RoomEvent,
+} from "livekit-client";
+import { useState } from "react";
+import VideoComponent from "../../components/common/VideoComponent";
+import AudioComponent from "../../components/common/AudioComponent";
+import ChatComponent from "../../components/common/ChatComponent"; // 추가
 
-Modal.setAppElement('#root')
+// For local development, leave these variables empty
+// For production, configure them with correct URLs depending on your deployment
+let APPLICATION_SERVER_URL = "";
+let LIVEKIT_URL = "";
+configureUrls();
 
-const UserChatRoom = () => {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+function configureUrls() {
+    // If APPLICATION_SERVER_URL is not configured, use default value from local development
+    if (!APPLICATION_SERVER_URL) {
+        if (window.location.hostname === "localhost") {
+            APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+        } else {
+            APPLICATION_SERVER_URL = "https://" + window.location.hostname + ":6443/rtc/";
+        }
+    }
 
-    const openModal = () => setModalIsOpen(true);
-    const closeModal = () => setModalIsOpen(false);
+    // If LIVEKIT_URL is not configured, use default value from local development
+    if (!LIVEKIT_URL) {
+        if (window.location.hostname === "localhost") {
+            LIVEKIT_URL = "ws://localhost:7880/";
+        } else {
+            LIVEKIT_URL = "wss://" + window.location.hostname + ":7443/";
+        }
+    }
+}
+
+function App() {
+    const [room, setRoom] = useState(undefined);
+    const [localTrack, setLocalTrack] = useState(undefined);
+    const [remoteTracks, setRemoteTracks] = useState([]);
+    const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
+    const [roomName, setRoomName] = useState("Test Room");
+
+    async function joinRoom() {
+        // Initialize a new Room object
+        const room = new Room();
+        setRoom(room);
+
+        // Specify the actions when events take place in the room
+        // On every new Track received...
+        room.on(
+            RoomEvent.TrackSubscribed,
+            (_track, publication, participant) => {
+                setRemoteTracks((prev) => [
+                    ...prev,
+                    { trackPublication: publication, participantIdentity: participant.identity },
+                ]);
+            }
+        );
+
+        // On every Track destroyed...
+        room.on(RoomEvent.TrackUnsubscribed, (_track, publication) => {
+            setRemoteTracks((prev) => prev.filter((track) => track.trackPublication.trackSid !== publication.trackSid));
+        });
+
+        try {
+            // Get a token from your application server with the room name and participant name
+            const rtctoken = await getToken(roomName, participantName);
+
+            // Connect to the room with the LiveKit URL and the token
+            await room.connect(LIVEKIT_URL, rtctoken);
+
+            // Publish your camera and microphone
+            await room.localParticipant.enableCameraAndMicrophone();
+            setLocalTrack(room.localParticipant.videoTrackPublications.values().next().value.videoTrack);
+        } catch (error) {
+            console.log("There was an error connecting to the room:", error.message);
+            await leaveRoom();
+        }
+    }
+
+    async function leaveRoom() {
+        // Leave the room by calling 'disconnect' method over the Room object
+        await room?.disconnect();
+
+        // Reset the state
+        setRoom(undefined);
+        setLocalTrack(undefined);
+        setRemoteTracks([]);
+    }
+
+    async function getToken(roomName, participantName) {
+        APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+        const response = await fetch(APPLICATION_SERVER_URL + "rtctoken", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                roomName: roomName,
+                participantName: participantName,
+            }),
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(`Failed to get rtctoken: ${error.errorMessage}`);
+        }
+
+        const data = await response.json();
+        return data.rtctoken;
+    }
 
     return (
-        <div className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto p-4">
-                <div className="flex items-start gap-2.5 ml-[10px] mr-[80px] mb-[12px]">
-                    <img className="w-[45px] h-[45px] rounded-full" src={TrainerImg} alt="TrainerImg" />
-                    <div className="flex flex-col gap-1 w-full max-w-[320px]">
-                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                            <span className="text-sm font-semibold text-gray-900 dark:text-white">김계란</span>
-                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
-                        </div>
-                        <div className="flex flex-col leading-1.5 p-4 border-gray-200 bg-white rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                            <p className="text-sm text-gray-900 dark:text-white font-bold">그렇게 드시면 10살까지 밖에 못살아요. 어? 왜 살아있지?</p>
-                        </div>
-                        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">확인함</span>
+        <>
+            {!room ? (
+                <div id='join'>
+                    <div id='join-dialog'>
+                        <h2>Join a Video Room</h2>
+                        <form
+                            onSubmit={(e) => {
+                                joinRoom();
+                                e.preventDefault();
+                            }}
+                        >
+                            <div>
+                                <label htmlFor='participant-name'>Participant</label>
+                                <input
+                                    id='participant-name'
+                                    className='form-control'
+                                    type='text'
+                                    value={participantName}
+                                    onChange={(e) => setParticipantName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor='room-name'>Room</label>
+                                <input
+                                    id='room-name'
+                                    className='form-control'
+                                    type='text'
+                                    value={roomName}
+                                    onChange={(e) => setRoomName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button
+                                className='btn btn-lg btn-success'
+                                type='submit'
+                                disabled={!roomName || !participantName}
+                            >
+                                Join!
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div className="flex items-start gap-2.5 ml-[80px] mr-[10px] mb-[12px]">
-                    <div className="flex flex-col gap-1 w-full max-w-[320px]">
-                        <div className="flex items-center space-x-2 rtl:space-x-reverse mr-[0px]">
-                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
-                        </div>
-                        <div className="flex flex-col leading-1.5 p-4 border-gray-200 bg-yellow-400 rounded-b-xl rounded-l-xl dark:bg-gray-700">
-                            <p className="text-sm font-bold text-white dark:text-white">아직까지 살아있는 기념으로 마라탕먹어도 되죠?</p>
-                        </div>
-                        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">확인함</span>
-                    </div>
-                </div>
-            </div>
-            <div className='flex flex-row bg-white h-[48px]'>
-                <div className='m-auto w-[45p] h-[39px]'>
-                    <button onClick={openModal}>
-                        <img src={Camera} alt="카메라" />
-                    </button>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={closeModal}
-                        className="relative bg-white w-[360px] h-[800px]"
-                        overlayClassName="fixed inset-0 bg-black flex items-center justify-center"
-                    >
-                        <img src={TrainerImg} alt="김계란" className='absolute w-full h-[750px] z-0'/>
-                        <img src={FatCat} alt='회원님' className='absolute z-10 bottom-[56px]'/>
-                        <div className='fixed bg-black w-[360px] h-[56px] bottom-0 flex items-center justify-center'>
-                        <button onClick={closeModal} className="w-[61px] h-[50px] rounded-[12px] bg-red-500 text-white rounded">
-                            <img src={OffCall} alt="전화끊기" className='m-auto'/>
+            ) : (
+                <div id='room'>
+                    <div id='room-header'>
+                        <h2 id='room-title'>{roomName}</h2>
+                        <button className='btn btn-danger' id='leave-room-button' onClick={leaveRoom}>
+                            Leave Room
                         </button>
-                        </div>
-                    </Modal>
+                    </div>
+                    <div id='layout-container'>
+                        {localTrack && (
+                            <VideoComponent track={localTrack} participantIdentity={participantName} local={true} />
+                        )}
+                        {remoteTracks.map((remoteTrack) =>
+                            remoteTrack.trackPublication.kind === "video" ? (
+                                <VideoComponent
+                                    key={remoteTrack.trackPublication.trackSid}
+                                    track={remoteTrack.trackPublication.videoTrack}
+                                    participantIdentity={remoteTrack.participantIdentity}
+                                />
+                            ) : (
+                                <AudioComponent
+                                    key={remoteTrack.trackPublication.trackSid}
+                                    track={remoteTrack.trackPublication.audioTrack}
+                                />
+                            )
+                        )}
+                    </div>
                 </div>
-                <div className="w-[300px] m-auto pl-[4px]">
-                    <input
-                        type="text"
-                        placeholder="메세지를 입력하세요"
-                        className="w-full dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    />
-                </div>
+            )}
+            <div>
+                <ChatComponent participantName={participantName} roomName={roomName} />
             </div>
-
-            {/* <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots" data-dropdown-placement="bottom-start" className="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
-                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                </svg>
-            </button> */}
-            {/* <div id="dropdownDots" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
-                    </li>
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Forward</a>
-                    </li>
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Copy</a>
-                    </li>
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                    </li>
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                    </li>
-                </ul>
-            </div> */}
-        </div>
+        </>
     );
 }
 
-export default UserChatRoom;
+export default App;

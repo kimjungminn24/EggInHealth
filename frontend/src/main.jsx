@@ -1,4 +1,5 @@
-// src/main.jsx
+import './global'
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

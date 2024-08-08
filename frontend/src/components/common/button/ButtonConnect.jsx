@@ -5,12 +5,11 @@ import ModalConnect from '../modal/ModalConnect';
 const ConnectButton = styled.button`
   background-color: #FFD66B;
   color: white;
-  color: white;
   border: none;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 12px;
-  margin-left: 20px;
+  margin-left: 10px;
   cursor: pointer;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &:hover {
@@ -22,7 +21,7 @@ const ConnectButton = styled.button`
 const ButtonConnect = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleClick = () => {;
+  const handleClick = () => {
     setModalOpen(true);
   };
 

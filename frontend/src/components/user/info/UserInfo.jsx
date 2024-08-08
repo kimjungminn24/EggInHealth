@@ -5,7 +5,7 @@ import ButtonDisconnect from '../../common/button/ButtonDisconnect';
 import ButtonConnect from '../../common/button/ButtonConnect';
 import ButtonCheckPTcount from '../../common/button/ButtonCheckPTcount';
 import ModalSchedule from '../../common/modal/ModalSchedule';
-import phone from '../../../assets/info/phone.png';
+import email from '../../../assets/info/email.png';
 import trainer from '../../../assets/info/trainer.png';
 import schedule from '../../../assets/info/schedule.png';
 import height from '../../../assets/info/height.png';
@@ -95,6 +95,7 @@ const InfoBtnContainer = styled.div`
 `
 const UserInfo = () => {
   const { userData } = useUserInfoStore();
+  console.log(userData);
   const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
   const [userGoal, setGoal] = useState({
     exerciseCommonId: 0,
@@ -124,9 +125,10 @@ const UserInfo = () => {
 
   return (
     <InfoContainer>
+      <InfoBox>{userData.name}</InfoBox>
       <InfoBox>
-        <InfoImg src={phone} alt="phone" />
-        <InfoText>{userData.phoneNumber || '전화번호를 등록해주세요'}</InfoText>
+        <InfoImg src={email} alt="email" />
+        <InfoText>{userData.email || '전화번호를 등록해주세요'}</InfoText>
       </InfoBox>
       <InfoBox>
   <InfoImg src={trainer} alt="trainer" />

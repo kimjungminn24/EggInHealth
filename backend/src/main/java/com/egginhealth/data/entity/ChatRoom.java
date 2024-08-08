@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,4 +20,8 @@ public class ChatRoom implements Serializable {
     private String id;
 
     private List<Chat> chatList;
+
+    public void roomSet() {
+        this.chatList = new ArrayList<>();
+    }
 }

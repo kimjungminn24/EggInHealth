@@ -1,12 +1,11 @@
 import React ,{ useEffect, useState }from 'react';
-import { useStore } from '../../store/store.js';
+import { useUserInfoStore } from '../../store/store.js';
 
 import RenderDays from '../../components/user/Calender/RenderDays.jsx';
 
 
 const UserCalender = () => {
-  const userId = useStore(state => state.userId)
-
+  const userId = useUserInfoStore(state => state.userData.id)
   const today = new Date();
   const formatMonth = `${today.getMonth() + 1}`;
   const formatMonthforAPI = formatMonth < 10 ? `0${formatMonth}` : formatMonth

@@ -27,6 +27,7 @@ export const useUserInfoStore = create((set) => ({
   try {
     const infoRet = await userInfo(userId);
     const eggRet = await userEgg(userId, formatMonth, formatYear);
+    console.log(infoRet)
     set({
       userData: infoRet,
       userEggData: eggRet,

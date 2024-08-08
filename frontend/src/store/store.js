@@ -21,11 +21,12 @@ export const useStore = create((set) => ({
 export const useUserInfoStore = create((set) => ({
   userData: null,
   userEggData : null,
-
+ 
   fetchData: async (userId,formatMonth,formatYear) =>{
   try {
     const infoRet = await userInfo(userId);
     const eggRet = await userEgg(userId, formatMonth, formatYear);
+    console.log(infoRet)
     set({
       userData: infoRet,
       userEggData: eggRet,

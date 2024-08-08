@@ -1,17 +1,21 @@
 import {create} from 'zustand';
-import { userInfo, userEgg } from '../api/main';
+import { userInfo, userEgg,userRole } from '../api/main';
 import { registerDiet, registerComment, updateDiet, deleteDiet, getDiet } from '../api/diet';
 import { registerExh } from '../api/exercise';
 
 
 export const useStore = create((set) => ({
+  userInfo : null,
   userId : null,
   userType : null,
-  userUpdate : (id,type) =>{
+  userUpdate : async () =>{
     {
+      const  info = await userRole()
+      const infoRet = await userInfo(info.id);
       set({
-        userId : id,
-        userType : type
+        userId : info.id,
+        userType : info.role,
+        userInfo:infoRet
       })
     }
   }
@@ -27,7 +31,6 @@ export const useUserInfoStore = create((set) => ({
   try {
     const infoRet = await userInfo(userId);
     const eggRet = await userEgg(userId, formatMonth, formatYear);
-    console.log(infoRet)
     set({
       userData: infoRet,
       userEggData: eggRet,

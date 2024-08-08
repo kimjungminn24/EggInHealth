@@ -71,3 +71,20 @@ export const connectCode = async (authCode) => {
     throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
   }
 };
+
+export const userRole = async () => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/user/role`, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+  }
+};

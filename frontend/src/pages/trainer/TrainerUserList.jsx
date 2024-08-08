@@ -9,8 +9,8 @@ import videoIcon from '../../assets/feedback.png';
 import videoIcon2 from '../../assets/feedback2.png'; 
 import arrow from '../../assets/arrow.png';
 import { checkMemberList } from '../../api/trainer';
-
-
+import { useNavigate } from 'react-router-dom';
+import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   padding: 20px;
@@ -133,12 +133,19 @@ const users = [
 
 const TrainerUserList = () => {
   const [userList, setUserList] = useState([])
+  const navigate = useNavigate()
+  const { fetchData } = useUserInfoStore();
+  const today = new Date();
+  const formatMonth = `${today.getMonth() + 1}`;
+  const formatYear = `${today.getFullYear()}`;
 
-  const handleDetailMember = (memberId)=>{
 
+  const handleDetailMember = async(memberId)=>{
+    await fetchData(memberId,formatMonth,formatYear)
+    await navigate(`/usercalender`)
   }
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMemberList = async () => {
       try {
         const response = await checkMemberList();
         setUserList(response);
@@ -146,17 +153,17 @@ const TrainerUserList = () => {
         console.log(error);
       }
     };
-    fetchData();
+    fetchMemberList();
   }, []);
 
   return (
     <Container>
       <h1>식단 운동 피드백</h1>
       <UserList >
-        {users.map(user => (
-          <UserItem key={user.memberId} onClick={handleDetailMember(user.memberId)}>
+        {userList.map(user => (
+          <UserItem key={user.memberId} onClick={() =>handleDetailMember(user.memberId)}>
             <UserInfo>
-              <UserImage src={profile} alt={user.name} />
+              <UserImage src={user.imgUrl||profile} alt={user.name} />
               <UserNameAndCount>
                 <UserName>{user.name}</UserName>
                 <RemainingCount>남은 횟수: {user.ptCnt}</RemainingCount>

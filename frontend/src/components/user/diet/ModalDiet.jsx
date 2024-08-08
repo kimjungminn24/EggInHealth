@@ -26,7 +26,7 @@ const ImagePreview = styled.img`
 
 const Textarea = styled.textarea`
   width: 100%;
-  height: 100px;
+  height: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;

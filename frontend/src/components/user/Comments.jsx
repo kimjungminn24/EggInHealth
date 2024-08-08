@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton } from '../common/StyledComponents';
+import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton, CommentInputWrapper, CommentIcon } from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
 import { registerExComment } from '../../api/exercise'; // 운동 댓글 등록 API
 
@@ -23,7 +23,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
       : [];
 
     setComments([...filteredDietComments, ...filteredExerciseComments]);
-  }, [dietData, exData, date, dietType,type]);
+  }, [dietData, exData, date, dietType, type]);
 
   const handleAddComment = async () => {
     if (comment.trim()) {
@@ -32,7 +32,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
           await registerComment(comment, date + `T00:00:00Z`, dietData[0].id, type);
           fetchDiet();
         } else if (type === 'E') { // 운동 댓글
-          await registerExComment(comment, exData.boardId,type);
+          await registerExComment(comment, exData.boardId, type);
           fetchExData();
         }
         setComment('');
@@ -42,22 +42,32 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAddComment();
+    }
+  };
+
   return (
     <CommentsSection>
-      <h3>댓글</h3>
       <CommentsList>
         {comments.length > 0 ? (
           comments.map((c) => (
             <CommentItem key={c.id}>{c.content}</CommentItem>
           ))
         ) : (
-          <p>댓글이 없습니다.</p>
+          null
         )}
       </CommentsList>
-      <div>
-        <CommentInput value={comment} onChange={(e) => setComment(e.target.value)} />
-        <CommentButton onClick={handleAddComment}>댓글 남기기</CommentButton>
-      </div>
+      <CommentInputWrapper>
+        <CommentInput
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder='댓글 남기기'
+        />
+        <CommentIcon onClick={handleAddComment} />
+      </CommentInputWrapper>
     </CommentsSection>
   );
 };

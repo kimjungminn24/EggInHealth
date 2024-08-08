@@ -1,7 +1,7 @@
 /* Modal의 스타일을 오버라이딩할 CSS 파일 */
 import styled from 'styled-components';
 import Modal from 'react-modal';
-
+import { HiChevronRight } from "react-icons/hi";
 Modal.setAppElement('#root'); // 모달이 열릴 때 접근성을 위해 애플리케이션 루트를 설정합니다.
 
 const customStyles = {
@@ -50,9 +50,9 @@ const TabsContainer = styled.div`
 const TabButton = styled.button`
   background-color: ${(props) => (props.active ? '#FFD66B' : '#FFFFFF')};
   color: ${(props) => (props.active ? '#FFFFFF' : '#DFDFDF')};
-  padding: 10px 20px;
+  padding: 0px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   margin: 0 5px;
   cursor: pointer;
 
@@ -102,11 +102,13 @@ const CommentItem = styled.li`
 `;
 
 const CommentInput = styled.input`
-  width: calc(100% - 22px);
+  width: 100%;
   padding: 10px;
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  padding-right: 30px;
+  box-sizing: border-box; 
 `;
 
 const CommentButton = styled.button`
@@ -162,6 +164,27 @@ const StyledModal = styled(Modal)`
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
+
+const CommentInputWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+
+
+const CommentIcon = styled(HiChevronRight )`
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+
+`;
 export {
   PageContainer,
   Title,
@@ -180,5 +203,7 @@ export {
   ImagePreview,
   Textarea,
   Button,
-  StyledModal
+  StyledModal,
+  CommentInputWrapper,
+  CommentIcon
 };

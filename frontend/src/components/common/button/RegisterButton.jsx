@@ -8,6 +8,42 @@ const ButtonContainer = styled.div`
   gap: 10px; /* 버튼 사이의 간격을 조절할 수 있습니다 */
 `;
 
+const RegisterBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 300px; 
+  height: 300px; 
+  text-align: center;
+  flex-direction: column;
+`;
+
+const PlusIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; 
+  height: 40px; 
+  border: 4px solid #DFDFDF; 
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+`;
+
+const PlusIcon = styled.span`
+  font-size: 30px;
+  color:#DFDFDF;
+  border: #DFDFDF;
+`;
+
+const ButtonText = styled.span`
+  font-size: 16px;
+  color: #DFDFDF;
+`;
+
 const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
   useEffect(() => {
     setHasImages(hasImages);
@@ -15,12 +51,19 @@ const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
 
   return (
     <ButtonContainer>
-      <RegisterButtonContainer onClick={openModal}>
-        {hasImages ? '수정' : '등록'}
-      </RegisterButtonContainer>
-      {hasImages?
-      <DeleteButton onClick={onDelete} />:null}
-      
+      {hasImages ? (
+        <RegisterButtonContainer onClick={openModal}>
+          수정
+        </RegisterButtonContainer>
+      ) : (
+        <RegisterBox onClick={openModal}>
+          <PlusIconContainer>
+            <PlusIcon>+</PlusIcon>
+          </PlusIconContainer>
+          <ButtonText>식단을 등록해주세요</ButtonText>
+        </RegisterBox>
+      )}
+      {hasImages ? <DeleteButton onClick={onDelete} /> : null}
     </ButtonContainer>
   );
 };

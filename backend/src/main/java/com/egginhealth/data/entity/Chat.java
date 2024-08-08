@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Chat implements Serializable {
 
-    private String id;
-
     private String content;
 
     private String senderId;
@@ -26,7 +24,6 @@ public class Chat implements Serializable {
     private boolean isRead;
 
     public Chat(ChatDto chatDto) {
-        this.id = chatDto.id();
         this.content = chatDto.content();
         this.senderId = chatDto.senderId();
         this.receiverId = chatDto.receiverId();

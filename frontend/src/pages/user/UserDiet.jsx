@@ -18,14 +18,17 @@ import BoxUser from "./../../components/trainer/BoxUser";
 import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
 
 const UserDietPage = () => {
-  const userId = useStore((state) => state.userId);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
   const [filteredData, setFilteredData] = useState([]);
-  const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { userData } = useUserInfoStore();
+  const userType = useStore((set)=>set.userType)
+
+    console.log(userType);
 
   const getKrDate = () => {
     const now = new Date();
@@ -47,10 +50,10 @@ const UserDietPage = () => {
   };
 
   const fetchDietData = async () => {
-    if (selectedDate && userId) {
+    if (selectedDate && userData) {
       try {
         const [year, month, day] = selectedDate.split("-");
-        const data = await getDiet(userId, year, month, day);
+        const data = await getDiet(userData.id, year, month, day);
         setDietData(data);
       } catch (error) {
         console.error("식단조회 실패:", error);
@@ -60,7 +63,7 @@ const UserDietPage = () => {
 
   useEffect(() => {
     fetchDietData();
-  }, [selectedDate, userId, selectedTab, isModalOpen,isDeleteModalOpen]);
+  }, [selectedDate, userData, selectedTab, isModalOpen, isDeleteModalOpen]);
 
   const openModal = () => {
     if (selectedDate) {
@@ -83,11 +86,9 @@ const UserDietPage = () => {
   };
   const today = getKrDate();
 
-  const { userData } = useUserInfoStore();
   console.log(userData);
-
-  console.log(filteredData)
-  console.log(hasImages)
+  console.log(filteredData);
+  console.log(hasImages);
 
   return (
     <PageContainer>
@@ -103,9 +104,8 @@ const UserDietPage = () => {
         dietData={dietData}
         selectedTab={selectedTab}
         selectedDate={selectedDate}
-        setHasImages={setHasImages} 
+        setHasImages={setHasImages}
         setFilteredData={setFilteredData}
-
       />
 
       {selectedDate <= today ? (

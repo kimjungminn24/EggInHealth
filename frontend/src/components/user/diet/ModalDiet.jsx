@@ -45,32 +45,68 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const PlusIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; 
+  height: 40px; 
+  border: 4px solid #DFDFDF; 
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+  cursor: pointer;
+`;
+
+const PlusIcon = styled.span`
+  font-size: 30px;
+  color:#DFDFDF;
+  border: #DFDFDF;
+`;
+
+const ButtonText = styled.span`
+  font-size: 16px;
+  color: #DFDFDF;
+`;
+
+const RegisterBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 250px; 
+  height: 250px; 
+  text-align: center;
+  flex-direction: column;
+`;
+
 const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
-
+  const fileInputRef = React.createRef();
 
   useEffect(() => {
     setHasImages(hasImages);
   }, [hasImages, setHasImages]);
 
-  const dateChange = date+'T00:00:00Z'
-  console.log(filteredData)
-  console.log(type)
+  const dateChange = date+'T00:00:00Z';
+  console.log(filteredData);
+  console.log(type);
 
   const handleSubmit = async () => {
     if (image) {
       try {
         if (hasImages){
-          await updateDiet(type,dateChange,image,filteredData[0].id)
+          await updateDiet(type, dateChange, image, filteredData[0].id);
         }
         else{
           const newDiet = await registerDiet(type, dateChange, image);
-          
           if (newDiet && comment) {
             await registerComment(comment, dateChange, newDiet.dietId, 'D');
           } 
-          console.log('다이어트 등록')
+          console.log('다이어트 등록');
         }
         onClose();
       } catch (error) {
@@ -88,10 +124,22 @@ const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) 
   return (
     <StyledModal isOpen={true} onRequestClose={onClose}>
       <h2>식사 등록</h2>
-      <input type="file" onChange={handleImageChange} />
+      {!image && <RegisterBox onClick={() => fileInputRef.current.click()}>
+        <PlusIconContainer>
+          {!image && <PlusIcon>+</PlusIcon>}
+        </PlusIconContainer>
+        {!image && <ButtonText>식단을 등록해주세요</ButtonText>}
+      </RegisterBox>}
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
+      />
       {image && <ImagePreview src={URL.createObjectURL(image)} alt="preview" />}
       
-      {!hasImages && (
+      {!hasImages &&  (
         <Textarea
           placeholder="댓글을 입력하세요"
           value={comment}

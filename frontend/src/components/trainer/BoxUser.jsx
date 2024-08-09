@@ -62,7 +62,7 @@ const Arrow = styled.img`
   height: ; */
 `;
 
-const BoxUser = ({ userData }) => {
+const BoxUser = ({ userData ,selectedDate,setSelectedDate }) => {
     
     const profileImg = userData.imgUrl;
    const profileName = userData.name;
@@ -75,7 +75,7 @@ const BoxUser = ({ userData }) => {
           <UserName>
             {userData.name}
           </UserName>
-          <Datepicker
+          {/* <Datepicker
     responsive={{
         xsmall: {
             controls: ['date'],
@@ -94,8 +94,9 @@ const BoxUser = ({ userData }) => {
             touchUi: false
         }
     }}
-/>
-          {/* <SelectedDate/> */}
+/> */}
+          <SelectedDate    selectedDate={selectedDate}
+      setSelectedDate={setSelectedDate}/>
         </UserInfo>
       </ChatItem>
     </ChatListContainer>

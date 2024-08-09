@@ -16,9 +16,9 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
       setExTime(0);
     } else {
       setExTime('');
-      setExhWeight(0)
-      setExhSet(0)
-      setExhRep(0)
+      setExhWeight('')
+      setExhSet('')
+      setExhRep('')
     }
   }, [inputType]);
 

@@ -1,14 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import { CommentsSection, CommentsList, CommentItem, CommentInput, CommentButton, CommentInputWrapper, CommentIcon } from '../common/StyledComponents';
+import styled from 'styled-components';
+import {
+  CommentsSection,
+  CommentsList,
+  CommentInput,
+  CommentButton,
+  CommentInputWrapper,
+  CommentIcon
+} from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
-import { registerExComment } from '../../api/exercise'; // 운동 댓글 등록 API
+import { registerExComment } from '../../api/exercise';
 
-const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExData }) => {
+const CommentItem = styled.div`
+  display: flex;
+  justify-content: ${(props) => (props.isUser ? 'flex-end' : 'flex-start')};
+  padding: 10px;
+`;
+
+const CommentBubble = styled.div`
+  background-color: ${(props) => (props.isUser ? '#FFD66B' : '#ffffff')};
+  color: ${(props) => (props.isUser ? '#FFFFFF' : 'black')};
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 60%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const CommentContent = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.isUser ? 'row-reverse' : 'row')};
+  align-items: center;
+`;
+
+const CommentText = styled.div`
+  margin-left: ${(props) => (props.isUser ? '0' : '10px')};
+  margin-right: ${(props) => (props.isUser ? '10px' : '0')};
+`;
+
+const CommentProfile = styled.div`
+  display: ${(props) => (props.isUser ? 'none' : 'flex')};
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const ProfileImage = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+`;
+
+const TimeStamp = styled.div`
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 5px;
+`;
+
+const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExData, userId, userData }) => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
 
   const extractDate = (dateTimeString) => {
-    return dateTimeString?.split("T")[0];
+    const date = new Date(dateTimeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const extractTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0을 12로 변환
+    return `${ampm} ${hours}:${minutes}`;
+  };
+
+  const getKoreanISOString = () => {
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kstDate = new Date(now.getTime() + kstOffset);
+    return kstDate.toISOString();
   };
 
   useEffect(() => {
@@ -19,7 +94,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
       : [];
 
     const filteredExerciseComments = exData && extractDate(exData.date) === date
-       ? (exData.comments || [])
+      ? (exData.comments || [])
       : [];
 
     setComments([...filteredDietComments, ...filteredExerciseComments]);
@@ -28,10 +103,10 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
   const handleAddComment = async () => {
     if (comment.trim()) {
       try {
-        if (type === 'D') { // 다이어트 댓글
-          await registerComment(comment, date + `T00:00:00Z`, dietData[0].id, type);
+        if (type === 'D') {
+          await registerComment(comment, getKoreanISOString(), dietData[0].id, type);
           fetchDiet();
-        } else if (type === 'E') { // 운동 댓글
+        } else if (type === 'E') {
           await registerExComment(comment, exData.boardId, type);
           fetchExData();
         }
@@ -52,12 +127,28 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
     <CommentsSection>
       <CommentsList>
         {comments.length > 0 ? (
-          comments.map((c) => (
-            <CommentItem key={c.id}>{c.content}</CommentItem>
-          ))
-        ) : (
-          null
-        )}
+          comments.map((c) => {
+            const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
+            const datePart = extractDate(c.date);
+            const timePart = extractTime(c.date);
+            return (
+              <CommentItem key={c.id} isUser={isUser}>
+                <CommentContent isUser={isUser}>
+                  <CommentProfile isUser={isUser}>
+                    <ProfileImage src={userData.imgUrl || '/path/to/default/image.jpg'} alt="" />
+                    {userData.name}
+                  </CommentProfile>
+                  <CommentBubble isUser={isUser}>
+                    <CommentText isUser={isUser}>
+                      {c.content}
+                    </CommentText>
+                    <TimeStamp>{datePart} {timePart}</TimeStamp>
+                  </CommentBubble>
+                </CommentContent>
+              </CommentItem>
+            );
+          })
+        ) : null}
       </CommentsList>
       <CommentInputWrapper>
         <CommentInput
@@ -69,6 +160,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         <CommentIcon onClick={handleAddComment} />
       </CommentInputWrapper>
     </CommentsSection>
+    
   );
 };
 

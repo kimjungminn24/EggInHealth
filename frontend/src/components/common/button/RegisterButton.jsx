@@ -60,7 +60,7 @@ const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
           <PlusIconContainer>
             <PlusIcon>+</PlusIcon>
           </PlusIconContainer>
-          <ButtonText>식단을 등록해주세요</ButtonText>
+          <ButtonText>사진을 등록해주세요</ButtonText>
         </RegisterBox>
       )}
       {hasImages ? <DeleteButton onClick={onDelete} /> : null}

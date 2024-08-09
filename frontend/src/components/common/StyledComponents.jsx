@@ -69,6 +69,7 @@ const DietImage = styled.img`
   max-width: 100%;
   height: auto;
   margin-bottom: 20px;
+  background-color: white;
 `;
 
 const RegisterButtonContainer = styled.button`
@@ -87,6 +88,7 @@ const RegisterButtonContainer = styled.button`
 const CommentsSection = styled.div`
   text-align: left;
   margin-top: 20px;
+  margin-bottom: 80px;
 `;
 
 const CommentsList = styled.ul`
@@ -104,12 +106,13 @@ const CommentItem = styled.li`
 const CommentInput = styled.input`
   width: 100%;
   padding: 10px;
-  margin-right: 10px;
+  padding-right: 40px; /* 아이콘 공간 확보 */
   border-radius: 5px;
   border: 1px solid #ccc;
-  padding-right: 30px;
   box-sizing: border-box; 
+  position: relative;
 `;
+
 
 const CommentButton = styled.button`
   padding: 10px 20px;
@@ -167,22 +170,24 @@ const StyledModal = styled(Modal)`
 
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: relative;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  width: 360px;
 `;
 
 
 
 const CommentIcon = styled(HiChevronRight )`
   position: absolute;
-  right: 20px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
 
 `;
 export {
@@ -202,8 +207,8 @@ export {
   customStyles as StyledModalStyles,
   ImagePreview,
   Textarea,
-  Button,
-  StyledModal,
+    Button,
+    StyledModal,
   CommentInputWrapper,
   CommentIcon
 };

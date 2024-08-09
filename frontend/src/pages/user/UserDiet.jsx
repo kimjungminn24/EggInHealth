@@ -12,7 +12,6 @@ import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
 import { useStore, useUserInfoStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
-import { useParams } from "react-router-dom";
 import { Datepicker } from "@mobiscroll/react";
 import BoxUser from "./../../components/trainer/BoxUser";
 import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
@@ -26,9 +25,12 @@ const UserDietPage = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { userData } = useUserInfoStore();
-  const userType = useStore((set)=>set.userType)
+  const userType = useStore((set) => set.userType);
+  const userLoginId= useStore((set)=> set.userId)
+  const userLoginData = useStore((set)=> set.userInfo)
 
-    console.log(userType);
+
+  console.log(userLoginData);
 
   const getKrDate = () => {
     const now = new Date();
@@ -92,12 +94,18 @@ const UserDietPage = () => {
 
   return (
     <PageContainer>
-      {/* <BoxUser userData={userData}/> */}
-      <SelectedDate
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-      />
-
+      {userType === "TRAINER" ? (
+        <BoxUser
+          userData={userData}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
+      ) : (
+        <SelectedDate
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
+      )}
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
       <DietSection
@@ -107,14 +115,15 @@ const UserDietPage = () => {
         setHasImages={setHasImages}
         setFilteredData={setFilteredData}
       />
-
-      {selectedDate <= today ? (
-        <RegisterButton
-          openModal={openModal}
-          setHasImages={setHasImages}
-          hasImages={hasImages}
-          onDelete={openDeleteModal}
-        />
+      {userType === "MEMBER" ? (
+        selectedDate <= today ? (
+          <RegisterButton
+            openModal={openModal}
+            setHasImages={setHasImages}
+            hasImages={hasImages}
+            onDelete={openDeleteModal}
+          />
+        ) : null
       ) : null}
 
       {isModalOpen && (
@@ -139,8 +148,10 @@ const UserDietPage = () => {
         type="D"
         dietData={dietData}
         dietType={selectedTab}
-        fetchDiet={fetchDietData} // 함수 자체를 전달
-      />
+        fetchDiet={fetchDietData} 
+         userId={userLoginId}
+         userData={userData}
+        />
     </PageContainer>
   );
 };

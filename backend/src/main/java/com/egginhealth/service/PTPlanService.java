@@ -1,10 +1,6 @@
 package com.egginhealth.service;
 
-import com.egginhealth.data.dto.pt.PtLogUpdateDto;
-import com.egginhealth.data.dto.pt.PtPlanDto;
-import com.egginhealth.data.dto.pt.PtPlanInputDto;
-import com.egginhealth.data.dto.pt.PtPlanUpdateDto;
-import com.egginhealth.data.dto.pt.PtTrainerPlanDto;
+import com.egginhealth.data.dto.pt.*;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.PtPlan;
 import com.egginhealth.data.repository.MemberRepository;
@@ -44,15 +40,15 @@ public class PTPlanService {
                 .toList();
     }
 
-    public void checkPtPlan() {
+    public void decreasePtCount() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(30);
 
         ptPlanRepository.findPtPlansByTimeRange(start, now)
                 .filter(list -> !list.isEmpty())
                 .ifPresent(list -> list.stream()
-                        .map(plan -> PtLogUpdateDto.from(plan.getMember().getId(), -1))
-                        .forEach(ptLogService::updatePtLog));
+                        .map(plan -> PtUpdateDto.from(plan.getMember().getId(), -1))
+                        .forEach(ptLogService::updatePtCount));
 
     }
 

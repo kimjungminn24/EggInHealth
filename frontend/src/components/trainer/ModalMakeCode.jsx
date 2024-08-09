@@ -39,7 +39,7 @@ const Code = styled.div`
 
 const CopyImg = styled.img`
   margin-left: 40px;
-  cursor: pointer; /* 커서가 포인터로 변경되어 클릭 가능함을 나타냄 */
+  cursor: pointer; 
 `;
 
 export const ModalMakeCode = ({ isOpen, isClose }) => {

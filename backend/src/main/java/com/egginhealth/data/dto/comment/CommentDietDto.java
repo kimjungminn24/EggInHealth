@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 public record CommentDietDto(
         int id,
         String content,
-        LocalDateTime date,
+        LocalDateTime createdAt,
         int boardId,
         String boardType,
         int writerId
 ) {
 
-    public static CommentDietDto from (Comment comment){
+    public static CommentDietDto from(Comment comment) {
         return new CommentDietDto(
                 comment.getId(),
                 comment.getContent(),

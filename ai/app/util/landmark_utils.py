@@ -34,29 +34,3 @@ def calculate_angle(a, b, c):
         angle = 360 - angle
 
     return angle
-
-
-def get_landmark_coordinates(landmarks, side, pose_landmark):
-    return [
-        landmarks[pose_landmark[f'{side}_SHOULDER']].x, landmarks[pose_landmark[f'{side}_SHOULDER']].y,
-        landmarks[pose_landmark[f'{side}_HIP']].x, landmarks[pose_landmark[f'{side}_HIP']].y,
-        landmarks[pose_landmark[f'{side}_KNEE']].x, landmarks[pose_landmark[f'{side}_KNEE']].y,
-        landmarks[pose_landmark[f'{side}_ANKLE']].x, landmarks[pose_landmark[f'{side}_ANKLE']].y,
-    ]
-
-
-def get_squat_angle(landmarks, direction='left'):
-    side = 'LEFT' if direction == 'left' else 'RIGHT'
-
-    shoulder, hip, knee, ankle = get_landmark_coordinates(landmarks, side, mp_pose.PoseLandmark)
-
-    coord_dict = {
-        'shoulder': shoulder,
-        'hip': hip,
-        'knee': knee,
-        'ankle': ankle,
-        'hip_angle': calculate_angle(shoulder, hip, knee),
-        'knee_angle': calculate_angle(hip, knee, ankle)
-    }
-
-    return coord_dict

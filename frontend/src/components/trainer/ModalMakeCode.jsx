@@ -42,7 +42,22 @@ const CopyImg = styled.img`
   cursor: pointer; 
 `;
 
-export const ModalMakeCode = ({ isOpen, isClose }) => {
+const CloseButton = styled.button`
+  background-color: #FF5757;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  width: 50%;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #FF3F3F;
+  }
+`;
+export const ModalMakeCode = ({ isOpen, onRequestClose }) => {
   const [authCode, setAuthCode] = useState('');
 
   useEffect(() => {
@@ -78,9 +93,10 @@ export const ModalMakeCode = ({ isOpen, isClose }) => {
   };
 
   return (
+
     <StyledModal
       isOpen={isOpen}
-      onRequestClose={isClose}
+      onRequestClose={onRequestClose}
       shouldCloseOnOverlayClick={true}
     >
       <ModalContent>
@@ -91,8 +107,9 @@ export const ModalMakeCode = ({ isOpen, isClose }) => {
           {authCode || "코드를 불러오는 중..."}
           <CopyImg src={copyImg} alt="복사하기" onClick={handleCopy} /> 
         </Code>
-   
+        <CloseButton onClick={onRequestClose}>닫기</CloseButton>
       </ModalContent>
+      
     </StyledModal>
   );
 };

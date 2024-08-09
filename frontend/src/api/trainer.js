@@ -34,3 +34,21 @@ export const checkCode = async () => {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   }
+
+  export const updatePtLog = async (memberId,change) => {
+    try {
+      const response = await axios.patch(
+        `${BASE_URL}/pt/count`, 
+        { memberId ,change}, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+    }
+  };

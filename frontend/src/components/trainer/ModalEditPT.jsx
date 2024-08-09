@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
+import { updatePtLog } from '../../api/trainer';
+import { checkMemberList } from '../../api/trainer';
+
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -55,7 +58,6 @@ const UserImage = styled.img`
   margin-right: 15px;
 `;
 
-
 const AddButton = styled.button`
   background-color: #FFD66B;
   border: none;
@@ -82,6 +84,7 @@ const Input = styled.input`
   width: 70px;
   text-align: center;
 `;
+
 const CloseButton = styled.button`
   background-color: #FF5757;
   border: none;
@@ -97,42 +100,64 @@ const CloseButton = styled.button`
     background-color: #FF3F3F;
   }
 `;
-const users = [
-  { id: 1, name: '강동형', remaining: 25, img: profile },
-  { id: 2, name: '김민주', remaining: 24, img: profile },
-  { id: 3, name: '김정민', remaining: 1, img: profile },
-  { id: 4, name: '신재건', remaining: 28, img: profile },
-];
 
 export const ModalEditPT = ({ isOpen, onClose }) => {
+  const [userValues, setUserValues] = useState(null);
+  const [initialValues, setInitialValues] = useState(null); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await checkMemberList();
+        setInitialValues(response);
+        setUserValues(response); 
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [isOpen]);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
+      setUserValues(initialValues); 
     }
   };
 
   if (!isOpen) return null;
 
-  const handlePTChange = (e) => {
+  const handlePTChange = (id,change) => {
+    console.log(`PT 변경: 사용자 ID ${id}`,change);
+    updatePtLog(id,change);
     onClose();
   };
-  
+
+  const saveChangeValue = (e, memberId) => {
+    const updatedUsers = userValues.map(user =>
+      user.memberId === memberId ? { ...user, ptCnt: e.target.value } : user
+    );
+    console.log(updatedUsers)
+    setUserValues(updatedUsers);
+  };
+
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
         <h2>사용자 리스트</h2>
         <UserList>
-          {users.map((user) => (
-            <UserItem key={user.id}>
+          {userValues.map((user) => (
+            <UserItem key={user.memberId}>
               <UserInfo>
-                <UserImage src={user.img} alt={user.name} />
+                <UserImage src={user.imgUrl||profile} alt={user.name} />
                 <span>{user.name}</span>
               </UserInfo>
               <Input
-              type="number"
-              placeholder={user.remaining}
+                type="number"
+                value={user.ptCnt}
+                onChange={(e) => saveChangeValue(e, user.memberId)}
               />
-              <AddButton onClick={handlePTChange}>수정</AddButton>
+              <AddButton onClick={() => handlePTChange(user.memberId,user.ptCnt)}>수정</AddButton>
             </UserItem>
           ))}
         </UserList>

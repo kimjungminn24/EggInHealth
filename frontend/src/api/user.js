@@ -31,3 +31,18 @@ export const checkGoal = async (uid) => {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   }
+
+  export const receiveToken = async (deviceToken) => {
+    const response = await axios.post(
+      `${BASE_URL}/device/token`,
+      {
+        deviceToken,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  };

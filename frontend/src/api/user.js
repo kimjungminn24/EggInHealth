@@ -33,16 +33,20 @@ export const checkGoal = async (uid) => {
   }
 
   export const receiveToken = async (deviceToken) => {
-    const response = await axios.post(
-      `${BASE_URL}/device/token`,
-      {
-        deviceToken,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    try{
+      const response = await axios.post(
+        `${BASE_URL}/device/token`,
+        {
+          deviceToken,
         },
-      }
-    );
-    return response.data;
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch(error) {
+      console.log("token 전송 실패");
+    }
   };

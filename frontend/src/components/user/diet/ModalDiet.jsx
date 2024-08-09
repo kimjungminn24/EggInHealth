@@ -123,7 +123,6 @@ const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) 
 
   return (
     <StyledModal isOpen={true} onRequestClose={onClose}>
-      <h2>식사 등록</h2>
       {!image && <RegisterBox onClick={() => fileInputRef.current.click()}>
         <PlusIconContainer>
           {!image && <PlusIcon>+</PlusIcon>}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonPlus from '../common/button/ButtonPlus';
-import { ModalMakeCode } from './ModalMakeCode';
+import { ModalAddSchedule } from './ModalAddSchedule';
 
 const Box = styled.div`
   display: flex;
@@ -32,10 +32,10 @@ const BtnRegister = () => {
   return (
     <>
       <Box className='text-[15px]'>
-        <p>등록된 회원이 없습니다.<br/> + 버튼을 눌러 회원을 등록해주세요.</p>
+        <p>오늘 일정이 없습니다.<br/> + 버튼을 눌러 일정을 등록해주세요.</p>
         <ButtonPlus onClick={openModal} />
       </Box>
-      <ModalMakeCode isOpen={modalIsOpen} onRequestClose={closeModal} />
+      <ModalAddSchedule isOpen={modalIsOpen} onRequestClose={closeModal} />
     </>
   );
 };

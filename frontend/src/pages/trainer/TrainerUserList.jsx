@@ -74,63 +74,6 @@ const StatIcon = styled.img`
 
 const Arrow = styled.img``;
 
-const users = [
-  {
-    name: '김민주',
-    memberId: '1',
-    ptCnt: '25',
-    imgUrl: 'path/to/image1.jpg',
-    isExercise: false,
-    isDiet: true,
-    isFeedback: true,
-  },
-  {
-    name: '김정민',
-    memberId: '2',
-    ptCnt: '619',
-    imgUrl: 'path/to/image2.jpg',
-    isExercise: true,
-    isDiet: true,
-    isFeedback: true,
-  },
-  {
-    name: '이지영',
-    memberId: '3',
-    ptCnt: '33',
-    imgUrl: 'path/to/image3.jpg',
-    isExercise: false,
-    isDiet: true,
-    isFeedback: true,
-  },
-  {
-    name: '고충원',
-    memberId: '4',
-    ptCnt: '258',
-    imgUrl: 'path/to/image4.jpg',
-    isExercise: true,
-    isDiet: true,
-    isFeedback: true,
-  },
-  {
-    name: '강동형',
-    memberId: '5',
-    ptCnt: '467',
-    imgUrl: 'path/to/image5.jpg',
-    isExercise: false,
-    isDiet: true,
-    isFeedback: true,
-  },
-  {
-    name: '신재건',
-    memberId: '6',
-    ptCnt: '865',
-    imgUrl: 'path/to/image6.jpg',
-    isExercise: true,
-    isDiet: true,
-    isFeedback: true,
-  },
-]
-
 const TrainerUserList = () => {
   const [userList, setUserList] = useState([])
   const navigate = useNavigate()

@@ -129,8 +129,8 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         {comments.length > 0 ? (
           comments.map((c) => {
             const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
-            const datePart = extractDate(c.date);
-            const timePart = extractTime(c.date);
+            const datePart = extractDate(c.createdAt);
+            const timePart = extractTime(c.createdAt);
             return (
               <CommentItem key={c.id} isUser={isUser}>
                 <CommentContent isUser={isUser}>
@@ -160,7 +160,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         <CommentIcon onClick={handleAddComment} />
       </CommentInputWrapper>
     </CommentsSection>
-    
+
   );
 };
 

@@ -64,8 +64,6 @@ const Exercise = () => {
 
   return (
     <div>
-      <h1>운동 목록</h1>
-      <div></div>
       <SelectedDate
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
@@ -87,7 +85,7 @@ const Exercise = () => {
 
         <button onClick={handleFeedbackClick}>사용자 피드백</button>
         {isModalOpen && (
-          <ModalExercise date={selectedDate} onClose={closeModal} />
+          <ModalExercise date={selectedDate} onClose={closeModal} setHasImages={setHasImages} hasImages={hasImages} />
         )}
       </div>
       <Comments

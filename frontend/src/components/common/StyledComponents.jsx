@@ -107,8 +107,8 @@ const CommentInput = styled.input`
   width: 100%;
   padding: 10px;
   padding-right: 40px; /* 아이콘 공간 확보 */
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  /* border: 1px solid #ccc; */
   box-sizing: border-box; 
   position: relative;
 `;
@@ -170,7 +170,7 @@ const StyledModal = styled(Modal)`
 
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 60px;
+  bottom: 55px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

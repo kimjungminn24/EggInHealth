@@ -51,4 +51,10 @@ public class ExerciseController {
     public ResponseEntity<ExerciseSetDto> patchExerciseSetBy(@RequestBody ExerciseSetDto inputData) {
         return new ResponseEntity<>(exerciseService.updateExerciseSet(inputData), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/report")
+    public ResponseEntity<Void> deleteExerciseReportBy(@RequestParam int id) {
+        boolean isDelete = exerciseService.deleteExerciseReport(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

@@ -97,9 +97,9 @@ public class ExerciseService {
         ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day()).orElseGet(() ->
                 exerciseHomeworkRepository.save(ExerciseHomework.createExerciseHomework(member, date))
         );
-
-        ExerciseReport report = exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date));
-        return ExerciseReportDto.from(report, homework.getId());
+        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day()).orElseGet(() ->
+                exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date)));
+        return ExerciseReportDto.from(report);
     }
 
     public void saveExerciseComment(ExerciseCommentDto exerciseCommentDto) {
@@ -122,6 +122,14 @@ public class ExerciseService {
                 .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
         exerciseSet.updateExerciseSet(exerciseSetDto);
         return ExerciseSetDto.from(exerciseSet);
+    }
+
+    public boolean deleteExerciseReport(int reportId) {
+        ExerciseReport exerciseReport = exerciseReportRepository.findById(reportId)
+                .orElseThrow(() -> new IllegalArgumentException("ExerciseReport not found"));
+        s3Service.delete(DIR_NAME + exerciseReport.getImgUrl());
+        exerciseReportRepository.delete(exerciseReport);
+        return true;
     }
 
 

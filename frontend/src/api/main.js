@@ -13,6 +13,7 @@ export const userInfo = async (Id) => {
           withCredentials: true,
         }
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');

@@ -97,8 +97,15 @@ public class ExerciseService {
         ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day()).orElseGet(() ->
                 exerciseHomeworkRepository.save(ExerciseHomework.createExerciseHomework(member, date))
         );
-        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day()).orElseGet(() ->
-                exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date)));
+        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day())
+                .map(r -> {
+                    r.updateExerciseReport(url);
+                    return r;
+                }).orElseGet(() ->
+                        exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date))
+                );
+
+
         return ExerciseReportDto.from(report);
     }
 

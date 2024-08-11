@@ -29,7 +29,7 @@ public class ExerciseController {
         return new ResponseEntity<>(exerciseService.saveExerciseSet(inputData), HttpStatus.CREATED);
     }
 
-    @PostMapping("/report")
+    @PutMapping("/report")
     public ResponseEntity<ExerciseReportDto> postExerciseReportBy(@ModelAttribute ExerciseReportInputDto inputData) throws IOException {
 
         return new ResponseEntity<>(exerciseService.saveExerciseReport(inputData), HttpStatus.CREATED);
@@ -50,5 +50,11 @@ public class ExerciseController {
     @PatchMapping
     public ResponseEntity<ExerciseSetDto> patchExerciseSetBy(@RequestBody ExerciseSetDto inputData) {
         return new ResponseEntity<>(exerciseService.updateExerciseSet(inputData), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/report")
+    public ResponseEntity<Void> deleteExerciseReportBy(@RequestParam int id) {
+        boolean isDelete = exerciseService.deleteExerciseReport(id);
+        return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

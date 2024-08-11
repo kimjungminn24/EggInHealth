@@ -1,5 +1,6 @@
 package com.egginhealth.data.entity;
 
+import com.egginhealth.data.dto.DateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,4 +28,21 @@ public class MemberStatus {
     @ManyToOne
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
+
+    public static MemberStatus createMemberStatus(Member member, DateDto date) {
+        MemberStatus memberStatus = new MemberStatus();
+        memberStatus.isExercise = false;
+        memberStatus.isDiet = false;
+        memberStatus.date = date.toLocalDateTime();
+        memberStatus.member = member;
+        return memberStatus;
+    }
+
+    public void updateExerciseStatus(boolean isExercise) {
+        this.isExercise = isExercise;
+    }
+
+    public void updateDietStatus(boolean isDiet) {
+        this.isDiet = isDiet;
+    }
 }

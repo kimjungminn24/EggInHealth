@@ -1,7 +1,8 @@
 package com.egginhealth.controller;
 
-import com.egginhealth.data.dto.DeviceTokenDto;
-import com.egginhealth.service.DeviceTokenService;
+import com.egginhealth.data.dto.fcm.DeviceTokenDto;
+import com.egginhealth.service.FcmService;
+import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FCMController {
 
-    private final DeviceTokenService deviceTokenService;
+    private final FcmService fcmService;
 
     @PostMapping("/token")
     public ResponseEntity<Void> addToken(@RequestBody DeviceTokenDto deviceTokenDto) {
-        deviceTokenService.getDeviceToken(deviceTokenDto.token());
+        fcmService.saveDeviceToken(String.valueOf(SecurityUtil.getUserId()), deviceTokenDto.token());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

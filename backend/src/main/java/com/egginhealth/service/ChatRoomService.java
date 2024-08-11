@@ -40,10 +40,10 @@ public class ChatRoomService {
 
     public ChatRoomDto getChatRoom(String id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseGet(() -> {
-            ChatRoom newChattRoom = new ChatRoom(id, new ArrayList<>());
-            chatRoomRepository.save(newChattRoom);
+            ChatRoom newChatRoom = new ChatRoom(id, new ArrayList<>());
+            chatRoomRepository.save(newChatRoom);
             logger.info("Create new chat room id {}", id);
-            return newChattRoom;
+            return newChatRoom;
         });
 
         List<ChatDto> chatDtoList = chatRoom.getChatList().stream()

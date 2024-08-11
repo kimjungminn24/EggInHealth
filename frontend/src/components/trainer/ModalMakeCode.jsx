@@ -57,7 +57,7 @@ const CloseButton = styled.button`
     background-color: #FF3F3F;
   }
 `;
-export const ModalMakeCode = ({ isOpen, onRequestClose }) => {
+export const ModalMakeCode = ({ isOpen, isClose }) => {
   const [authCode, setAuthCode] = useState('');
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export const ModalMakeCode = ({ isOpen, onRequestClose }) => {
 
     <StyledModal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      isClose={isClose}
       shouldCloseOnOverlayClick={true}
     >
       <ModalContent>
@@ -107,7 +107,7 @@ export const ModalMakeCode = ({ isOpen, onRequestClose }) => {
           {authCode || "코드를 불러오는 중..."}
           <CopyImg src={copyImg} alt="복사하기" onClick={handleCopy} /> 
         </Code>
-        <CloseButton onClick={onRequestClose}>닫기</CloseButton>
+        <CloseButton onClick={isClose}>닫기</CloseButton>
       </ModalContent>
       
     </StyledModal>

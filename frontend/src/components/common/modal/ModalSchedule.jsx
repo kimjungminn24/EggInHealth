@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import RenderDaysForTrainerExpand from '../../trainer/Calender/RenderDaysForTrainerExpand';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -18,6 +19,7 @@ const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 10px;
+  width: 55%;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1001;
@@ -45,8 +47,10 @@ const CloseButton = styled.button`
 
 const ModalSchedule = ({ onClose }) => (
   <ModalOverlay>
+    
     <ModalContent>
-      <p>스케줄 확인</p>
+      <h1>트레이너 일정</h1>
+      <RenderDaysForTrainerExpand/>
       <CloseButton onClick={onClose}>닫기</CloseButton>
     </ModalContent>
   </ModalOverlay>

@@ -3,7 +3,6 @@ import UserEgg from '../../components/user/main/UserEgg';
 import { styled } from 'styled-components';
 import BoxMain from './../../components/user/main/BoxMain';
 import BoxSchedule from './../../components/user/main/BoxSchedule';
-import { useCookies } from 'react-cookie';
 import { useUserInfoStore, useStore } from '../../store/store';
 import { userSchedule } from '../../api/main';
 
@@ -28,22 +27,18 @@ const Message = styled.div`
 `;
 
 const UserMain = () => {
-  const [cookies] = useCookies(['cookie_name']);
   const { userData, fetchData } = useUserInfoStore();
   const { userUpdate } = useStore();
   const [timebox, setTimebox] = useState([]);
   const trainer = userData?.trId;
-  console.log(userData);
-  
+  const userId =  useStore((state)=>state.userId)
   const eggday = userData?.totalEgg;
 
   useEffect(() => {
-    const userId = cookies.Id;
-    const userType = cookies.Role;
     const today = new Date();
     const formatMonth = `${today.getMonth() + 1}`;
     const formatYear = `${today.getFullYear()}`;
-    userUpdate(userId, userType);
+    userUpdate();
     fetchData(userId, formatMonth, formatYear);
 
     if (trainer) {
@@ -64,7 +59,7 @@ const UserMain = () => {
           console.error(error);
         });
     }
-  }, [cookies.Id, fetchData, cookies.Role, trainer, userUpdate]);
+  }, [fetchData,trainer, userUpdate,userId]);
 
   return (
     <div>

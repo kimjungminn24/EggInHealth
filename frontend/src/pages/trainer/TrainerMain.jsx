@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { useStore } from "../../store/store.js";
 import {styled} from "styled-components";
 import RenderDaysForTrainer from "../../components/trainer/Calender/RenderDaysForTrainer.jsx";
@@ -26,7 +25,6 @@ const plusBtn = styled.img`
   width: 40px;
 `
 const TrainerMain = () => {
-  const [cookies] = useCookies(['cookie_name']);
   const { userUpdate } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [mouseStartY, setMouseStartY] = useState(null);
@@ -35,10 +33,8 @@ const TrainerMain = () => {
   const [isAddOpen,setisAddOpen] = useState(false);
 
   useEffect(() => {
-    const userId = cookies.Id;
-    const userType = cookies.Role; 
-    userUpdate(userId, userType);
-  }, [cookies.Id, cookies.Role, userUpdate]);
+    userUpdate();
+  }, [userUpdate]);
 
   const today = new Date();
   const formatMonth = `${today.getMonth() + 1}`;

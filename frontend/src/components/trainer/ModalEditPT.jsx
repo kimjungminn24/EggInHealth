@@ -1,9 +1,8 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import { updatePtLog } from '../../api/trainer';
 import { checkMemberList } from '../../api/trainer';
-
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -75,7 +74,6 @@ const AddButton = styled.button`
 `;
 
 const Input = styled.input`
-  border: 1px solid #ddd;
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
@@ -102,15 +100,15 @@ const CloseButton = styled.button`
 `;
 
 export const ModalEditPT = ({ isOpen, onClose }) => {
-  const [userValues, setUserValues] = useState(null);
-  const [initialValues, setInitialValues] = useState(null); 
+  const [userValues, setUserValues] = useState([]);
+  const [initialValues, setInitialValues] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await checkMemberList();
         setInitialValues(response);
-        setUserValues(response); 
+        setUserValues(response);
       } catch (error) {
         console.error(error);
       }
@@ -121,15 +119,17 @@ export const ModalEditPT = ({ isOpen, onClose }) => {
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
-      setUserValues(initialValues); 
+      setUserValues(initialValues);
     }
   };
 
   if (!isOpen) return null;
 
-  const handlePTChange = (id,change) => {
-    console.log(`PT 변경: 사용자 ID ${id}`,change);
-    updatePtLog(id,change);
+  const handlePTChange = (id, updatedCnt, originalCnt) => {
+    const change = updatedCnt - originalCnt; 
+    if (change !== 0) {
+      updatePtLog(id, change); 
+    }
     onClose();
   };
 
@@ -137,7 +137,6 @@ export const ModalEditPT = ({ isOpen, onClose }) => {
     const updatedUsers = userValues.map(user =>
       user.memberId === memberId ? { ...user, ptCnt: e.target.value } : user
     );
-    console.log(updatedUsers)
     setUserValues(updatedUsers);
   };
 
@@ -146,20 +145,23 @@ export const ModalEditPT = ({ isOpen, onClose }) => {
       <ModalContainer>
         <h2>사용자 리스트</h2>
         <UserList>
-          {userValues.map((user) => (
-            <UserItem key={user.memberId}>
-              <UserInfo>
-                <UserImage src={user.imgUrl||profile} alt={user.name} />
-                <span>{user.name}</span>
-              </UserInfo>
-              <Input
-                type="number"
-                value={user.ptCnt}
-                onChange={(e) => saveChangeValue(e, user.memberId)}
-              />
-              <AddButton onClick={() => handlePTChange(user.memberId,user.ptCnt)}>수정</AddButton>
-            </UserItem>
-          ))}
+          {userValues.map((user, idx) => {
+            const originalCnt = initialValues.find(u => u.memberId === user.memberId)?.ptCnt || 0;
+            return (
+              <UserItem key={user.memberId}>
+                <UserInfo>
+                  <UserImage src={user.imgUrl || profile} alt={user.name} />
+                  <span>{user.name}</span>
+                </UserInfo>
+                <Input
+                  type="number"
+                  value={user.ptCnt}
+                  onChange={(e) => saveChangeValue(e, user.memberId)}
+                />
+                <AddButton onClick={() => handlePTChange(user.memberId, Number(user.ptCnt), Number(originalCnt))}>수정</AddButton>
+              </UserItem>
+            );
+          })}
         </UserList>
         <CloseButton onClick={onClose}>닫기</CloseButton>
       </ModalContainer>

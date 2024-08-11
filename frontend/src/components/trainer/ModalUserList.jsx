@@ -137,10 +137,9 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
             onClick={() => handleUserSelect(user.memberId, idx)}
             active={isSelected === user.memberId ? 'true' : undefined}>
               <UserInfo>
-                <UserImage src={user.ImgUrl || profile} alt={user.name} />
-                <span>{user.name}</span>
+                <UserImage src={user.memberImgUrl || profile} alt={user.name} />
+                <span>{user.memberName}</span>
               </UserInfo>
-              <span>남은 횟수: {user.ptCnt}</span>
               <ArrowImage src={arrow} alt="arrow" />
             </UserItem>
           ))}

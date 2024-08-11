@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import Profile from '../../assets/profile.png';
 import phone from '../../assets/info/phone.png';
 import styled from 'styled-components';
-import { useUserInfoStore } from '../../store/store';
+import { useStore } from '../../store/store';
 import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
-
+import { ModalEditPT } from '../../components/trainer/ModalEditPT';
+import email from '../../assets/info/email.png';
 
 const Container = styled.div`
   width: 100%;
@@ -14,7 +15,6 @@ const Container = styled.div`
   background-color: #f9f9f9;
   border-radius: 20px;
 `;
-
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -29,6 +29,7 @@ const ProfilePic = styled.img`
   margin: 0 auto 20px;
   margin-left: 100px;
 `;
+
 const InfoBox = styled.div`
   display: flex;
   flex-direction: row; 
@@ -45,11 +46,13 @@ const InfoBox = styled.div`
     margin-right: 10px; 
   }
 `;
+
 const InfoText = styled.div`
   margin-left: 10px;
   font-size: 14px;
   color: #333;
 `;
+
 const InfoImg = styled.img`
   margin-left: 1cqw;
 `;
@@ -67,38 +70,56 @@ const YellowBtn = styled.button`
   color: white;
 `;
 
-const TrainerProfile = ()=>{
-    // const userProfile = useUserInfoStore((state) => state.userData.imgUrl)
-    const userProfile = 0
-    const userData = [{}]
-    const [ModalIsOpen,setModalIsOpen] =  useState(false)
-    const openModal = () =>{
-      setModalIsOpen(true)
-    }
-    const closeModal = () =>{
-      setModalIsOpen(false)
-    }
+const PtBtn = styled.button`
+  align-items: center;
+  background-color: #FFD66B;
+  border-radius: 20px;
+  display: flex;
+  width: 232px;
+  height: 64px;
+  justify-content: center;
+  padding: 8px 16px;
+  margin-top: 20px;
+  color: white;
+`;
 
-    const handleConnect = () =>{
 
-    }
+const TrainerProfile = () => {
+    const userData = useStore((state) => state.userInfo);
+    const [isMakeCodeModalOpen, setMakeCodeModalOpen] = useState(false);
+    const [isEditPTModalOpen, setEditPTModalOpen] = useState(false);
 
-    return(
+    const openMakeCodeModal = () => {
+      setMakeCodeModalOpen(true);
+    };
+
+    const closeMakeCodeModal = () => {
+      setMakeCodeModalOpen(false);
+    };
+
+    const openEditPTModal = () => {
+      setEditPTModalOpen(true);
+    };
+
+    const closeEditPTModal = () => {
+      setEditPTModalOpen(false);
+    };
+
+    return (
         <Container>
-              <ProfileContainer>
-                    <ProfilePic src={userProfile || Profile} alt="Profile" />
-              </ProfileContainer>
+            <ProfileContainer>
+                <ProfilePic src={userData.imgUrl || Profile} alt="Profile" />
+            </ProfileContainer>
             <InfoBox>
-                <InfoImg src={phone} alt="phone" />
-                <InfoText>{userData.phoneNumber || '전화번호를 등록해주세요'}</InfoText>
+                <InfoImg src={email} alt="email" />
+                <InfoText>{userData.email || '이메일을 등록해주세요'}</InfoText>
             </InfoBox>
-          <YellowBtn onClick={openModal}>연결하기</YellowBtn>
-          <ModalMakeCode isOpen = {ModalIsOpen} isClose={closeModal}/>
+            <YellowBtn onClick={openMakeCodeModal}>연결하기</YellowBtn>
+            <ModalMakeCode isOpen={isMakeCodeModalOpen} isClose={closeMakeCodeModal} />
+            <PtBtn onClick={openEditPTModal}>PT 횟수 수정하기</PtBtn>
+            <ModalEditPT isOpen={isEditPTModalOpen} onClose={closeEditPTModal} />
         </Container>
-    
-    )
-}
+    );
+};
 
-export default TrainerProfile
-
-
+export default TrainerProfile;

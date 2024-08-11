@@ -67,6 +67,10 @@ public class ChatRoomService {
             return new ChatRoom(chatRoomDto.id(), new ArrayList<>());
         });
 
+        if (chatRoom.getChatList() == null) {
+            chatRoom.roomSet();
+        }
+
         chatRoom.getChatList().add(new Chat(chatDto));
         chatRoomRepository.save(chatRoom);
     }

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import foodIcon from '../../assets/food.png';
+import foodIcon2 from '../../assets/food2.png'; 
 import exerciseIcon from '../../assets/exercise.png'; 
+import exerciseIcon2 from '../../assets/exercise2.png'; 
 import videoIcon from '../../assets/feedback.png'; 
-import arrow from '../../assets/arrow.png'
+import videoIcon2 from '../../assets/feedback2.png'; 
+import arrow from '../../assets/arrow.png';
+import { checkMemberList } from '../../api/trainer';
+import { useNavigate } from 'react-router-dom';
+import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   padding: 20px;
@@ -12,10 +18,8 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-
 const UserList = styled.div`
   margin-top: 20px;
-
 `;
 
 const UserItem = styled.div`
@@ -68,38 +72,52 @@ const StatIcon = styled.img`
   height: 40px;
 `;
 
-const Arrow = styled.img`
-  
-`
-const users = [
-  { id: 1, name: '김민주', remaining: 25, img: 'path/to/image1.jpg' },
-  { id: 2, name: '김정민', remaining: 619, img: 'path/to/image2.jpg' },
-  { id: 3, name: '이지영', remaining: 33, img: 'path/to/image3.jpg' },
-  { id: 4, name: '고충원', remaining: 258, img: 'path/to/image4.jpg' },
-  { id: 5, name: '강동형', remaining: 467, img: 'path/to/image5.jpg' },
-  { id: 6, name: '신재건', remaining: 865, img: 'path/to/image6.jpg' },
-];
+const Arrow = styled.img``;
 
 const TrainerUserList = () => {
+  const [userList, setUserList] = useState([])
+  const navigate = useNavigate()
+  const { fetchData } = useUserInfoStore();
+  const today = new Date();
+  const formatMonth = `${today.getMonth() + 1}`;
+  const formatYear = `${today.getFullYear()}`;
+
+
+  const handleDetailMember = async(memberId)=>{
+    await fetchData(memberId,formatMonth,formatYear)
+    await navigate(`/userdiet`)
+  }
+  useEffect(() => {
+    const fetchMemberList = async () => {
+      try {
+        const response = await checkMemberList();
+        setUserList(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMemberList();
+  }, []);
+
   return (
     <Container>
       <h1>식단 운동 피드백</h1>
-      <UserList>
-        {users.map(user => (
-          <UserItem key={user.id}>
+      <UserList >
+        {userList.map(user => (
+          <UserItem key={user.memberId} onClick={() =>handleDetailMember(user.memberId)}>
             <UserInfo>
-              <UserImage src={ profile} alt={user.name} />
+              <UserImage src={user.imgUrl||profile} alt={user.name} />
               <UserNameAndCount>
                 <UserName>{user.name}</UserName>
-                <RemainingCount>남은 횟수: {user.remaining}</RemainingCount>
+                <RemainingCount>남은 횟수: {user.ptCnt}</RemainingCount>
               </UserNameAndCount>
             </UserInfo>
             <UserStats>
-              <StatIcon src={foodIcon} alt="식단 아이콘" />
-              <StatIcon src={exerciseIcon} alt="운동 아이콘" />
-              <StatIcon src={videoIcon} alt="영상 아이콘" />
+              <StatIcon src={user.isDiet ? foodIcon2 : foodIcon} alt="식단 아이콘" />
+              <StatIcon src={user.isExercise ? exerciseIcon2 : exerciseIcon} alt="운동 아이콘" />
+              <StatIcon src={user.isFeedback ? videoIcon2 : videoIcon} alt="영상 아이콘" />
             </UserStats>
-            <Arrow src={arrow}/>
+            <Arrow src={arrow} />
           </UserItem>
         ))}
       </UserList>

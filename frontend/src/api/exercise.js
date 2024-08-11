@@ -100,7 +100,7 @@ export const registerFeedback = async (
 
 export const fetchFeedback = async (uid) => {
   const res = await axios.get(
-    `${BASE_URL}/feedback/${uid}`,
+    `${BASE_URL}/feedback/list/${uid}`,
     {
       headers: {
         "Content-Type": "multipart/form-data",

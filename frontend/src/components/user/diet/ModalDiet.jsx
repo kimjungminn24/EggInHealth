@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { useDietStore } from '../../../store/store';
-import { registerComment, registerDiet } from '../../../api/diet';
+import { registerComment, registerDiet, updateDiet } from '../../../api/diet';
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -27,7 +26,7 @@ const ImagePreview = styled.img`
 
 const Textarea = styled.textarea`
   width: 100%;
-  height: 100px;
+  height: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;
@@ -46,26 +45,70 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalDiet = ({ date, type, onClose }) => {
+const PlusIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; 
+  height: 40px; 
+  border: 4px solid #DFDFDF; 
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+  cursor: pointer;
+`;
+
+const PlusIcon = styled.span`
+  font-size: 30px;
+  color:#DFDFDF;
+  border: #DFDFDF;
+`;
+
+const ButtonText = styled.span`
+  font-size: 16px;
+  color: #DFDFDF;
+`;
+
+const RegisterBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 250px; 
+  height: 250px; 
+  text-align: center;
+  flex-direction: column;
+`;
+
+const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) => {
   const [image, setImage] = useState(null);
   const [comment, setComment] = useState('');
+  const fileInputRef = React.createRef();
 
+  useEffect(() => {
+    setHasImages(hasImages);
+  }, [hasImages, setHasImages]);
 
-  const dateChange = date+'T00:00:00Z'
-
+  const dateChange = date+'T00:00:00Z';
+  console.log(filteredData);
+  console.log(type);
 
   const handleSubmit = async () => {
     if (image) {
       try {
-
-        const newDiet = await registerDiet(type, dateChange, image);
-
-        if (newDiet && comment) {
-          await registerComment(comment, dateChange, newDiet.dietId, 'D');
-        } 
-
+        if (hasImages){
+          await updateDiet(type, dateChange, image, filteredData[0].id);
+        }
+        else{
+          const newDiet = await registerDiet(type, dateChange, image);
+          if (newDiet && comment) {
+            await registerComment(comment, dateChange, newDiet.dietId, 'D');
+          } 
+          console.log('다이어트 등록');
+        }
         onClose();
-        console.log('다이어트 등록')
       } catch (error) {
         console.error('다이어트 등록 중 에러 발생:', error);
       }
@@ -81,14 +124,29 @@ const ModalDiet = ({ date, type, onClose }) => {
   return (
     <StyledModal isOpen={true} onRequestClose={onClose}>
       <h2>식사 등록</h2>
-      <input type="file" onChange={handleImageChange} />
-      {image && <ImagePreview src={URL.createObjectURL(image)} alt="preview" />}
-      <Textarea
-        placeholder="댓글을 입력하세요"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
+      {!image && <RegisterBox onClick={() => fileInputRef.current.click()}>
+        <PlusIconContainer>
+          {!image && <PlusIcon>+</PlusIcon>}
+        </PlusIconContainer>
+        {!image && <ButtonText>식단을 등록해주세요</ButtonText>}
+      </RegisterBox>}
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
       />
-      <Button onClick={handleSubmit}>등록</Button>
+      {image && <ImagePreview src={URL.createObjectURL(image)} alt="preview" />}
+      
+      {!hasImages &&  (
+        <Textarea
+          placeholder="댓글을 입력하세요"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      )}
+      <Button onClick={handleSubmit}>{hasImages ? '수정' : '등록'}</Button>
       <Button close onClick={onClose}>닫기</Button>
     </StyledModal>
   );

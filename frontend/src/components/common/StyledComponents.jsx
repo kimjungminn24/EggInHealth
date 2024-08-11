@@ -1,7 +1,7 @@
 /* Modal의 스타일을 오버라이딩할 CSS 파일 */
 import styled from 'styled-components';
 import Modal from 'react-modal';
-
+import { HiChevronRight } from "react-icons/hi";
 Modal.setAppElement('#root'); // 모달이 열릴 때 접근성을 위해 애플리케이션 루트를 설정합니다.
 
 const customStyles = {
@@ -50,9 +50,9 @@ const TabsContainer = styled.div`
 const TabButton = styled.button`
   background-color: ${(props) => (props.active ? '#FFD66B' : '#FFFFFF')};
   color: ${(props) => (props.active ? '#FFFFFF' : '#DFDFDF')};
-  padding: 10px 20px;
+  padding: 0px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   margin: 0 5px;
   cursor: pointer;
 
@@ -69,6 +69,7 @@ const DietImage = styled.img`
   max-width: 100%;
   height: auto;
   margin-bottom: 20px;
+  background-color: white;
 `;
 
 const RegisterButtonContainer = styled.button`
@@ -87,6 +88,7 @@ const RegisterButtonContainer = styled.button`
 const CommentsSection = styled.div`
   text-align: left;
   margin-top: 20px;
+  margin-bottom: 80px;
 `;
 
 const CommentsList = styled.ul`
@@ -102,12 +104,15 @@ const CommentItem = styled.li`
 `;
 
 const CommentInput = styled.input`
-  width: calc(100% - 22px);
+  width: 100%;
   padding: 10px;
-  margin-right: 10px;
+  padding-right: 40px; /* 아이콘 공간 확보 */
   border-radius: 5px;
   border: 1px solid #ccc;
+  box-sizing: border-box; 
+  position: relative;
 `;
+
 
 const CommentButton = styled.button`
   padding: 10px 20px;
@@ -162,6 +167,29 @@ const StyledModal = styled(Modal)`
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
+
+const CommentInputWrapper = styled.div`
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  width: 360px;
+`;
+
+
+
+const CommentIcon = styled(HiChevronRight )`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+
+`;
 export {
   PageContainer,
   Title,
@@ -179,6 +207,8 @@ export {
   customStyles as StyledModalStyles,
   ImagePreview,
   Textarea,
-  Button,
-  StyledModal
+    Button,
+    StyledModal,
+  CommentInputWrapper,
+  CommentIcon
 };

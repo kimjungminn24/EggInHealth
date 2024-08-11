@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { DietSectionContainer, DietImage } from "../../common/StyledComponents";
 
-const DietSection = ({ dietData, selectedTab, selectedDate, setHasImages }) => {
-  const [filteredData, setFilteredData] = useState([]);
+const DietSection = ({ dietData, selectedTab, selectedDate, setHasImages, setFilteredData }) => {
+  const [filtered, setFiltered] = useState([]);
 
   const extractDate = (dateTimeString) => {
     return dateTimeString.split("T")[0];
   };
+
   useEffect(() => {
     if (dietData) {
-      const filtered = dietData.filter(
+      const filteredData = dietData.filter(
         (item) => extractDate(item.date) === selectedDate && item.type === selectedTab
       );
-      setFilteredData(filtered);
-      setHasImages(filtered.length > 0); // 이미지 유무 설정
+      setFiltered(filteredData); // 필터링된 데이터를 설정
+      setFilteredData(filteredData); // 필터링된 데이터를 부모 컴포넌트로 전달
+      setHasImages(filteredData.length > 0); // 이미지 유무 설정
     }
-  }, [dietData, selectedTab, selectedDate]);
+  }, [dietData, selectedTab, selectedDate, setFilteredData, setHasImages]);
 
   return (
     <DietSectionContainer>
-      {filteredData.map((item) => (
+      {filtered.map((item) => (
         <DietImage key={item.id} src={item.imgurl} alt={item.type} />
       ))}
     </DietSectionContainer>

@@ -95,7 +95,6 @@ const InfoBtnContainer = styled.div`
 `
 const UserInfo = () => {
   const { userData } = useUserInfoStore();
-  console.log(userData);
   const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
   const [userGoal, setGoal] = useState({
     exerciseCommonId: 0,
@@ -128,7 +127,7 @@ const UserInfo = () => {
       <InfoBox>{userData.name}</InfoBox>
       <InfoBox>
         <InfoImg src={email} alt="email" />
-        <InfoText>{userData.email || '전화번호를 등록해주세요'}</InfoText>
+        <InfoText>{userData.email || '이메일을 등록해주세요'}</InfoText>
       </InfoBox>
       <InfoBox>
   <InfoImg src={trainer} alt="trainer" />

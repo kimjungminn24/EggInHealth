@@ -4,7 +4,6 @@ import BoxChatList from '../../components/trainer/BoxChatList';
 import ModalUserList from '../../components/trainer/ModalUserList'; 
 import plusbutton from '../../assets/plusbutton.png';
 
-
 const Container = styled.div`
   background-color: #f8f8f8;
   height: 100vh;
@@ -37,7 +36,9 @@ const PlusButton = styled.img`
 `;
 
 const TrainerChat = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [memberId, setMemberId] = useState(null);
+  const [member, setMember] = useState(null);
 
   const chats = [
     { name: '김정민', message: '룰스에 초대했습니다.', time: '5분 전', img: 'path/to/image1.jpg' },
@@ -45,6 +46,13 @@ const TrainerChat = () => {
     { name: '이지영', message: '룰스에 초대했습니다.', time: '3월 12일', img: 'path/to/image3.jpg' },
     { name: '강동형', message: '룰스에 초대했습니다.', time: '11월 30일', img: 'path/to/image4.jpg' },
     { name: '신재건', message: '룰스에 초대했습니다.', time: '5분 전', img: 'path/to/image5.jpg' },
+  ];
+
+  // 사용자 목록 예시
+  const userList = [
+    { memberId: 1, name: '홍길동', ImgUrl: '', ptCnt: 3 },
+    { memberId: 2, name: '이순신', ImgUrl: '', ptCnt: 5 },
+    { memberId: 3, name: '강감찬', ImgUrl: '', ptCnt: 2 },
   ];
 
   return (
@@ -55,7 +63,15 @@ const TrainerChat = () => {
 
       <BoxChatList chats={chats} />
 
-      {isModalOpen && <ModalUserList onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <ModalUserList 
+          onOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          userList={userList} 
+          setmemberId={setMemberId} 
+          setmember={setMember} 
+        />
+      )}
 
       <PlusButton 
         src={plusbutton}

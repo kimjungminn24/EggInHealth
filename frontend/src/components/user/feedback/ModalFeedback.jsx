@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import useStore from '../../../store/store_test';
 import { registerFeedback } from './../../../api/exercise';
 
 const FeedbackModal = ({ isOpen, onRequestClose, name, getKoreanISOString ,fetchFeedbackData}) => {

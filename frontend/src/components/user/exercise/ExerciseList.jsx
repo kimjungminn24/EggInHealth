@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useStore from '../../../store/store_test';
 import AddExerciseModal from '../../trainer/ModalAddUserExercise';
 import { DataTable } from '../../common/DataTable';
 

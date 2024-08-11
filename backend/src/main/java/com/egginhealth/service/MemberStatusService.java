@@ -1,8 +1,8 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.DateDto;
 import com.egginhealth.data.dto.memberstatus.MemberMonthStatusDto;
 import com.egginhealth.data.dto.memberstatus.MemberStatusDto;
-import com.egginhealth.data.dto.memberstatus.MemberStatusInputDto;
 import com.egginhealth.data.entity.Feedback;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.MemberStatus;
@@ -27,10 +27,26 @@ public class MemberStatusService {
     private final MemberRepository memberRepository;
     private final FeedbackRepository feedbackRepository;
 
-    // TODO: 회원 집계 저장 메서드 구현
-    public void saveMemberStatus(MemberStatusInputDto memberStatusInputDto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    private MemberStatus getMemberStatus(DateDto date) {
+        return memberStatusRepository.findByMemberIdAndYearAndMonthAndDay(SecurityUtil.getUserId(), date.year(), date.month(), date.day())
+                .orElseGet(() -> {
+                    Member member = memberRepository.findById(SecurityUtil.getUserId())
+                            .orElseThrow(() -> new IllegalArgumentException("not found Member"));
+                    return memberStatusRepository.save(MemberStatus.createMemberStatus(member, date));
+                });
     }
+
+    public void updateMemberExerciseStatus(DateDto date, boolean isExercise) {
+        MemberStatus memberStatus = getMemberStatus(date);
+        memberStatus.updateExerciseStatus(isExercise);
+    }
+
+    public void updateMemberDietStatus(DateDto date, boolean isDiet) {
+        MemberStatus memberStatus = getMemberStatus(date);
+        memberStatus.updateDietStatus(isDiet);
+    }
+
 
     public List<MemberMonthStatusDto> getMemberStatusByMonth(int memberId, int year, int month) {
         return memberStatusRepository.findByMemberIdAndYearAndMonth(memberId, year, month).stream()

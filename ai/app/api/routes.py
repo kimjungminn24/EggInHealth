@@ -12,7 +12,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'mp4'}
 
 
-@video_bp.route('/upload', methods=['POST'])
+@video_bp.route('/ai/feedback', methods=['POST'])
 def upload_video():
     if 'file' not in request.files:
         return jsonify({'error': 'No file found'}), 400

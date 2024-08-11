@@ -4,6 +4,7 @@ import BoxChatList from '../../components/trainer/BoxChatList';
 import ModalUserList from '../../components/trainer/ModalUserList'; 
 import plusbutton from '../../assets/plusbutton.png';
 import { checkChat } from '../../api/trainer';
+import { useStore } from '../../store/store';
 
 const Container = styled.div`
   background-color: #f8f8f8;
@@ -38,47 +39,62 @@ const PlusButton = styled.img`
 
 const TrainerChat = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [memberId, setMemberId] = useState(null);
-  const [member, setMember] = useState(null);
   const [userList, setUserList] = useState([]);
   const [chatList, setChatList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const trainerId = useStore((state) => state.userId);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const chatData = await checkChat();
-        setUserList(chatData);
+        const chats = [];
+        const users = [];
+
+        chatData.forEach((chat) => {
+          if (chat.lastContent !== '대화내역이 없습니다.') {
+            chats.push(chat);
+          } else {
+            users.push(chat);
+          }
+        });
+
+        setChatList(chats);
+        setUserList(users);
       } catch (error) {
         console.error('Error fetching chat data:', error);
       }
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
-  const chats = [
-    { name: '김정민', message: '룰스에 초대했습니다.', time: '5분 전', img: 'path/to/image1.jpg' },
-    { name: '김민주', message: '룰스에 초대했습니다.', time: '1시간 전', img: 'path/to/image2.jpg' },
-    { name: '이지영', message: '룰스에 초대했습니다.', time: '3월 12일', img: 'path/to/image3.jpg' },
-    { name: '강동형', message: '룰스에 초대했습니다.', time: '11월 30일', img: 'path/to/image4.jpg' },
-    { name: '신재건', message: '룰스에 초대했습니다.', time: '5분 전', img: 'path/to/image5.jpg' },
-  ];
+  const filteredChatList = chatList.filter((chat) =>
+    chat.memberName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Container>
       <SearchContainer>
-        <SearchInput type="text" placeholder="Search" />
+        <SearchInput 
+          type="text" 
+          placeholder="Search"
+          value={searchTerm}  
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </SearchContainer>
 
-      <BoxChatList chats={chats} />
+      <BoxChatList 
+        chats={filteredChatList}  
+        trainerId={trainerId}
+      />
 
       {isModalOpen && (
         <ModalUserList 
           onOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)} 
-          userList={userList} 
-          setmemberId={setMemberId} 
-          setmember={setMember} 
+          userList={userList}
+          trainerId={trainerId}
         />
       )}
 

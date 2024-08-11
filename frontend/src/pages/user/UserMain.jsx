@@ -34,11 +34,13 @@ const UserMain = () => {
   const userId =  useStore((state)=>state.userId)
   const eggday = userData?.totalEgg;
 
+  
   useEffect(() => {
     const today = new Date();
     const formatMonth = `${today.getMonth() + 1}`;
     const formatYear = `${today.getFullYear()}`;
     userUpdate();
+    
     fetchData(userId, formatMonth, formatYear);
 
     if (trainer) {

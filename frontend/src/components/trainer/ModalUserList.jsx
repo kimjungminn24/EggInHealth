@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png';
+import ChatComponent from '../common/ChatComponent';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -96,12 +97,13 @@ const CloseButton = styled.button`
   }
 `;
 
-const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => {
+const ModalUserList = ({ onOpen, onClose, userList,trainerId }) => {
   const [isSelected, setIsSelected] = useState(null);
   const [Selected, setSelected] = useState(null);
+  console.log(userList);
   
   if (!onOpen) return null;
-
+  
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -110,8 +112,7 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
 
   const handleAddUser = () => {
     if (isSelected) {
-      setmemberId(isSelected); 
-      setmember(Selected)
+      ChatComponent(trainerId,isSelected,isSelected)
     }
     onClose();
   };

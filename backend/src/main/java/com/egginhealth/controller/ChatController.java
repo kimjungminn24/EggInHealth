@@ -5,9 +5,9 @@ import com.egginhealth.data.dto.chat.ChatInputDto;
 import com.egginhealth.data.dto.chat.ChatRoomDto;
 import com.egginhealth.data.entity.DeviceToken;
 import com.egginhealth.service.ChatRoomService;
-import com.egginhealth.service.DeviceTokenService;
-import com.egginhealth.service.MemberService;
+import com.egginhealth.service.FcmService;
 import com.egginhealth.service.UserSessionService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,25 +22,23 @@ public class ChatController {
     private final UserSessionService userSessionService;
 
     private final ChatRoomService chatRoomService;
-    private final DeviceTokenService deviceTokenService;
-    private final MemberService memberService;
+    private final FcmService fcmService;
     private final SimpMessagingTemplate messagingTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
-    public ChatController(UserSessionService userSessionService, ChatRoomService chatRoomService, SimpMessagingTemplate messagingTemplate, DeviceTokenService deviceTokenService, MemberService memberService) {
+    public ChatController(UserSessionService userSessionService, ChatRoomService chatRoomService, SimpMessagingTemplate messagingTemplate, FcmService fcmService) {
         this.userSessionService = userSessionService;
         this.chatRoomService = chatRoomService;
         this.messagingTemplate = messagingTemplate;
-        this.deviceTokenService = deviceTokenService;
-        this.memberService = memberService;
+        this.fcmService = fcmService;
     }
 
     /**
-     * @param message
+     * 메세지 도착 한 후 만약 상대방 session 연결이 끊겨 있다면 FCM 알림 발송
      */
     @MessageMapping("/sendMessage")
-    public void sendMessage(ChatDto message) {
+    public void sendMessage(ChatDto message) throws FirebaseMessagingException {
 
         String path = "/queue/messages";
 
@@ -59,14 +57,10 @@ public class ChatController {
             String receiverSessionId = userSessionService.getUserSession(message.receiverId()).sessionId();
             messagingTemplate.convertAndSendToUser(receiverSessionId, path, message, chatRoomService.createHeaders(receiverSessionId));
         } else {
-            //TODO: 만약 receiverSessionId 없다면 FCM 상대받으로 보내기
-            /**
-             * message.senderId() 토큰 가져와서  FCM 발송하기
-             */
-            DeviceToken devicetoken = deviceTokenService.getDeviceToken(message.senderId());
-            String token = devicetoken.getToken();
-
-
+            DeviceToken devicetoken = fcmService.getDeviceToken(message.senderId());
+            if (devicetoken.getToken() != null) {
+                fcmService.sendMessage(devicetoken.getToken(), "메세지", "메세지가 도착했습니다.", null);
+            }
         }
     }
 

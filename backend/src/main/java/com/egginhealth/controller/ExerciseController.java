@@ -20,7 +20,7 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @GetMapping("/{uid}")
-    public ResponseEntity<ExerciseDto> getExercise(@PathVariable int uid, @RequestParam int year, @RequestParam int month, @RequestParam int day) {
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable("uid") int uid, @RequestParam int year, @RequestParam int month, @RequestParam int day) {
         return new ResponseEntity<>(exerciseService.getExercise(uid, year, month, day), HttpStatus.OK);
     }
 

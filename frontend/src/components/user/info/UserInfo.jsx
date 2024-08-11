@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useUserInfoStore } from "../../../store/store";
 import styled from "styled-components";
 import ButtonDisconnect from '../../common/button/ButtonDisconnect';
+import ButtonConnect from '../../common/button/ButtonConnect';
 import ButtonCheckPTcount from '../../common/button/ButtonCheckPTcount';
 import ModalSchedule from '../../common/modal/ModalSchedule';
-import phone from '../../../assets/info/phone.png';
+import email from '../../../assets/info/email.png';
 import trainer from '../../../assets/info/trainer.png';
 import schedule from '../../../assets/info/schedule.png';
 import height from '../../../assets/info/height.png';
@@ -17,7 +18,6 @@ import one from '../../../assets/info/one.png';
 import two from '../../../assets/info/two.png';
 import three from '../../../assets/info/three.png';
 import { checkGoal } from '../../../api/user';
-
 
 const gole = {
   1: { img: gole1, title: '다이어트' },
@@ -43,6 +43,29 @@ const InfoBox = styled.div`
   border-radius: 15px;
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  img {
+    margin-right: 10px; 
+  }
+`;
+
+const HeightAgeContainer = styled.div`
+  display: flex; 
+  justify-content: space-between; 
+  margin-bottom: 10px; 
+`;
+
+const HeightAgeBox = styled.div`
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  width: 49%; 
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
   img {
     margin-right: 10px; 
   }
@@ -50,7 +73,7 @@ const InfoBox = styled.div`
 
 const InfoText = styled.div`
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 `;
 
@@ -58,6 +81,18 @@ const InfoContainer = styled.div`
   margin-bottom: 50px;
 `;
 
+const InfoImg = styled.img`
+  margin-left: 1cqw;
+`;
+
+const InfoSchedule = styled.img`
+  margin-left: 0px;
+  width: 40px;
+`;
+const InfoBtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 const UserInfo = () => {
   const { userData } = useUserInfoStore();
   const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
@@ -89,30 +124,45 @@ const UserInfo = () => {
 
   return (
     <InfoContainer>
+      <InfoBox>{userData.name}</InfoBox>
       <InfoBox>
-        <img src={phone} alt="phone" />
-        <InfoText>{userData.phoneNumber || '없음'}</InfoText>
+        <InfoImg src={email} alt="email" />
+        <InfoText>{userData.email || '이메일을 등록해주세요'}</InfoText>
       </InfoBox>
       <InfoBox>
-        <img src={trainer} alt="trainer" />
-        <InfoText>{userData.trName || '없음'}</InfoText>
-        <img src={schedule} alt="schedule" onClick={handleScheduleClick} style={{ cursor: 'pointer' }} />
-        <ButtonDisconnect />
-      </InfoBox>
-      <InfoBox>
-        <p>키</p>
-        <img src={height} alt="height" />
-        <InfoText>{userData.height || '없음'}</InfoText>
-        <img src={age} alt="age" />
-        <InfoText>{userData.age || '없음'}</InfoText>
-      </InfoBox>
+  <InfoImg src={trainer} alt="trainer" />
+  <InfoText>{userData.trName || '트레이너를 등록해주세요'}</InfoText>
+  {userData.trName ? (
+  <InfoBtnContainer>
+    <InfoSchedule src={schedule} alt="schedule" onClick={handleScheduleClick} style={{ cursor: 'pointer' }} />
+    <ButtonDisconnect />
+  </InfoBtnContainer>
+) : (
+  <ButtonConnect />
+)}
+</InfoBox>
+
+
+      <HeightAgeContainer>
+        <HeightAgeBox>
+          <p>키</p>
+          <InfoImg src={height} alt="height" />
+          <InfoText>{userData.height || '없음'}</InfoText>
+        </HeightAgeBox>
+        <HeightAgeBox>
+          <p>나이</p>
+          <InfoImg src={age} alt="age" />
+          <InfoText>{userData.age || '없음'}</InfoText>
+        </HeightAgeBox>
+      </HeightAgeContainer>
+
       <InfoBox>
         <p>운동목표</p>
         {userGoal.exerciseCommonId === 0 ? (
           <InfoText>를 등록해주세요</InfoText>
         ) : (
           <>
-            <img src={gole[userGoal.exerciseCommonId].img} alt="goal" />
+            <InfoImg src={gole[userGoal.exerciseCommonId].img} alt="goal" />
             <InfoText>{gole[userGoal.exerciseCommonId].title}</InfoText>
           </>
         )}
@@ -123,7 +173,7 @@ const UserInfo = () => {
           <InfoText>를 등록해주세요</InfoText>
         ) : (
           <>
-            <img src={medal[userGoal.goalCommonId].img} alt="medal" />
+            <InfoImg src={medal[userGoal.goalCommonId].img} alt="medal" />
             <InfoText>{medal[userGoal.goalCommonId].title}</InfoText>
           </>
         )}
@@ -134,15 +184,17 @@ const UserInfo = () => {
           <InfoText>를 등록해주세요</InfoText>
         ) : (
           <>
-            <img src={medal[userGoal.dietCommonId].img} alt="medal" />
+            <InfoImg src={medal[userGoal.dietCommonId].img} alt="medal" />
             <InfoText>{medal[userGoal.dietCommonId].title}</InfoText>
           </>
         )}
       </InfoBox>
       <InfoBox>
         <p>PT남은 횟수</p>
-        <InfoText>{userData.PTCount || '0'}</InfoText>
+        <InfoText>{userData.PTCount || ''}</InfoText>
+        {userData.PTCount}
         <ButtonCheckPTcount />
+       
       </InfoBox>
       {isModalScheduleOpen && <ModalSchedule onClose={handleCloseModalSchedule} />}
     </InfoContainer>

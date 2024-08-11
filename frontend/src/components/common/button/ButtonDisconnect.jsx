@@ -7,22 +7,14 @@ const DisconnectButton = styled.button`
   color: white;
   border: none;
   border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 8px 15px;
+  font-size: 12px;
   cursor: pointer;
-  outline: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &:hover {
     background-color: #FF5757;
   }
 
-  &:active {
-    background-color: #FF3F3F;
-  }
 `;
 
 const ButtonDisconnect = () => {

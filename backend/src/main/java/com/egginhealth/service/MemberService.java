@@ -46,6 +46,13 @@ public class MemberService {
         return MemberDetailDto.from(member, member.getTrainer());
     }
 
+    public boolean isMember(int memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("not found Member"));
+
+        return member.getType() == Role.MEMBER;
+    }
+
     public MemberRoleAndIdDto getMemberRoleAndId() {
         int memberID = SecurityUtil.getUserId();
         Member member = memberRepository.findById(memberID)

@@ -23,6 +23,11 @@ const Surveybtn = styled.div`
   align-items: center;
   justify-content: center;
   border: 3px solid ${props => (props.active === 'true' ? '#FFD66B' : 'transparent')};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: #f0f0f0;
+
+  }
 
   img {
     max-width: 100%;

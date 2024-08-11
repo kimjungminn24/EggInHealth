@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,32 +24,32 @@ public class DietController {
     private final DietService dietService;
 
     @PostMapping
-    public ResponseEntity<Map<String,Integer>> register(@ModelAttribute DietInputDto inputData) throws IOException {
+    public ResponseEntity<Map<String, Integer>> register(@ModelAttribute DietInputDto inputData) throws IOException {
         return new ResponseEntity<>(dietService.save(inputData, SecurityUtil.getUserId()), HttpStatus.CREATED);
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Void> registerComment(@RequestBody CommentInputDto inputData)
-    {
-        dietService.saveComment(inputData,SecurityUtil.getUserId());
+    public ResponseEntity<Void> registerComment(@RequestBody CommentInputDto inputData) {
+        dietService.saveComment(inputData, SecurityUtil.getUserId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> registerUpdate(@PathVariable int id, @ModelAttribute DietInputDto updateData) throws IOException{
-        dietService.updateDiet(updateData,id);
+    public ResponseEntity<Void> registerUpdate(@PathVariable("id") int id, @ModelAttribute DietInputDto updateData) throws IOException {
+        dietService.updateDiet(updateData, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> registerDelete(@PathVariable int id){
+    public ResponseEntity<Void> registerDelete(@PathVariable("id") int id) {
         boolean isDelete = dietService.deleteDiet(id);
         return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<DietDayOutputDto>> getDayRegister(@PathVariable int id, @RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day){
-        return new ResponseEntity<>(dietService.getDayRegister(id,year,month,day),HttpStatus.OK);
+    @GetMapping("/{uid}")
+    public ResponseEntity<List<DietDayOutputDto>> getDayRegister(@PathVariable("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day) {
+        System.out.println(id+" "+month+" "+day+" "+year);
+        return new ResponseEntity<>(dietService.getDayRegister(id, year, month, day), HttpStatus.OK);
     }
 
 }

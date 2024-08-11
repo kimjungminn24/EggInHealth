@@ -24,6 +24,9 @@ public class ExerciseSet {
     @Column(name = "exs_weight")
     private int weight;
 
+    @Column(name = "exs_ref", length = 100)
+    private int ref;
+
     @Column(name = "exs_name", length = 100)
     private String name;
 
@@ -38,6 +41,7 @@ public class ExerciseSet {
 
         return ExerciseSet.builder()
                 .set(exerciseSetInputDto.set())
+                .ref(exerciseSetInputDto.ref())
                 .weight(exerciseSetInputDto.weight())
                 .name(exerciseSetInputDto.name())
                 .time(exerciseSetInputDto.time())
@@ -50,6 +54,7 @@ public class ExerciseSet {
         this.weight = exerciseSetDto.weight();
         this.name = exerciseSetDto.name();
         this.time = exerciseSetDto.time();
+        this.ref = exerciseSetDto.ref();
     }
 
 

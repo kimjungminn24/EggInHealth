@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import './App.css'
 import { Routes, Route } from 'react-router-dom';
 
@@ -23,11 +23,17 @@ import TrainerUserList from './pages/trainer/TrainerUserList';
 import UserFeedback from "./pages/user/UserFeedback"
 import { useStore } from './store/store.js';
 
+import {requestPermission} from './firebase.jsx'
+
 function App() {
+    useEffect(()=>{
+        requestPermission();
+    }, []);
+
     const userType = useStore(state => state.userType);
 
     const renderHeader = useMemo(() => {
-      console.log(userType)
+    //   console.log(userType)
         switch (userType) {
             case 'MEMBER':
                 return <UserHeader />;

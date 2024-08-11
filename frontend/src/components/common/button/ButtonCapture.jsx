@@ -7,12 +7,12 @@ const CaptureButtonContainer = styled.div`
   align-items: center;
   width: 50px;
   height: 50px;
-  background-color: #fff; /* 배경 색상 */
-  border-radius: 50%; /* 원형 모양 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 */
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  position: relative; /* 위치 설정을 위한 relative */
+  position: relative; 
 
   &:hover {
     background-color: #f0f0f0;

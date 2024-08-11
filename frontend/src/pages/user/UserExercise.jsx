@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
-import useStore from "../../store/store_test";
 import AddExerciseModal from "../../components/trainer/ModalAddUserExercise";
 import Comments from "../../components/user/Comments";
 import SelectedDate from "../../components/common/SelectedDate";
 import ModalExercise from "../../components/user/exercise/ModalExercise";
-import ExerciseList from "./../../components/user/exercise/Exh";
+import ExerciseList from "./../../components/user/exercise/ExerciseList";
 import { ImagePreview } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
-import RegisterButton from './../../components/common/button/RegisterButton';
+import RegisterButton from "./../../components/common/button/RegisterButton";
+import { useStore } from "./../../store/store";
+import { getExercise } from "./../../api/exercise";
+import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
+import { Datepicker } from "@mobiscroll/react";
 
 const Exercise = () => {
-  const exImg = useStore((state) => state.exImg);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const userId = useStore((state) => state.userId);
+  const [exData, setExData] = useState([]);
+  const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const selectedDateImg = exImg[selectedDate] || [];
-  
   const getKoreanISOString = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
@@ -26,34 +32,70 @@ const Exercise = () => {
     return kstDate.toISOString();
   };
 
+  const fetchExData = async () => {
+    if (selectedDate && userId) {
+      try {
+        const [year, month, day] = selectedDate.split("-");
+        const data = await getExercise(userId, year, month, day);
+        setExData(data);
+      } catch (error) {
+        console.error("운동 조회 실패", error);
+      }
+    }
+  };
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  useEffect(() => {
+    fetchExData();
+  }, [selectedDate, userId, ExerciseImg, isModalOpen, isDeleteModalOpen]);
 
   const navigate = useNavigate();
 
   const handleFeedbackClick = () => {
     navigate("/userfeedback");
   };
+
   return (
     <div>
       <h1>운동 목록</h1>
+      <div></div>
       <SelectedDate
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-      <ExerciseList selectedDate={selectedDate} />
+      <ExerciseList selectedDate={selectedDate} exData={exData} />
       <div>
-        {selectedDateImg.length > 0
-          ? selectedDateImg.map((img, index) => (
-              <ImagePreview key={index} src={img} alt={`exercise-${index}`} />
-            ))
-          : selectedDate === new Date().toISOString().split("T")[0] && (
-              <RegisterButton openModal={openModal} />
-            )}
+        <ExerciseImg
+          exData={exData}
+          selectedDate={selectedDate}
+          setHasImages={setHasImages}
+        />
+        {selectedDate <= getKoreanISOString() && !hasImages ? (
+          <RegisterButton
+            openModal={openModal}
+            setHasImages={setHasImages}
+            hasImages={hasImages}
+          />
+        ) : null}
+
         <button onClick={handleFeedbackClick}>사용자 피드백</button>
         {isModalOpen && (
-          <ModalExercise date={getKoreanISOString} onClose={closeModal} />
+          <ModalExercise date={selectedDate} onClose={closeModal} />
         )}
       </div>
-      <Comments date={selectedDate} type="exercise" />
+      <Comments
+        date={selectedDate}
+        type="E"
+        exData={exData}
+        fetchExData={fetchExData}
+      />
     </div>
   );
 };

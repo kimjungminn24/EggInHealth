@@ -7,6 +7,8 @@ import InbodyPage from '../../components/user/inbody/InbodyPage';
 import ModalInbody from '../../components/user/inbody/ModalInbody';
 import ButtonInbodyEdit from'../../components/common/button/ButtonInbodyEdit'
 import ButtonProfileEdit from'../../components/common/button/ButtonProfileEdit'
+import { useUserInfoStore } from '../../store/store';
+
 
 const Container = styled.div`
   width: 100%;
@@ -48,6 +50,7 @@ const ProfileContainer = styled.div`
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const userProfile = useUserInfoStore((state) => state.userData.imgUrl)
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -60,7 +63,7 @@ const UserProfile = () => {
   return (
     <Container>
       <ProfileContainer>
-        <ProfilePic src={Profile} alt="Profile" />
+        <ProfilePic src={userProfile || Profile} alt="Profile" />
         {activeTab === '내정보' ? (
           <ButtonProfileEdit />
         ) : (

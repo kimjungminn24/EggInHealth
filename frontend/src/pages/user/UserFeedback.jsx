@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
-import useStore from '../../store/store_test';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from 'date-fns';
 import VideoModal from '../../components/user/feedback/ModalFbVid';
 import FeedbackModal from '../../components/user/feedback/ModalFeedback';
 import FeedbackList from '../../components/user/feedback/FeedBackList';
+import { useUserInfoStore, useStore } from '../../store/store';
+import { fetchFeedback, registerFeedback } from '../../api/exercise';
 
 const UserFeedback = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const addFeedback = useStore(state => state.addFeedback);
-  const feedback = useStore(state => state.feedback['강동형'] || []); // 'user1'은 예시 mem_id입니다.
-  const mem_name = "강동형"; // mem_id로 mem_name 받아오는 부분 (예시)
+  const [feedback, setFeedback] = useState([]);
+  const userId = useStore((state) => state.userId);
+  const userData = useUserInfoStore(state => state.userData);
+  
+  const fetchFeedbackData = async () => {
+    if (userId) {
+      try {
+        const data = await fetchFeedback(userId);
+        setFeedback(data);
+      } catch (error) {
+        console.error("피드백 데이터를 가져오는 중 오류가 발생했습니다.", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchFeedbackData();
+  }, [selectedDate]);
 
   const openModal = (video) => {
     setSelectedVideo(video);
@@ -38,19 +53,25 @@ const UserFeedback = () => {
     setSelectedDate(date);
   };
 
-  const handleFeedbackSubmit = (file, exerciseId, memo) => {
-    const videoURL = URL.createObjectURL(file);
-    addFeedback('user1', videoURL, new Date(), memo, false, exerciseId);
-    // 피드백 제출 후 모달 닫기
-    setIsFeedbackModalOpen(false);
+  const getKoreanISOString = () => {
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const kstDate = new Date(now.getTime() + kstOffset);
+  
+    // KST 시간을 "YYYY-MM-DDTHH:MM:SS" 형식으로 변환
+    const year = kstDate.getFullYear();
+    const month = String(kstDate.getMonth() + 1).padStart(2, '0');
+    const day = String(kstDate.getDate()).padStart(2, '0');
+    const hours = String(kstDate.getHours()).padStart(2, '0');
+    const minutes = String(kstDate.getMinutes()).padStart(2, '0');
+    const seconds = String(kstDate.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
-  // const filteredFeedback = feedback.filter(item => {
-  //   return format(new Date(item.created_at), 'yyyy-MM') === format(selectedDate, 'yyyy-MM');
-  // });
 
   return (
     <div>
-      <h1>{mem_name} 회원님의 피드백 목록</h1>
+      <h1>{userData.name} 회원님의 피드백 목록</h1>
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
@@ -67,7 +88,9 @@ const UserFeedback = () => {
       <FeedbackModal
         isOpen={isFeedbackModalOpen}
         onRequestClose={closeFeedbackModal}
-        onSubmit={handleFeedbackSubmit}
+        name={userData.name}
+        getKoreanISOString={getKoreanISOString}
+        fetchFeedbackData={fetchFeedbackData}
       />
     </div>
   );

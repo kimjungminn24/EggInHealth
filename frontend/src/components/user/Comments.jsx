@@ -22,7 +22,7 @@ const CommentBubble = styled.div`
   color: ${(props) => (props.isUser ? '#FFFFFF' : 'black')};
   border-radius: 10px;
   padding: 10px;
-  max-width: 60%;
+  max-width: 100%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
@@ -122,12 +122,12 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
       handleAddComment();
     }
   };
-
   return (
     <CommentsSection>
       <CommentsList>
         {comments.length > 0 ? (
           comments.map((c) => {
+            console.log(c)
             const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
             const datePart = extractDate(c.createdAt);
             const timePart = extractTime(c.createdAt);

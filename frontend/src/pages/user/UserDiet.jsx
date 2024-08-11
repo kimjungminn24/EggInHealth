@@ -3,7 +3,6 @@ import ModalDiet from "../../components/user/diet/ModalDiet";
 import {
   PageContainer,
   Title,
-  DateInput,
 } from "../../components/common/StyledComponents";
 import Tabs from "../../components/user/diet/Tabs";
 import RegisterButton from "../../components/common/button/RegisterButton";
@@ -15,6 +14,7 @@ import { getDiet } from "../../api/diet";
 import { Datepicker } from "@mobiscroll/react";
 import BoxUser from "./../../components/trainer/BoxUser";
 import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
+import NoImg from "../../components/user/Noimage";
 
 const UserDietPage = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -115,16 +115,22 @@ const UserDietPage = () => {
         setHasImages={setHasImages}
         setFilteredData={setFilteredData}
       />
-      {userType === "MEMBER" ? (
-        selectedDate <= today ? (
-          <RegisterButton
-            openModal={openModal}
-            setHasImages={setHasImages}
-            hasImages={hasImages}
-            onDelete={openDeleteModal}
-          />
-        ) : null
-      ) : null}
+  {userType === "MEMBER" ? (
+    selectedDate <= today ? (
+      <RegisterButton
+        openModal={openModal}
+        setHasImages={setHasImages}
+        hasImages={hasImages}
+        onDelete={openDeleteModal}
+      />
+    ) : (
+      <NoImg />
+    )
+  ) : (
+    !hasImages ? (
+      <NoImg />
+    ) : null
+  )}
 
       {isModalOpen && (
         <ModalDiet

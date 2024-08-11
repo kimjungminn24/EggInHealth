@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { HiChevronRight } from "react-icons/hi";
+import DatePicker from 'react-datepicker';
 Modal.setAppElement('#root'); // 모달이 열릴 때 접근성을 위해 애플리케이션 루트를 설정합니다.
 
 const customStyles = {
@@ -32,15 +33,14 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const DateInput = styled.input`
-  display: block;
-  margin: 0 auto 20px;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-`;
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: gray;
+`;
 const TabsContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -193,7 +193,7 @@ const CommentIcon = styled(HiChevronRight )`
 export {
   PageContainer,
   Title,
-  DateInput,
+  
   TabsContainer,
   TabButton,
   DietSectionContainer,
@@ -210,5 +210,6 @@ export {
     Button,
     StyledModal,
   CommentInputWrapper,
-  CommentIcon
+  CommentIcon,
+  Container
 };

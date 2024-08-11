@@ -38,7 +38,7 @@ const Button = styled.button`
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 15px;
   border: none;
   background-color: ${props => props.close ? '#6c757d' : '#FFD66B'};
   color: #fff;

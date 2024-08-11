@@ -10,6 +10,7 @@ import BoxSchedule from '../../components/trainer/BoxSchedule.jsx'
 import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.jsx";
 import plusbutton from '../../assets/plusbutton.png';
 import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
+import { checkMemberList } from "../../api/trainer.js";
 
 const userSchedule = {
   "id":1,
@@ -40,6 +41,26 @@ const TrainerMain = () => {
   const formatMonth = `${today.getMonth() + 1}`;
   const formatMonthforAPI = formatMonth < 10 ? `0${formatMonth}` : formatMonth;
   const formatYear = `${today.getFullYear()}`;
+
+  useEffect(()=>{
+    const fetchData = async ()=>{
+        try{
+            const promise = []
+
+            promise.push(checkMemberList(today.getFullYear(),today.getMonth(),selectedMemDate))
+            const results = await Promise.all(promise)
+
+            const memberMap = {}
+
+        }
+        catch(error){
+            console.log('에러',today.getFullYear(),today.getMonth(),selectedMemDate)
+        }
+    }
+    fetchData()
+},[selectedMemDate])
+
+
 
   const handleMouseDown = (e) => {
     setMouseStartY(e.clientY);

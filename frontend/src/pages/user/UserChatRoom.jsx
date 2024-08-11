@@ -168,8 +168,8 @@ function UserChatRoom() {
                     </div>
                 </div>
             )}
-            <div>
-                <ChatComponent participantName={participantName} roomName={roomName} receiver={userState.userInfo.trId} />
+            <div>   
+                <ChatComponent participantName={roomName} roomName={roomName} receiver={userState.userInfo.trId} />
             </div>
         </>
     );

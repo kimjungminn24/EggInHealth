@@ -61,7 +61,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
             //메세지 보내는 API 명세 부분
             const message = {
                 content: chatInput,
-                senderId: roomName,
+                senderId: participantName,
                 receiverId: receiverId, // 수신자 ID 설정
                 createdAt: new Date().toISOString(),
                 isRead: false
@@ -86,7 +86,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
         if (stompClientRef.current) {
             //메세지 받아오는 API 명세 부분
             const message = {
-                senderId: roomName,
+                senderId: participantName,
                 roomName: roomName
             };
             console.log('메세지 :',message);

@@ -40,6 +40,7 @@ public class ExerciseService {
     private final S3Service s3Service;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final MemberStatusService memberStatusService;
 
 
     public ExerciseDto getExercise(int uid, int year, int month, int day) {
@@ -69,8 +70,8 @@ public class ExerciseService {
     }
 
     public ExerciseSetDto saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
-        int memberId = SecurityUtil.getUserId();
         DateDto date = DateTimeUtil.splitDate(exerciseSetInputDto.date());
+        int memberId = exerciseSetInputDto.memberId();
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
@@ -105,7 +106,7 @@ public class ExerciseService {
                         exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date))
                 );
 
-
+        memberStatusService.updateMemberExerciseStatus(searchDate, true);
         return ExerciseReportDto.from(report);
     }
 
@@ -136,6 +137,7 @@ public class ExerciseService {
                 .orElseThrow(() -> new IllegalArgumentException("ExerciseReport not found"));
         s3Service.delete(DIR_NAME + exerciseReport.getImgUrl());
         exerciseReportRepository.delete(exerciseReport);
+        memberStatusService.updateMemberExerciseStatus(DateDto.localDateTimeToDateDto(exerciseReport.getDate()), false);
         return true;
     }
 

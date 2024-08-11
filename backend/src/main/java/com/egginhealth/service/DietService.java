@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.DateDto;
 import com.egginhealth.data.dto.comment.CommentDietDto;
 import com.egginhealth.data.dto.comment.CommentInputDto;
 import com.egginhealth.data.dto.diet.DietDayOutputDto;
@@ -28,23 +29,25 @@ import java.util.stream.Collectors;
 @Transactional
 public class DietService {
 
-    private static final String DIR_NAME ="diet";
+    private static final String DIR_NAME = "diet";
 
     private final MemberRepository memberRepository;
     private final DietRepository dietRepository;
     private final CommentRepository commentRepository;
     private final CommentService commentService;
     private final S3Service s3Service;
+    private final MemberStatusService memberStatusService;
 
-    public Map<String,Integer> save(DietInputDto dietInputDto,int memberId) throws IOException{
+    public Map<String, Integer> save(DietInputDto dietInputDto, int memberId) throws IOException {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        String url = s3Service.upload(dietInputDto.image(),DIR_NAME);
+        String url = s3Service.upload(dietInputDto.image(), DIR_NAME);
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(dietInputDto.date());
 
+        System.out.println("Test");
         Diet dietData = Diet.builder()
                 .type(dietInputDto.type())
                 .date(dateTime)
@@ -54,8 +57,9 @@ public class DietService {
 
         int dietId = dietRepository.save(dietData).getId();
 
-        Map<String,Integer> response = new HashMap<>();
-        response.put("dietId",dietId);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("dietId", dietId);
+        memberStatusService.updateMemberDietStatus(DateDto.localDateTimeToDateDto(dateTime), true);
 
         return response;
     }
@@ -82,30 +86,30 @@ public class DietService {
                 .orElseThrow(() -> new RuntimeException("Diet not found"));
 
         String prevUrl = diet.getImgUrl();
-        s3Service.delete(DIR_NAME,prevUrl);
+        s3Service.delete(DIR_NAME, prevUrl);
         String url = s3Service.upload(dietInputDto.image(), DIR_NAME);
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(dietInputDto.date());
 
-        DietSetDto dietSetDto = DietSetDto.from(dietInputDto,dateTime,url);
+        DietSetDto dietSetDto = DietSetDto.from(dietInputDto, dateTime, url);
         diet.updateDietBy(dietSetDto);
     }
 
-    public boolean deleteDiet(int id){
+    public boolean deleteDiet(int id) {
         Diet diet = dietRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Diet not found"));
 
-        s3Service.delete(DIR_NAME,diet.getImgUrl());
+        s3Service.delete(DIR_NAME, diet.getImgUrl());
         dietRepository.deleteById(id);
         return true;
     }
 
-    public List<DietDayOutputDto> getDayRegister(int memberId, int year, int month, int day){
+    public List<DietDayOutputDto> getDayRegister(int memberId, int year, int month, int day) {
         return dietRepository.findByDietDayList(memberId, year, month, day)
                 .stream()
                 .map(diet -> {
-                    List<CommentDietDto> commentList = commentService.getDietCommentToDay(diet.getId(),"D");
-                    return DietDayOutputDto.from(diet,commentList);
+                    List<CommentDietDto> commentList = commentService.getDietCommentToDay(diet.getId(), "D");
+                    return DietDayOutputDto.from(diet, commentList);
                 })
                 .collect(Collectors.toList());
     }

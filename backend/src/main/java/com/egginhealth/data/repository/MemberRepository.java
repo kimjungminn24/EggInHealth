@@ -29,6 +29,10 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
             @Param("year") int year,
             @Param("month") int month,
             @Param("day") int day);
+    
+
+    @Query("SELECT m FROM Member m WHERE m.trainer.id = :trainerId")
+    List<Member> findByTrainerMemberList(int trainerId);
 
 
 }

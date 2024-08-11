@@ -39,4 +39,8 @@ public class ExerciseReport {
                 .member(member)
                 .build();
     }
+
+    public void updateExerciseReport(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

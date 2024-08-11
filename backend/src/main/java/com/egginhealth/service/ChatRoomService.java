@@ -1,9 +1,11 @@
 package com.egginhealth.service;
 
 import com.egginhealth.data.dto.chat.ChatDto;
+import com.egginhealth.data.dto.chat.ChatListDto;
 import com.egginhealth.data.dto.chat.ChatRoomDto;
 import com.egginhealth.data.entity.Chat;
 import com.egginhealth.data.entity.ChatRoom;
+import com.egginhealth.data.entity.Role;
 import com.egginhealth.data.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Configuration
-@EnableRedisRepositories(basePackages = "com.egginhealth.data.redis.repository")
+@EnableRedisRepositories
 public class ChatRoomService {
 
     private static final Logger logger = LoggerFactory.getLogger(ChatRoomService.class);
@@ -92,6 +94,31 @@ public class ChatRoomService {
 
         addMessageToChatRoom(roomName, chatDto);
         logger.info("Saved chat message to Redis with roomId: {}", roomName);
+    }
+
+    public ArrayList<ChatListDto> getChatList(int id) {
+        Role role = memberService.getMemberDetail(id).type();
+        ArrayList<ChatListDto> chatList = new ArrayList<>();
+
+        if (role.equals(Role.MEMBER)) {
+            chatList = memberService.getMemberTrainerId(id);
+
+            for (int i = 0; i < chatList.size(); i++) {
+                ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(id)).orElse(null);
+                chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+            }
+
+        } else if (role.equals(Role.TRAINER)) {
+            chatList = memberService.getTrainerMemberIdList(id);
+
+            for (int i = 0; i < chatList.size(); i++) {
+                ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(chatList.get(i).memberId())).orElse(null);
+                chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+            }
+        }
+
+        return chatList;
+
     }
 
 }

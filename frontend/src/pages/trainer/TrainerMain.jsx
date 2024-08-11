@@ -34,6 +34,7 @@ const TrainerMain = () => {
   const [selectedMemDate, setSelectedMemDate] = useState(null);
   const [isOpen,setIsOpen] = useState(false);
   const [isAddOpen,setisAddOpen] = useState(false);
+  const [isMemListEmpty, setIsMemListEmpty] = useState(false);
 
   useEffect(() => {
     const userId = cookies.Id;
@@ -46,25 +47,25 @@ const TrainerMain = () => {
   const formatMonthforAPI = formatMonth < 10 ? `0${formatMonth}` : formatMonth;
   const formatYear = `${today.getFullYear()}`;
 
-  useEffect(()=>{
-    const fetchData = async ()=>{
-        try{
-            const promise = []
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const memberList = await checkMemberList(today.getFullYear(), today.getMonth(), today.getDate());
 
-            promise.push(checkMemberList(today.getFullYear(),today.getMonth(),selectedMemDate))
-            const results = await Promise.all(promise)
-
-            const memberMap = {}
-
+        // 멤버 리스트가 비어있는지 확인
+        if (memberList && memberList.length > 0) {
+          setIsMemListEmpty(false);
+        } else {
+          setIsMemListEmpty(true);
         }
-        catch(error){
-            console.log('에러',today.getFullYear(),today.getMonth(),selectedMemDate)
-        }
-    }
-    fetchData()
-},[selectedMemDate])
+      } catch (error) {
+        console.error('Error fetching member list:', error);
+        setIsMemListEmpty(true); // 에러가 발생한 경우에도 비어있다고 간주
+      }
+    };
 
-
+    fetchData();
+  }, []);
 
   const handleMouseDown = (e) => {
     setMouseStartY(e.clientY);
@@ -157,10 +158,20 @@ const TrainerMain = () => {
             <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} />
           </div>
           <div className="flex item-center justify-center mt-[50px]">
-            {selectedMemDate || <BtnRegister /> }
+          {
+            isMemListEmpty ? (
+              <BtnRegister />
+            ) : (
+              selectedMemDate !== null && Array.isArray(selectedMemDate) ? (
+                selectedMemDate.map((schedule, index) => (
+                  <BoxSchedule key={index} onClick={openModal} userSchedule={schedule} />
+                ))
+              ) : (
+                <BtnAddSchedule />
+              )
+            )
+          }
           </div>
-          <BtnAddSchedule />{/* 등록된 회원이 없을때 나오는 버튼 분기처리 필요 */}
-          <BoxSchedule onClick={openModal} userSchedule={userSchedule}/>  {/* 오늘의 일정이 없을때 나오는 버튼 분기처리 필요 */}
           <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={userSchedule} />{/* 회원이 있을때 나오는 박스 분기처리와 for문을 돌려서 프롭스로 내려서 처리 요망 */}
         </>
       )}

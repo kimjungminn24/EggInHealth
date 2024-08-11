@@ -1,5 +1,6 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.chat.ChatListDto;
 import com.egginhealth.data.dto.member.*;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.Role;
@@ -8,6 +9,9 @@ import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +62,25 @@ public class MemberService {
         Member member = memberRepository.findById(memberID)
                 .orElseThrow(() -> new IllegalArgumentException("not found Member"));
         return MemberRoleAndIdDto.from(member.getType().name(), member.getId());
+    }
+
+    public ArrayList<ChatListDto> getMemberTrainerId(int memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("not found Member"));
+
+        return memberRepository.findById(member.getTrainer().getId())
+                .stream()
+                .map(ChatListDto::fromMember)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<ChatListDto> getTrainerMemberIdList(int trainerId) {
+
+        return memberRepository.findByTrainerMemberList(trainerId)
+                .stream()
+                .map(ChatListDto::fromMember)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 

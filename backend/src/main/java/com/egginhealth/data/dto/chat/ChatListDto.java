@@ -16,7 +16,7 @@ public record ChatListDto(
 ) {
 
     public static ChatListDto fromChat(ChatListDto chatListDto, ChatRoom chatRoom) {
-        if (chatRoom == null) {
+        if (chatRoom == null || chatRoom.getChatList() == null || chatRoom.getChatList().isEmpty()) {
             return ChatListDto.builder()
                     .memberId(chatListDto.memberId())
                     .memberName(chatListDto.memberName())

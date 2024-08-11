@@ -10,6 +10,7 @@ import { useState } from "react";
 import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
+import { useStore } from "../../store/store.js";
 
 // For local development, leave these variables empty
 // For production, configure them with correct URLs depending on your deployment
@@ -37,12 +38,14 @@ function configureUrls() {
     }
 }
 
-function App() {
+function UserChatRoom() {
     const [room, setRoom] = useState(undefined);
     const [localTrack, setLocalTrack] = useState(undefined);
     const [remoteTracks, setRemoteTracks] = useState([]);
-    const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
-    const [roomName, setRoomName] = useState("Test Room");
+    // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
+    const userState = useStore(state => state)
+    const participantName =userState.userInfo.name
+    const roomName = userState.userId
 
     async function joinRoom() {
         // Initialize a new Room object
@@ -115,40 +118,18 @@ function App() {
         return data.rtctoken;
     }
 
+    let isCamOn = false
+
     return (
         <>
             {!room ? (
-                <div id='join'>
-                    <div id='join-dialog'>
-                        <h2>Join a Video Room</h2>
-                        <form
+             <div>
+                <form
                             onSubmit={(e) => {
                                 joinRoom();
                                 e.preventDefault();
                             }}
                         >
-                            <div>
-                                <label htmlFor='participant-name'>Participant</label>
-                                <input
-                                    id='participant-name'
-                                    className='form-control'
-                                    type='text'
-                                    value={participantName}
-                                    onChange={(e) => setParticipantName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='room-name'>Room</label>
-                                <input
-                                    id='room-name'
-                                    className='form-control'
-                                    type='text'
-                                    value={roomName}
-                                    onChange={(e) => setRoomName(e.target.value)}
-                                    required
-                                />
-                            </div>
                             <button
                                 className='btn btn-lg btn-success'
                                 type='submit'
@@ -157,9 +138,8 @@ function App() {
                                 Join!
                             </button>
                         </form>
-                    </div>
-                </div>
-            ) : (
+             </div>   
+            ): (
                 <div id='room'>
                     <div id='room-header'>
                         <h2 id='room-title'>{roomName}</h2>
@@ -189,10 +169,10 @@ function App() {
                 </div>
             )}
             <div>
-                <ChatComponent participantName={participantName} roomName={roomName} />
+                <ChatComponent participantName={participantName} roomName={roomName} receiver={userState.userInfo.trId} />
             </div>
         </>
     );
 }
 
-export default App;
+export default UserChatRoom;

@@ -59,5 +59,11 @@ public class PTController {
         return isDelete ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PatchMapping("/count")
+    public ResponseEntity<Void> updatePtCount(@RequestBody PtUpdateDto ptUpdateDto) {
+        ptLogService.updatePtCount(ptUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

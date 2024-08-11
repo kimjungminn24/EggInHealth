@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
-import { useExStore } from '../../store/store';
 import { registerExh } from '../../api/exercise';
 
 
@@ -17,9 +16,9 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
       setExTime(0);
     } else {
       setExTime('');
-      setExhWeight(0)
-      setExhSet(0)
-      setExhRep(0)
+      setExhWeight('')
+      setExhSet('')
+      setExhRep('')
     }
   }, [inputType]);
 

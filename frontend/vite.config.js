@@ -40,7 +40,7 @@ export default defineConfig({
               "type": "image/png"
             },
             {
-              "src": "icons/apple-touch-icon-120x120png",
+              "src": "icons/apple-touch-icon-120x120.png",
               "sizes": "120x120",
               "type": "image/png"
             },
@@ -58,6 +58,14 @@ export default defineConfig({
       }, 
     })
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        sw: 'public/firebase-messaging-sw.js'
+      }
+    }
+  },
   server: {
     proxy: {
       '/api': {

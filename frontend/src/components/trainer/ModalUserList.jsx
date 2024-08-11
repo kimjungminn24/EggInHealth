@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
-import arrow from '../../assets/arrow.png'; 
+import arrow from '../../assets/arrow.png';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -41,17 +41,10 @@ const UserItem = styled.div`
   border-radius: 20px;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 3px solid ${props => (props.active === 'true' ? '#FFD66B' : 'transparent')};
   &:hover {
     background-color: #f0f0f0;
-
   }
-
-  &.selected {
-    border: 2px solid #FFD66B;
-    border-radius: 20px;
-    padding: 13px;
-  }
-
 `;
 
 const UserInfo = styled.div`
@@ -87,18 +80,49 @@ const AddButton = styled.button`
   }
 `;
 
-const users = [
-  { id: 1, name: '강동형', remaining: 25, img: profile },
-  { id: 2, name: '김민주', remaining: 24, img: profile },
-  { id: 3, name: '김정민', remaining: 1, img: profile },
-  { id: 4, name: '신재건', remaining: 28, img: profile },
-];
+const CloseButton = styled.button`
+  background-color: #FF5757;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
 
-const ModalUserList = ({ onClose }) => {
+  &:hover {
+    background-color: #FF3F3F;
+  }
+`;
+
+const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => {
+  const [isSelected, setIsSelected] = useState(null);
+  const [Selected, setSelected] = useState(null);
+  
+  if (!onOpen) return null;
+
   const handleOverlayClick = (e) => {
-
     if (e.target === e.currentTarget) {
       onClose();
+    }
+  };
+
+  const handleAddUser = () => {
+    if (isSelected) {
+      setmemberId(isSelected); 
+      setmember(Selected)
+    }
+    onClose();
+  };
+
+  const handleUserSelect = (memberId,idx) => {
+    if (isSelected === memberId) {
+      setIsSelected(null); 
+      setSelected(null); 
+    } else {
+      setIsSelected(memberId);
+      setSelected(userList[idx])
     }
   };
 
@@ -107,18 +131,22 @@ const ModalUserList = ({ onClose }) => {
       <ModalContainer>
         <h2>사용자 리스트</h2>
         <UserList>
-          {users.map((user) => (
-            <UserItem key={user.id}>
+          {userList.map((user,idx) => (
+            <UserItem 
+            key={user.memberId}
+            onClick={() => handleUserSelect(user.memberId, idx)}
+            active={isSelected === user.memberId ? 'true' : undefined}>
               <UserInfo>
-                <UserImage src={profile} alt={user.name} />
+                <UserImage src={user.ImgUrl || profile} alt={user.name} />
                 <span>{user.name}</span>
               </UserInfo>
-              <span>남은 횟수: {user.remaining}</span>
+              <span>남은 횟수: {user.ptCnt}</span>
               <ArrowImage src={arrow} alt="arrow" />
             </UserItem>
           ))}
         </UserList>
-        <AddButton onClick={onClose}>추가</AddButton>
+        <AddButton onClick={handleAddUser}>추가</AddButton>
+        <CloseButton onClick={onClose}>닫기</CloseButton>
       </ModalContainer>
     </ModalOverlay>
   );

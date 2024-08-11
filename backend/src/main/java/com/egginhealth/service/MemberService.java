@@ -47,6 +47,7 @@ public class MemberService {
     }
 
     public boolean isMember(int memberId) {
+        System.out.println("readMemberId = "+memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("not found Member"));
 

@@ -59,8 +59,14 @@ spring:
 
 server:
   port: ${SERVER_PORT}
-  ssl:
-    enabled: false
+  forward-headers-strategy: framework
+  tomcat:
+    remoteip:
+      host-header: X-Forwarded-Host
+      port-header: X-Forwarded-Port
+      protocol-header: X-Forwarded-Proto
+      remote-ip-header: X-Forwarded-For
+    use-relative-redirects: true
 
 # LiveKit configuration
 livekit:

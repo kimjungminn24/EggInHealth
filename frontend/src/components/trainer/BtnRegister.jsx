@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonPlus from '../common/button/ButtonPlus';
-// import ModalConnect from '../../common/modal/ModalConnect';
+import { ModalMakeCode } from './ModalMakeCode';
 
 const Box = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ const BtnRegister = () => {
         <p>등록된 회원이 없습니다.<br/> + 버튼을 눌러 회원을 등록해주세요.</p>
         <ButtonPlus onClick={openModal} />
       </Box>
-      {/* <ModalConnect isOpen={modalIsOpen} onRequestClose={closeModal} /> */}
+      <ModalMakeCode isOpen={modalIsOpen} onRequestClose={closeModal} />
     </>
   );
 };

@@ -37,7 +37,7 @@ export const checkGoal = async (uid) => {
       const response = await axios.post(
         `${BASE_URL}/device/token`,
         {
-          deviceToken,
+          token: deviceToken,
         },
         {
           headers: {

@@ -39,7 +39,7 @@ function configureUrls() {
     }
 }
 
-function UserChatRoom() {
+function TrainerChatRoom() {
     const [room, setRoom] = useState(undefined);
     const [localTrack, setLocalTrack] = useState(undefined);
     const [remoteTracks, setRemoteTracks] = useState([]);
@@ -177,4 +177,4 @@ function UserChatRoom() {
     );
 }
 
-export default UserChatRoom;
+export default TrainerChatRoom;

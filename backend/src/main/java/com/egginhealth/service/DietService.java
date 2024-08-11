@@ -47,7 +47,6 @@ public class DietService {
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(dietInputDto.date());
 
-        System.out.println("Test");
         Diet dietData = Diet.builder()
                 .type(dietInputDto.type())
                 .date(dateTime)

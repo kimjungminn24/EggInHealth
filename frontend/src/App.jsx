@@ -1,13 +1,13 @@
 // src/App.jsx
 import React, { useMemo, useEffect } from 'react';
-import './App.css'
+import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Select from './pages/Select';
 import TrainerMain from './pages/trainer/TrainerMain';
 import UserHeader from './components/user/UserHeader';
-import UserNavbar from "./components/user/UserNavbar"
+import UserNavbar from "./components/user/UserNavbar";
 import UserCalender from "./pages/user/UserCalender";
 import UserChatRoom from "./pages/user/UserChatRoom";
 import UserExercise from "./pages/user/UserExercise";
@@ -15,33 +15,33 @@ import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 import TrainerHeader from './components/trainer/TrainerHeader';
-import TrainerUserDetailHeader from './components/trainer/TrainerUserDetailHeader.jsx'
+import TrainerUserDetailHeader from './components/trainer/TrainerUserDetailHeader.jsx';
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
+import TrainerChatRoom from './pages/trainer/TrainerChatRoom.jsx'
 
-import UserFeedback from "./pages/user/UserFeedback"
+import UserFeedback from "./pages/user/UserFeedback";
 import { useStore, useUserInfoStore } from './store/store.js';
 
-import {requestPermission} from './firebase.jsx'
+import { requestPermission } from './firebase.jsx';
 
 function App() {
-    useEffect(()=>{
+    useEffect(() => {
         requestPermission();
     }, []);
 
     const userType = useStore(state => state.userType);
-    const userInfoType = useUserInfoStore(state => state.userType)
+    const userInfoType = useUserInfoStore(state => state.userType);
 
     const renderHeader = useMemo(() => {
-    //   console.log(userType)
         switch (userType) {
             case 'MEMBER':
                 return <UserHeader />;
             case 'TRAINER':
-                if (userType != userInfoType) {
-                    <TrainerUserDetailHeader/>
+                if (userType !== userInfoType) {
+                    return <TrainerUserDetailHeader />;
                 }
                 return <TrainerHeader />;
             default:
@@ -77,6 +77,8 @@ function App() {
                 <Route path="/traineruserlist" element={<TrainerUserList />} />
                 <Route path="/trainerprofile" element={<TrainerProfile />} />
                 <Route path="/userfeedback" element={<UserFeedback />} />
+                {/* 동적 경로 설정 */}
+                <Route path="/trainerchat/:trainerId/:userId" element={<TrainerChatRoom />} />
             </Routes>
             <div className='nav'>{renderNavbar}</div>
         </div>

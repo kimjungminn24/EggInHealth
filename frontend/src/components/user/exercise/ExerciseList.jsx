@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import AddExerciseModal from "../../trainer/ModalAddUserExercise";
 import { DataTable } from "../../common/DataTable";
+import { AddButton } from "../../common/StyledComponents";
 
-const ExerciseList = ({ selectedDate, exData, userLoginData }) => {
+const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  console.log(userData)
+  console.log(exData)
 
   const headers = [
     {
@@ -49,14 +52,14 @@ const ExerciseList = ({ selectedDate, exData, userLoginData }) => {
 
   return (
     <div>
-      <h1>해야할 운동</h1>
       {selectedDate >= today && userLoginData.type === "TRAINER" ? (
-        <button onClick={openModal}>운동 추가</button>
+        <AddButton onClick={openModal}>+</AddButton>
       ) : null}
       <AddExerciseModal
         isOpen={isModalOpen}
         onClose={closeModal}
         selectedDate={selectedDate}
+        userData={userData}
       />
 
       {selectedDate && exData ? (

@@ -109,13 +109,15 @@ const TrainerUserDetailHeader = () => {
   }, [scrollPosition]);
 
   return (
-    <div className='relative'>
-      <div className='absolute z-30 left-6 top-1/2 transform -translate-y-1/2 cursor-pointer' onClick={handleScrollLeft}>
-        <img src={Arrow} alt="왼쪽화살표" className='w-[13px] h-[24px] -scale-x-100' />
-      </div>
+    <div>
       <div className='absolute h-[35px] w-[120px] bg-white z-10 top-0 left-0 right-0 bottom-0 m-auto rounded-full'></div>
-      <div className='absolute z-30 top-1/2 right-6 transform -translate-y-1/2 cursor-pointer' onClick={handleScrollRight}>
-        <img src={Arrow} alt="오른쪽화살표" className='w-[13px] h-[24px]' />
+      <div className='absolute h-[35px] w-[320px] justify-between flex top-0 left-0 right-0 bottom-0 m-auto items-center'>
+        <div className='z-40 cursor-pointer' onClick={handleScrollLeft}>
+          <img src={Arrow} alt="왼쪽화살표" className='w-[13px] h-[24px] -scale-x-100' />
+        </div>
+        <div className='z-40 cursor-pointer' onClick={handleScrollRight}>
+          <img src={Arrow} alt="오른쪽화살표" className='w-[13px] h-[24px]' />
+        </div>
       </div>
       <div
         className="relative w-[330px] flex gap-5 snap-x snap-mandatory overflow-x-auto bg-yellow-400 h-[40px] rounded-full top-0 left-0 right-0 bottom-0 m-auto justify-items-center items-center"

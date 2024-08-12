@@ -7,6 +7,7 @@ import {
     RoomEvent,
 } from "livekit-client";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
@@ -39,13 +40,14 @@ function configureUrls() {
 }
 
 function TrainerChatRoom() {
+    const { trainerId, userId } = useParams()
     const [room, setRoom] = useState(undefined);
     const [localTrack, setLocalTrack] = useState(undefined);
     const [remoteTracks, setRemoteTracks] = useState([]);
     // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
     const userState = useStore(state => state)
-    const participantName =userState.userInfo.name
-    const roomName = userState.userId
+    const participantName =trainerId
+    const roomName = userId
 
     async function joinRoom() {
         // Initialize a new Room object
@@ -170,7 +172,7 @@ function TrainerChatRoom() {
             )}
             <div>   
                 {/*수정필요 */}
-                <ChatComponent participantName={userState.userId} roomName={roomName} receiver={userState.userInfo.trId} />
+                <ChatComponent participantName={trainerId} roomName={roomName} receiver={roomName} />
             </div>
         </>
     );

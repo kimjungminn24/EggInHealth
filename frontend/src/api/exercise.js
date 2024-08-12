@@ -55,14 +55,22 @@ export const registerEximg = async (date, img) => {
   const formData = new FormData();
   formData.append("image", img);
   formData.append("date", date);
-  const res = await axios.post(`${BASE_URL}/exercise/report`, formData, {
+  const res = await axios.put(`${BASE_URL}/exercise/report`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
     withCredentials: true,
   });
+  console.log(res.data);
   return res.data;
 };
+
+export const deleteExImg = async (reportId) => {
+  console.log(reportId);
+  const res = await axios.delete(`${BASE_URL}/exercise/report?id=${reportId}`)
+  return res.data
+}
+
 
 export const updateEx = async (setId, set, weight, name, time, date) => {
   const res = await axios.patch(`${BASE_URL}/exercise`, {
@@ -112,3 +120,5 @@ export const fetchFeedback = async (uid) => {
   );
   return res.data;
 };
+
+

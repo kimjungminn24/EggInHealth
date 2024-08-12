@@ -2,6 +2,47 @@ import React, { useState } from "react";
 import AddExerciseModal from "../../trainer/ModalAddUserExercise";
 import { DataTable } from "../../common/DataTable";
 import { AddButton } from "../../common/StyledComponents";
+import styled from "styled-components";
+
+
+const StyledTd = styled.td`
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd; /* 데이터 셀 테두리 */
+  background-color: #f9f9f9; /* 데이터 셀 배경 색상 */
+`;
+
+const Box = styled.div`
+  width: 320px;
+  height: auto; 
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px 20px; /* 내부 여백 추가 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0px;
+`;
+
+const StyledTr = styled.div`
+  display: flex;
+  justify-content: space-between; /* 양 끝에 요소 배치 */
+  align-items: center; /* 수직 중앙 정렬 */
+  padding: 10px 0; /* 위아래 여백 */
+  border-bottom: 1px solid #eee; /* 하단 경계선 */
+  
+  &:last-child {
+    border-bottom: none; /* 마지막 항목의 경계선 제거 */
+  }
+
+  /* 텍스트 스타일 */
+  span {
+    font-size: 16px; /* 글자 크기 조정 */
+    color: #333; /* 텍스트 색상 */
+  }
+
+  .minute {
+    font-weight: bold; /* MINUTE 강조 */
+  }
+`;
 
 const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,11 +72,11 @@ const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
 
   const timeHeaders = [
     {
-      text: "NAME",
+      text: "",
       value: "name",
     },
     {
-      text: "TIME",
+      text: "MINUATE",
       value: "time",
     },
   ];
@@ -55,28 +96,34 @@ const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
 
       {selectedDate && exData ? (
         <div>
-          <DataTable headers={timeHeaders}>
-            {exData.sets
-              ?.filter((set) => set.time > 0)
-              .map((set, index) => (
-                <tr key={index}>
-                  <td>{set.name}</td>
-                  <td>{set.time}</td>
-                </tr>
-              ))}
-          </DataTable>
-          <DataTable headers={headers}>
-            {exData.sets
-              ?.filter((set) => set.set > 0)
-              .map((set, index) => (
-                <tr key={index}>
-                  <td>{set.name}</td>
-                  <td>{set.set}</td>
-                  <td>{set.ref}</td>
-                  <td>{set.weight}</td>
-                </tr>
-              ))}
-          </DataTable>
+    <Box>
+      {exData.sets
+        ?.filter((set) => set.time > 0)
+        .map((set, index) => (
+          <StyledTr key={index}>
+            <span>{set.name}</span>
+            <span className="minute">MINUTE</span>
+            <span>{set.time}</span>
+          </StyledTr>
+        ))}
+    </Box>
+
+<DataTable headers={headers}>
+  {exData.sets
+    ?.filter((set) => set.set > 0)
+    .map((set, index) => (
+      <Box key={index}>
+        <StyledTr>
+          <span>{set.name}</span>
+          <span>{set.set}</span>
+          <span>{set.ref}</span>
+          <span>{set.weight}</span>
+        
+        </StyledTr>
+      </Box>
+    ))}
+</DataTable>
+
         </div>
       ) : (
         <p>운동 목록이 없습니다.</p>

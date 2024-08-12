@@ -7,6 +7,7 @@ import ExerciseList from "./../../components/user/exercise/ExerciseList";
 import {
   ImagePreview,
   Mini,
+  MiniContainer,
   PageContainer,
 } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ import { getExercise } from "./../../api/exercise";
 import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
 import BoxUser from "../../components/trainer/BoxUser";
 import NoImg from "../../components/user/Noimage";
+import ModalDeleteExImg from "../../components/user/exercise/ModalDeleteExImg";
 
 const Exercise = () => {
   const [selectedDate, setSelectedDate] = useState(
@@ -46,8 +48,6 @@ const Exercise = () => {
         const [year, month, day] = selectedDate.split("-");
         const data = await getExercise(userData.id, year, month, day);
         setExData(data);
-        console.log(userData.id);
-        console.log(data);
       } catch (error) {
         console.error("운동 조회 실패", error);
       }
@@ -66,7 +66,14 @@ const Exercise = () => {
     if (userData && userData.id) {
       fetchExData();
     }
-  }, [selectedDate, userData, ExerciseImg, isModalOpen, isDeleteModalOpen,userData.sets]);
+  }, [
+    selectedDate,
+    userData,
+    ExerciseImg,
+    isModalOpen,
+    isDeleteModalOpen,
+    userData.sets,
+  ]);
 
   const navigate = useNavigate();
 
@@ -96,8 +103,10 @@ const Exercise = () => {
           userData={userData}
         />
         <div>
-          <button onClick={handleFeedbackClick}>사용자 피드백</button>
-          <Mini>운동 사진</Mini>
+          <MiniContainer>
+            <Mini>운동 사진</Mini>
+            <button onClick={handleFeedbackClick}>사용자 피드백</button>
+          </MiniContainer>
           <ExerciseImg
             exData={exData}
             selectedDate={selectedDate}
@@ -115,12 +124,20 @@ const Exercise = () => {
           ) : !hasImages ? (
             <NoImg />
           ) : null}
+
           {isModalOpen && (
             <ModalExercise
               date={selectedDate}
               onClose={closeModal}
               setHasImages={setHasImages}
               hasImages={hasImages}
+            />
+          )}
+          {isDeleteModalOpen && (
+            <ModalDeleteExImg
+            exData={exData}
+              onClose={closeDeleteModal}
+              // 삭제 핸들러 추가
             />
           )}
         </div>

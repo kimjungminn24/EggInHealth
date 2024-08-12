@@ -14,13 +14,11 @@ app = Flask(__name__)
 
 
 def get_landmarks_coordinates(landmarks, side):
+    points = ['SHOULDER', 'ELBOW', 'WRIST']
     return [
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_SHOULDER').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_SHOULDER').value].y],
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_ELBOW').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_ELBOW').value].y],
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_WRIST').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_WRIST').value].y],
+        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_{point}').value].x,
+         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_{point}').value].y]
+        for point in points
     ]
 
 

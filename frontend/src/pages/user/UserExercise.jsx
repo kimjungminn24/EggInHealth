@@ -6,6 +6,7 @@ import ModalExercise from "../../components/user/exercise/ModalExercise";
 import ExerciseList from "./../../components/user/exercise/ExerciseList";
 import {
   ImagePreview,
+  Mini,
   PageContainer,
 } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
@@ -66,7 +67,7 @@ const Exercise = () => {
     if (userData && userData.id) {
       fetchExData();
     }
-  }, [selectedDate, userData, ExerciseImg, isModalOpen, isDeleteModalOpen]);
+  }, [selectedDate, userData, ExerciseImg, isModalOpen, isDeleteModalOpen,userData.sets]);
 
   const navigate = useNavigate();
 
@@ -93,9 +94,10 @@ const Exercise = () => {
           selectedDate={selectedDate}
           exData={exData}
           userLoginData={userLoginData}
+          userData={userData}
         />
         <div>
-          운동 사진
+          <Mini>운동 사진</Mini>
           <ExerciseImg
             exData={exData}
             selectedDate={selectedDate}

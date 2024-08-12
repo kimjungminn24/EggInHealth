@@ -10,7 +10,8 @@ export const ExerciseImg = ({ exData, selectedDate, setHasImages }) => {
 
       if (isDateMatch) {
         setFilteredData(exData);
-        setHasImages(exData.reportImgUrl ? true : false);
+        console.log(exData.report.imgUrl);
+        setHasImages(exData.report.imgUrl ? true : false);
       } else {
         setFilteredData(null);
         setHasImages(false);
@@ -22,6 +23,6 @@ export const ExerciseImg = ({ exData, selectedDate, setHasImages }) => {
   }, [exData, selectedDate, setHasImages]);
 
   return (
-    <img src={filteredData ? filteredData.reportImgUrl : ""} alt="" />
+    <img src={filteredData ? filteredData.report.imgUrl : ""} alt="" />
   );
 };

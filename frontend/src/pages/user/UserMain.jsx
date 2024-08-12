@@ -52,12 +52,6 @@ const UserMain = () => {
     const eggday = userData?.totalEgg;
 
     useEffect(() => {
-        const hasVisited = localStorage.getItem("hasVisited");
-        if (!hasVisited) {
-            requestPermission();
-            localStorage.setItem("hasVisited", "true");
-        }
-
         const fetch = async () => {
             await userUpdate();
             const updatedUserId = useStore.getState().userId;
@@ -102,6 +96,12 @@ const UserMain = () => {
                 .catch((error) => {
                     console.error(error);
                 });
+        }
+
+        const hasVisited = localStorage.getItem("hasVisited");
+        if (!hasVisited) {
+            requestPermission();
+            localStorage.setItem("hasVisited", "true");
         }
     }, [fetchData, trainer, userUpdate, userId]);
 

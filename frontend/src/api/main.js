@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const userInfo = async (Id) => {
+export const userInfo = async (userId) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/user/${Id}`, 
+        `${BASE_URL}/user/${userId}`, 
         {
           headers: {
             'Content-Type': 'application/json',

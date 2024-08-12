@@ -5,7 +5,7 @@ import PlusBtn from '../../../assets/plusbutton.png';
 import ModalAddInbody from './ModalAddInbody';
 import PhotoCaptureModal from '../../../components/common/modal/ModalPhotoCapture';
 import { fetchBodyData } from '../../../api/inbody';
-
+import { useStore } from '../../../store/store';
 const StyledModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -104,6 +104,8 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
   const [bodyData, setBodyData] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { userInfo,userId,userType} = useStore()
+
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -123,10 +125,9 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
 
   const fetchData = async () => {
     try {
-      const uid = 1;
       const year = 2024;
       const month = 8;
-      const data = await fetchBodyData(uid, year, month);
+      const data = await fetchBodyData(userId, year, month);
       setBodyData(data);
       if (data.length > 0) {
         setSelectedPhoto(data[0]);

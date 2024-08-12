@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { checkPtLog } from '../../../api/user';
 import { useStore } from '../../../store/store';
@@ -14,7 +14,7 @@ const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-`
+`;
 
 const ModalContent = styled.div`
   background-color: white;
@@ -23,7 +23,44 @@ const ModalContent = styled.div`
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1001;
-`
+  width: 300px;
+`;
+
+const Header = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const DateContainer = styled.div`
+  margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+const DateTitle = styled.div`
+  color: #f1c232;
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+const Table = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 16px;
+`;
+
+const DateLabel = styled.div`
+  color: #333;
+`;
+
+const Count = styled.div`
+  color: ${props => (props.isNegative ? '#d9534f' : '#5cb85c')};
+`;
 
 const CloseButton = styled.button`
   background-color: #FFD66B;
@@ -37,94 +74,59 @@ const CloseButton = styled.button`
   margin-top: 20px;
 
   &:hover {
-    background-color: #FFC947;
+    background-color: #FF6B6B;
   }
 
   &:active {
-    background-color: #FFB02E;
+    background-color: #FF5757;
   }
-`
-const Content = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 5px;
 `;
 
-const ModalCheckPTcount = ({ onClose }) => {  
-  const { userId } = useStore(state => ({ userId: state.userId }))
-  const [userPtCount,setuserPtCount] = useState() 
-  const data = [
-    {
-      id: 1,
-      change: 10,
-      remainingPt: 90,
-      updatedAt: '2023-08-04 12:00:00.000000'
-    },
-    {
-      id: 2,
-      change: -5,
-      remainingPt: 85,
-      updatedAt: '2023-08-04 12:05:00.000000'
-    },
-    {
-      id: 3,
-      change: 15,
-      remainingPt: 100,
-      updatedAt: '2023-08-04 12:10:00.000000'
-    },
-    {
-      id: 4,
-      change: -10,
-      remainingPt: 90,
-      updatedAt: '2023-08-04 12:15:00.000000'
-    },
-    {
-      id: 5,
-      change: 20,
-      remainingPt: 110,
-      updatedAt: '2023-08-04 12:20:00.000000'
-    }
-  ];
-  useEffect(() =>{
 
-    const fetchPtCount = async () =>{
-      try { 
-      const ptCountData =  await checkPtLog(userId)
-      setuserPtCount(ptCountData)
-    } catch (error){
-      console.log(error);
-    }}
-    fetchPtCount()
-  },[userId])
+const ModalCheckPTcount = ({ onClose }) => {
+  const { userId } = useStore(state => ({ userId: state.userId }));
+  const [userPtCount, setUserPtCount] = useState([]);
 
+  useEffect(() => {
+    const fetchPtCount = async () => {
+      try {
+        const ptCountData = await checkPtLog(userId);
+        setUserPtCount(ptCountData);
+        console.log(ptCountData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPtCount();
+  }, [userId]);
 
-  return(
+  return (
     <ModalOverlay>
-    <ModalContent>
+      <ModalContent>
+        <Header>기록</Header>
+        <DateContainer>
+          <DateTitle>2024.07</DateTitle>
+        </DateContainer>
 
-    {data.length > 0 ? (
-  <>
-    <p>날짜 횟수</p>
-    {data.map((i, idx) => (
-      <Content key={idx}>
-        {i.updatedAt.substring(0, 10)}
-        {i.change}
-        {i.remainingPt}
-      </Content>
-    ))}
-  </>
-) : (
-  <p>스케줄을 등록해주세요</p>
-)}
+        {userPtCount.length > 0 ? (
+          <Table>
+            {userPtCount.map((item, index) => (
+              <Row key={index}>
+                <DateLabel>{item.updatedAt.substring(0, 10)}</DateLabel>
+                <Count isNegative={item.change < 0}>
+                  {item.change > 0 ? `+${item.change}` : item.change} ({item.remainingPt})
+                </Count>
+              </Row>
+            ))}
+          </Table>
+        ) : (
+          <p>스케줄을 등록해주세요</p>
+        )}
 
-      
-      <CloseButton onClick={onClose}>닫기</CloseButton>
-    </ModalContent>
-  </ModalOverlay>
-  )
-}
-  
-
-
+        <CloseButton onClick={onClose}>닫기</CloseButton>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
 
 export default ModalCheckPTcount;

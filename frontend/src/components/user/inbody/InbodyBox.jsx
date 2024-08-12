@@ -46,15 +46,36 @@ const DataChange = styled.div`
 const ProgressBarContainer = styled.div`
   flex: 1;
   height: 10px;
-  background-color: #e0e0e0;
+  background-color: #e0e0e0; /* 배경색 */
   border-radius: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ProgressBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   background-color: #FFD700;
   border-radius: 5px;
   width: ${props => props.width};
+`;
+
+const ProgressLabel = styled.div`
+  font-size: 12px;
+  color: #666;
+  position: absolute;
+  bottom: -20px; /* 레이블의 위치 조정 */
+`;
+
+const Divider = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 1px; /* 선의 두께 */
+  background-color: #999; /* 선의 색상 */
 `;
 
 const InbodyBox = ({ dataList }) => {
@@ -70,7 +91,14 @@ const InbodyBox = ({ dataList }) => {
             </DataChange>
           </DataDetails>
           <ProgressBarContainer>
+            <ProgressLabel style={{ left: '0%' }}>표준 이하</ProgressLabel>
+            <ProgressLabel style={{ left: '50%' }}>표준</ProgressLabel>
+            <ProgressLabel style={{ right: '0%' }}>표준 이상</ProgressLabel>
             <ProgressBar width={item.progress} />
+            {/* 선 추가 */}
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, idx) => (
+              <Divider key={idx} style={{ left: `${(idx + 1) * 10}%` }} />
+            ))}
           </ProgressBarContainer>
         </DataItem>
       ))}

@@ -11,7 +11,8 @@ export const useStore = create((set) => ({
   userUpdate : async () =>{
     {
       const  info = await userRole()
-      const infoRet = await userInfo(info.id);
+      const userId = info.id
+      const infoRet = await userInfo(userId);
       set({
         userId : info.id,
         userType : info.role,

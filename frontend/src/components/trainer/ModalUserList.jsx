@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png';
+import ChatComponent from '../common/ChatComponent';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -96,12 +97,13 @@ const CloseButton = styled.button`
   }
 `;
 
-const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => {
+const ModalUserList = ({ onOpen, onClose, userList,trainerId }) => {
   const [isSelected, setIsSelected] = useState(null);
   const [Selected, setSelected] = useState(null);
+  console.log(userList);
   
   if (!onOpen) return null;
-
+  
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -110,8 +112,7 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
 
   const handleAddUser = () => {
     if (isSelected) {
-      setmemberId(isSelected); 
-      setmember(Selected)
+      ChatComponent(trainerId,isSelected,isSelected)
     }
     onClose();
   };
@@ -137,10 +138,9 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
             onClick={() => handleUserSelect(user.memberId, idx)}
             active={isSelected === user.memberId ? 'true' : undefined}>
               <UserInfo>
-                <UserImage src={user.ImgUrl || profile} alt={user.name} />
-                <span>{user.name}</span>
+                <UserImage src={user.memberImgUrl || profile} alt={user.name} />
+                <span>{user.memberName}</span>
               </UserInfo>
-              <span>남은 횟수: {user.ptCnt}</span>
               <ArrowImage src={arrow} alt="arrow" />
             </UserItem>
           ))}

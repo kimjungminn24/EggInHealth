@@ -169,6 +169,10 @@ const UserFeedback = () => {
         feedback={feedback}
         selectedDate={selectedDate}
         onVideoClick={openModal}
+        userType={userType}
+        fetchFeedback={fetchFeedback}
+        getKoreanISOString={getKoreanISOString}
+
       />
       <VideoModal
         isOpen={isModalOpen}

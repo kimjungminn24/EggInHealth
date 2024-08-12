@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { format, isSameMonth } from 'date-fns';
+import FeedbackModal from './ModalFeedback';
+import ModalDeleteFeedback from './ModalDelteFeedback';
 
 const FeedbackItem = styled.div`
     background-color: #ffffff;
@@ -72,9 +74,11 @@ const Divider = styled.div`
     background-color: #ccc;
     margin: 5px 0;
 `;
-
-const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete }) => {
+const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString}) => {
     const [dropdownVisible, setDropdownVisible] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedFeedback, setSelectedFeedback] = useState(null);
+    const [isDeleteOpen,setIsDeleteOpen] = useState(false)
     const dropdownRef = useRef(null);
 
     const selectedDateObj = new Date(selectedDate);
@@ -94,12 +98,23 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete }
         }
     };
 
+    const handleEdit = (item) => {
+        setSelectedFeedback(item);
+        setIsModalOpen(true);
+        setDropdownVisible(null);
+    };
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+    const handleDelete = (item) => {
+        setSelectedFeedback(item); // 삭제할 ID 설정
+        setIsDeleteOpen(true); // 삭제 모달 열기
+        setDropdownVisible(null); // 드롭다운 닫기
+    };
 
     return (
         <div>
@@ -110,19 +125,32 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete }
                     <FeedbackDate>{format(new Date(item.createdAt), 'MM월 dd일 HH시 mm분')}</FeedbackDate>
 
                     <ActionButton onClick={(e) => { 
-                        e.stopPropagation(); 
+                        e.stopPropagation(); // 클릭 전파 방지
                         handleDropdownToggle(item.id); 
                     }}>
                         ...
                     </ActionButton>
 
-                    <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id}>
-                        <DropdownItem onClick={() => { onEdit(item.id); setDropdownVisible(null); }}>수정</DropdownItem>
+                    <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id} onClick={(e) => e.stopPropagation()}>
+                        <DropdownItem onClick={() => handleEdit(item)}>수정</DropdownItem>
                         <Divider />
-                        <DropdownItem onClick={() => { onDelete(item.id); setDropdownVisible(null); }}>삭제</DropdownItem>
+                        <DropdownItem onClick={() => handleDelete(item.id)}>삭제</DropdownItem> 
                     </DropdownMenu>
                 </FeedbackItem>
             ))}
+            <FeedbackModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                feedbackData={selectedFeedback} // 수정할 피드백 데이터 전달
+                fetchFeedback={fetchFeedback}
+                getKoreanISOString={getKoreanISOString} // 피드백 데이터 새로고침 함수 전달
+            />
+            <ModalDeleteFeedback
+                isOpen={isDeleteOpen}
+                feedbackData={selectedFeedback} 
+                fetchFeedback={fetchFeedback}
+            
+            />
         </div>
     );
 };

@@ -129,6 +129,12 @@ export const updateFeedback = async (
   createdAt,
   id
 ) => {
+  console.log(  motionSimilarity,
+    memo,
+    exerciseId,
+    record,
+    createdAt,
+    id)
   const formData = new FormData();
   formData.append(`motionSimiliarity`, motionSimilarity);
   formData.append(`memo`, memo);
@@ -145,7 +151,8 @@ export const updateFeedback = async (
 
 
 
-export const deleteFeedback = async (id )=>
+export const deleteFeedback = async (id)=>
   {const res = await axios.delete(`${BASE_URL}/feedback/${id}`)
-return res.data  
+  console.log(id)
+return res.data
 }

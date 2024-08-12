@@ -3,7 +3,7 @@ import { GetMembers } from "../../../api/Calender";
 
 const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
     const today = new Date();
-    const [selectedDay, setSelectedDay] = useState(null);
+    const [selectedDay, setSelectedDay] = useState(today.getDate());
     const [ memDate, setMemDate] = useState([])
 
     // 날짜관련 코드
@@ -16,33 +16,44 @@ const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
     //날짜받아서 하이라이트하는 버튼
     const handleChangeDate = (dayCount) => {
         setSelectedDay(dayCount);
-        console.log(dayCount);
-        onDateChange(memDate[dayCount])
+        onDateChange(memDate)
         return dayCount;
     }
 
-    useEffect(()=>{
-        const fetchData = async ()=>{
-            try{
-                const promise = []
-
-                promise.push(GetMembers(year,month))
-                const results = await Promise.all(promise)
-
-                const memberMap = {}
-                results[0].forEach((result)=>{
-                    const date = new Date(result.data)
-                    const day = date.getDate()
-                    memberMap[day] = result
-                })
-                setMemDate(memberMap)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const promise = [];
+    
+                // 데이터 가져오기
+                promise.push(GetMembers(year, month));
+                const results = await Promise.all(promise);
+    
+                // 결과가 비어있는지 확인하고, 빈 배열로 채우기
+                if (results.length === 0 || results[0].length === 0) {
+                    results[0] = []; // 비어있는 경우 빈 배열 추가
+                }
+    
+                // 멤버 데이터를 맵으로 변환
+                const memberMap = [];
+                results[0].forEach((result) => {
+                    const date = new Date(result.data);
+                    if (!isNaN(date.getTime())) {  // 날짜 유효성 검사
+                        const day = date.getDate();
+                        memberMap[day] = result;
+                    } else {
+                        console.error('유효하지 않은 날짜:', result.data);
+                    }
+                });
+                // 상태 업데이트
+                setMemDate(memberMap);
+            } catch (error) {
+                console.log('에러', year, month);
             }
-            catch(error){
-                console.log('에러',year,month)
-            }
-        }
-        fetchData()
-    },[year,month])
+        };
+        fetchData();
+    }, [year, month]);
+    
 
     const days = [];
     let dayCount = 1;

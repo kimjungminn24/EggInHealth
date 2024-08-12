@@ -40,7 +40,7 @@ export default defineConfig({
               "type": "image/png"
             },
             {
-              "src": "icons/apple-touch-icon-120x120png",
+              "src": "icons/apple-touch-icon-120x120.png",
               "sizes": "120x120",
               "type": "image/png"
             },

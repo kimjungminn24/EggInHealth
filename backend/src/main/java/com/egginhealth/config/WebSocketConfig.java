@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Value("${OPEN_VIDU_URL}")
+    @Value("${FRONT_URL}")
     private String openViduUrl;
 
     @Override

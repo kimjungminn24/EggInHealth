@@ -16,8 +16,8 @@ public record ExerciseDto(
         Integer boardId,
         Integer trainerId,
         Integer memberId,
-        String reportImgUrl,
         LocalDateTime date,
+        ExerciseReportDto report,
         List<ExerciseSetDto> sets,
         List<CommentDto> comments
 ) {
@@ -30,7 +30,7 @@ public record ExerciseDto(
                 .boardId(homework == null ? null : homework.getId())
                 .trainerId(member.getTrainer() == null ? null : member.getTrainer().getId())
                 .memberId(member.getId())
-                .reportImgUrl(report == null ? null : report.getImgUrl())
+                .report(report == null ? null : ExerciseReportDto.from(report))
                 .sets(sets != null ? sets : Collections.emptyList())
                 .comments(comments != null ? comments : Collections.emptyList())
                 .build();

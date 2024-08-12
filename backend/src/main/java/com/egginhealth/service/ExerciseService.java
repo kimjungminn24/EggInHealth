@@ -40,6 +40,7 @@ public class ExerciseService {
     private final S3Service s3Service;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final MemberStatusService memberStatusService;
 
 
     public ExerciseDto getExercise(int uid, int year, int month, int day) {
@@ -69,8 +70,8 @@ public class ExerciseService {
     }
 
     public ExerciseSetDto saveExerciseSet(ExerciseSetInputDto exerciseSetInputDto) {
-        int memberId = SecurityUtil.getUserId();
         DateDto date = DateTimeUtil.splitDate(exerciseSetInputDto.date());
+        int memberId = exerciseSetInputDto.memberId();
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
@@ -97,9 +98,16 @@ public class ExerciseService {
         ExerciseHomework homework = exerciseHomeworkRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day()).orElseGet(() ->
                 exerciseHomeworkRepository.save(ExerciseHomework.createExerciseHomework(member, date))
         );
+        ExerciseReport report = exerciseReportRepository.findByMemberIdAndDate(memberId, searchDate.year(), searchDate.month(), searchDate.day())
+                .map(r -> {
+                    r.updateExerciseReport(url);
+                    return r;
+                }).orElseGet(() ->
+                        exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date))
+                );
 
-        ExerciseReport report = exerciseReportRepository.save(ExerciseReport.createExerciseReport(member, url, date));
-        return ExerciseReportDto.from(report, homework.getId());
+        memberStatusService.updateMemberExerciseStatus(searchDate, true);
+        return ExerciseReportDto.from(report);
     }
 
     public void saveExerciseComment(ExerciseCommentDto exerciseCommentDto) {
@@ -122,6 +130,15 @@ public class ExerciseService {
                 .orElseThrow(() -> new RuntimeException("ExerciseSet not found"));
         exerciseSet.updateExerciseSet(exerciseSetDto);
         return ExerciseSetDto.from(exerciseSet);
+    }
+
+    public boolean deleteExerciseReport(int reportId) {
+        ExerciseReport exerciseReport = exerciseReportRepository.findById(reportId)
+                .orElseThrow(() -> new IllegalArgumentException("ExerciseReport not found"));
+        s3Service.delete(DIR_NAME + exerciseReport.getImgUrl());
+        exerciseReportRepository.delete(exerciseReport);
+        memberStatusService.updateMemberExerciseStatus(DateDto.localDateTimeToDateDto(exerciseReport.getDate()), false);
+        return true;
     }
 
 

@@ -1,17 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useStore } from "../../store/store.js";
+import {styled} from "styled-components";
 import RenderDaysForTrainer from "../../components/trainer/Calender/RenderDaysForTrainer.jsx";
 import SheduleLogo from '../../assets/static/Property_Schedule.png'
 import BtnRegister from "../../components/trainer/BtnRegister.jsx";
+import BtnAddSchedule from "../../components/trainer/BtnAddSchedule.jsx";
 import RenderDaysForTrainerExpand from "../../components/trainer/Calender/RenderDaysForTrainerExpand.jsx";
+import BoxSchedule from '../../components/trainer/BoxSchedule.jsx'
+import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.jsx";
+import plusbutton from '../../assets/plusbutton.png';
+import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
+import { checkMemberList } from "../../api/trainer.js";
 
+const userSchedule = {
+  "id":1,
+  "memberId": 1,
+  "startTime": "2024-08-12T12:00:00.000Z",
+  "endTime": "2024-08-12T12:00:00.000Z",
+  "createdAt": "2024-08-12T12:00:00.000Z",
+  "name":"강동형",
+  "ptCnt":"0",
+  "imgUrl":'',
+}
+const plusBtn = styled.img`
+  width: 40px;
+`
 const TrainerMain = () => {
   const [cookies] = useCookies(['cookie_name']);
   const { userUpdate } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [mouseStartY, setMouseStartY] = useState(null);
   const [selectedMemDate, setSelectedMemDate] = useState(null);
+  const [isOpen,setIsOpen] = useState(false);
+  const [isAddOpen,setisAddOpen] = useState(false);
+  const [isMemListEmpty, setIsMemListEmpty] = useState(false);
 
   useEffect(() => {
     const userId = cookies.Id;
@@ -23,6 +46,26 @@ const TrainerMain = () => {
   const formatMonth = `${today.getMonth() + 1}`;
   const formatMonthforAPI = formatMonth < 10 ? `0${formatMonth}` : formatMonth;
   const formatYear = `${today.getFullYear()}`;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const memberList = await checkMemberList(today.getFullYear(), today.getMonth(), today.getDate());
+
+        // 멤버 리스트가 비어있는지 확인
+        if (memberList && memberList.length > 0) {
+          setIsMemListEmpty(false);
+        } else {
+          setIsMemListEmpty(true);
+        }
+      } catch (error) {
+        console.error('Error fetching member list:', error);
+        setIsMemListEmpty(true); // 에러가 발생한 경우에도 비어있다고 간주
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleMouseDown = (e) => {
     setMouseStartY(e.clientY);
@@ -62,6 +105,22 @@ const TrainerMain = () => {
     setSelectedMemDate(memDateForTheDay);
   };
 
+  const openModal = () => {
+    console.log(1);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const openAddModal = () => {
+    setisAddOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setisAddOpen(false);
+  };
+
   return (
     <div
       onMouseDown={handleMouseDown}
@@ -85,8 +144,8 @@ const TrainerMain = () => {
               <p className="h-full text-[10px] font-medium text-gray-400 w-full">토</p>
             </div>
             <div className="flex flex-col items-start justify-start w-full">
-              {isExpanded ? <RenderDaysForTrainerExpand yeaer={2024} month={8} /> :
-              <RenderDaysForTrainer year={2024} month={8} onDateChange={handleDateChange}/> }
+              {isExpanded ? <RenderDaysForTrainerExpand year={formatYear} month={formatMonthforAPI} /> :
+              <RenderDaysForTrainer year={formatYear} month={formatMonthforAPI} onDateChange={handleDateChange}/> }
             </div>
           </div>
         </div>
@@ -95,10 +154,25 @@ const TrainerMain = () => {
         <>
           <div className="flex item-center justify-center mt-[26px]">
             <img src={SheduleLogo} alt="" />
+            <img src={plusbutton} onClick={openAddModal}/> {/* 모달 추가 버튼 css 수정 */}
+            <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} />
           </div>
           <div className="flex item-center justify-center mt-[50px]">
-            {selectedMemDate || <BtnRegister /> }
+          {
+            isMemListEmpty ? (
+              <BtnRegister />
+            ) : (
+              selectedMemDate !== null && Array.isArray(selectedMemDate) ? (
+                selectedMemDate.map((schedule, index) => (
+                  <BoxSchedule key={index} onClick={openModal} userSchedule={schedule} />
+                ))
+              ) : (
+                <BtnAddSchedule />
+              )
+            )
+          }
           </div>
+          <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={userSchedule} />{/* 회원이 있을때 나오는 박스 분기처리와 for문을 돌려서 프롭스로 내려서 처리 요망 */}
         </>
       )}
     </div>

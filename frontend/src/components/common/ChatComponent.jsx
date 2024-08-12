@@ -15,7 +15,6 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
             return; // 중복 연결 방지
         }
         const socket = new SockJS("http://localhost:8080/chat", null, {
-            withCredentials: true // 쿠키를 포함하여 요청 전송
         });
         const client = Stomp.over(socket);
     

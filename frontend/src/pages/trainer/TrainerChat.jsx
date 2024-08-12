@@ -60,7 +60,7 @@ const TrainerChat = () => {
             users.push(chat);
           }
         });
-
+        console.log('챗스',chats);
         setChatList(chats);
         setUserList(users);
       } catch (error) {
@@ -72,7 +72,7 @@ const TrainerChat = () => {
   }, []);
 
   const filteredChatList = chatList.filter((chat) =>
-    chat.memberName.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.Name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

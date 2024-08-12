@@ -39,12 +39,6 @@ const TrainerMain = () => {
     const userId = useStore((state) => state.userId);
 
     useEffect(() => {
-        const hasVisited = localStorage.getItem("hasVisited");
-        if (!hasVisited) {
-            requestPermission();
-            localStorage.setItem("hasVisited", "true");
-        }
-
         const today = new Date();
         const formatMonth = `${today.getMonth() + 1}`;
         const formatYear = `${today.getFullYear()}`;
@@ -69,6 +63,12 @@ const TrainerMain = () => {
                 .catch((error) => {
                     console.error(error);
                 });
+        }
+
+        const hasVisited = localStorage.getItem("hasVisited");
+        if (!hasVisited) {
+            requestPermission();
+            localStorage.setItem("hasVisited", "true");
         }
     }, [fetchData, trainer, userUpdate, userId]);
 

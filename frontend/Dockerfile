@@ -8,6 +8,9 @@ ENV VITE_NAVER_URL=${VITE_NAVER_URL}
 WORKDIR /app
 COPY package*.json ./
 RUN npm install vite@4.4.0
+RUN npm install vite-plugin-pwa
+RUN npm install sockjs-client@latest
+RUN npm install stompjs@latest
 RUN npm install
 RUN npm install -g serve
 COPY . .

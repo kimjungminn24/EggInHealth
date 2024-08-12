@@ -47,6 +47,6 @@ const ModalDeleteDiet = ({ filteredData, onClose }) => {
       <Button close onClick={onClose}>취소</Button>
     </StyledModal>
   );
-};
+};  
 
 export default ModalDeleteDiet;

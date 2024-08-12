@@ -16,8 +16,8 @@ const RegisterBox = styled.div`
   cursor: pointer;
   background-color: #ffffff;
   border-radius: 8px;
-  width: 300px; 
-  height: 300px; 
+  width: 320px; 
+  height: 320px; 
   text-align: center;
   flex-direction: column;
 `;

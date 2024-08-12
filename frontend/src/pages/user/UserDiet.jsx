@@ -20,7 +20,7 @@ const UserDietPage = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dietData, setDietData] = useState(null);
-  const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
+  const [hasImages, setHasImages] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { userData } = useUserInfoStore();

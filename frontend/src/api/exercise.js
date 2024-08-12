@@ -61,7 +61,6 @@ export const registerEximg = async (date, img) => {
     },
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -122,3 +121,31 @@ export const fetchFeedback = async (uid) => {
 };
 
 
+export const updateFeedback = async (
+  motionSimilarity,
+  memo,
+  exerciseId,
+  record,
+  createdAt,
+  id
+) => {
+  const formData = new FormData();
+  formData.append(`motionSimiliarity`, motionSimilarity);
+  formData.append(`memo`, memo);
+  formData.append(`exerciseId`, exerciseId);
+  formData.append(`record`, record);
+  formData.append(`createdAt`, createdAt);
+  const res = await axios.patch(`${BASE_URL}/feedback/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+
+
+export const deleteFeedback = async (id )=>
+  {const res = await axios.delete(`${BASE_URL}/feedback/${id}`)
+return res.data  
+}

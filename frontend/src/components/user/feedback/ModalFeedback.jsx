@@ -53,7 +53,8 @@ const Button = styled.button`
 const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbackData }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [memo, setMemo] = useState('');
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null); 
+  const [hasVideo,setHasVideo] = useState(false)
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];

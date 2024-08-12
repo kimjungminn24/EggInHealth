@@ -70,7 +70,7 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
       const createdAt = getKoreanISOString() + 'Z';
       try {
         await registerFeedback(motionSimilarity, memo, exerciseId, record, createdAt);
-        onRequestClose();
+        onClose();
         setExerciseId('');
         setMemo('');
         setFile(null);

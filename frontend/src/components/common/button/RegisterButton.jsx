@@ -65,7 +65,7 @@ const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
       )}
       {hasImages ? <DeleteButton onClick={onDelete} /> : null}
     </ButtonContainer>
-  );
+  );  
 };
 
 export default RegisterButton;

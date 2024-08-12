@@ -190,10 +190,49 @@ const CommentIcon = styled(HiChevronRight )`
   height: 30px;
 
 `;
+
+const AddButton = styled.div`
+    width: 35px; /* 버튼의 너비 */
+    height: 35px; /* 버튼의 높이 */
+    background-color: #ffeb3b; /* 버튼 배경 색상 (노란색) */
+    color: white; /* 글자 색상 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    display: flex; /* Flexbox로 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    font-size: 30px; /* 글자 크기 */
+    font-weight: bold; /* 글자 두께 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+    transition: background-color 0.3s; /* 호버 시 부드러운 색상 변화 */
+    margin-bottom: 10px;
+    padding-bottom: 3px;
+    &:hover {
+        background-color: #fdd835; /* 호버 시 색상 변화 */
+    }
+`;
+const ButtonContainer = styled.div`
+  
+`
+
+const Mini = styled.div`
+  width: 100px;
+  height: 25px;
+  background-color: #FFD66B;
+  color:white;
+  display: flex;
+  border-radius: 60px;
+  align-items: center;
+  justify-content: center;
+  font-size : 12px;
+
+` 
+
+
+
 export {
   PageContainer,
   Title,
-  
+  AddButton,
   TabsContainer,
   TabButton,
   DietSectionContainer,
@@ -211,5 +250,6 @@ export {
     StyledModal,
   CommentInputWrapper,
   CommentIcon,
-  Container
+  Container,
+  Mini
 };

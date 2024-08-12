@@ -8,10 +8,12 @@ export const getExercise = async (uid, year, month, day) => {
   const res = await axios.get(
     `${BASE_URL}/exercise/${uid}?year=${year}&month=${month}&day=${day}`
   );
+  console.log(res.data)
   return res.data;
 };
 
-export const registerExh = async (set, weight,ref, name, time, date) => {
+export const registerExh = async (set, weight,ref, name, time, date,memberId) => {
+  console.log(memberId)
   const response = axios.post(
     `${BASE_URL}/exercise`,
     {
@@ -21,6 +23,7 @@ export const registerExh = async (set, weight,ref, name, time, date) => {
       name,
       time,
       date,
+      memberId
     },
     {
       headers: {

@@ -74,13 +74,15 @@ const CloseButton = styled(Button)`
   }
 `;
 
-const AddExerciseModal = ({ isOpen, onClose, selectedDate }) => {
+const AddExerciseModal = ({ isOpen, onClose, selectedDate ,userData}) => {
   const [exhSet, setExhSet] = useState('');
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
   const [exhRep, setExhRep] = useState('');
   const [inputType, setInputType] = useState('setWeight');
+  const id= userData.id
+  console.log(id)
 
   useEffect(() => {
     if (inputType === 'setWeight') {
@@ -104,7 +106,8 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate }) => {
       inputType === 'setWeight' ? exhRep : null,
       exhName,
       inputType === 'time' ? exTime : 0,
-      selectedDate
+      selectedDate,
+      id
     );
     onClose();
   };

@@ -115,4 +115,8 @@ public class Member {
         this.PTCount = ptCount;
     }
 
+    public void disconnectTrainer() {
+        this.trainer = null;
+    }
+
 }

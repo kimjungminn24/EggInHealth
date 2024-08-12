@@ -103,7 +103,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                     </div>
                 ))}
             </div>
-            <form onSubmit={handleChatSubmit} className="w-[300px] m-auto pl-[4px] flex">
+            <form onSubmit={handleChatSubmit} className="w-[300px] m-auto pl-[4px] flex fixed bottom-[60px]">
                 <input
                     type="text"
                     value={chatInput}

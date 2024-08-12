@@ -44,7 +44,7 @@ function UserChatRoom() {
     const [remoteTracks, setRemoteTracks] = useState([]);
     // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
     const userState = useStore(state => state)
-    const participantName =userState.userInfo.name
+    const participantName = userState.userId
     const roomName = userState.userId
 
     async function joinRoom() {
@@ -169,7 +169,7 @@ function UserChatRoom() {
                 </div>
             )}
             <div>   
-                <ChatComponent participantName={roomName} roomName={roomName} receiver={userState.userInfo.trId} />
+                <ChatComponent participantName={participantName} roomName={roomName} receiver={userState.userInfo.trId}/>
             </div>
         </>
     );

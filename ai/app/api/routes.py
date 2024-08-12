@@ -1,3 +1,4 @@
+import uuid
 import os
 
 from flask import jsonify, request, Blueprint, current_app, send_from_directory
@@ -26,8 +27,8 @@ def upload_video():
         return jsonify({'error': 'No file selected'}), 400
 
     if file and allowed_file(file.filename):
-        file_name = secure_filename(file.filename)
+        file_name = str(uuid.uuid4()) + "_" + secure_filename(file.filename)
         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file_name))
-        detect(file_name, mode)
+        detect(file_name, 1)
         return send_from_directory(current_app.config['OUTPUT_FOLDER'], file_name, as_attachment=True)
     return jsonify({'error': 'Invalid file type'}), 400

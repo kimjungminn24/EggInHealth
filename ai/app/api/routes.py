@@ -30,7 +30,7 @@ def upload_video():
         file_name = str(uuid.uuid4()) + "_" + secure_filename(file.filename)
         upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file_name)
         file.save(upload_path)
-        detect(file_name, 1)
+        detect(file_name, int(mode))
         os.remove(upload_path)
         return send_from_directory(current_app.config['OUTPUT_FOLDER'], file_name, as_attachment=True)
     return jsonify({'error': 'Invalid file type'}), 400

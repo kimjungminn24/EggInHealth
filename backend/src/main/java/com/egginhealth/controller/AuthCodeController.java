@@ -26,4 +26,10 @@ public class AuthCodeController {
     public ResponseEntity<MemberDetailDto> checkAuthCode(@RequestBody AuthCodeDto code) {
         return new ResponseEntity<>(authCodeService.checkAuthCode(code.authCode()), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{uid}")
+    public ResponseEntity<Void> disconnectTrainerAndMember(@PathVariable("uid") int uid) {
+        authCodeService.disconnectTrainer(uid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

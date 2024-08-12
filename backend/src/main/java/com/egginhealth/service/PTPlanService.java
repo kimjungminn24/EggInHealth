@@ -3,9 +3,7 @@ package com.egginhealth.service;
 import com.egginhealth.data.dto.pt.*;
 import com.egginhealth.data.entity.Member;
 import com.egginhealth.data.entity.PtPlan;
-import com.egginhealth.data.repository.FeedbackRepository;
 import com.egginhealth.data.repository.MemberRepository;
-import com.egginhealth.data.repository.MemberStatusRepository;
 import com.egginhealth.data.repository.PtPlanRepository;
 import com.egginhealth.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +21,9 @@ import java.util.List;
 @Transactional
 public class PTPlanService {
 
-    private final MemberStatusRepository memberStatusRepository;
     private final PtPlanRepository ptPlanRepository;
     private final PtLogService ptLogService;
     private final MemberRepository memberRepository;
-    private final FeedbackRepository feedbackRepository;
 
     public List<PtPlanDto> getPTPlans(int memberId, int year, int month) {
         return ptPlanRepository.findByMemberId(memberId, year, month)

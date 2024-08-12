@@ -3,8 +3,10 @@ import Modal from 'react-modal';
 import styled from 'styled-components';
 import ButtonCapture from '../button/ButtonCapture';
 import ButtonCloseCamera from '../button/ButtonCloseCamera';
-import { uploadInbodyData, uploadOCR } from '../../../api/inbody';
+import { uploadOCR } from '../../../api/inbody';
 import { useStore } from '../../../store/store';
+import { getInbodyParsingResult } from '../../../hooks/inbodyParsing';
+import { data } from '../../../hooks/inbodyData';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -67,7 +69,7 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
+const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
   const [stream, setStream] = useState(null);
   const [photo, setPhoto] = useState(null);
   const videoRef = useRef(null);
@@ -118,23 +120,17 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose }) => {
     }
   };
 
-  const uploadPhoto = async (dataUrl) => {
+  const uploadPhoto =  (dataUrl) => {
     try {
       const file = dataURLtoFile(dataUrl, 'captured-photo.png');
-      const ocrResult = await uploadOCR(file);
+      // const ocrResult = await uploadOCR(file);
+      const formatData = getInbodyParsingResult(data)
+      formatData.memberId=userId
+      formatData.imageFile=file
+      formatData.height='0'
+      console.log(formatData);
 
-      const data = {
-        height: '0',
-        weight: '0',
-        muscle: '0',
-        fat: '0',
-        bmi: '0',
-        compositionScore: '0',
-        memberId: userId,
-        imageFile: file,
-      };
-
-      await uploadInbodyData(data)
+      setInbodyData(formatData)
       onRequestClose();
     } catch (error) {
       console.error(error);

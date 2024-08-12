@@ -124,7 +124,6 @@ const UserInfo = () => {
 
   return (
     <InfoContainer>
-      <InfoBox>{userData.name}</InfoBox>
       <InfoBox>
         <InfoImg src={email} alt="email" />
         <InfoText>{userData.email || '이메일을 등록해주세요'}</InfoText>
@@ -190,9 +189,8 @@ const UserInfo = () => {
         )}
       </InfoBox>
       <InfoBox>
-        <p>PT남은 횟수</p>
-        <InfoText>{userData.PTCount || ''}</InfoText>
-        {userData.PTCount}
+        <p>PT 횟수</p>
+        <InfoText>{userData.PTCount}</InfoText>
         <ButtonCheckPTcount />
        
       </InfoBox>

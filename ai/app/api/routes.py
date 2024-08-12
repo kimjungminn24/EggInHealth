@@ -1,3 +1,4 @@
+import uuid
 import os
 
 from flask import jsonify, request, Blueprint, current_app, send_from_directory
@@ -14,6 +15,10 @@ def allowed_file(filename):
 
 @video_bp.route('/ai/feedback', methods=['POST'])
 def upload_video():
+    mode = request.form.get('mode')
+    if not mode:
+        return jsonify({'error': 'No mode selected'}), 400
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file found'}), 400
     file = request.files['file']
@@ -21,11 +26,11 @@ def upload_video():
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
 
-    mode = request.args.get('mode')
-
     if file and allowed_file(file.filename):
-        file_name = secure_filename(file.filename)
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file_name))
-        detect(file_name, mode)
+        file_name = str(uuid.uuid4()) + "_" + secure_filename(file.filename)
+        upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file_name)
+        file.save(upload_path)
+        detect(file_name, int(mode))
+        os.remove(upload_path)
         return send_from_directory(current_app.config['OUTPUT_FOLDER'], file_name, as_attachment=True)
     return jsonify({'error': 'Invalid file type'}), 400

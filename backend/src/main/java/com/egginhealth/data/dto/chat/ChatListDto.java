@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Builder
 public record ChatListDto(
         int memberId,
-        String memberName,
-        String memberImgUrl,
+        String name,
+        String imgUrl,
         String lastContent,
         LocalDateTime lastDate
 ) {
@@ -19,16 +19,16 @@ public record ChatListDto(
         if (chatRoom == null || chatRoom.getChatList() == null || chatRoom.getChatList().isEmpty()) {
             return ChatListDto.builder()
                     .memberId(chatListDto.memberId())
-                    .memberName(chatListDto.memberName())
-                    .memberImgUrl(chatListDto.memberImgUrl())
+                    .name(chatListDto.name())
+                    .imgUrl(chatListDto.imgUrl())
                     .lastContent("대화내역이 없습니다.")
                     .lastDate(chatListDto.lastDate())
                     .build();
         } else {
             return ChatListDto.builder()
                     .memberId(chatListDto.memberId())
-                    .memberName(chatListDto.memberName())
-                    .memberImgUrl(chatListDto.memberImgUrl())
+                    .name(chatListDto.name())
+                    .imgUrl(chatListDto.imgUrl())
                     .lastContent(chatRoom.getChatList().get(chatRoom.getChatList().size() - 1).getContent())
                     .lastDate(chatRoom.getChatList().get(chatRoom.getChatList().size() - 1).getCreatedAt())
                     .build();
@@ -42,8 +42,8 @@ public record ChatListDto(
 
         return ChatListDto.builder()
                 .memberId(member.getId())
-                .memberName(member.getName())
-                .memberImgUrl(member.getImgUrl())
+                .name(member.getName())
+                .imgUrl(member.getImgUrl())
                 .lastDate(member.getCreatedAt())
                 .build();
     }

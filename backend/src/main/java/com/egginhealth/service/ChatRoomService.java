@@ -96,33 +96,32 @@ public class ChatRoomService {
         logger.info("Saved chat message to Redis with roomId: {}", roomName);
     }
 
-    public ArrayList<ChatListDto> getChatList(int id) {
+    public List<ChatListDto> getChatList(int id) {
         Role role = memberService.getMemberDetail(id).type();
         ArrayList<ChatListDto> chatList = new ArrayList<>();
 
         if (role.equals(Role.MEMBER)) {
             chatList = memberService.getMemberTrainerId(id);
-            if (chatList == null)
-                return chatList;
-            
-            for (int i = 0; i < chatList.size(); i++) {
-                ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(id)).orElse(null);
-                chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+            if (chatList != null) {
+                for (int i = 0; i < chatList.size(); i++) {
+                    ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(id)).orElse(null);
+                    chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+                }
             }
-
         } else if (role.equals(Role.TRAINER)) {
             chatList = memberService.getTrainerMemberIdList(id);
-            if (chatList == null)
-                return chatList;
-
-            for (int i = 0; i < chatList.size(); i++) {
-                ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(chatList.get(i).memberId())).orElse(null);
-                chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+            if (chatList != null) {
+                for (int i = 0; i < chatList.size(); i++) {
+                    ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(chatList.get(i).memberId())).orElse(null);
+                    chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
+                }
             }
         }
 
+        if (chatList != null) {
+            chatList.sort((chat1, chat2) -> chat2.lastDate().compareTo(chat1.lastDate()));
+        }
+
         return chatList;
-
     }
-
 }

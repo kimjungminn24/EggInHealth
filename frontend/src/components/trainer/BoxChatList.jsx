@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile from '../../assets/profile.png'
-import arrow from '../../assets/arrow.png'
+import profile from '../../assets/profile.png';
+import arrow from '../../assets/arrow.png';
+import { useNavigate } from 'react-router-dom';
 
 const ChatListContainer = styled.div`
   margin-top: 20px;
@@ -47,33 +48,64 @@ const TimeStamp = styled.span`
   margin-left: 10px;
 `;
 
-const NameMessage = styled.div `
+const NameMessage = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Arrow = styled.img`
   /* width: ;
   height: ; */
-`
+`;
 
+const calculateTimeDifference = (timeString) => {
+  const currentTime = new Date();
+  const messageTime = new Date(timeString);
+  const timeDifference = currentTime - messageTime;
 
-const BoxChatList = ({ chats }) => {
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    if (days === 1) {
+      return '어제';
+    } else {
+      return `${days}일 전`;
+    }
+  } else if (hours > 0) {
+    return `${hours}시간 전`;
+  } else if (minutes > 0) {
+    return `${minutes}분 전`;
+  } else {
+    return '방금 전';
+  }
+};
+
+const BoxChatList = ({ chats, trainerId }) => {
+  const navigate = useNavigate();
+  const openChatRoom = (memberId) => {
+     navigate(`/trainerchat/${trainerId}/${memberId}`); 
+  };
+
   return (
     <ChatListContainer>
       {chats.map((chat, index) => (
-        <ChatItem key={index}>
+        <ChatItem 
+          key={index}
+          onClick={() => openChatRoom(chat.memberId)}
+        >
           <UserInfo>
-            <UserImage src={profile} alt={chat.name} />
+            <UserImage src={chat.memberImgUrl || profile} alt={chat.name} />
             <NameMessage>
-              <UserName>{chat.name}</UserName>
-              <UserMessage>{chat.message}</UserMessage>
+              <UserName>{chat.memberName}</UserName>
+              <UserMessage>{chat.lastContent}</UserMessage>
             </NameMessage>
           </UserInfo>
-          <TimeStamp>{chat.time}</TimeStamp>
-          <Arrow src={arrow}/>
+          <TimeStamp>{calculateTimeDifference(chat.lastDate)}</TimeStamp>
+          <Arrow src={arrow} />
         </ChatItem>
-
       ))}
     </ChatListContainer>
   );

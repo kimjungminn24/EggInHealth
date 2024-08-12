@@ -16,8 +16,9 @@ const Select = () => {
   const [exerciseCommonId, setexerciseCommonId] = useState(null);
   const [dietCommonId, setdietCommonId] = useState(null);
   const [goalCommonId, setgoalCommonId] = useState(null);
-  const [height, setheight] = useState(null);
-  const [age, setage] = useState(null);
+  const [height, setHeight] = useState(null);
+  const [age, setAge] = useState(null);
+  const [gender, setGender] = useState(null);
 
   const totalSteps = 5;
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const Select = () => {
       case 3:
         return <SurveyPage3 setgoalCommonId={setgoalCommonId}/>;
       case 4:
-        return <SurveyPage4 setweight={setheight} setage={setage} />;
+        return <SurveyPage4 setHeight={setHeight} setAge={setAge} />;
       default:
         return null;
     }

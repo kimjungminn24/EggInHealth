@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import ButtonSwap from '../../components/common/button/ButtonSwap';
 import Profile from '../../assets/profile.png';
@@ -7,7 +7,7 @@ import InbodyPage from '../../components/user/inbody/InbodyPage';
 import ModalInbody from '../../components/user/inbody/ModalInbody';
 import ButtonInbodyEdit from'../../components/common/button/ButtonInbodyEdit'
 import ButtonProfileEdit from'../../components/common/button/ButtonProfileEdit'
-import { useUserInfoStore } from '../../store/store';
+import { useUserInfoStore,useStore } from '../../store/store';
 
 
 const Container = styled.div`
@@ -51,6 +51,14 @@ const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const userProfile = useUserInfoStore((state) => state.userData.imgUrl)
+  const roleType = useStore((state) => state.userType)
+  const { userUpdate } = useStore();
+
+  
+  useEffect(()=>{
+    userUpdate()
+  },[userUpdate])
+
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -59,18 +67,20 @@ const UserProfile = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
-
+  
   return (
     <Container>
-      <ProfileContainer>
-        <ProfilePic src={userProfile || Profile} alt="Profile" />
-        {activeTab === '내정보' ? (
-          <ButtonProfileEdit />
-        ) : (
-          <ButtonInbodyEdit openModal={openModal} />
-        )}
-        <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
-      </ProfileContainer>
+      {roleType === 'MEMBER' && (
+        <ProfileContainer>
+          <ProfilePic src={userProfile || Profile} alt="Profile" />
+          {activeTab === '내정보' ? (
+            <ButtonProfileEdit />
+          ) : (
+            <ButtonInbodyEdit openModal={openModal} />
+          )}
+          <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
+        </ProfileContainer>
+      )}
       <ButtonGroupContainer>
         <ButtonGroup>
           <ButtonSwap

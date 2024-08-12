@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png';
@@ -95,13 +96,16 @@ const CloseButton = styled.button`
     background-color: #FF3F3F;
   }
 `;
-
-const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => {
+const Content = styled.div`
+  margin-left: 50px;
+`
+const ModalUserList = ({ onOpen, onClose, userList, trainerId,setmemberId,setmember }) => {
   const [isSelected, setIsSelected] = useState(null);
-  const [Selected, setSelected] = useState(null);
-  
-  if (!onOpen) return null;
+  const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
 
+  if (!onOpen) return null;
+  
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -109,14 +113,18 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
   };
 
   const handleAddUser = () => {
-    if (isSelected) {
-      setmemberId(isSelected); 
-      setmember(Selected)
+
+    if (isSelected && trainerId) {
+      navigate(`/trainerchat/${trainerId}/${isSelected}`); 
+    }else {
+      setmember(selected)
+      setmemberId(isSelected)
     }
     onClose();
   };
 
-  const handleUserSelect = (memberId,idx) => {
+  const handleUserSelect = (memberId, idx) => {
+    
     if (isSelected === memberId) {
       setIsSelected(null); 
       setSelected(null); 
@@ -131,16 +139,16 @@ const ModalUserList = ({ onOpen, onClose, userList, setmemberId,setmember }) => 
       <ModalContainer>
         <h2>사용자 리스트</h2>
         <UserList>
-          {userList.map((user,idx) => (
+          {userList.map((user, idx) => (
             <UserItem 
-            key={user.memberId}
-            onClick={() => handleUserSelect(user.memberId, idx)}
-            active={isSelected === user.memberId ? 'true' : undefined}>
+              key={user.memberId}
+              onClick={() => handleUserSelect(user.memberId, idx)}
+              active={isSelected === user.memberId ? 'true' : undefined}>
               <UserInfo>
-                <UserImage src={user.ImgUrl || profile} alt={user.name} />
+                <UserImage src={user.imgUrl || profile} alt={user.name} />
                 <span>{user.name}</span>
+                {!(trainerId) && <Content>남은횟수: {user.ptCnt}</Content>}              
               </UserInfo>
-              <span>남은 횟수: {user.ptCnt}</span>
               <ArrowImage src={arrow} alt="arrow" />
             </UserItem>
           ))}

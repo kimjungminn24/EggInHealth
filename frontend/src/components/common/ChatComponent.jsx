@@ -68,9 +68,9 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
             };
             // 메시지를 서버로 전송
             stompClientRef.current.send("/app/sendMessage", {}, JSON.stringify(message));
-            
+
             // 전송한 메시지를 화면에 추가
-            showMessage(message);
+            // showMessage(message);
             
             // 입력 필드 초기화
             setChatInput("");
@@ -78,6 +78,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
     }
 
     function handleChatInputChange(e) {
+
         setChatInput(e.target.value);
     }
 
@@ -103,7 +104,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                     </div>
                 ))}
             </div>
-            <form onSubmit={handleChatSubmit} className="w-[300px] m-auto pl-[4px] flex">
+            <form onSubmit={handleChatSubmit} className="w-[300px] m-auto pl-[4px] flex fixed bottom-[60px]">
                 <input
                     type="text"
                     value={chatInput}

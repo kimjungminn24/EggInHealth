@@ -29,7 +29,6 @@ const UserDietPage = () => {
   const userLoginData = useStore((set)=> set.userInfo)
 
 
-  console.log(userLoginData);
 
   const getKrDate = () => {
     const now = new Date();
@@ -87,9 +86,6 @@ const UserDietPage = () => {
   };
   const today = getKrDate();
 
-  console.log(userData);
-  console.log(filteredData);
-  console.log(hasImages);
 
   return (
     <PageContainer>

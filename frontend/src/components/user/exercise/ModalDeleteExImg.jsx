@@ -29,7 +29,6 @@ const Button = styled.button`
 `;
 
 const ModalDeleteExImg = ({ exData, onClose }) => {
-    console.log(exData.report.reportId);
   const handleSubmit = async () => {
     if (exData ) {
       try {

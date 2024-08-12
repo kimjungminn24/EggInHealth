@@ -52,15 +52,6 @@ const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
 
   return (
     <div>
-      {selectedDate >= today && userLoginData.type === "TRAINER" ? (
-        <AddButton onClick={openModal}>+</AddButton>
-      ) : null}
-      <AddExerciseModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        selectedDate={selectedDate}
-        userData={userData}
-      />
 
       {selectedDate && exData ? (
         <div>
@@ -90,6 +81,15 @@ const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
       ) : (
         <p>운동 목록이 없습니다.</p>
       )}
+{selectedDate >= today && userLoginData.type === "TRAINER" ? (
+  <AddButton onClick={openModal}>+</AddButton>
+) : null}
+<AddExerciseModal
+  isOpen={isModalOpen}
+  onClose={closeModal}
+  selectedDate={selectedDate}
+  userData={userData}
+/>
     </div>
   );
 };

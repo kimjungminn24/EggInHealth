@@ -199,7 +199,6 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
       endTime: `${date}T${endTime}:00.000Z`,    
       createdAt: createdAt,     
     };
-    console.log(data);
     try {
       await updatePtPlan(data);   
     } catch (error) {
@@ -230,7 +229,7 @@ const handleEndTimeChange = (e) => {
         {member ? (
           <UserItem onClick={openModal}>
             <UserInfo>
-              <UserImage src={member.ImgUrl || profile} alt={member.name} />
+              <UserImage src={member.imgUrl || profile} alt={member.name} />
               <span>{member.name}</span>
             </UserInfo>
             <span>남은 횟수: {member.ptCnt}</span>

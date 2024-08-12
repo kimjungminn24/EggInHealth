@@ -26,6 +26,23 @@ const Message = styled.div`
   font-size: 18px;
 `;
 
+const ScrollableContainer = styled.div`
+  max-height: 400px; /* Adjust height as needed */
+  overflow-y: auto;
+`;
+
+// Helper function to format time in 12-hour AM/PM notation
+const formatTime = (date) => {
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  return `${hours}:${minutes} ${ampm}`;
+};
+
 const UserMain = () => {
   const { userData, fetchData } = useUserInfoStore();
   const { userUpdate, userId } = useStore();
@@ -35,10 +52,9 @@ const UserMain = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      await userUpdate(); 
-      
+      await userUpdate();
       const updatedUserId = useStore.getState().userId; 
-
+      
       if (updatedUserId) {
         const today = new Date();
         const formatMonth = `${today.getMonth() + 1}`;
@@ -56,28 +72,40 @@ const UserMain = () => {
     if (trainer) {
       userSchedule(userId)
         .then(response => {
+          console.log(response);
           const convertedTimebox = response.map(schedule => {
-            const date = new Date(schedule.date);
-            const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]})`;
-            const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} - ${date.getHours() + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+            const startDate = new Date(schedule.startTime);
+            const endDate = new Date(schedule.endTime);
+    
+            const formattedDate = `${startDate.getMonth() + 1}.${startDate.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][startDate.getDay()]})`;
+            
+            // Format start and end times
+            const formattedStartTime = formatTime(startDate);
+            const formattedEndTime = formatTime(endDate);
+            
+            const formattedTime = `${formattedStartTime} - ${formattedEndTime}`;
+            
             return { day: formattedDate, time: formattedTime };
           });
-
+    
           setTimebox(convertedTimebox);
         })
         .catch(error => {
           console.error(error);
         });
-    }
+    }    
   }, [fetchData, trainer, userUpdate, userId]);
 
   return (
     <div>
       <UserEgg trainer={trainer} eggday={eggday} />
       <PTBox>PT일정</PTBox>
+
       {trainer ? (
         timebox.length > 0 ? (
-          <BoxSchedule timebox={timebox} />
+          <ScrollableContainer>
+            <BoxSchedule timebox={timebox} />
+          </ScrollableContainer>
         ) : (
           <Message>스케줄을 등록해주세요</Message>
         )

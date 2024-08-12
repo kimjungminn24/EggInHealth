@@ -110,7 +110,7 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
     { key: 'muscle', label: '골격근량', unit: 'kg' },
     { key: 'fat', label: '체지방량', unit: 'kg' },
     { key: 'bmi', label: 'BMI', unit: 'kg/㎡' },
-    { key: 'fatPercent', label: '체지방률', unit: '%' },
+    { key: 'fatPercentage', label: '체지방률', unit: '%' },
     { key: 'compositionScore', label: '종합점수', unit: '점' },
   ];
 

@@ -32,9 +32,6 @@ const InbodyPage = ({ age = 30, height = 170, gender = '남성' }) => {
   const [selectedStat, setSelectedStat] = useState('체중 그래프');
   const { profileData, weightData, muscleData, fatPercentageData, isLoading } = useInbodyData(age, height, gender);
 
-  console.log(profileData);
-  
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

@@ -28,40 +28,48 @@ const Message = styled.div`
 
 const UserMain = () => {
   const { userData, fetchData } = useUserInfoStore();
-  const { userUpdate } = useStore();
+  const { userUpdate, userId } = useStore();
   const [timebox, setTimebox] = useState([]);
   const trainer = userData?.trId;
-  const userId =  useStore((state)=>state.userId)
   const eggday = userData?.totalEgg;
 
-  
   useEffect(() => {
-    const today = new Date();
-    const formatMonth = `${today.getMonth() + 1}`;
-    const formatYear = `${today.getFullYear()}`;
-    userUpdate();
-    
-    fetchData(userId, formatMonth, formatYear);
+    const fetch = async () => {
+      await userUpdate(); 
+      
+      const updatedUserId = useStore.getState().userId; 
+
+      if (updatedUserId) {
+        const today = new Date();
+        const formatMonth = `${today.getMonth() + 1}`;
+        const formatYear = `${today.getFullYear()}`;
+        try {
+          await fetchData(updatedUserId, formatMonth, formatYear);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetch();
 
     if (trainer) {
       userSchedule(userId)
         .then(response => {
-          
           const convertedTimebox = response.map(schedule => {
-          
             const date = new Date(schedule.date);
             const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]})`;
             const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} - ${date.getHours() + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
             return { day: formattedDate, time: formattedTime };
           });
-          
+
           setTimebox(convertedTimebox);
         })
         .catch(error => {
           console.error(error);
         });
     }
-  }, [fetchData,trainer, userUpdate,userId]);
+  }, [fetchData, trainer, userUpdate, userId]);
 
   return (
     <div>

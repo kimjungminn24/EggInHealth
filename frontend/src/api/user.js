@@ -50,3 +50,4 @@ export const checkGoal = async (uid) => {
       console.log("token 전송 실패");
     }
   };
+

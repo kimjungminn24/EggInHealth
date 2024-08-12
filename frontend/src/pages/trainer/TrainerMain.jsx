@@ -10,7 +10,7 @@ import BoxSchedule from '../../components/trainer/BoxSchedule.jsx'
 import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.jsx";
 import plusbutton from '../../assets/plusbutton.png';
 import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
-import { checkMemberList } from "../../api/trainer.js";
+import { checkMemberList,checkPtPlan } from "../../api/trainer.js";
 
 const userSchedule = {
   "id":1,

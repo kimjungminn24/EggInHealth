@@ -96,10 +96,12 @@ const CloseButton = styled.button`
     background-color: #FF3F3F;
   }
 `;
-
-const ModalUserList = ({ onOpen, onClose, userList, trainerId }) => {
+const Content = styled.div`
+  margin-left: 50px;
+`
+const ModalUserList = ({ onOpen, onClose, userList, trainerId,setmemberId,setmember }) => {
   const [isSelected, setIsSelected] = useState(null);
-  const [Selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
 
   if (!onOpen) return null;
@@ -111,15 +113,18 @@ const ModalUserList = ({ onOpen, onClose, userList, trainerId }) => {
   };
 
   const handleAddUser = () => {
-    if (isSelected) {
 
-      // 페이지로 이동
+    if (isSelected && trainerId) {
       navigate(`/trainerchat/${trainerId}/${isSelected}`); 
+    }else {
+      setmember(selected)
+      setmemberId(isSelected)
     }
     onClose();
   };
 
   const handleUserSelect = (memberId, idx) => {
+    
     if (isSelected === memberId) {
       setIsSelected(null); 
       setSelected(null); 
@@ -140,8 +145,9 @@ const ModalUserList = ({ onOpen, onClose, userList, trainerId }) => {
               onClick={() => handleUserSelect(user.memberId, idx)}
               active={isSelected === user.memberId ? 'true' : undefined}>
               <UserInfo>
-                <UserImage src={user.memberImgUrl || profile} alt={user.name} />
-                <span>{user.memberName}</span>
+                <UserImage src={user.imgUrl || profile} alt={user.name} />
+                <span>{user.name}</span>
+                {!(trainerId) && <Content>남은횟수: {user.ptCnt}</Content>}              
               </UserInfo>
               <ArrowImage src={arrow} alt="arrow" />
             </UserItem>

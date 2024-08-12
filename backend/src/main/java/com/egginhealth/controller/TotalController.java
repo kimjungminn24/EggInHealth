@@ -1,9 +1,15 @@
 package com.egginhealth.controller;
 
+import com.egginhealth.data.dto.EggListDto;
+import com.egginhealth.service.MemberStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -11,17 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TotalController {
 
+    private final MemberStatusService statusService;
+
     @GetMapping
-    public ResponseEntity<int[]> getMonthEggsList(@RequestParam("uid") int id, @RequestParam("year") int year, @RequestParam("month") int month){
-        int[] monthArr = new int[30];
+    public ResponseEntity<EggListDto> getMonthEggsList(@RequestParam("uid") int uid, @RequestParam("year") int year, @RequestParam("month") int month) {
+        return new ResponseEntity<>(statusService.getEggList(uid, year, month), HttpStatus.OK);
 
-        for(int i=0;i<30;i++){
-            monthArr[i] = i;
-            if(i>12)
-                monthArr[i] = -1;
-        }
-
-        return ResponseEntity.ok(monthArr);
     }
 
 }

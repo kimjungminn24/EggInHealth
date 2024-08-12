@@ -31,7 +31,7 @@ spring:
             client-secret: ${NAVER_CLIENT_SECRET}
             redirect-uri: ${NAVER_REDIRECT_URI}
             authorization-grant-type: authorization_code
-            scope: name, email, profile_image, mobile, birthday, gender, age, birthyear
+            scope: name, email, profile_image
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -50,12 +50,23 @@ spring:
           secretKey: ${S3_SECRET_ACCESS_KEY}
 
   error:
-    printStackTrace: false
+    printStackTrace: true
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 server:
   port: ${SERVER_PORT}
-  ssl:
-    enabled: false
+  forward-headers-strategy: framework
+  tomcat:
+    remoteip:
+      host-header: X-Forwarded-Host
+      port-header: X-Forwarded-Port
+      protocol-header: X-Forwarded-Proto
+      remote-ip-header: X-Forwarded-For
+    use-relative-redirects: true
 
 # LiveKit configuration
 livekit:

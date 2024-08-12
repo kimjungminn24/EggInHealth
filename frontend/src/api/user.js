@@ -31,3 +31,22 @@ export const checkGoal = async (uid) => {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   }
+
+  export const receiveToken = async (deviceToken) => {
+    try{
+      const response = await axios.post(
+        `${BASE_URL}/device/token`,
+        {
+          token: deviceToken,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch(error) {
+      console.log("token 전송 실패");
+    }
+  };

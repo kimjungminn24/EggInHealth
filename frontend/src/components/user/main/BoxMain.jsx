@@ -8,11 +8,13 @@ const Box = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
-  border: 1px solid #ddd;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 20px;
   margin: 20px;
   text-align: center;
+  font-size: 12px;
+
 `;
 
 

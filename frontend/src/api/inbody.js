@@ -5,7 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export const checkInbodyData = async (id, year, month) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/user/body?uid=${id}&year=${year}&month=${month}`, 
+      `${BASE_URL}/body?uid=${id}&year=${year}&month=${month}`, 
       {
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +30,8 @@ export const uploadInbodyData = async (data) => {
     formData.append('compositionScore', data.compositionScore);
     formData.append('memberId', data.memberId);
     formData.append('image', data.imageFile);
-    console.log('image', data.imageFile);
+    console.log(data);
+    
     
     const response = await axios.post(`${BASE_URL}/body`, formData, {
       headers: {
@@ -47,12 +48,7 @@ export const uploadInbodyData = async (data) => {
 
 export const fetchBodyData = async (uid, year, month) => {
   try {
-    const response = await axios.get(`${BASE_URL}/body`, {
-      params: {
-        uid,
-        year,
-        month
-      },
+    const response = await axios.get(`${BASE_URL}/body?uid=${uid}&year=${year}&month=${month}`, {
       withCredentials: true, 
     });
     

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import ButtonCamera from '../../../components/common/button/ButtonCamera';
 import PhotoCaptureModal from '../../../components/common/modal/ModalPhotoCapture';
+import { uploadInbodyData } from '../../../api/inbody';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -32,7 +33,6 @@ const InbodyBox = styled.div`
   margin: 10px 0;
 `;
 
-
 const InputLabel = styled.label`
   flex: 1;
   text-align: left;
@@ -47,17 +47,13 @@ const InputField = styled.input`
   border-bottom: 1px solid #ccc;
   outline: none;
   font-size: 16px;
+  text-align: center; 
 
   &:focus {
     border-bottom: 1px solid #FFD66B;
   }
-
-  &:focus + ${InputLabel}, &:not(:placeholder-shown) + ${InputLabel} {
-    top: -20px;
-    font-size: 12px;
-    color: #FFD66B;
-  }
 `;
+
 
 const UnitLabel = styled.span`
   flex: 1;
@@ -82,6 +78,17 @@ const CameraButtonWrapper = styled.div`
 
 const ModalAddInbody = ({ isOpen, onRequestClose }) => {
   const [photoModalIsOpen, setPhotoModalIsOpen] = useState(false);
+  const [inbodyData, setInbodyData] = useState({
+    weight: '',
+    muscle: '',
+    fat: '',
+    bmi: '',
+    fatPercent: '',
+    compositionScore: '',
+    height: '',
+    imageFile: null,
+    memberId: null,
+  });
 
   const openPhotoModal = () => {
     setPhotoModalIsOpen(true);
@@ -91,15 +98,26 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
     setPhotoModalIsOpen(false);
   };
 
+  const handleInputChange = (e, key) => {
+    setInbodyData({
+      ...inbodyData,
+      [key]: e.target.value,
+    });
+  };
 
   const inbodyBoxContent = [
-    { label: '체중', unit: 'kg' },
-    { label: '골격근량', unit: 'kg' },
-    { label: '체지방량', unit: 'kg' },
-    { label: 'BMI', unit: 'kg/㎡' },
-    { label: '체지방률', unit: '%' },
-    { label: '종합점수', unit: '점' },
+    { key: 'weight', label: '체중', unit: 'kg' },
+    { key: 'muscle', label: '골격근량', unit: 'kg' },
+    { key: 'fat', label: '체지방량', unit: 'kg' },
+    { key: 'bmi', label: 'BMI', unit: 'kg/㎡' },
+    { key: 'fatPercent', label: '체지방률', unit: '%' },
+    { key: 'compositionScore', label: '종합점수', unit: '점' },
   ];
+
+  const updateData = () => {
+    uploadInbodyData(inbodyData);
+    onRequestClose();
+  };
 
   return (
     <>
@@ -109,16 +127,25 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
             <ButtonCamera onClick={openPhotoModal} />
           </CameraButtonWrapper>
           <h2>검사지 등록하기</h2>
-            {inbodyBoxContent.map((item, index) => (
-              <InbodyBox key={index}>
-                <InputLabel>{item.label}</InputLabel>
-                <InputField type="text" placeholder=" " />
-                <UnitLabel>{item.unit}</UnitLabel>
-              </InbodyBox>
-            ))}
-     
-          <RegisterButton>등록</RegisterButton>
-          <PhotoCaptureModal isOpen={photoModalIsOpen} onRequestClose={closePhotoModal} />
+          {inbodyBoxContent.map((item, index) => (
+            <InbodyBox key={index}>
+              <InputLabel>{item.label}</InputLabel>
+              <InputField
+                type="text"
+                value={inbodyData[item.key] || ''}
+                onChange={(e) => handleInputChange(e, item.key)}
+                placeholder=" "
+              />
+              <UnitLabel>{item.unit}</UnitLabel>
+            </InbodyBox>
+          ))}
+          <RegisterButton onClick={updateData}>등록</RegisterButton>
+          <PhotoCaptureModal
+            isOpen={photoModalIsOpen}
+            onRequestClose={closePhotoModal}
+            setInbodyData={setInbodyData}
+            inbodyData={inbodyData}
+          />
         </ModalContent>
       </StyledModal>
     </>

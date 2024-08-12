@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import './App.css'
 import { Routes, Route } from 'react-router-dom';
 
@@ -15,28 +15,39 @@ import UserDiet from "./pages/user/UserDiet";
 import UserMain from "./pages/user/UserMain";
 import UserProfile from "./pages/user/UserProfile";
 import TrainerHeader from './components/trainer/TrainerHeader';
+import TrainerUserDetailHeader from './components/trainer/TrainerUserDetailHeader.jsx'
 import TrainerNavbar from './components/trainer/TrainerNavbar';
 import TrainerChat from './pages/trainer/TrainerChat';
 import TrainerProfile from './pages/trainer/TrainerProfile';
 import TrainerUserList from './pages/trainer/TrainerUserList';
 
 import UserFeedback from "./pages/user/UserFeedback"
-import { useStore } from './store/store.js';
+import { useStore, useUserInfoStore } from './store/store.js';
+
+import {requestPermission} from './firebase.jsx'
 
 function App() {
+    useEffect(()=>{
+        requestPermission();
+    }, []);
+
     const userType = useStore(state => state.userType);
+    const userInfoType = useUserInfoStore(state => state.userType)
 
     const renderHeader = useMemo(() => {
-      console.log(userType)
+    //   console.log(userType)
         switch (userType) {
             case 'MEMBER':
                 return <UserHeader />;
             case 'TRAINER':
+                if (userType != userInfoType) {
+                    <TrainerUserDetailHeader/>
+                }
                 return <TrainerHeader />;
             default:
                 return null; // 기본값으로 null 반환
         }
-    }, [userType]);
+    }, [userType, userInfoType]);
 
     const renderNavbar = useMemo(() => {
         switch (userType) {

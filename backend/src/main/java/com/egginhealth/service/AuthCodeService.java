@@ -42,6 +42,7 @@ public class AuthCodeService {
         Member member = memberRepository.findById(SecurityUtil.getUserId())
                 .orElseThrow(() -> new IllegalStateException("Current user not found"));
 
+        member.updateMemberTrainerBy(trainer);
         return MemberDetailDto.from(member, trainer);
     }
 

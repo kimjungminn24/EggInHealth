@@ -1,20 +1,27 @@
 package com.egginhealth.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-@RedisHash("chatRoom")
 @Getter
-public class ChatRoom {
+@NoArgsConstructor
+@AllArgsConstructor
+@RedisHash("chatRoom")
+public class ChatRoom implements Serializable {
 
     @Id
     private String id;
-    private String content;
-    private int senderId;
-    private int receiverId;
-    private LocalDateTime createdAt;
 
+    private List<Chat> chatList;
+
+    public void roomSet() {
+        this.chatList = new ArrayList<>();
+    }
 }

@@ -30,11 +30,11 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final S3Service s3Service;
 
-    public Map<String, Integer> save(FeedbackInputDto feedbackInputDto, int memberId) throws IOException{
+    public Map<String, Integer> save(FeedbackInputDto feedbackInputDto, int memberId) throws IOException {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        String url = s3Service.upload(feedbackInputDto.record(),DIR_NAME);
+        String url = s3Service.upload(feedbackInputDto.record(), DIR_NAME);
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(feedbackInputDto.createdAt());
 
@@ -49,39 +49,46 @@ public class FeedbackService {
 
         int feedbackId = feedbackRepository.save(feedbackData).getId();
         Map<String, Integer> response = new HashMap<>();
-        response.put("feedbackId",feedbackId);
+        response.put("feedbackId", feedbackId);
 
         return response;
     }
 
-    public List<FeedbackDto> getFeedbackList(int id){
+    public List<FeedbackDto> getFeedbackList(int id) {
         return feedbackRepository.findByMemberId(id)
                 .stream()
                 .map(FeedbackDto::from)
                 .toList();
     }
 
-    public void updateFeedback(FeedbackUpdateDto feedbackUpdateDto, int id) throws IOException{
-        Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("feedback not found"));
-
+    public void updateFeedback(FeedbackUpdateDto feedbackUpdateDto, int id) throws IOException {
+        Feedback feedback = findFeedbackOrThrow(id);
         String prevUrl = feedback.getVideoUrl();
-        s3Service.delete(DIR_NAME,prevUrl);
+        s3Service.delete(DIR_NAME, prevUrl);
         String url = s3Service.upload(feedbackUpdateDto.record(), DIR_NAME);
 
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(feedbackUpdateDto.updatedAt());
 
-        FeedbackSetDto feedbackSetDto = FeedbackSetDto.from(feedbackUpdateDto,dateTime, url);
+        FeedbackSetDto feedbackSetDto = FeedbackSetDto.from(feedbackUpdateDto, dateTime, url);
         feedback.updateFeedbackBy(feedbackSetDto);
     }
 
-    public boolean deleteFeedback(int id){
-        Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("feedback not found"));
+    public boolean deleteFeedback(int id) {
+        Feedback feedback = findFeedbackOrThrow(id);
 
-        s3Service.delete(DIR_NAME,feedback.getVideoUrl());
+        s3Service.delete(DIR_NAME, feedback.getVideoUrl());
         feedbackRepository.deleteById(id);
         return true;
+    }
+
+    public void readFeedback(int id) {
+        Feedback feedback = findFeedbackOrThrow(id);
+        feedback.updateFeedbackRead();
+    }
+
+    private Feedback findFeedbackOrThrow(int id) {
+        return feedbackRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("feedback not found"));
     }
 
 }

@@ -36,14 +36,32 @@ public class AuthCodeService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid auth code: " + code));
 
         int trainerId = authCode.getTrainerId();
-        Member trainer = memberRepository.findById(trainerId)
-                .orElseThrow(() -> new IllegalArgumentException("Trainer not found for ID: " + trainerId));
-
-        Member member = memberRepository.findById(SecurityUtil.getUserId())
-                .orElseThrow(() -> new IllegalStateException("Current user not found"));
+        Member trainer = findMemberOrThrow(trainerId);
+        Member member = findMemberOrThrow(SecurityUtil.getUserId());
 
         member.updateMemberTrainerBy(trainer);
         return MemberDetailDto.from(member, trainer);
+    }
+
+    public void disconnectTrainer(int memberId) {
+        Member member = findMemberOrThrow(memberId);
+        Member trainer = member.getTrainer();
+        int currentId = SecurityUtil.getUserId();
+
+        if (trainer == null) {
+            throw new IllegalStateException("Member does not have a trainer.");
+        }
+
+        if (currentId != memberId && currentId != trainer.getId()) {
+            throw new IllegalArgumentException("You can't disconnect other member's trainer");
+        }
+        
+        member.disconnectTrainer();
+    }
+
+    private Member findMemberOrThrow(int memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found for ID: " + memberId));
     }
 
 

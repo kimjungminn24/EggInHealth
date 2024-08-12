@@ -1,122 +1,87 @@
-import {create} from 'zustand';
-import { userInfo, userEgg,userRole } from '../api/main';
-import { registerDiet, registerComment, updateDiet, deleteDiet, getDiet } from '../api/diet';
-import { registerExh } from '../api/exercise';
+import { useEffect } from 'react';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { userInfo, userEgg, userRole } from '../api/main';
 
-
-export const useStore = create((set) => ({
-  userInfo : null,
-  userId : null,
-  userType : null,
-  userUpdate : async () =>{
+export const useStore = create(
+  persist(
+    (set) => ({
+      userInfo: null,
+      userId: null,
+      userType: null,
+      userUpdate: async () => {
+        try {
+          const info = await userRole();
+          const userId = info.id;
+          const infoRet = await userInfo(userId);
+          set({
+            userId: info.id,
+            userType: info.role,
+            userInfo: infoRet,
+          });
+        } catch (error) {
+          console.error("User update error:", error);
+        }
+      },
+    }),
     {
-      const  info = await userRole()
-      const userId = info.id
-      const infoRet = await userInfo(userId);
-      set({
-        userId : info.id,
-        userType : info.role,
-        userInfo:infoRet
-      })
+      name: 'user-store',
     }
-  }
-}))
+  )
+);
 
-export const useUserInfoStore = create((set) => ({
-  userData: null,
-  userEggData : null,
-  userId :null, 
-  userType:null,
-  fetchData: async (userId,formatMonth,formatYear) =>{
-  try {
-    const infoRet = await userInfo(userId);
-    const eggRet = await userEgg(userId, formatMonth, formatYear);
-    set({
-      userData: infoRet,
-      userEggData: eggRet,
-      userId:infoRet.id,
-      userType:infoRet.type,
-      loading: false,
-    })
+export const useUserInfoStore = create(
+  persist(
+    (set) => ({
+      userData: null,
+      userEggData: null,
+      userId: null,
+      userType: null,
+      fetchData: async (userId, formatMonth, formatYear) => {
+        try {
+          const infoRet = await userInfo(userId);
+          const eggRet = await userEgg(userId, formatMonth, formatYear);
+          set({
+            userData: infoRet,
+            userEggData: eggRet,
+            userId: infoRet.id,
+            userType: infoRet.type,
+            loading: false,
+          });
+        } catch (error) {
+          set({
+            error: error.message,
+            loading: false,
+          });
+        }
+      },
+    }),
+    {
+      name: 'user-info-store', 
+    }
+  )
+);
 
-    
-  } catch (error) {
-    set({
-      error: error.message,
-      loading: false,
-    })
-  }
-},
-}))
+// 예시: 컴포넌트에서 데이터 자동 동기화
+const MyComponent = () => {
+  const { userId, userUpdate } = useStore();
+  const { fetchData } = useUserInfoStore();
 
-// export const useDietStore = create((set) => ({
-//   diets: [],
-//   comments: [],
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 userUpdate를 호출해 사용자 정보 업데이트
+    if (userId) {
+      userUpdate();
+    }
+  }, [userId, userUpdate]);
 
-//   fetchDiets: async (userId, year, month, day) => {
-//     try {
-//       const response = await getDiet(userId, year, month, day);
-//       set((state) => ({
-//         diets: response.map(diet => ({
-//           id: diet.id,
-//           type: diet.type,
-//           date: diet.date,
-//           imgurl: diet.imgurl,
-//           comments: diet.commentList
-//         })),
-//         comments: response.flatMap(diet => diet.commentList)
-//       }));
-//     } catch (error) {
-//       console.error('Error fetching diets:', error);
-//     }
-//   },
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 fetchData를 호출해 데이터 동기화
+    if (userId) {
+      const currentMonth = new Date().getMonth() + 1;
+      const currentYear = new Date().getFullYear();
+      fetchData(userId, currentMonth, currentYear);
+    }
+  }, [userId, fetchData]);
 
-//   addDiet: async (type, date, img, userId, year, month, day) => {
-//     try {
-//       await registerDiet(type, date, img);
-//       await getDiet(userId, year, month, day);
-//     } catch (error) {
-//       console.error('식단등록 에러', error);
-//     }
-//   },
-  
-//   updateDiet: async (dietId, dietType, dietDate, dietUrl) => {
-//     const updatedDiet = await updateDiet(dietId, dietType, dietDate, dietUrl);
-//     set((state) => ({
-//       diets: state.diets.map((diet) =>
-//         diet.DietId === dietId ? updatedDiet : diet
-//       ),
-//     }));
-//   },
-
-//   deleteDiet: async (dietId, userId, year, month, day) => {
-//     await deleteDiet(dietId);
-//     // 식단 삭제 후 전체 식단 목록을 다시 가져옴
-//     await getDiet(userId, year, month, day);
-//   },
-
-//   addComment: async (content, createdAt, boardId, boardType, userId, year, month, day) => {
-//     try {
-//       await registerComment(content, createdAt, boardId, boardType);
-//       // 새로운 댓글이 추가된 후 전체 식단 목록을 다시 가져옴
-//       await getDiet(userId, year, month, day);
-//     } catch (error) {
-//       console.error('댓글등록 에러', error);
-//     }
-//   },
-// }));
-
-
-// export const useExStore = create((set)=>({
-//   exh:[],
-//   comments:[],
-
-
-//   addExh : async (exhset,weight,name,time,date) => {
-//     const newExh = await registerExh(exhset,weight,name,time,date)
-//     set((state)=>({
-//       exh:[...state.exh,newExh]
-//     }))
-//   }
-
-// }))
+  // ...
+};

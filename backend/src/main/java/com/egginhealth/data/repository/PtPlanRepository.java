@@ -20,6 +20,9 @@ public interface PtPlanRepository extends JpaRepository<PtPlan, Integer> {
     @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND YEAR(pp.startTime) = :year AND MONTH(pp.startTime) = :month ORDER BY pp.startTime ASC")
     List<PtPlan> findByMemberId(int memberId, int year, int month);
 
+    @Query("SELECT pp FROM PtPlan pp WHERE pp.member.trainer.id = :trainerId AND YEAR(pp.startTime) = :year AND MONTH(pp.startTime) = :month AND DAY(pp.startTime) = :day ORDER BY pp.startTime ASC")
+    List<PtPlan> findByPlansTrainerByTimeRange(int trainerId, int year, int month, int day);
+
     @Query("SELECT pp FROM PtPlan pp WHERE pp.member.id = :memberId AND pp.startTime > :specificDate ORDER BY pp.startTime ASC")
     Page<PtPlan> findByMemberTopNow(int memberId, LocalDateTime specificDate, Pageable pageable);
 

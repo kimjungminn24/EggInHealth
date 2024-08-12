@@ -129,18 +129,6 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
       formatData.imageFile=file
       formatData.height='0'
       console.log(formatData);
-      
-      
-      // const data = {
-      //   height: '0',
-      //   weight: '0',
-      //   muscle: '0',
-      //   fat: '0',
-      //   bmi: '0',
-      //   compositionScore: '0',
-      //   memberId: userId,
-      //   imageFile: file,
-      // };
 
       setInbodyData(formatData)
       onRequestClose();

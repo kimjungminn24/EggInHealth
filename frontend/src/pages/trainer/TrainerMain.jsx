@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useStore } from "../../store/store.js";
+import { useStore, useUserInfoStore } from "../../store/store.js";
 import {styled} from "styled-components";
 import RenderDaysForTrainer from "../../components/trainer/Calender/RenderDaysForTrainer.jsx";
 import SheduleLogo from '../../assets/static/Property_Schedule.png'
@@ -10,7 +10,7 @@ import BoxSchedule from '../../components/trainer/BoxSchedule.jsx'
 import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.jsx";
 import plusbutton from '../../assets/plusbutton.png';
 import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
-import { checkMemberList } from "../../api/trainer.js";
+import { checkMemberList,checkPtPlan } from "../../api/trainer.js";
 
 const userSchedule = {
   "id":1,
@@ -33,10 +33,35 @@ const TrainerMain = () => {
   const [isOpen,setIsOpen] = useState(false);
   const [isAddOpen,setisAddOpen] = useState(false);
   const [isMemListEmpty, setIsMemListEmpty] = useState(false);
+  const { userData, fetchData } = useUserInfoStore()
+  const trainer = userData?.trId;
+  const userId =  useStore((state)=>state.userId)
 
   useEffect(() => {
+    const today = new Date();
+    const formatMonth = `${today.getMonth() + 1}`;
+    const formatYear = `${today.getFullYear()}`;
     userUpdate();
-  }, [userUpdate]);
+    
+    fetchData(userId, formatMonth, formatYear);
+
+    if (trainer) {
+      userSchedule(userId)
+        .then(response => {
+          
+          const convertedTimebox = response.map(schedule => {
+          
+            const date = new Date(schedule.date);
+            const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]})`;
+            const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} - ${date.getHours() + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+            return { day: formattedDate, time: formattedTime };
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }, [fetchData,trainer, userUpdate,userId]);
 
   const today = new Date();
   const formatMonth = `${today.getMonth() + 1}`;
@@ -148,17 +173,21 @@ const TrainerMain = () => {
       </div>
       {!isExpanded && (
         <>
-          <div className="flex item-center justify-center mt-[26px]">
-            <img src={SheduleLogo} alt="" />
-            <img src={plusbutton} onClick={openAddModal}/> {/* 모달 추가 버튼 css 수정 */}
+          <div className="flex items-center justify-center mt-5">
+            <div className="">
+              <img src={SheduleLogo} alt="Schedule Logo" />
+            </div>
+            <div className="absolute ml-[250px]">
+              <img src={plusbutton} alt="Add Button" onClick={openAddModal} className="cursor-pointer" />
+            </div>
             <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} />
           </div>
-          <div className="flex item-center justify-center mt-[50px]">
+          <div className="flex item-center justify-center mt-[20px]">
           {
             isMemListEmpty ? (
               <BtnRegister />
             ) : (
-              selectedMemDate !== null && Array.isArray(selectedMemDate) ? (
+              selectedMemDate !== null && selectedMemDate.length !== 0 &&Array.isArray(selectedMemDate) ? (
                 selectedMemDate.map((schedule, index) => (
                   <BoxSchedule key={index} onClick={openModal} userSchedule={schedule} />
                 ))

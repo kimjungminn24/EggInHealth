@@ -26,9 +26,14 @@ public class PTController {
         return new ResponseEntity<>(ptPlanService.getPTPlans(uid, year, month), HttpStatus.OK);
     }
 
-    @GetMapping("/plan/top")
-    public ResponseEntity<List<PtPlanDto>> getTopPTPlans(@RequestParam("id") int id, @RequestParam("cnt") int cnt) {
+    @GetMapping("/plan/top/{id}")
+    public ResponseEntity<List<PtPlanTopDto>> getTopPTPlans(@PathVariable("id") int id, @RequestParam("cnt") int cnt) {
         return new ResponseEntity<>(ptPlanService.getTopPTPlans(id, cnt), HttpStatus.OK);
+    }
+
+    @GetMapping("/plan/top")
+    public ResponseEntity<List<PtPlanTopDto>> getTopTrainerPTPlans(@RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day) {
+        return new ResponseEntity<>(ptPlanService.getTopTrainerPTPlans(SecurityUtil.getUserId(), year, month, day), HttpStatus.OK);
     }
 
     @GetMapping("/log/{uid}")

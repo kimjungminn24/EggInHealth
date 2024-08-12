@@ -32,11 +32,18 @@ public class PTPlanService {
                 .toList();
     }
 
-    public List<PtPlanDto> getTopPTPlans(int memberId, int cnt) {
+    public List<PtPlanTopDto> getTopPTPlans(int memberId, int cnt) {
         Pageable pageable = PageRequest.of(0, cnt);
         return ptPlanRepository.findByMemberTopNow(memberId, LocalDate.now().atStartOfDay(), pageable)
                 .stream()
-                .map(PtPlanDto::from)
+                .map(PtPlanTopDto::from)
+                .toList();
+    }
+
+    public List<PtPlanTopDto> getTopTrainerPTPlans(int trainerId, int year, int month, int day) {
+        return ptPlanRepository.findByPlansTrainerByTimeRange(trainerId, year, month, day)
+                .stream()
+                .map(PtPlanTopDto::from)
                 .toList();
     }
 

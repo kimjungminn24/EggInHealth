@@ -22,9 +22,6 @@ const ConfirmButton = styled.button`
     background-color: #FFC947;
   }
 
-  &:active {
-    background-color: #FFB02E;
-  }
 `;
 
 const ButtonCheckPTcount = () => {

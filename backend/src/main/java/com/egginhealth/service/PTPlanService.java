@@ -64,25 +64,22 @@ public class PTPlanService {
         Member member = memberRepository.findById(ptPlanInputDto.memberId())
                 .orElseThrow(() -> new RuntimeException("not found Member"));
 
-        LocalDateTime date = DateTimeUtil.getStringToDateTime(ptPlanInputDto.date());
+        LocalDateTime startTime = DateTimeUtil.getStringToDateTime(ptPlanInputDto.startTime());
+        LocalDateTime endTime = DateTimeUtil.getStringToDateTime(ptPlanInputDto.endTime());
         LocalDateTime createdAt = DateTimeUtil.getStringToDateTime(ptPlanInputDto.createdAt());
 
-        PtPlan planData = PtPlan.builder()
-                .date(date)
-                .createdAt(createdAt)
-                .member(member)
-                .build();
-
-        ptPlanRepository.save(planData);
+        ptPlanRepository.save(PtPlan.registerPtPlanBy(startTime, endTime, createdAt, member));
     }
 
     public void registerUpdatePTPlan(PtPlanUpdateDto ptPlanUpdateDto) {
-        LocalDateTime date = DateTimeUtil.getStringToDateTime(ptPlanUpdateDto.date());
+        LocalDateTime startTime = DateTimeUtil.getStringToDateTime(ptPlanUpdateDto.startTime());
+        LocalDateTime endTime = DateTimeUtil.getStringToDateTime(ptPlanUpdateDto.endTime());
+        LocalDateTime updatedAt = LocalDateTime.now();
 
         PtPlan ptPlan = ptPlanRepository.findById(ptPlanUpdateDto.id())
                 .orElseThrow(() -> new RuntimeException("PTPlan not found"));
 
-        ptPlan.updatePtPlanBy(date);
+        ptPlan.updatePtPlanBy(startTime, endTime, updatedAt);
     }
 
     public boolean registerDelete(int id) {

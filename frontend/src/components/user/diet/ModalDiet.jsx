@@ -38,7 +38,7 @@ const Button = styled.button`
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 15px;
   border: none;
   background-color: ${props => props.close ? '#6c757d' : '#FFD66B'};
   color: #fff;
@@ -123,7 +123,6 @@ const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) 
 
   return (
     <StyledModal isOpen={true} onRequestClose={onClose}>
-      <h2>식사 등록</h2>
       {!image && <RegisterBox onClick={() => fileInputRef.current.click()}>
         <PlusIconContainer>
           {!image && <PlusIcon>+</PlusIcon>}

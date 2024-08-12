@@ -14,7 +14,6 @@ import { useStore } from "../../store/store.js";
 
 // For local development, leave these variables empty
 // For production, configure them with correct URLs depending on your deployment
-// commit
 let APPLICATION_SERVER_URL = "";
 let LIVEKIT_URL = "";
 configureUrls();

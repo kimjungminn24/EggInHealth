@@ -1,6 +1,6 @@
 // components/user/SelectedDate.js
 import React, { useEffect } from 'react';
-import { DateInput } from './StyledComponents';
+// import { DateInput } from './StyledComponents';
 
 const SelectedDate = ({ selectedDate, setSelectedDate }) => {
   useEffect(() => {
@@ -15,7 +15,7 @@ const SelectedDate = ({ selectedDate, setSelectedDate }) => {
   };
 
   return (
-    <DateInput type="date" onChange={handleChange} value={selectedDate} />
+    <input type="date" onChange={handleChange} value={selectedDate} />
   );
 };
 

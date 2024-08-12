@@ -42,10 +42,10 @@ public class ChatRoomService {
 
     public ChatRoomDto getChatRoom(String id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseGet(() -> {
-            ChatRoom newChattRoom = new ChatRoom(id, new ArrayList<>());
-            chatRoomRepository.save(newChattRoom);
+            ChatRoom newChatRoom = new ChatRoom(id, new ArrayList<>());
+            chatRoomRepository.save(newChatRoom);
             logger.info("Create new chat room id {}", id);
-            return newChattRoom;
+            return newChatRoom;
         });
 
         List<ChatDto> chatDtoList = chatRoom.getChatList().stream()
@@ -102,7 +102,9 @@ public class ChatRoomService {
 
         if (role.equals(Role.MEMBER)) {
             chatList = memberService.getMemberTrainerId(id);
-
+            if (chatList == null)
+                return chatList;
+            
             for (int i = 0; i < chatList.size(); i++) {
                 ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(id)).orElse(null);
                 chatList.set(i, ChatListDto.fromChat(chatList.get(i), chatRoom));
@@ -110,6 +112,8 @@ public class ChatRoomService {
 
         } else if (role.equals(Role.TRAINER)) {
             chatList = memberService.getTrainerMemberIdList(id);
+            if (chatList == null)
+                return chatList;
 
             for (int i = 0; i < chatList.size(); i++) {
                 ChatRoom chatRoom = chatRoomRepository.findById(String.valueOf(chatList.get(i).memberId())).orElse(null);

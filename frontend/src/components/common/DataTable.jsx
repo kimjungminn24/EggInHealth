@@ -2,38 +2,39 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledTable = styled.table`
-  border: 1px solid #ddd;
-  border-spacing: 0;
-  border-radius: 5px;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTh = styled.th`
-  padding: 10px;
+  padding: 15px;
+  /* background-color: #f8f8f8; */
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+  /* transition: background-color 0.3s; */
 `;
 
 const StyledTheadTh = styled(StyledTh)`
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 2px solid #ddd; */
 `;
 
 const StyledTd = styled.td`
-  min-width: 100px;
-  padding: 10px;
-  margin: 0;
-`;
-
-const StyledFirstTd = styled(StyledTd)`
-  min-width: auto;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  /* transition: background-color 0.3s; */
+  background-color: white ;
 `;
 
 const StyledTr = styled.tr`
   &:hover {
-    background-color: #ddd;
+    background-color: #f0f0f0;
     cursor: pointer;
   }
-`;
-
-const SelectRow = styled.tr`
-  background-color: rgb(240, 240, 240);
 `;
 
 const DisabledRow = styled.tr`
@@ -45,20 +46,20 @@ const DisabledRow = styled.tr`
 `;
 
 export function DataTable({ headers, children }) {
-  // headers가 있는지 체크하고, 없다면 에러를 던짐
   if (!headers || !headers.length) {
-    throw new Error('<DataTable /> headers is required.')
+    throw new Error('<DataTable /> headers is required.');
   }
+
   return (
     <StyledTable>
       <thead>
-        <tr>
+        <StyledTr>
           {headers.map((header) => (
-            <StyledTheadTh key={header.text}>
-              {header.text} {/* 컬럼명 바인딩 */}
+            <StyledTheadTh key={header.text}> 
+              {header.text}
             </StyledTheadTh>
           ))}
-        </tr>
+        </StyledTr>
       </thead>
       <tbody>
         {children}

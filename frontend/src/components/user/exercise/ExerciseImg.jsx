@@ -22,6 +22,6 @@ export const ExerciseImg = ({ exData, selectedDate, setHasImages }) => {
   }, [exData, selectedDate, setHasImages]);
 
   return (
-    <img src={filteredData ? filteredData.reportImgUrl : ""} alt="운동인증" />
+    <img src={filteredData ? filteredData.reportImgUrl : ""} alt="" />
   );
 };

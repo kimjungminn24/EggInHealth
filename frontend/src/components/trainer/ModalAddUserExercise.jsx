@@ -1,9 +1,80 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
 import { registerExh } from '../../api/exercise';
+import styled from 'styled-components';
 
+const ModalContent = styled.div`
+  background-color: #F8F7F4;
+  padding: 20px;
+  border-radius: 10px;
+`;
 
-const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
+const InputContent = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const Count = styled.div`
+  position: absolute;
+  right: 60px; /* Count 위치 조정 */
+  
+  font-size: 15px;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  font-size: 15px;
+
+  &::placeholder {
+    color: #aaa;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #e6b800;
+  }
+`;
+
+const CloseButton = styled(Button)`
+  background-color: #ccc;
+
+  &:hover {
+    background-color: #bbb;
+  }
+`;
+
+const AddExerciseModal = ({ isOpen, onClose, selectedDate }) => {
   const [exhSet, setExhSet] = useState('');
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
@@ -15,12 +86,16 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
     if (inputType === 'setWeight') {
       setExTime(0);
     } else {
-      setExTime('');
-      setExhWeight('')
-      setExhSet('')
-      setExhRep('')
+      resetInputs();
     }
   }, [inputType]);
+
+  const resetInputs = () => {
+    setExTime('');
+    setExhWeight('');
+    setExhSet('');
+    setExhRep('');
+  };
 
   const handleAddExercise = async () => {
     await registerExh(
@@ -30,57 +105,73 @@ const AddExerciseModal = ({ isOpen, onClose ,selectedDate}) => {
       exhName,
       inputType === 'time' ? exTime : 0,
       selectedDate
-      
     );
-       onClose();
+    onClose();
   };
 
   return (
     <StyledModal isOpen={isOpen} onRequestClose={onClose}>
-      <div className="modal-content">
-        <h2>운동 숙제 등록</h2>
-        <select value={inputType} onChange={(e) => setInputType(e.target.value)}>
+      <ModalContent>
+        <Title>운동 숙제 등록</Title>
+        <Select value={inputType} onChange={(e) => setInputType(e.target.value)}>
           <option value="setWeight">웨이트</option>
           <option value="time">유산소</option>
-        </select>
-        <input
+        </Select>
+
+        <Input
           type="text"
-          placeholder="이름"
+          placeholder="운동 이름을 입력해주세요"
           value={exhName}
           onChange={(e) => setExhName(e.target.value)}
         />
+
         {inputType === 'setWeight' ? (
           <>
-            <input
-              type="text"
-              placeholder="세트"
-              value={exhSet}
-              onChange={(e) => setExhSet(e.target.value)}
-            />
-              <input
+            <InputContent>
+              <Input
                 type="text"
-                placeholder="횟수"
+                placeholder="SET"
+                value={exhSet}
+                onChange={(e) => setExhSet(e.target.value)}
+              />
+              <Count>회</Count>
+            </InputContent>
+
+            <InputContent>
+              <Input
+                type="text"
+                placeholder="REP"
                 value={exhRep}
                 onChange={(e) => setExhRep(e.target.value)}
               />
-            <input
-              type="text"
-              placeholder="무게"
-              value={exhWeight}
-              onChange={(e) => setExhWeight(e.target.value)}
-            />
+              <Count>회</Count>
+            </InputContent>
+
+            <InputContent>
+              <Input
+                type="text"
+                placeholder="WT."
+                value={exhWeight}
+                onChange={(e) => setExhWeight(e.target.value)}
+              />
+              <Count>kg</Count>
+            </InputContent>
           </>
         ) : (
-          <input
-            type="text"
-            placeholder="운동 시간"
-            value={exTime}
-            onChange={(e) => setExTime(e.target.value)}
-          />
+          <InputContent>
+            <Input
+              type="text"
+              placeholder="운동 시간"
+              value={exTime}
+              onChange={(e) => setExTime(e.target.value)}
+            />
+            <Count>분</Count>
+          </InputContent>
         )}
-        <button onClick={handleAddExercise}>등록</button>
-        <button onClick={onClose}>닫기</button>
-      </div>
+
+        <Button onClick={handleAddExercise}>등록</Button>
+        <CloseButton onClick={onClose}>닫기</CloseButton>
+      </ModalContent>
     </StyledModal>
   );
 };

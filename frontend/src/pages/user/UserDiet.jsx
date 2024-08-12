@@ -11,7 +11,6 @@ import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
 import { useStore, useUserInfoStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
-import { Datepicker } from "@mobiscroll/react";
 import BoxUser from "./../../components/trainer/BoxUser";
 import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
 import NoImg from "../../components/user/Noimage";

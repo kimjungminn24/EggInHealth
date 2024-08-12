@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import profile from "../../assets/profile.png";
 import arrow from "../../assets/arrow.png";
-import { Datepicker } from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+
 import { useUserInfoStore } from "../../store/store";
 import SelectedDate from './../common/SelectedDate';
 

@@ -48,9 +48,9 @@ def update_stage_and_feedback(counter, feedback_counter, prev_knee_angle, prev_h
 
 
 def detect(file_name):
-    input_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file_name)
-    output_path = os.path.join(current_app.config['OUTPUT_FOLDER'], file_name)
-    font_path = os.path.join(current_app.config['FONT_FILE_FOLDER'], 'Pretendard-Medium.ttf')
+    input_path = str(os.path.join(current_app.config['UPLOAD_FOLDER'], file_name))
+    output_path = str(os.path.join(current_app.config['OUTPUT_FOLDER'], file_name))
+    font_path = str(os.path.join(current_app.config['FONT_FILE_FOLDER'], 'Pretendard-Medium.ttf'))
 
     cap = cv2.VideoCapture(input_path)
 

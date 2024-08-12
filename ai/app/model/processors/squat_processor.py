@@ -13,15 +13,11 @@ mp_drawing = mp.solutions.drawing_utils
 
 
 def get_landmarks_coordinates(landmarks, side):
+    points = ['SHOULDER', 'HIP', 'KNEE', 'ANKLE']
     return [
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_SHOULDER').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_SHOULDER').value].y],
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_HIP').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_HIP').value].y],
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_KNEE').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_KNEE').value].y],
-        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_ANKLE').value].x,
-         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_ANKLE').value].y],
+        [landmarks[getattr(mp_pose.PoseLandmark, f'{side}_{point}').value].x,
+         landmarks[getattr(mp_pose.PoseLandmark, f'{side}_{point}').value].y]
+        for point in points
     ]
 
 

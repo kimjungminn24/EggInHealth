@@ -2,7 +2,6 @@ const useProgress = (weightStandard, muscleStandard, fatPercentageStandard, bmiS
   const THRESHOLD = 10; // 기준치
 
   const calculateProgress = (type, value) => {
-    console.log(type, value); // 디버깅을 위한 로그
 
     let standard;
     switch (type) {

@@ -34,6 +34,7 @@ const PlusButton = styled.img`
   cursor: pointer;
   background-color: #FFD66B;
   border-radius: 50%;
+  margin-left: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -48,6 +49,7 @@ const TrainerChat = () => {
     const fetchData = async () => {
       try {
         const chatData = await checkChat();
+        
         const chats = [];
         const users = [];
 
@@ -82,6 +84,11 @@ const TrainerChat = () => {
           value={searchTerm}  
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <PlusButton 
+        src={plusbutton}
+        alt="Plus Button"
+        onClick={() => setIsModalOpen(true)} 
+      />
       </SearchContainer>
 
       <BoxChatList 
@@ -98,11 +105,7 @@ const TrainerChat = () => {
         />
       )}
 
-      <PlusButton 
-        src={plusbutton}
-        alt="Plus Button"
-        onClick={() => setIsModalOpen(true)} 
-      />
+      
     </Container>
   );
 };

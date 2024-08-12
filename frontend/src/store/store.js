@@ -25,7 +25,7 @@ export const useStore = create(
       },
     }),
     {
-      name: 'user-store', // 로컬 스토리지에 저장될 이름
+      name: 'user-store',
     }
   )
 );
@@ -57,7 +57,7 @@ export const useUserInfoStore = create(
       },
     }),
     {
-      name: 'user-info-store', // 로컬 스토리지에 저장될 이름
+      name: 'user-info-store', 
     }
   )
 );

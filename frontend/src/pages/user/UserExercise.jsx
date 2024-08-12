@@ -14,7 +14,6 @@ import RegisterButton from "./../../components/common/button/RegisterButton";
 import { useStore, useUserInfoStore } from "./../../store/store";
 import { getExercise } from "./../../api/exercise";
 import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
-import { Datepicker } from "@mobiscroll/react";
 import BoxUser from "../../components/trainer/BoxUser";
 import NoImg from "../../components/user/Noimage";
 
@@ -97,13 +96,13 @@ const Exercise = () => {
           userData={userData}
         />
         <div>
+          <button onClick={handleFeedbackClick}>사용자 피드백</button>
           <Mini>운동 사진</Mini>
           <ExerciseImg
             exData={exData}
             selectedDate={selectedDate}
             setHasImages={setHasImages}
           />
-          <button onClick={handleFeedbackClick}>사용자 피드백</button>
           {userType === "MEMBER" ? (
             selectedDate <= getKoreanISOString() ? (
               <RegisterButton

@@ -14,14 +14,16 @@ def allowed_file(filename):
 
 @video_bp.route('/ai/feedback', methods=['POST'])
 def upload_video():
+    mode = request.form.get('mode')
+    if not mode:
+        return jsonify({'error': 'No mode selected'}), 400
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file found'}), 400
     file = request.files['file']
 
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
-
-    mode = request.args.get('mode')
 
     if file and allowed_file(file.filename):
         file_name = secure_filename(file.filename)

@@ -27,7 +27,7 @@ public class PTController {
     }
 
     @GetMapping("/plan/top")
-    public ResponseEntity<List<PtPlanDto>> getTopPTPlans(@RequestParam("id") int id, @RequestParam("cnt") int cnt) {
+    public ResponseEntity<List<PtPlanTopDto>> getTopPTPlans(@RequestParam("id") int id, @RequestParam("cnt") int cnt) {
         return new ResponseEntity<>(ptPlanService.getTopPTPlans(id, cnt), HttpStatus.OK);
     }
 

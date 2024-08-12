@@ -52,6 +52,9 @@ public class Member {
     @Column(name = "mem_height")
     private int height;
 
+    @Column(name = "mem_gender", length = 1)
+    private String gender;
+
     @Column(name = "mem_created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -101,6 +104,7 @@ public class Member {
     public void updateMemberBy(MemberSurveyDto memberSurveyDto) {
         this.age = memberSurveyDto.age();
         this.height = memberSurveyDto.height();
+        this.gender = memberSurveyDto.gender();
     }
 
     public void updateMemberRoleBy(Role role) {

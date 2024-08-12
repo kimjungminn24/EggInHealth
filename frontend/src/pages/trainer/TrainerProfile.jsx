@@ -14,6 +14,7 @@ const Container = styled.div`
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 20px;
+  text-align: center; /* 버튼 가운데 정렬을 위한 추가 */
 `;
 
 const ProfileContainer = styled.div`
@@ -42,6 +43,7 @@ const InfoBox = styled.div`
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 15px;
+  
   img {
     margin-right: 10px; 
   }
@@ -68,6 +70,10 @@ const YellowBtn = styled.button`
   padding: 8px 16px;
   margin-top: 20px;
   color: white;
+  margin: 20px auto; 
+  &:hover {
+    background-color: #FFC947;
+  }
 `;
 
 const PtBtn = styled.button`
@@ -81,8 +87,11 @@ const PtBtn = styled.button`
   padding: 8px 16px;
   margin-top: 20px;
   color: white;
+  margin: 20px auto;
+  &:hover {
+    background-color: #FFC947;
+  }
 `;
-
 
 const TrainerProfile = () => {
     const userData = useStore((state) => state.userInfo);

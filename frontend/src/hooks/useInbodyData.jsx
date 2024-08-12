@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { checkInbodyData } from '../api/inbody';
 import useStandardValues from './useStandardValues';
 import useProgress from './useProgress';
+import { useStore } from '../store/store';
 
 const useInbodyData = (age, height, gender) => {
     const [profileData, setProfileData] = useState({ stats: [], dataList: [], score: 0 });
@@ -10,9 +11,9 @@ const useInbodyData = (age, height, gender) => {
     const [fatPercentageData, setFatPercentageData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const userId = useStore((state)=>state.userId)
     const { weight: weightStandard, muscle: muscleStandard, fatPercentage: fatPercentageStandard, bmi: bmiStandard, fat: fatStandard } = useStandardValues(age, height, gender);
-
+    
     // useCallback으로 메모이제이션
     const calculateProgress = useCallback(
         useProgress(weightStandard, muscleStandard, fatPercentageStandard, bmiStandard, fatStandard),
@@ -20,13 +21,16 @@ const useInbodyData = (age, height, gender) => {
     );
 
     useEffect(() => {
+        const today = new Date();
+        const formatMonth = `${today.getMonth() + 1}`;
+        const formatYear = `${today.getFullYear()}`;
         const fetchData = async () => {
             try {
                 setIsLoading(true);
                 setError(null);
 
-                const data = await checkInbodyData('2', '2024', '8');
-                console.log(data);
+                const data = await checkInbodyData(userId, formatYear, formatMonth);
+                
                 
                 if (!data || data.length === 0) {
                     setProfileData({ stats: [], dataList: [], score: 0 });

@@ -54,9 +54,12 @@ const UserProfile = () => {
   const roleType = useStore((state) => state.userType)
   const { userUpdate } = useStore();
 
+  
   useEffect(()=>{
     userUpdate()
   },[userUpdate])
+
+
   const openModal = () => {
     setModalIsOpen(true);
   };

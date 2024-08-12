@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-
+const OCR_URL = import.meta.env.VITE_OCR_URL
+const secret_key = import.meta.env.VITE_SECRET_KEY
 export const checkInbodyData = async (id, year, month) => {
   try {
     const response = await axios.get(
@@ -21,16 +22,18 @@ export const checkInbodyData = async (id, year, month) => {
 
 export const uploadInbodyData = async (data) => {
   try {
+    console.log('업로드 인바디 데이터',data);
     const formData = new FormData();
     formData.append('height', data.height);
     formData.append('weight', data.weight);
     formData.append('muscle', data.muscle);
     formData.append('fat', data.fat);
+    formData.append('fatPercentage', data.fatPercentage);
     formData.append('bmi', data.bmi);
     formData.append('compositionScore', data.compositionScore);
     formData.append('memberId', data.memberId);
     formData.append('image', data.imageFile);
-    console.log(data);
+   
     
     
     const response = await axios.post(`${BASE_URL}/body`, formData, {
@@ -58,8 +61,7 @@ export const fetchBodyData = async (uid, year, month) => {
   }
 };
 
-const OCR_URL = import.meta.env.OCR_URL
-const secret_key = import.meta.env.SECRET_KEY
+
 
 export const uploadOCR = async (imageFile) => {
   const formData = new FormData();
@@ -88,9 +90,8 @@ export const uploadOCR = async (imageFile) => {
         'X-OCR-SECRET': secret_key
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+    throw error.response ? error.response.data : new Error('알 수 없는 오류 발생:',error);
   }
 };

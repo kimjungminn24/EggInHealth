@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import Arrow from "../../assets/static/Property_Black_Arrow.png"
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
     console.log('참여자명 :',participantName, '방이름 :',roomName,'리시버 :',receiver);
@@ -14,7 +15,8 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
         if (stompClientRef.current) {
             return; // 중복 연결 방지
         }
-        const socket = new SockJS("http://localhost:8080/chat", null, {
+        const socket = new SockJS(BASE_URL, null, {
+            withCredentials: true // 쿠키를 포함하여 요청 전송
         });
         const client = Stomp.over(socket);
     

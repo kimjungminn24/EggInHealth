@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Builder
 public record PtPlanTopDto(
+        int id,
         String name,
         int memberId,
         int ptCnt,
@@ -16,6 +17,7 @@ public record PtPlanTopDto(
 ) {
     public static PtPlanTopDto from(PtPlan ptPlan) {
         return PtPlanTopDto.builder()
+                .id(ptPlan.getId())
                 .name(ptPlan.getMember().getName())
                 .memberId(ptPlan.getMember().getId())
                 .ptCnt(ptPlan.getMember().getPTCount())

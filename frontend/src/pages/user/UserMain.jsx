@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import UserEgg from "../../components/user/main/UserEgg";
-import { styled } from "styled-components";
-import BoxMain from "./../../components/user/main/BoxMain";
-import BoxSchedule from "./../../components/user/main/BoxSchedule";
-import { useUserInfoStore, useStore } from "../../store/store";
-import { userSchedule } from "../../api/main";
+import React, { useEffect, useState } from 'react';
+import UserEgg from '../../components/user/main/UserEgg';
+import { styled } from 'styled-components';
+import BoxMain from './../../components/user/main/BoxMain';
+import BoxSchedule from './../../components/user/main/BoxSchedule';
+import { useUserInfoStore, useStore } from '../../store/store';
+import { userSchedule } from '../../api/main';
 import { requestPermission } from "../../firebase.jsx";
 
 const PTBox = styled.div`
@@ -56,17 +56,26 @@ const UserMain = () => {
             await userUpdate();
             const updatedUserId = useStore.getState().userId;
 
-            if (updatedUserId) {
-                const today = new Date();
-                const formatMonth = `${today.getMonth() + 1}`;
-                const formatYear = `${today.getFullYear()}`;
-                try {
-                    await fetchData(updatedUserId, formatMonth, formatYear);
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                }
-            }
-        };
+      if (updatedUserId) {
+        const today = new Date();
+        const formatMonth = `${today.getMonth() + 1}`;
+        const formatYear = `${today.getFullYear()}`;
+        try {
+          await fetchData(updatedUserId, formatMonth, formatYear);
+
+          const hasVisited = localStorage.getItem('hasVisited');
+          if (!hasVisited) {
+           requestPermission();
+            // 방문 기록 저장
+            localStorage.setItem('hasVisited', 'true');
+          }
+
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+
+      }
+    };
 
         fetch();
 
@@ -96,12 +105,6 @@ const UserMain = () => {
                 .catch((error) => {
                     console.error(error);
                 });
-        }
-
-        const hasVisited = localStorage.getItem("hasVisited");
-        if (!hasVisited) {
-            requestPermission();
-            localStorage.setItem("hasVisited", "true");
         }
     }, [fetchData, trainer, userUpdate, userId]);
 

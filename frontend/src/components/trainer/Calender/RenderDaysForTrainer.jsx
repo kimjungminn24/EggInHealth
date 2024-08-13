@@ -1,59 +1,52 @@
 import React, { useState, useEffect } from "react";
-// import { GetMembers } from "../../../api/Calender";
 import { checkPtPlan } from "../../../api/trainer";
 
 const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState(today.getDate());
-    const [ memDate, setMemDate] = useState([])
+    const [memDate, setMemDate] = useState([]);
 
-    // 날짜관련 코드
     const getDaysInMonth = (year, month) => {
         return new Date(year, month + 1, 0).getDate();
     };
 
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
     const daysInMonth = getDaysInMonth(today.getFullYear(), today.getMonth());
-    //날짜받아서 하이라이트하는 버튼
+
     const handleChangeDate = (dayCount) => {
         setSelectedDay(dayCount);
-        onDateChange(memDate)
-        return dayCount;
-    }
-    let dayCount = 1;
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const promise = [];
-    
-                // 데이터 가져오기
-                promise.push(checkPtPlan(year, month, selectedDay));
-                const results = await Promise.all(promise);
-                console.log(results);
-                // 결과가 비어있는지 확인하고, 빈 배열로 채우기
-                if (results.length === 0 || results[0].length === 0) {
-                    results[0] = []; // 비어있는 경우 빈 배열 추가
-                }
-                // results[0]
-                // 상태 업데이트
-                setMemDate(results[0]);
+                const result = await checkPtPlan(year, month, selectedDay);
+                setMemDate(result.length > 0 ? result : []);
             } catch (error) {
-                console.log('에러', year, month);
+                console.log("에러", year, month);
+                setMemDate([]);
             }
         };
         fetchData();
     }, [year, month, selectedDay]);
-    
 
+    useEffect(() => {
+        // memDate가 변경된 후에 onDateChange를 호출
+        onDateChange(memDate);
+    }, [memDate, onDateChange]);
+
+    let dayCount = 1;
     const days = [];
-
 
     for (let week = 0; week < 6; week++) {
         const weekDays = [];
         for (let day = 0; day < 7; day++) {
             if ((week === 0 && day < firstDayOfMonth) || dayCount > daysInMonth) {
                 weekDays.push(
-                    <div key={`${week}-${day}`} className="flex-1 flex flex-col items-center justify-center h-[33px] mt-[4px]">
+                    <div
+                        key={`${week}-${day}`}
+                        className="flex-1 flex flex-col items-center justify-center h-[33px] mt-[4px]"
+                    >
                         <p className="text-sm font-medium text-gray-800"></p>
                     </div>
                 );
@@ -64,12 +57,10 @@ const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
                         onClick={() => handleChangeDate(formatdayCount)}
                         key={`${week}-${day}`}
                         className={`flex-1 flex flex-col items-center justify-center h-[33px] mt-[4px] ${
-                            selectedDay === formatdayCount ? 'bg-blue-200' : ''
+                            selectedDay === formatdayCount ? "bg-blue-200" : ""
                         }`}
                     >
-                        <div className="font-bold">
-                        {formatdayCount}
-                        </div>
+                        <div className="font-bold">{formatdayCount}</div>
                     </button>
                 );
                 dayCount++;

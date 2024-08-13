@@ -32,7 +32,7 @@ const ScrollableContainer = styled.div`
     overflow-y: auto;
 `;
 
-// Helper function to format time in 12-hour AM/PM notation
+
 const formatTime = (date) => {
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");

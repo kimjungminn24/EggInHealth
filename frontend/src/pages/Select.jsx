@@ -19,7 +19,7 @@ const Select = () => {
   const [height, setHeight] = useState(null);
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(null);
-
+  
   const totalSteps = 5;
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const Select = () => {
       }
     } else if (currentStep === 4) {
       await updateUserGole(exerciseCommonId, dietCommonId, goalCommonId);
-      await updateUserInfo(height, age);
+      await updateUserInfo(height, age,gender);
       navigate('/usermain');
     } else if (currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
@@ -86,7 +86,7 @@ const Select = () => {
       case 3:
         return <SurveyPage3 setgoalCommonId={setgoalCommonId}/>;
       case 4:
-        return <SurveyPage4 setHeight={setHeight} setAge={setAge} />;
+        return <SurveyPage4 setHeight={setHeight} setAge={setAge} setGender={setGender} />;
       default:
         return null;
     }

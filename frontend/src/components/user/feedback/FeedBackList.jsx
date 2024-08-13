@@ -74,7 +74,7 @@ const Divider = styled.div`
     background-color: #ccc;
     margin: 5px 0;
 `;
-const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString,userType}) => {
+const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedbackData,getKoreanISOString,userType,userId}) => {
     const [dropdownVisible, setDropdownVisible] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
@@ -143,14 +143,15 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
                 feedbackData={selectedFeedback} // 수정할 피드백 데이터 전달
-                fetchFeedback={fetchFeedback}
+                fetchFeedbackData={fetchFeedbackData}
                 getKoreanISOString={getKoreanISOString} // 피드백 데이터 새로고침 함수 전달
             />
             <ModalDeleteFeedback
                 isOpen={isDeleteOpen}
                 feedbackData={selectedFeedback} 
-                fetchFeedback={fetchFeedback}
-            
+                onClose={() => setIsDeleteOpen(false)}
+                fetchFeedbackData={fetchFeedbackData}
+
             />
         </div>
     );

@@ -3,6 +3,7 @@ import AddExerciseModal from "../../trainer/ModalAddUserExercise";
 import { DataTable } from "../../common/DataTable";
 import { AddButton } from "../../common/StyledComponents";
 import styled from "styled-components";
+import ActionModal from "./ModalUpdateEx";
 
 
 const StyledTd = styled.td`
@@ -28,6 +29,7 @@ const StyledTr = styled.div`
   align-items: center; /* 수직 중앙 정렬 */
   padding: 10px 0; /* 위아래 여백 */
   border-bottom: 1px solid #eee; /* 하단 경계선 */
+  cursor: pointer;  
   
   &:last-child {
     border-bottom: none; /* 마지막 항목의 경계선 제거 */
@@ -43,13 +45,35 @@ const StyledTr = styled.div`
     font-weight: bold; /* MINUTE 강조 */
   }
 `;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  margin-right: 10px; /* 위쪽 여백 추가 */
+`
 
-const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  console.log(userData)
-  console.log(exData)
+const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState(null); 
+
+  const openAddModal = () => setIsAddModalOpen(true);
+  const closeAddModal = () => setIsAddModalOpen(false);
+  const openActionModal = (exercise) => {
+    setSelectedExercise(exercise);
+    setIsActionModalOpen(true);
+  };
+  const closeActionModal = () => setIsActionModalOpen(false);
+
+  const handleEdit = () => {
+    console.log("수정:", selectedExercise);
+    closeActionModal();
+  };
+
+  const handleDelete = () => {
+    console.log("삭제:", selectedExercise);
+    closeActionModal();
+  };
+
 
   const headers = [
     {
@@ -93,50 +117,59 @@ const ExerciseList = ({ selectedDate, exData, userLoginData,userData }) => {
 
   return (
     <div>
-
       {selectedDate && exData ? (
         <div>
-    <Box>
-      {exData.sets
-        ?.filter((set) => set.time > 0)
-        .map((set, index) => (
-          <StyledTr key={index}>
-            <span>{set.name}</span>
-            <span className="minute">MINUTE</span>
-            <span>{set.time}</span>
-          </StyledTr>
-        ))}
-    </Box>
-
-<DataTable headers={headers}>
-  {exData.sets
-    ?.filter((set) => set.set > 0)
-    .map((set, index) => (
-      <Box key={index}>
-        <StyledTr>
-          <span>{set.name}</span>
-          <span>{set.set}</span>
-          <span>{set.ref}</span>
-          <span>{set.weight}</span>
-        
-        </StyledTr>
-      </Box>
-    ))}
-</DataTable>
-
+          {exData.sets
+            ?.filter((set) => set.time > 0)
+            .map((set, index) => (
+              <Box key={index}>
+                <StyledTr onClick={() => openActionModal(set)}>
+                  <span>{set.name}</span>
+                  <span className="minute">MINUTE</span>
+                  <span>{set.time}</span>
+                </StyledTr>
+              </Box>
+            ))}
+          <DataTable headers={headers}>
+            {exData.sets
+              ?.filter((set) => set.set > 0)
+              .map((set, index) => (
+                <Box key={index}>
+                  <StyledTr onClick={() => openActionModal(set)}>
+                    <span>{set.name}</span>
+                    <span>{set.set}</span>
+                    <span>{set.ref}</span>
+                    <span>{set.weight}</span>
+                  </StyledTr>
+                </Box>
+              ))}
+          </DataTable>
         </div>
       ) : (
         <p>운동 목록이 없습니다.</p>
       )}
-{selectedDate >= today && userLoginData.type === "TRAINER" ? (
-  <AddButton onClick={openModal}>+</AddButton>
-) : null}
-<AddExerciseModal
-  isOpen={isModalOpen}
-  onClose={closeModal}
-  selectedDate={selectedDate}
-  userData={userData}
-/>
+
+      <ButtonContainer>
+        {selectedDate >= today && userLoginData.type === "TRAINER" ? (
+          <AddButton onClick={openAddModal}>+</AddButton>
+        ) : null}
+        
+        <AddExerciseModal
+          isOpen={isAddModalOpen}
+          onClose={closeAddModal}
+          selectedDate={selectedDate}
+          userData={userData}
+          exData={exData}
+        />
+        
+        <ActionModal
+          isOpen={isActionModalOpen}
+          onClose={closeActionModal}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          exData={exData}
+        />
+      </ButtonContainer>
     </div>
   );
 };

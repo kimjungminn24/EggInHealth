@@ -28,12 +28,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalDeleteFeedback = ({ isOpen, feedbackData, onClose, fetchFeedback }) => {
+const ModalDeleteFeedback = ({ isOpen, feedbackData, onClose, fetchFeedbackData }) => {
   const handleSubmit = async () => {
     if (feedbackData) {
       try {
         await deleteFeedback(feedbackData);
-        fetchFeedback(); // 삭제 후 피드백 데이터 새로 고침
+        fetchFeedbackData(); // 삭제 후 피드백 데이터 새로 고침
         onClose(); // 삭제 후 모달을 닫습니다.
       } catch (error) {
         console.error('Error deleting Feedback:', error);

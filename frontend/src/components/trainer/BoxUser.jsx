@@ -19,9 +19,7 @@ const ChatItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  &:hover {
-    background-color: #f0f0f0;
-  }
+
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
@@ -74,26 +72,6 @@ const BoxUser = ({ userData ,selectedDate,setSelectedDate }) => {
           <UserName>
             {userData.name}
           </UserName>
-          {/* <Datepicker
-    responsive={{
-        xsmall: {
-            controls: ['date'],
-            display: 'bottom',
-            touchUi: true
-        },
-        small: {
-            controls: ['date'],
-            display: 'anchored',
-            touchUi: true
-        },
-        custom: { // Custom breakpoint
-            breakpoint: 800,
-            controls: ['date'],
-            display: 'anchored',
-            touchUi: false
-        }
-    }}
-/> */}
           <SelectedDate    selectedDate={selectedDate}
       setSelectedDate={setSelectedDate}/>
         </UserInfo>

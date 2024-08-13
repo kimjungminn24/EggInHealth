@@ -25,7 +25,7 @@ const Exercise = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setIsModalOpen(false); 
   const [exData, setExData] = useState([]);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -103,9 +103,9 @@ const Exercise = () => {
           userData={userData}
         />
         <div>
+            <Mini onClick={handleFeedbackClick}>피드백 목록</Mini>
           <MiniContainer>
             <Mini>운동 사진</Mini>
-            <button onClick={handleFeedbackClick}>사용자 피드백</button>
           </MiniContainer>
           <ExerciseImg
             exData={exData}

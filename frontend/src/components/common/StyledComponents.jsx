@@ -228,7 +228,7 @@ const Mini = styled.div`
 ` 
 const MiniContainer = styled.div`
   display: flex;
-  justify-content: space-between; 
+  justify-content: center; 
   padding : 10px 30px
 `
 

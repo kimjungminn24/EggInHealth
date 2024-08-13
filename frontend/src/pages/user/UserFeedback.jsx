@@ -169,8 +169,9 @@ const UserFeedback = () => {
         selectedDate={selectedDate}
         onVideoClick={openModal}
         userType={userType}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         getKoreanISOString={getKoreanISOString}
+        userId={userId}
 
       />
       <VideoModal
@@ -185,7 +186,7 @@ const UserFeedback = () => {
         onClose={closeFeedbackModal}
         name={userData.name}
         getKoreanISOString={getKoreanISOString}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         userData={userData}
       />
     </Container>

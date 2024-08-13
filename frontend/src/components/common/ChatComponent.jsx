@@ -2,10 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import Arrow from "../../assets/static/Property_Black_Arrow.png";
-<<<<<<< HEAD
-
-=======
->>>>>>> fde4d33e4cbd81df2039b538a1f9f26a401f5f17
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
@@ -89,12 +85,9 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
             // 메시지를 서버로 전송
             stompClientRef.current.send("/app/sendMessage", {}, JSON.stringify(message));
 
-<<<<<<< HEAD
-=======
             // 전송한 메시지를 화면에 추가
             // showMessage(message);
 
->>>>>>> fde4d33e4cbd81df2039b538a1f9f26a401f5f17
             // 입력 필드 초기화
             setChatInput("");
         }
@@ -127,20 +120,6 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                 ))}
                 <div ref={messagesEndRef} /> {/* 스크롤을 위한 빈 div 추가 */}
             </div>
-<<<<<<< HEAD
-            <form onSubmit={handleChatSubmit} className="w-[300px] m-auto pl-[4px] flex fixed bottom-[60px]">
-                <input
-                    type="text"
-                    value={chatInput}
-                    onChange={handleChatInputChange}
-                    placeholder="메세지를 입력해주세요"
-                    className="w-full"
-                />
-                <button type="submit">
-                    <img src={Arrow} />
-                </button>
-            </form></div>}
-=======
                 <form onSubmit={handleChatSubmit} className="w-[300px] m-auto flex fixed bottom-[50px] h-[50px] item-center justify-center ml-[70px]">
                     <input
                         type="text"
@@ -154,7 +133,6 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                     </button>
                 </form></div>}
 
->>>>>>> fde4d33e4cbd81df2039b538a1f9f26a401f5f17
         </div>
     );
 };

@@ -31,7 +31,7 @@ const Score = styled.div`
   margin-bottom: 30px;
 `;
 
-const InbodyPage = ({  modalIsOpen }) => {
+const InbodyPage = ({ modalIsOpen }) => {
   const [selectedStat, setSelectedStat] = useState('체중 그래프');
   const [profileData, setProfileData] = useState({ stats: [], dataList: [], score: 0 });
   const [weightData, setWeightData] = useState([]);
@@ -41,12 +41,9 @@ const InbodyPage = ({  modalIsOpen }) => {
   const userId = useStore((state) => state.userId);
   const age = useStore((state) => state.userInfo.age);
   const height = useStore((state) => state.userInfo.height);
-  const gender = useStore((state) => state.userInfo);
+  const gender = 'M';
 
-  console.log(gender);
   const { weight: weightStandard, muscle: muscleStandard, fatPercentage: fatPercentageStandard, bmi: bmiStandard, fat: fatStandard } = useStandardValues(age, height, gender);
-
- 
   const calculateProgress = useCallback(
     useProgress(weightStandard, muscleStandard, fatPercentageStandard, bmiStandard, fatStandard),
     [weightStandard, muscleStandard, fatPercentageStandard, bmiStandard, fatStandard]
@@ -87,18 +84,18 @@ const InbodyPage = ({  modalIsOpen }) => {
 
       setProfileData({
         stats: [
-          { label: '체중(kg)', value: lastData.weight, change: lastData.weight - prevData.weight, graph: '체중 그래프' },
-          { label: '골격근량(kg)', value: lastData.muscle, change: lastData.muscle - prevData.muscle, graph: '골격근량 그래프' },
-          { label: '체지방률(%)', value: lastData.fatPercentage, change: lastData.fatPercentage - prevData.fatPercentage, graph: '체지방률 그래프' },
+          { label: '체중(kg)', value: lastData.weight, change: Math.round(lastData.weight - prevData.weight), graph: '체중 그래프' },
+          { label: '골격근량(kg)', value: lastData.muscle, change: Math.round(lastData.muscle - prevData.muscle), graph: '골격근량 그래프' },
+          { label: '체지방률(%)', value: lastData.fatPercentage, change: Math.round(lastData.fatPercentage - prevData.fatPercentage), graph: '체지방률 그래프' },
         ],
         dataList: [
-          { label: '체중', value: `${lastData.weight}kg`, progress: `${calculateProgress('weight', lastData.weight)}`, change: lastData.weight - prevData.weight },
-          { label: '골격근량', value: `${lastData.muscle}kg`, progress: `${calculateProgress('muscle', lastData.muscle)}`, change: lastData.muscle - prevData.muscle },
-          { label: '체지방률', value: `${lastData.fatPercentage}%`, progress: `${calculateProgress('fatPercentage', lastData.fatPercentage)}`, change: lastData.fatPercentage - prevData.fatPercentage },
-          { label: 'BMI', value: `${lastData.bmi}`, progress: `${calculateProgress('bmi', lastData.bmi)}`, change: lastData.bmi - prevData.bmi },
-          { label: '체지방량', value: `${lastData.fat}kg`, progress: `${calculateProgress('fat', lastData.fat)}`, change: lastData.fat - prevData.fat },
+          { label: '체중', value: `${Math.round(lastData.weight)}kg`, progress: `${calculateProgress('weight', lastData.weight)}`, change: Math.round(lastData.weight - prevData.weight) },
+          { label: '골격근량', value: `${Math.round(lastData.muscle)}kg`, progress: `${calculateProgress('muscle', lastData.muscle)}`, change: Math.round(lastData.muscle - prevData.muscle) },
+          { label: '체지방률', value: `${Math.round(lastData.fatPercentage)}%`, progress: `${calculateProgress('fatPercentage', lastData.fatPercentage)}`, change: Math.round(lastData.fatPercentage - prevData.fatPercentage) },
+          { label: 'BMI', value: `${Math.round(lastData.bmi)}`, progress: `${calculateProgress('bmi', lastData.bmi)}`, change: Math.round(lastData.bmi - prevData.bmi) },
+          { label: '체지방량', value: `${Math.round(lastData.fat)}kg`, progress: `${calculateProgress('fat', lastData.fat)}`, change: Math.round(lastData.fat - prevData.fat) },
         ],
-        score: lastData.compositionScore,
+        score: Math.round(lastData.compositionScore),
       });
 
       setWeightData(weightData);
@@ -110,7 +107,6 @@ const InbodyPage = ({  modalIsOpen }) => {
     }
   };
 
- 
   useEffect(() => {
     fetchData();
   }, [age, height, gender, calculateProgress, modalIsOpen]);
@@ -143,7 +139,7 @@ const InbodyPage = ({  modalIsOpen }) => {
       </Stats>
       <InbodyGraph data={getData(selectedStat)} />
       <InbodyBox dataList={profileData.dataList} />
-      <Score>종합점수: {profileData.score}점</Score>
+      <Score>종합점수: {Math.round(profileData.score)}점</Score>
     </Container>
   );
 };

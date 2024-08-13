@@ -76,7 +76,7 @@ const CameraButtonWrapper = styled.div`
   right: 10px;
 `;
 
-const ModalAddInbody = ({ isOpen, onRequestClose }) => {
+const ModalAddInbody = ({ isOpen, onRequestClose,fetchData }) => {
   const [photoModalIsOpen, setPhotoModalIsOpen] = useState(false);
   const [inbodyData, setInbodyData] = useState({
     weight: '',
@@ -114,9 +114,10 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
     { key: 'compositionScore', label: '종합점수', unit: '점' },
   ];
 
-  const updateData = () => {
-    uploadInbodyData(inbodyData);
-    onRequestClose();
+  const updateData = async() => {
+    await uploadInbodyData(inbodyData);
+    await onRequestClose();
+    await fetchData()
   };
 
   return (

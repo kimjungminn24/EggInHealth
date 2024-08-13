@@ -14,8 +14,6 @@ import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   padding: 20px;
-  background-color: #f9f9f9;
-  height: 100vh;
 `;
 
 const UserList = styled.div`

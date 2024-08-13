@@ -130,7 +130,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
       const data = await fetchBodyData(userId, year, month);
       setBodyData(data);
       if (data.length > 0) {
-        setSelectedPhoto(data[0]);
+        setSelectedPhoto(data[data.length-1]);
       }
     } catch (error) {
       console.error(error);
@@ -177,7 +177,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
             </DropdownMenu>
           </DropdownContainer>
 
-          <ModalAddInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
+          <ModalAddInbody isOpen={modalIsOpen} onRequestClose={closeModal} fetchData={fetchData}/>
           <PhotoCaptureModal isOpen={photoModalIsOpen} onRequestClose={closePhotoModal} />
         </ModalContent>
       </StyledModal>

@@ -97,7 +97,7 @@ const UserProfile = () => {
           </ButtonSwap>
         </ButtonGroup>
       </ButtonGroupContainer>
-      {activeTab === '내정보' ? <UserInfo /> : <InbodyPage />}
+      {activeTab === '내정보' ? <UserInfo /> : <InbodyPage modalIsOpen={modalIsOpen} />}
     </Container>
   );
 };

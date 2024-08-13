@@ -6,6 +6,8 @@ import { checkMemberList } from '../../api/trainer';
 import { updatePtPlan } from '../../api/trainer';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png'
+import { useStore } from '../../store/store';
+
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -161,6 +163,20 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [userList, setUserList] = useState([]);
+  const userId = useStore((state) => state.userId)
+
+  useEffect(() => {
+    if (isOpen) {
+      const now = new Date();
+      const currentDate = now.toISOString().split('T')[0];
+      const currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
+  
+      setDate(currentDate);
+      setStartTime(currentTime);
+      setEndTime(currentTime);
+    }
+  }, [isOpen]);
+
 
   useEffect(() => {
     const fetchMemberList = async () => {
@@ -200,7 +216,7 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
       createdAt: createdAt,     
     };
     try {
-      await updatePtPlan(data);   
+      await updatePtPlan(data); 
     } catch (error) {
       console.log(error);
     } finally {

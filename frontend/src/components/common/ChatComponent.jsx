@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import Arrow from "../../assets/static/Property_Black_Arrow.png"
+import Arrow from "../../assets/static/Property_Black_Arrow.png";
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
-    console.log('참여자명 :',participantName, '방이름 :',roomName,'리시버 :',receiver);
+    console.log('참여자명 :', participantName, '방이름 :', roomName, '리시버 :', receiver);
     const [chatMessages, setChatMessages] = useState([]);
     const [chatInput, setChatInput] = useState("");
     const receiverId = receiver; // 수신자 ID 상태 추가
@@ -59,39 +60,42 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
     function handleChatSubmit(e) {
         e.preventDefault();
         if (chatInput.trim() && stompClientRef.current) {
-            //메세지 보내는 API 명세 부분
+            // 한국 시간(UTC+9)으로 현재 시간 계산
+            const now = new Date();
+            const koreanOffset = 9 * 60; // 한국 시간대는 UTC+9, 분으로 계산
+            const koreanTime = new Date(now.getTime() + (koreanOffset * 60 * 1000));
+            const createdAt = koreanTime.toISOString(); // ISO 문자열로 변환
+
+            // 메시지 데이터
             const message = {
                 content: chatInput,
                 senderId: participantName,
                 receiverId: receiverId, // 수신자 ID 설정
-                createdAt: new Date().toISOString(),
+                createdAt: createdAt,
                 isRead: false
             };
+
             // 메시지를 서버로 전송
             stompClientRef.current.send("/app/sendMessage", {}, JSON.stringify(message));
 
-            // 전송한 메시지를 화면에 추가
-            // showMessage(message);
-            
             // 입력 필드 초기화
             setChatInput("");
         }
     }
 
     function handleChatInputChange(e) {
-
         setChatInput(e.target.value);
     }
 
     function handleFetchInfo() {
         console.log("Call Chat Memory");
         if (stompClientRef.current) {
-            //메세지 받아오는 API 명세 부분
+            // 메세지 받아오는 API 명세 부분
             const message = {
                 senderId: participantName,
                 roomName: roomName
             };
-            console.log('메세지 :',message);
+            console.log('메세지 :', message);
             stompClientRef.current.send("/app/recordMessage", {}, JSON.stringify(message));
         }
     }
@@ -117,7 +121,6 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                     <img src={Arrow} />
                 </button>
             </form></div>}
-            
         </div>
     );
 };

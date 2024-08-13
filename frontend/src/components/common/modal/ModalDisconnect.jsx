@@ -79,12 +79,13 @@ const CancelButton = styled.button`
 const ModalDisconnect = ({onClose}) => {
   const uid = useUserInfoStore(((state)=>state.userData.id))
   const ptCnt = useUserInfoStore((state)=>state.userData.PTCount)
-  
+  const { fetchData } = useUserInfoStore();
 
-  const handleDissconnect = ()=>{
-    console.log(1);
-    disconnectUser(uid)
-    onClose()
+
+  const handleDissconnect = async()=>{
+    await disconnectUser(uid)
+    await fetchData(uid)
+    await onClose()
   }
   return (
     <ModalOverlay>

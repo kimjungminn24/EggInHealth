@@ -7,6 +7,13 @@ import { useUserInfoStore, useStore } from "../../store/store";
 import { userSchedule } from "../../api/main";
 import { requestPermission } from "../../firebase.jsx";
 
+const Container = styled.div`
+    max-height: 800px;
+    overflow: auto;
+`;
+
+
+
 const PTBox = styled.div`
     display: flex;
     justify-content: center;
@@ -27,11 +34,12 @@ const Message = styled.div`
     font-size: 18px;
 `;
 
-const ScrollableContainer = styled.div`
-    max-height: 400px; /* Adjust height as needed */
-    overflow-y: auto;
+const ScheduleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-bottom: 30px;
 `;
-
 
 const formatTime = (date) => {
     let hours = date.getHours();
@@ -39,7 +47,7 @@ const formatTime = (date) => {
     const ampm = hours >= 12 ? "PM" : "AM";
 
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? hours : 12; 
 
     return `${hours}:${minutes} ${ampm}`;
 };
@@ -81,8 +89,6 @@ const UserMain = () => {
                         const formattedDate = `${startDate.getMonth() + 1}.${startDate.getDate()}(${
                             ["일", "월", "화", "수", "목", "금", "토"][startDate.getDay()]
                         })`;
-
-                        // Format start and end times
                         const formattedStartTime = formatTime(startDate);
                         const formattedEndTime = formatTime(endDate);
 
@@ -106,22 +112,21 @@ const UserMain = () => {
     }, [fetchData, trainer, userUpdate, userId]);
 
     return (
-        <div>
+        <Container>
             <UserEgg trainer={trainer} eggday={eggday} />
             <PTBox>PT일정</PTBox>
-
             {trainer ? (
                 timebox.length > 0 ? (
-                    <ScrollableContainer>
+                    <ScheduleContainer>
                         <BoxSchedule timebox={timebox} />
-                    </ScrollableContainer>
+                    </ScheduleContainer>
                 ) : (
                     <Message>스케줄을 등록해주세요</Message>
                 )
             ) : (
                 <BoxMain />
             )}
-        </div>
+        </Container>
     );
 };
 

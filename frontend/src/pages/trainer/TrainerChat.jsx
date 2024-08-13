@@ -7,8 +7,6 @@ import { checkChat } from '../../api/trainer';
 import { useStore } from '../../store/store';
 
 const Container = styled.div`
-  background-color: #f8f8f8;
-  height: 100vh;
   padding: 20px;
   position: relative;
 `;
@@ -44,7 +42,7 @@ const TrainerChat = () => {
   const [chatList, setChatList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); 
   const trainerId = useStore((state) => state.userId);
-  console.log(userList);
+  console.log(chatList);
   useEffect(() => {
     const fetchData = async () => {
       try {

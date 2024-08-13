@@ -97,9 +97,9 @@ const BoxChatList = ({ chats, trainerId }) => {
           onClick={() => openChatRoom(chat.memberId)}
         >
           <UserInfo>
-            <UserImage src={chat.memberImgUrl || profile} alt={chat.name} />
+            <UserImage src={chat.imgUrl || profile} alt={chat.name} />
             <NameMessage>
-              <UserName>{chat.memberName}</UserName>
+              <UserName>{chat.name}</UserName>
               <UserMessage>{chat.lastContent}</UserMessage>
             </NameMessage>
           </UserInfo>

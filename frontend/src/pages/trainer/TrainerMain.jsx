@@ -13,19 +13,9 @@ import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx"
 import { checkMemberList, checkPtPlan } from "../../api/trainer.js";
 import { requestPermission } from "../../firebase.jsx";
 
-const userSchedule = {
-    id: 1,
-    memberId: 1,
-    startTime: "2024-08-12T12:00:00.000Z",
-    endTime: "2024-08-12T12:00:00.000Z",
-    createdAt: "2024-08-12T12:00:00.000Z",
-    name: "강동형",
-    ptCnt: "0",
-    imgUrl: "",
-};
-const plusBtn = styled.img`
-    width: 40px;
-`;
+
+
+
 const TrainerMain = () => {
     const { userUpdate } = useStore();
     const [isExpanded, setIsExpanded] = useState(false);
@@ -45,25 +35,6 @@ const TrainerMain = () => {
         userUpdate();
 
         fetchData(userId, formatMonth, formatYear);
-
-        if (trainer) {
-            userSchedule(userId)
-                .then((response) => {
-                    const convertedTimebox = response.map((schedule) => {
-                        const date = new Date(schedule.date);
-                        const formattedDate = `${date.getMonth() + 1}.${date.getDate()}(${
-                            ["일", "월", "화", "수", "목", "금", "토"][date.getDay()]
-                        })`;
-                        const formattedTime = `AM ${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")} - ${
-                            date.getHours() + 1
-                        }:${String(date.getMinutes()).padStart(2, "0")}`;
-                        return { day: formattedDate, time: formattedTime };
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
 
         const hasVisited = localStorage.getItem("hasVisited");
         if (!hasVisited) {
@@ -140,7 +111,6 @@ const TrainerMain = () => {
     };
     
     const openModal = () => {
-        console.log(1);
         setIsOpen(true);
     };
 
@@ -211,14 +181,13 @@ const TrainerMain = () => {
         selectedMemDate.map((schedule, index) => (
             <div key={index} className="w-full mb-[10px]">
                 <BoxSchedule onClick={openModal} userSchedule={schedule} />
+                <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={schedule} />
             </div>
         ))
     ) : (
         <BtnAddSchedule />
     )}
 </div>
-                    <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={userSchedule} />
-                    {/* 회원이 있을때 나오는 박스 분기처리와 for문을 돌려서 프롭스로 내려서 처리 요망 */}
                 </>
             )}
         </div>

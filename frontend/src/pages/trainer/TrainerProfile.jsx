@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Profile from '../../assets/profile.png';
-import phone from '../../assets/info/phone.png';
 import styled from 'styled-components';
 import { useStore } from '../../store/store';
 import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
@@ -14,7 +13,7 @@ const Container = styled.div`
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 20px;
-  text-align: center; /* 버튼 가운데 정렬을 위한 추가 */
+  text-align: center; 
 `;
 
 const ProfileContainer = styled.div`

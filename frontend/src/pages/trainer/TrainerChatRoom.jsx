@@ -12,7 +12,7 @@ import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
-const BASE_URL = import.meta.env.VITE_API_URL;
+import Camera from "../../assets/static/Property_Camera.png"
 
 // For local development, leave these variables empty
 // For production, configure them with correct URLs depending on your deployment
@@ -24,7 +24,7 @@ function configureUrls() {
     // If APPLICATION_SERVER_URL is not configured, use default value from local development
     if (!APPLICATION_SERVER_URL) {
         if (window.location.hostname === "localhost") {
-            APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
+            APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
         } else {
             APPLICATION_SERVER_URL = "https://" + window.location.hostname + ":6443/rtc/";
         }
@@ -99,7 +99,7 @@ function TrainerChatRoom() {
     }
 
     async function getToken(roomName, participantName) {
-        APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
+        APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
         const response = await fetch(APPLICATION_SERVER_URL + "rtctoken", {
             method: "POST",
             headers: {
@@ -127,20 +127,24 @@ function TrainerChatRoom() {
         <>
             {!room ? (
              <div>
-                <form
-                            onSubmit={(e) => {
-                                joinRoom();
-                                e.preventDefault();
-                            }}
-                        >
-                            <button
-                                className='btn btn-lg btn-success'
-                                type='submit'
-                                disabled={!roomName || !participantName}
-                            >
-                                Join!
-                            </button>
-                        </form>
+                <form className="fixed bottom-[50px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
+                    onSubmit={(e) => {
+                        joinRoom();
+                        e.preventDefault();
+                    }}
+                >
+                    <button
+                        className='btn btn-lg btn-success'
+                        type='submit'
+                        disabled={!roomName || !participantName}
+                    >
+                        <img src={Camera} alt="카메라" />
+                    </button>
+                </form>
+            <div>   
+                {/*수정필요 */}
+                <ChatComponent participantName={trainerId} roomName={roomName} receiver={roomName} />
+            </div>
              </div>   
             ): (
                 <div id='room'>
@@ -171,10 +175,7 @@ function TrainerChatRoom() {
                     </div>
                 </div>
             )}
-            <div>   
-                {/*수정필요 */}
-                <ChatComponent participantName={trainerId} roomName={roomName} receiver={roomName} />
-            </div>
+            
         </>
     );
 }

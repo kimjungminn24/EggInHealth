@@ -5,6 +5,7 @@ import BoxMain from './../../components/user/main/BoxMain';
 import BoxSchedule from './../../components/user/main/BoxSchedule';
 import { useUserInfoStore, useStore } from '../../store/store';
 import { userSchedule } from '../../api/main';
+import { requestPermission } from "../../firebase.jsx";
 
 const PTBox = styled.div`
   display: flex;
@@ -45,9 +46,18 @@ const UserMain = () => {
         const formatYear = `${today.getFullYear()}`;
         try {
           await fetchData(updatedUserId, formatMonth, formatYear);
+
+          const hasVisited = localStorage.getItem('hasVisited');
+          if (!hasVisited) {
+           requestPermission();
+            // 방문 기록 저장
+            localStorage.setItem('hasVisited', 'true');
+          }
+
         } catch (error) {
           console.error("Error fetching data:", error);
         }
+
       }
     };
 
@@ -69,6 +79,7 @@ const UserMain = () => {
           console.error(error);
         });
     }
+
   }, [fetchData, trainer, userUpdate, userId]);
 
   return (

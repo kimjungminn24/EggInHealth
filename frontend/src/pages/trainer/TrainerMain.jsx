@@ -11,6 +11,7 @@ import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.js
 import plusbutton from '../../assets/plusbutton.png';
 import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
 import { checkMemberList } from "../../api/trainer.js";
+import { requestPermission } from "../../firebase.jsx";
 
 const userSchedule = {
   "id":1,
@@ -79,6 +80,14 @@ const TrainerMain = () => {
         } else {
           setIsMemListEmpty(true);
         }
+
+        const hasVisited = localStorage.getItem('hasVisited');
+          if (!hasVisited) {
+            requestPermission();
+            // 방문 기록 저장
+            localStorage.setItem('hasVisited', 'true');
+          }
+
       } catch (error) {
         console.error('Error fetching member list:', error);
         setIsMemListEmpty(true); // 에러가 발생한 경우에도 비어있다고 간주

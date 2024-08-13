@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
@@ -25,13 +25,7 @@ import TrainerChatRoom from './pages/trainer/TrainerChatRoom.jsx'
 import UserFeedback from "./pages/user/UserFeedback";
 import { useStore, useUserInfoStore } from './store/store.js';
 
-import { requestPermission } from './firebase.jsx';
-
 function App() {
-    useEffect(() => {
-        requestPermission();
-    }, []);
-
     const userType = useStore(state => state.userType);
     const userInfoType = useUserInfoStore(state => state.userType);
 

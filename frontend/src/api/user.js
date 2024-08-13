@@ -43,6 +43,7 @@ export const checkGoal = async (uid) => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true, 
         }
       );
       return response.data;

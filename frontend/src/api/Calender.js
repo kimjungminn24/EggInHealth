@@ -41,6 +41,7 @@ export const CheckFood = async (id, year, month, day) => {
   };
 
   export const GetExerDate = async (id, year, month) => {
+    console.log('js 먼스', month);
     try {
       const response = await axios.get(
         `${BASE_URL}/pt/plan/${id}?year=${year}&month=${month}`, 
@@ -51,6 +52,7 @@ export const CheckFood = async (id, year, month, day) => {
           withCredentials: true,
         }
       );
+      console.log('exerdate',response.data);
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');

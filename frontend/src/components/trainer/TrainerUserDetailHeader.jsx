@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Arrow from "../../assets/static/Property_Arrow.png";
+import Arrow from "../../assets/static/whitearrow.png";
 
 //양식만 맞춰놈, 수정필요
 const initialItems = [
@@ -113,10 +113,10 @@ const TrainerUserDetailHeader = () => {
       <div className='absolute h-[35px] w-[120px] bg-white z-10 top-0 left-0 right-0 bottom-0 m-auto rounded-full'></div>
       <div className='absolute h-[35px] w-[320px] justify-between flex top-0 left-0 right-0 bottom-0 m-auto items-center'>
         <div className='z-40 cursor-pointer' onClick={handleScrollLeft}>
-          <img src={Arrow} alt="왼쪽화살표" className='w-[13px] h-[24px] -scale-x-100' />
+          <img src={Arrow} alt="왼쪽화살표" className='w-[26px] h-[36px] -scale-x-100' />
         </div>
         <div className='z-40 cursor-pointer' onClick={handleScrollRight}>
-          <img src={Arrow} alt="오른쪽화살표" className='w-[13px] h-[24px]' />
+          <img src={Arrow} alt="오른쪽화살표" className='w-[26px] h-[36px]' />
         </div>
       </div>
       <div

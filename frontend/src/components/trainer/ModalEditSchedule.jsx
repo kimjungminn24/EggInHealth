@@ -4,7 +4,6 @@ import { editPtPlan } from '../../api/trainer';
 import { deletePtPlan } from '../../api/trainer';
 import profile from '../../assets/profile.png';
 
-
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -33,7 +32,6 @@ const Header = styled.div`
   font-weight: bold;
   margin-bottom: 10px;
 `;
-
 
 const DateLabel = styled.label`
   font-size: 15px; 
@@ -66,6 +64,12 @@ const TimeInput = styled.input`
   font-size: 14px;
 `;
 
+const ActionButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
 const AddButton = styled.button`
   background-color: #FFD966; 
   border: none;
@@ -74,16 +78,30 @@ const AddButton = styled.button`
   color: white;
   font-size: 14px; 
   cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
+  width: 48%;
 
   &:hover {
     background-color: #FFC107; 
   }
 `;
 
-const CloseButton = styled.button`
+const DeleteButton = styled.button`
   background-color: #FF5757; 
+  border: none;
+  border-radius: 15px; 
+  padding: 15px;
+  color: white;
+  font-size: 14px; 
+  cursor: pointer;
+  width: 48%;
+
+  &:hover {
+    background-color: #FF3F3F; 
+  }
+`;
+
+const CloseButton = styled.button`
+  background-color: #CCC; 
   border: none;
   border-radius: 15px; 
   padding: 15px;
@@ -94,7 +112,7 @@ const CloseButton = styled.button`
   margin-top: 10px;
 
   &:hover {
-    background-color: #FF3F3F; 
+    background-color: #b7b7b7; 
   }
 `;
 
@@ -130,7 +148,6 @@ const UserImage = styled.img`
   margin-right: 15px;
 `;
 
-
 export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -139,12 +156,12 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
   const [ptId, setPtId] = useState();
 
   useEffect(() => {
-    if (user) { // user 객체가 존재하는지 확인
-      setMemberId(user.memberId || ''); // 기본값 설정
-      setEndTime(user.endTime ? user.endTime.substring(11, 16) : ''); // 안전하게 substring 사용
-      setStartTime(user.startTime ? user.startTime.substring(11, 16) : ''); // 안전하게 substring 사용
-      setDate(user.startTime ? user.startTime.substring(0, 10) : ''); // 안전하게 substring 사용
-      setPtId(user.Id || '');
+    if (user) {
+      setMemberId(user.memberId || '');
+      setEndTime(user.endTime ? user.endTime.substring(11, 16) : '');
+      setStartTime(user.startTime ? user.startTime.substring(11, 16) : '');
+      setDate(user.startTime ? user.startTime.substring(0, 10) : '');
+      setPtId(user.id || '');
     }
   }, [user]);
 
@@ -158,11 +175,10 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
 
   const EditPtPlan = async () => {
     const data = {
-      memberId: memberId,
+      id: ptId,
       startTime: `${date}T${startTime}:00.000Z`,
       endTime: `${date}T${endTime}:00.000Z`,
     };
-    console.log(data);
     try {
       await editPtPlan(data);
     } catch (error) {
@@ -212,9 +228,11 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
           <TimeInput type="time" placeholder="시작시간" value={startTime} onChange={handleStartTimeChange} />
           <TimeInput type="time" placeholder="종료시간" value={endTime} onChange={handleEndTimeChange} />
         </TimeContainer>
-        <AddButton onClick={EditPtPlan}>수정</AddButton>
+        <ActionButtonContainer>
+          <AddButton onClick={EditPtPlan}>수정</AddButton>
+          <DeleteButton onClick={DeletePtPlan}>삭제</DeleteButton>
+        </ActionButtonContainer>
         <CloseButton onClick={onRequestClose}>닫기</CloseButton>
-        <CloseButton onClick={DeletePtPlan}>삭제</CloseButton>
       </ModalContent>
     </ModalOverlay>
   );

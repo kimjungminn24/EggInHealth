@@ -4,11 +4,9 @@ import BoxChatList from '../../components/trainer/BoxChatList';
 import ModalUserList from '../../components/trainer/ModalUserList'; 
 import plusbutton from '../../assets/plusbutton.png';
 import { checkChat } from '../../api/trainer';
-import { useStore } from '../../store/store';
+import { useStore,useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
-  background-color: #f8f8f8;
-  height: 100vh;
   padding: 20px;
   position: relative;
 `;
@@ -44,7 +42,11 @@ const TrainerChat = () => {
   const [chatList, setChatList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); 
   const trainerId = useStore((state) => state.userId);
-  
+  const {fetchData} = useUserInfoStore()
+
+  useEffect(()=>{
+    fetchData(trainerId)
+  },[])
   useEffect(() => {
     const fetchData = async () => {
       try {

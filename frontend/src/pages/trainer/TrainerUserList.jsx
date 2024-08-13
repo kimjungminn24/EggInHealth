@@ -14,8 +14,6 @@ import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   padding: 20px;
-  background-color: #f9f9f9;
-  height: 100vh;
 `;
 
 const UserList = styled.div`
@@ -86,7 +84,7 @@ const TrainerUserList = () => {
 
   const handleDetailMember = async(memberId)=>{
     await fetchData(memberId,formatMonth,formatYear)
-    await navigate(`/userexercise`)
+    await navigate(`/usercalender`)
   }
   useEffect(() => {
     const fetchMemberList = async () => {

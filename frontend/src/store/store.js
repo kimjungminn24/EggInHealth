@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { userInfo, userEgg, userRole } from '../api/main';
 
+// 사용자 정보를 업데이트하는 store
 export const useStore = create(
   persist(
     (set) => ({
@@ -37,17 +38,29 @@ export const useUserInfoStore = create(
       userEggData: null,
       userId: null,
       userType: null,
+      loading: true,
+      error: null,
       fetchData: async (userId, formatMonth, formatYear) => {
         try {
           const infoRet = await userInfo(userId);
-          const eggRet = await userEgg(userId, formatMonth, formatYear);
           set({
             userData: infoRet,
-            userEggData: eggRet,
             userId: infoRet.id,
             userType: infoRet.type,
-            loading: false,
+            loading: true,
           });
+
+          if (formatMonth && formatYear) {
+            const eggRet = await userEgg(userId, formatMonth, formatYear);
+            set({
+              userEggData: eggRet,
+              loading: false,
+            });
+          } else {
+            set({
+              loading: false,
+            });
+          }
         } catch (error) {
           set({
             error: error.message,
@@ -57,31 +70,8 @@ export const useUserInfoStore = create(
       },
     }),
     {
-      name: 'user-info-store', 
+      name: 'user-info-store',
     }
   )
 );
 
-// 예시: 컴포넌트에서 데이터 자동 동기화
-const MyComponent = () => {
-  const { userId, userUpdate } = useStore();
-  const { fetchData } = useUserInfoStore();
-
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 userUpdate를 호출해 사용자 정보 업데이트
-    if (userId) {
-      userUpdate();
-    }
-  }, [userId, userUpdate]);
-
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 fetchData를 호출해 데이터 동기화
-    if (userId) {
-      const currentMonth = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
-      fetchData(userId, currentMonth, currentYear);
-    }
-  }, [userId, fetchData]);
-
-  // ...
-};

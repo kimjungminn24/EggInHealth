@@ -92,6 +92,7 @@ export const checkCode = async () => {
 
   export const deletePtPlan = async (id) => {
     try {
+      console.log(        `${BASE_URL}/pt/plan/${id}`, );
       const response = await axios.delete(
         `${BASE_URL}/pt/plan/${id}`, 
         {
@@ -121,6 +122,7 @@ export const checkCode = async () => {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   }
+  
   export const checkPtPlan = async (year,month,day) => {
     try {
       const response = await axios.get(`${BASE_URL}/pt/plan/top?year=${year}&month=${month}&day=${day}`, {

@@ -51,7 +51,7 @@ const ButtonContainer = styled.div`
   margin-right: 10px; /* 위쪽 여백 추가 */
 `
 
-const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
+const ExerciseList = ({ selectedDate, exData, userLoginData, userData,fetchExData }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState(null); 
@@ -65,7 +65,7 @@ const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
   const closeActionModal = () => setIsActionModalOpen(false);
 
   const handleEdit = () => {
-    console.log("수정:", selectedExercise);
+    openAddModal(selectedExercise)
     closeActionModal();
   };
 
@@ -114,7 +114,7 @@ const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
 
     return kstDate.toISOString();
   };
-
+console.log(selectedExercise)
   return (
     <div>
       {selectedDate && exData ? (
@@ -159,7 +159,8 @@ const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
           onClose={closeAddModal}
           selectedDate={selectedDate}
           userData={userData}
-          exData={exData}
+          setId={selectedExercise?.setId}
+          fetchExData={fetchExData}
         />
         
         <ActionModal
@@ -167,7 +168,7 @@ const ExerciseList = ({ selectedDate, exData, userLoginData, userData }) => {
           onClose={closeActionModal}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          exData={exData}
+          setId={selectedExercise?.setId} // selectedExercise에서 setId를 가져옴
         />
       </ButtonContainer>
     </div>

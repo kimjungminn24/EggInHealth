@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
-import { registerExh, updateEx } from '../../api/exercise'; // updateEx를 import합니다.
+import { registerExh, updateEx } from '../../api/exercise';
 import styled from 'styled-components';
 
 const ModalContent = styled.div`
@@ -74,7 +74,7 @@ const CloseButton = styled(Button)`
   }
 `;
 
-const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, exData }) => {
+const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetchExData }) => {
   const [exhSet, setExhSet] = useState('');
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
@@ -82,7 +82,7 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, exData }) =
   const [exhRep, setExhRep] = useState('');
   const [inputType, setInputType] = useState('setWeight');
   const id = userData.id;
-  console.log(exData);
+
   useEffect(() => {
     if (inputType === 'setWeight') {
       setExTime(0);
@@ -91,38 +91,25 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, exData }) =
     }
   }, [inputType]);
 
-  useEffect(() => {
-    // exData가 있을 경우 기존 값을 설정
-    if (exData) {
-      setExhSet(exData.sets.set);
-      setExhWeight(exData.sets.weight);
-      setExhRep(exData.sets.rep);
-      setExhName(exData.name);
-      setExTime(exData.time || '');
-      setInputType(exData.time ? 'time' : 'setWeight');
-    }
-  }, [exData]);
-
   const resetInputs = () => {
     setExTime('');
     setExhWeight('');
     setExhSet('');
     setExhRep('');
   };
-
+  
   const handleAddExercise = async () => {
-    if (exData) {
-      // 수정 로직
+    if (setId){
       await updateEx(
-        exData.sets.setId,
+        setId, 
         inputType === 'setWeight' ? exhSet : null,
         inputType === 'setWeight' ? exhWeight : null,
         exhName,
         inputType === 'time' ? exTime : 0,
         selectedDate
       );
-    } else {
-      // 등록 로직
+    }
+    else{
       await registerExh(
         inputType === 'setWeight' ? exhSet : null,
         inputType === 'setWeight' ? exhWeight : null,
@@ -133,7 +120,9 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, exData }) =
         id
       );
     }
-    onClose();
+      resetInputs(); // 입력 필드 초기화
+    fetchExData(); // 데이터 새로고침
+    onClose(); // 모달 닫기
   };
 
   return (
@@ -196,7 +185,7 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, exData }) =
           </InputContent>
         )}
 
-        <Button onClick={handleAddExercise}>{exData ? '수정' : '등록'}</Button>
+        <Button onClick={handleAddExercise}>{setId ? '수정': '등록' }</Button>
         <CloseButton onClick={onClose}>닫기</CloseButton>
       </ModalContent>
     </StyledModal>

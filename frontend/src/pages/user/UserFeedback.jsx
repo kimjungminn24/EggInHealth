@@ -133,8 +133,8 @@ const UserFeedback = () => {
 
   const getKoreanISOString = () => {
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
-    const kstDate = new Date(now.getTime() + kstOffset);
+    
+    const kstDate = new Date(now.getTime());
 
     // KST 시간을 "YYYY-MM-DDTHH:MM:SS" 형식으로 변환
     const year = kstDate.getFullYear();

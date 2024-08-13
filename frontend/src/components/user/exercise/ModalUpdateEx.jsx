@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { deleteEx } from "../../../api/exercise";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -40,9 +41,9 @@ const Button = styled.button`
   }
 `;
 
-const ActionModal = ({ isOpen, onClose, onEdit, onDelete }) => {
+const ActionModal = ({ isOpen, onClose, onEdit, onDelete, setId }) => {
   if (!isOpen) return null;
-
+  console.log(setId)
   const handleOverlayClick = (e) => {
     // Overlay를 클릭했을 때만 모달을 닫음
     if (e.target === e.currentTarget) {
@@ -50,11 +51,22 @@ const ActionModal = ({ isOpen, onClose, onEdit, onDelete }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteEx(setId); // deleteEx API 호출
+      onDelete(); // 삭제 후 onDelete 함수 호출 (상태 업데이트 등)
+      onClose(); // 모달 닫기
+    } catch (error) {
+      console.error("삭제 오류:", error);
+      // 오류 처리 로직 추가 가능
+    }
+  };
+
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
         <Button onClick={onEdit}>수정</Button>
-        <Button onClick={onDelete}>삭제</Button>
+        <Button onClick={handleDelete}>삭제</Button>
         <Button onClick={onClose}>닫기</Button>
       </ModalContainer>
     </ModalOverlay>

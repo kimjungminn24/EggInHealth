@@ -53,7 +53,7 @@ const Exercise = () => {
       }
     }
   };
-
+  
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
@@ -61,7 +61,7 @@ const Exercise = () => {
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
-
+  
   useEffect(() => {
     if (userData && userData.id) {
       fetchExData();
@@ -72,7 +72,7 @@ const Exercise = () => {
     ExerciseImg,
     isModalOpen,
     isDeleteModalOpen,
-    userData.sets,
+    
   ]);
 
   const navigate = useNavigate();
@@ -101,6 +101,7 @@ const Exercise = () => {
           exData={exData}
           userLoginData={userLoginData}
           userData={userData}
+          fetchExData={fetchExData}
         />
         <div>
             <Mini onClick={handleFeedbackClick}>피드백 목록</Mini>

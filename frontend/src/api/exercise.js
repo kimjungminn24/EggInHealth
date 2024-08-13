@@ -83,7 +83,9 @@ export const updateEx = async (setId, set, weight, name, time, date) => {
   return res.data;
 };
 export const deleteEx = async (setId) => {
-  const res = await axios.delete(`${BASE_URL}/exercise${setId}`);
+  console.log(setId);
+  
+  const res = await axios.delete(`${BASE_URL}/exercise?setId=${setId}`);
   return res.data;
 };
 

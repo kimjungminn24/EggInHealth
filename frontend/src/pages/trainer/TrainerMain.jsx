@@ -53,17 +53,25 @@ const TrainerMain = () => {
             try {
                 const memberList = await checkMemberList(today.getFullYear(), today.getMonth(), today.getDate());
 
-                // 멤버 리스트가 비어있는지 확인
-                if (memberList && memberList.length > 0) {
-                    setIsMemListEmpty(false);
-                } else {
-                    setIsMemListEmpty(true);
-                }
-            } catch (error) {
-                console.error("Error fetching member list:", error);
-                setIsMemListEmpty(true); // 에러가 발생한 경우에도 비어있다고 간주
-            }
-        };
+        // 멤버 리스트가 비어있는지 확인
+        if (memberList && memberList.length > 0) {
+          setIsMemListEmpty(false);
+        } else {
+          setIsMemListEmpty(true);
+        }
+
+        const hasVisited = localStorage.getItem('hasVisited');
+          if (!hasVisited) {
+            requestPermission();
+            // 방문 기록 저장
+            localStorage.setItem('hasVisited', 'true');
+          }
+
+      } catch (error) {
+        console.error('Error fetching member list:', error);
+        setIsMemListEmpty(true); // 에러가 발생한 경우에도 비어있다고 간주
+      }
+    };
 
         fetchData();
     }, []);

@@ -71,7 +71,7 @@ const ActionButtonContainer = styled.div`
 `;
 
 const AddButton = styled.button`
-  background-color: #28a745; 
+  background-color: #FFD966; 
   border: none;
   border-radius: 15px; 
   padding: 15px;
@@ -81,7 +81,7 @@ const AddButton = styled.button`
   width: 48%;
 
   &:hover {
-    background-color: #218838; 
+    background-color: #FFC107; 
   }
 `;
 
@@ -101,7 +101,7 @@ const DeleteButton = styled.button`
 `;
 
 const CloseButton = styled.button`
-  background-color: #FFD966; 
+  background-color: #CCC; 
   border: none;
   border-radius: 15px; 
   padding: 15px;
@@ -112,7 +112,7 @@ const CloseButton = styled.button`
   margin-top: 10px;
 
   &:hover {
-    background-color: #FFC107; 
+    background-color: #b7b7b7; 
   }
 `;
 
@@ -154,14 +154,14 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
   const [endTime, setEndTime] = useState('');
   const [memberId, setMemberId] = useState();
   const [ptId, setPtId] = useState();
-  
+
   useEffect(() => {
     if (user) {
       setMemberId(user.memberId || '');
       setEndTime(user.endTime ? user.endTime.substring(11, 16) : '');
       setStartTime(user.startTime ? user.startTime.substring(11, 16) : '');
       setDate(user.startTime ? user.startTime.substring(0, 10) : '');
-      setPtId(user.Id || '');
+      setPtId(user.id || '');
     }
   }, [user]);
 
@@ -175,7 +175,7 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
 
   const EditPtPlan = async () => {
     const data = {
-      memberId: memberId,
+      id: ptId,
       startTime: `${date}T${startTime}:00.000Z`,
       endTime: `${date}T${endTime}:00.000Z`,
     };

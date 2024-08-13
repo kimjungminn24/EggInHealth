@@ -7,6 +7,7 @@ import { uploadOCR } from '../../../api/inbody';
 import { useStore } from '../../../store/store';
 import { getInbodyParsingResult } from '../../../hooks/inbodyParsing';
 import { data } from '../../../hooks/inbodyData';
+import inbody from '../../../assets/inbody.jpg'
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -120,18 +121,40 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
     }
   };
 
-  const uploadPhoto =  (dataUrl) => {
+  const uploadPhoto =  async (dataUrl) => {
     try {
       const file = dataURLtoFile(dataUrl, 'captured-photo.png');
+      await testWithInbodyFile();
+
       // const ocrResult = await uploadOCR(file);
-      const formatData = getInbodyParsingResult(data)
-      formatData.memberId=userId
-      formatData.imageFile=file
-      formatData.height='0'
+
+      // const formatData = getInbodyParsingResult(ocrResult)
+      // formatData.memberId=userId
+      // formatData.imageFile=file
+      // formatData.height='0'
+      // console.log(formatData);
+
+      // setInbodyData(formatData)
+      onRequestClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const testWithInbodyFile = async () => {
+    try {
+      const response = await fetch(inbody);
+      const blob = await response.blob();
+      const file = new File([blob], 'inbody.jpg', { type: 'image/jpeg' });
+
+      const ocrResult = await uploadOCR(file);
+      const formatData = getInbodyParsingResult(ocrResult);
+      formatData.memberId = userId;
+      formatData.imageFile = file;
+      formatData.height = '0';
       console.log(formatData);
 
-      setInbodyData(formatData)
-      onRequestClose();
+      setInbodyData(formatData);
     } catch (error) {
       console.error(error);
     }

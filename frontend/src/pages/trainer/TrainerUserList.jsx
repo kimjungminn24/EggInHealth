@@ -84,7 +84,7 @@ const TrainerUserList = () => {
 
   const handleDetailMember = async(memberId)=>{
     await fetchData(memberId,formatMonth,formatYear)
-    await navigate(`/userexercise`)
+    await navigate(`/usercalender`)
   }
   useEffect(() => {
     const fetchMemberList = async () => {

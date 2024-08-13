@@ -41,9 +41,9 @@ const InbodyPage = ({  modalIsOpen }) => {
   const userId = useStore((state) => state.userId);
   const age = useStore((state) => state.userInfo.age);
   const height = useStore((state) => state.userInfo.height);
-  // const gender = useStore((state) => state.userInfo);
-  const gender = 'M'
-  console.log(age);
+  const gender = useStore((state) => state.userInfo);
+
+  console.log(gender);
   const { weight: weightStandard, muscle: muscleStandard, fatPercentage: fatPercentageStandard, bmi: bmiStandard, fat: fatStandard } = useStandardValues(age, height, gender);
 
  

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Profile from '../../assets/profile.png';
 import styled from 'styled-components';
 import { useStore } from '../../store/store';
 import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
 import { ModalEditPT } from '../../components/trainer/ModalEditPT';
 import email from '../../assets/info/email.png';
+import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   width: 100%;
@@ -96,7 +97,12 @@ const TrainerProfile = () => {
     const userData = useStore((state) => state.userInfo);
     const [isMakeCodeModalOpen, setMakeCodeModalOpen] = useState(false);
     const [isEditPTModalOpen, setEditPTModalOpen] = useState(false);
+    const {fetchData} = useUserInfoStore()
 
+    useEffect(()=>{
+      fetchData(userData.id)
+    },[])
+    
     const openMakeCodeModal = () => {
       setMakeCodeModalOpen(true);
     };

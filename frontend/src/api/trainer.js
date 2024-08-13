@@ -92,6 +92,7 @@ export const checkCode = async () => {
 
   export const deletePtPlan = async (id) => {
     try {
+      console.log(        `${BASE_URL}/pt/plan/${id}`, );
       const response = await axios.delete(
         `${BASE_URL}/pt/plan/${id}`, 
         {

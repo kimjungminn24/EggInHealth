@@ -138,7 +138,7 @@ const TrainerMain = () => {
     const handleDateChange = (memDateForTheDay) => {
         setSelectedMemDate(memDateForTheDay);
     };
-
+    
     const openModal = () => {
         console.log(1);
         setIsOpen(true);
@@ -202,19 +202,21 @@ const TrainerMain = () => {
                         </div>
                         <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} />
                     </div>
-                    <div className='flex item-center justify-center mt-[20px]'>
-                        {isMemListEmpty ? (
-                            <BtnRegister />
-                        ) : selectedMemDate !== null &&
-                          selectedMemDate.length !== 0 &&
-                          Array.isArray(selectedMemDate) ? (
-                            selectedMemDate.map((schedule, index) => (
-                                <BoxSchedule key={index} onClick={openModal} userSchedule={schedule} />
-                            ))
-                        ) : (
-                            <BtnAddSchedule />
-                        )}
-                    </div>
+                    <div className='flex flex-col items-center justify-center mt-[20px]'>
+    {isMemListEmpty ? (
+        <BtnRegister />
+    ) : selectedMemDate !== null &&
+      selectedMemDate.length !== 0 &&
+      Array.isArray(selectedMemDate) ? (
+        selectedMemDate.map((schedule, index) => (
+            <div key={index} className="w-full mb-[10px]">
+                <BoxSchedule onClick={openModal} userSchedule={schedule} />
+            </div>
+        ))
+    ) : (
+        <BtnAddSchedule />
+    )}
+</div>
                     <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={userSchedule} />
                     {/* 회원이 있을때 나오는 박스 분기처리와 for문을 돌려서 프롭스로 내려서 처리 요망 */}
                 </>

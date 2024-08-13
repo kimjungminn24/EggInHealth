@@ -129,7 +129,7 @@ export const updateFeedback = async (
   createdAt,
   id
 ) => {
-  console.log(  motionSimilarity,
+  console.log(motionSimilarity,
     memo,
     exerciseId,
     record,

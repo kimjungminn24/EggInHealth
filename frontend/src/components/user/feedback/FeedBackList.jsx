@@ -74,7 +74,7 @@ const Divider = styled.div`
     background-color: #ccc;
     margin: 5px 0;
 `;
-const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString}) => {
+const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString,userType}) => {
     const [dropdownVisible, setDropdownVisible] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
@@ -130,12 +130,13 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
                     }}>
                         ...
                     </ActionButton>
-
+                    {userType === 'MEMBER' ?
                     <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id} onClick={(e) => e.stopPropagation()}>
                         <DropdownItem onClick={() => handleEdit(item)}>수정</DropdownItem>
                         <Divider />
                         <DropdownItem onClick={() => handleDelete(item.id)}>삭제</DropdownItem> 
                     </DropdownMenu>
+                    : null}
                 </FeedbackItem>
             ))}
             <FeedbackModal 

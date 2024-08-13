@@ -83,7 +83,6 @@ const UserFeedback = () => {
   const [feedback, setFeedback] = useState([]);
   const [selectedExerciseId, setSelectedExerciseId] = useState(null); // 추가
 
-  const userLoginId = useStore((state) => state.userId);
   const userData = useUserInfoStore((state) => state.userData);
   const userId = userData.id;
   const userType = useStore((set) => set.userType);
@@ -186,7 +185,8 @@ const UserFeedback = () => {
         onClose={closeFeedbackModal}
         name={userData.name}
         getKoreanISOString={getKoreanISOString}
-        fetchFeedbackData={fetchFeedbackData}
+        fetchFeedback={fetchFeedback}
+        userData={userData}
       />
     </Container>
   );

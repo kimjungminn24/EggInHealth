@@ -50,12 +50,11 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbackData,feedbackData }) => {
+const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedback,feedbackData,userData }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [memo, setMemo] = useState('');
   const [file, setFile] = useState(null); 
   const [hasVideo,setHasVideo] = useState(false)
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -72,13 +71,14 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
       try {
         if (feedbackData){
          await updateFeedback(motionSimilarity, memo, exerciseId, record, getKoreanISOString(),feedbackData.id)}
+         
       else
           await registerFeedback(motionSimilarity, memo, exerciseId, record, createdAt);
           onClose();
           setExerciseId('');
           setMemo('');
           setFile(null);
-          fetchFeedbackData();
+          fetchFeedback(userData.id);
       } catch (error) {
         if (error.response) {
           console.error('Error response:', error.response.data);

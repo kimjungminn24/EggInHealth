@@ -60,7 +60,6 @@ const TrainerChat = () => {
             users.push(chat);
           }
         });
-        console.log('챗스',chats);
         setChatList(chats);
         setUserList(users);
       } catch (error) {

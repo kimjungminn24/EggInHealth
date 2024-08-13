@@ -64,7 +64,7 @@ const RenderDays = ({ id, year, month }) => {
                 }
             }
 
-        console.log(foodDataMap, ExerDataMap);
+
             
             setFoodData(foodDataMap);
             setExerData(ExerDataMap);

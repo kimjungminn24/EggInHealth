@@ -51,3 +51,22 @@ export const checkGoal = async (uid) => {
     }
   };
 
+
+  export const disconnectUser = async (uid) => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/code/${uid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log('연결끊기완료');
+      
+      return response.data;
+    } catch (error) {
+      console.log("연결끊기실패");
+      console.error(error);
+    }
+  };

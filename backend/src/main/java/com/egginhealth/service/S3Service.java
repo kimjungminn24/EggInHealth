@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,7 +29,15 @@ public class S3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final String TEMP_FILE_PATH = System.getProperty("user.dir") + File.separator + "preprocessing" + File.separator;
+    private String filePath;
+
+    private String getFilePath() {
+        if (filePath == null) {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = (Objects.equals(projectRoot, File.separator) ? "" : projectRoot) + File.separator + "preprocessing" + File.separator;
+        }
+        return filePath;
+    }
 
     /**
      * MultipartFile을 받아서 S3에 업로드
@@ -79,7 +88,7 @@ public class S3Service {
         String originalFilename = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
 
-        String uuidFilePath = TEMP_FILE_PATH + uuid + "_" + originalFilename.replaceAll("\\s", "_");
+        String uuidFilePath = getFilePath() + uuid + "_" + originalFilename.replaceAll("\\s", "_");
 
         File convertFile = new File(uuidFilePath);
         if (convertFile.createNewFile()) {

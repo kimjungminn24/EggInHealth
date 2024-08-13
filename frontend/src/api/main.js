@@ -76,7 +76,7 @@ export const userRole = async () => {
 export const userSchedule = async (Id) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/pt/plan/top?id=${Id}&cnt=3`, 
+      `${BASE_URL}/pt/plan/top/${Id}?cnt=3`, 
       {
         headers: {
           'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
   const [localHeight, setLocalHeight] = useState('');
   const [localAge, setLocalAge] = useState('');
   const [localGender, setLocalGender] = useState('');
-
+  
   const handleHeightChange = (e) => {
     const value = e.target.value;
     setLocalHeight(value);
@@ -59,14 +59,14 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
         <Label>♂️♀️</Label>
         <GenderContainer>
           <GenderOption
-            selected={localGender === 'male'}
-            onClick={() => handleGenderChange('male')}
+            selected={localGender === 'M'}
+            onClick={() => handleGenderChange('M')}
           >
             🧔‍♂️ <br/>남성
           </GenderOption>
           <GenderOption
-            selected={localGender === 'female'}
-            onClick={() => handleGenderChange('female')}
+            selected={localGender === 'F'}
+            onClick={() => handleGenderChange('F')}
           >
             👩‍🦰 <br/>여성
           </GenderOption>

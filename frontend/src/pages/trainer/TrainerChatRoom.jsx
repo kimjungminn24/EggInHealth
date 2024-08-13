@@ -12,6 +12,7 @@ import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
 // For production, configure them with correct URLs depending on your deployment
@@ -23,7 +24,7 @@ function configureUrls() {
     // If APPLICATION_SERVER_URL is not configured, use default value from local development
     if (!APPLICATION_SERVER_URL) {
         if (window.location.hostname === "localhost") {
-            APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+            APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
         } else {
             APPLICATION_SERVER_URL = "https://" + window.location.hostname + ":6443/rtc/";
         }
@@ -98,7 +99,7 @@ function TrainerChatRoom() {
     }
 
     async function getToken(roomName, participantName) {
-        APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+        APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
         const response = await fetch(APPLICATION_SERVER_URL + "rtctoken", {
             method: "POST",
             headers: {

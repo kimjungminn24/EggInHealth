@@ -11,6 +11,7 @@ import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
 // For production, configure them with correct URLs depending on your deployment
@@ -22,7 +23,7 @@ function configureUrls() {
     // If APPLICATION_SERVER_URL is not configured, use default value from local development
     if (!APPLICATION_SERVER_URL) {
         if (window.location.hostname === "localhost") {
-            APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+            APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
         } else {
             APPLICATION_SERVER_URL = "https://" + window.location.hostname + ":6443/rtc/";
         }
@@ -48,9 +49,12 @@ function UserChatRoom() {
     const roomName = userState.userId
 
     async function joinRoom() {
+        // Initialize a new Room object
         const room = new Room();
         setRoom(room);
-    
+
+        // Specify the actions when events take place in the room
+        // On every new Track received...
         room.on(
             RoomEvent.TrackSubscribed,
             (_track, publication, participant) => {
@@ -60,52 +64,24 @@ function UserChatRoom() {
                 ]);
             }
         );
-    
+
+        // On every Track destroyed...
         room.on(RoomEvent.TrackUnsubscribed, (_track, publication) => {
-            setRemoteTracks((prev) =>
-                prev.filter((track) => track.trackPublication.trackSid !== publication.trackSid)
-            );
+            setRemoteTracks((prev) => prev.filter((track) => track.trackPublication.trackSid !== publication.trackSid));
         });
-    
+
         try {
+            // Get a token from your application server with the room name and participant name
             const rtctoken = await getToken(roomName, participantName);
+
+            // Connect to the room with the LiveKit URL and the token
             await room.connect(LIVEKIT_URL, rtctoken);
-    
-            // 디바이스 접근 권한 확인
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                console.log("Media devices access granted:", stream);
-            } catch (err) {
-                console.error("Error accessing media devices:", err.name, err.message);
-                if (err.name === "NotAllowedError") {
-                    console.error("Permissions to access camera and microphone were denied by the user.");
-                    alert("Please allow camera and microphone access.");
-                } else if (err.name === "NotFoundError") {
-                    console.error("No camera or microphone found on this device.");
-                    alert("No camera or microphone found. Please connect a device and try again.");
-                } else {
-                    console.error("An unexpected error occurred:", err);
-                }
-                throw new Error("Failed to access media devices.");
-            }
-    
-            // 카메라와 마이크 활성화
-            const isEnabled = await room.localParticipant.enableCameraAndMicrophone();
-            console.log("Camera and microphone enabled:", isEnabled);
-    
-            if (!isEnabled) {
-                throw new Error("Failed to enable camera and microphone.");
-            }
-    
-            const videoPublication = Array.from(room.localParticipant.videoTrackPublications.values())[0];
-            if (videoPublication && videoPublication.videoTrack) {
-                console.log("Video track publication found:", videoPublication);
-                setLocalTrack(videoPublication.videoTrack);
-            } else {
-                throw new Error("No video track available.");
-            }
+
+            // Publish your camera and microphone
+            await room.localParticipant.enableCameraAndMicrophone();
+            setLocalTrack(room.localParticipant.videoTrackPublications.values().next().value.videoTrack);
         } catch (error) {
-            console.error("Error occurred:", error.message);
+            console.log("There was an error connecting to the room:", error.message);
             await leaveRoom();
         }
     }
@@ -123,7 +99,7 @@ function UserChatRoom() {
     }
 
     async function getToken(roomName, participantName) {
-        APPLICATION_SERVER_URL = "http://localhost:8080/rtc/";
+        APPLICATION_SERVER_URL = `${BASE_URL}/rtc/`;
         const response = await fetch(APPLICATION_SERVER_URL + "rtctoken", {
             method: "POST",
             headers: {

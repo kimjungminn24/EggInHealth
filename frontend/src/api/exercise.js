@@ -55,7 +55,7 @@ export const registerEximg = async (date, img) => {
   const formData = new FormData();
   formData.append("image", img);
   formData.append("date", date);
-  const res = await axios.post(`${BASE_URL}/exercise/report`, formData, {
+  const res = await axios.put(`${BASE_URL}/exercise/report`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -63,6 +63,13 @@ export const registerEximg = async (date, img) => {
   });
   return res.data;
 };
+
+export const deleteExImg = async (reportId) => {
+  console.log(reportId);
+  const res = await axios.delete(`${BASE_URL}/exercise/report?id=${reportId}`)
+  return res.data
+}
+
 
 export const updateEx = async (setId, set, weight, name, time, date) => {
   const res = await axios.patch(`${BASE_URL}/exercise`, {
@@ -112,3 +119,40 @@ export const fetchFeedback = async (uid) => {
   );
   return res.data;
 };
+
+
+export const updateFeedback = async (
+  motionSimilarity,
+  memo,
+  exerciseId,
+  record,
+  createdAt,
+  id
+) => {
+  console.log(motionSimilarity,
+    memo,
+    exerciseId,
+    record,
+    createdAt,
+    id)
+  const formData = new FormData();
+  formData.append(`motionSimiliarity`, motionSimilarity);
+  formData.append(`memo`, memo);
+  formData.append(`exerciseId`, exerciseId);
+  formData.append(`record`, record);
+  formData.append(`createdAt`, createdAt);
+  const res = await axios.patch(`${BASE_URL}/feedback/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+
+
+export const deleteFeedback = async (id)=>
+  {const res = await axios.delete(`${BASE_URL}/feedback/${id}`)
+  console.log(id)
+return res.data
+}

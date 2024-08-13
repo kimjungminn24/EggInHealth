@@ -226,7 +226,11 @@ const Mini = styled.div`
   font-size : 12px;
 
 ` 
-
+const MiniContainer = styled.div`
+  display: flex;
+  justify-content: space-between; 
+  padding : 10px 30px
+`
 
 
 export {
@@ -251,5 +255,6 @@ export {
   CommentInputWrapper,
   CommentIcon,
   Container,
-  Mini
+  Mini,
+  MiniContainer
 };

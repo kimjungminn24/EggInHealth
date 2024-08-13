@@ -131,20 +131,21 @@ const UserImage = styled.img`
 `;
 
 
-export const ModalEditSchedule = ({ isOpen, onRequestClose,user }) => {
+export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [memberId,setMemberId] = useState()
-  const [ptId,setPtId] = useState()
-
+  const [memberId, setMemberId] = useState();
+  const [ptId, setPtId] = useState();
 
   useEffect(() => {
-    setMemberId(user.memberId)
-    setEndTime(user.endTime.substring(11, 16))
-    setStartTime(user.startTime.substring(11, 16))
-    setDate(user.startTime.substring(0, 10))
-    setPtId(user.Id)
+    if (user) { // user 객체가 존재하는지 확인
+      setMemberId(user.memberId || ''); // 기본값 설정
+      setEndTime(user.endTime ? user.endTime.substring(11, 16) : ''); // 안전하게 substring 사용
+      setStartTime(user.startTime ? user.startTime.substring(11, 16) : ''); // 안전하게 substring 사용
+      setDate(user.startTime ? user.startTime.substring(0, 10) : ''); // 안전하게 substring 사용
+      setPtId(user.Id || '');
+    }
   }, [user]);
 
   if (!isOpen) return null;
@@ -157,55 +158,53 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose,user }) => {
 
   const EditPtPlan = async () => {
     const data = {
-      memberId: memberId,        
-      startTime: `${date}T${startTime}:00.000Z`, 
-      endTime: `${date}T${endTime}:00.000Z`,    
+      memberId: memberId,
+      startTime: `${date}T${startTime}:00.000Z`,
+      endTime: `${date}T${endTime}:00.000Z`,
     };
     console.log(data);
     try {
-      await editPtPlan(data);   
+      await editPtPlan(data);
     } catch (error) {
       console.log(error);
     } finally {
-      onRequestClose(); 
+      onRequestClose();
     }
   };
 
-const DeletePtPlan = async ()=>{
+  const DeletePtPlan = async () => {
     try {
-        await deletePtPlan(ptId);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        onRequestClose(); 
-      }
-}
-const handleDateChange = (e) => {
-  setDate(e.target.value);
-};
+      await deletePtPlan(ptId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      onRequestClose();
+    }
+  };
 
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
 
-const handleStartTimeChange = (e) => {
-  setStartTime(e.target.value);
-};
+  const handleStartTimeChange = (e) => {
+    setStartTime(e.target.value);
+  };
 
+  const handleEndTimeChange = (e) => {
+    setEndTime(e.target.value);
+  };
 
-const handleEndTimeChange = (e) => {
-  setEndTime(e.target.value);
-};
-
- 
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
         <Header>2 수요일</Header>
-          <UserItem>
-            <UserInfo>
-              <UserImage src={user.imgUrl || profile} alt={user.name} />
-              <span>{user.name}</span>
-            </UserInfo>
-            <span>남은 횟수: {user.ptCnt}</span>
-          </UserItem>
+        <UserItem>
+          <UserInfo>
+            <UserImage src={user?.imgUrl || profile} alt={user?.name || 'User'} />
+            <span>{user?.name || 'Unknown'}</span>
+          </UserInfo>
+          <span>남은 횟수: {user?.ptCnt || 0}</span>
+        </UserItem>
         <DottedLine />
         <DateLabel>날짜</DateLabel>
         <DateInput type="date" value={date} onChange={handleDateChange} />

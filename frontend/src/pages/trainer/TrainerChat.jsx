@@ -44,7 +44,7 @@ const TrainerChat = () => {
   const [chatList, setChatList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); 
   const trainerId = useStore((state) => state.userId);
-
+  console.log(userList);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,7 +60,7 @@ const TrainerChat = () => {
             users.push(chat);
           }
         });
-
+        
         setChatList(chats);
         setUserList(users);
       } catch (error) {
@@ -72,7 +72,7 @@ const TrainerChat = () => {
   }, []);
 
   const filteredChatList = chatList.filter((chat) =>
-    chat.memberName.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

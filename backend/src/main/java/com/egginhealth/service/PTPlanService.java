@@ -40,6 +40,13 @@ public class PTPlanService {
                 .toList();
     }
 
+    public List<PtPlanTopDto> getTopTrainerPTPlans(int trainerId, int year, int month, int day) {
+        return ptPlanRepository.findByPlansTrainerByTimeRange(trainerId, year, month, day)
+                .stream()
+                .map(PtPlanTopDto::from)
+                .toList();
+    }
+
     public void decreasePtCount() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(30);

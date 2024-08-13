@@ -71,7 +71,7 @@ const TrainerChat = () => {
   }, []);
 
   const filteredChatList = chatList.filter((chat) =>
-    chat.Name.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.memberName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (

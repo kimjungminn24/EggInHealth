@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { registerFeedback } from './../../../api/exercise';
+import { registerFeedback, updateFeedback } from './../../../api/exercise';
 
 // Styled Components
 const StyledModal = styled(Modal)`
@@ -50,11 +50,11 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbackData }) => {
+const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedback,feedbackData,userData }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [memo, setMemo] = useState('');
-  const [file, setFile] = useState(null);
-
+  const [file, setFile] = useState(null); 
+  const [hasVideo,setHasVideo] = useState(false)
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -69,12 +69,16 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
       const record = file;
       const createdAt = getKoreanISOString() + 'Z';
       try {
-        await registerFeedback(motionSimilarity, memo, exerciseId, record, createdAt);
-        onClose();
-        setExerciseId('');
-        setMemo('');
-        setFile(null);
-        fetchFeedbackData();
+        if (feedbackData){
+         await updateFeedback(motionSimilarity, memo, exerciseId, record, getKoreanISOString(),feedbackData.id)}
+         
+      else
+          await registerFeedback(motionSimilarity, memo, exerciseId, record, createdAt);
+          onClose();
+          setExerciseId('');
+          setMemo('');
+          setFile(null);
+          fetchFeedback(userData.id);
       } catch (error) {
         if (error.response) {
           console.error('Error response:', error.response.data);
@@ -104,7 +108,7 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
         onChange={(e) => setMemo(e.target.value)}
       />
       <FileInput type="file" accept="video/*" onChange={handleFileChange} />
-      <Button onClick={handleFileUpload}>등록</Button>
+      <Button onClick={handleFileUpload}>{feedbackData ? '수정' :'등록'}</Button>
       <Button close onClick={onClose}>닫기</Button>
     </StyledModal>
   );

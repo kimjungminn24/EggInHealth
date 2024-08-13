@@ -44,7 +44,7 @@ const TrainerChat = () => {
   const [chatList, setChatList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); 
   const trainerId = useStore((state) => state.userId);
-  console.log(userList);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

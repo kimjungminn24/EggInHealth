@@ -39,7 +39,7 @@ function App() {
                 }
                 return <TrainerHeader />;
             default:
-                return null; // 기본값으로 null 반환
+                return null;
         }
     }, [userType, userInfoType]);
 
@@ -50,13 +50,14 @@ function App() {
             case "TRAINER":
                 return <TrainerNavbar />;
             default:
-                return null; // 기본값으로 null 반환
+                return null;
         }
     }, [userType]);
 
     return (
         <div className='mobile'>
-            <div className='header'>{renderHeader}</div>
+            {/* Conditionally render header */}
+            {renderHeader && <div className='header'>{renderHeader}</div>}
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/select' element={<Select />} />
@@ -71,10 +72,11 @@ function App() {
                 <Route path='/traineruserlist' element={<TrainerUserList />} />
                 <Route path='/trainerprofile' element={<TrainerProfile />} />
                 <Route path='/userfeedback' element={<UserFeedback />} />
-                {/* 동적 경로 설정 */}
+                {/* Dynamic Route */}
                 <Route path='/trainerchat/:trainerId/:userId' element={<TrainerChatRoom />} />
             </Routes>
-            <div className='nav'>{renderNavbar}</div>
+            {/* Conditionally render navbar */}
+            {renderNavbar && <div className='nav'>{renderNavbar}</div>}
         </div>
     );
 }

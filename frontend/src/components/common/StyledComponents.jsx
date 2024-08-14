@@ -228,10 +228,27 @@ const Mini = styled.div`
 ` 
 const MiniContainer = styled.div`
   display: flex;
-  justify-content: space-between; 
-  padding : 10px 30px
+  justify-content: center; 
+  padding : 10px 30px;
 `
-
+const MiniPointer = styled.div`
+  width: 100px;
+  height: 50px;
+  background-color: #FFD66B;
+  color:white;
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size : 16px;
+  cursor: pointer;
+  &: hover{
+    background-color : #FFEEB0;
+  }
+  `
+  const MiniPointerContainer = styled.div`
+    margin-left: 65%;
+  `
 
 export {
   PageContainer,
@@ -256,5 +273,7 @@ export {
   CommentIcon,
   Container,
   Mini,
-  MiniContainer
+  MiniContainer,
+  MiniPointer,
+  MiniPointerContainer
 };

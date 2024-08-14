@@ -81,7 +81,6 @@ const TrainerUserList = () => {
   const formatMonth = `${today.getMonth() + 1}`;
   const formatYear = `${today.getFullYear()}`;
 
-
   const handleDetailMember = async(memberId)=>{
     await fetchData(memberId,formatMonth,formatYear)
     await navigate(`/usercalender`)

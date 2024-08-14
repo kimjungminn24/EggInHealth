@@ -93,6 +93,7 @@ const UserFeedback = () => {
       try {
         const data = await fetchFeedback(userId);
         setFeedback(data);
+        console.log(data)
       } catch (error) {
         console.error(
           "피드백 데이터를 가져오는 중 오류가 발생했습니다.",
@@ -133,8 +134,8 @@ const UserFeedback = () => {
 
   const getKoreanISOString = () => {
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
-    const kstDate = new Date(now.getTime() + kstOffset);
+    
+    const kstDate = new Date(now.getTime());
 
     // KST 시간을 "YYYY-MM-DDTHH:MM:SS" 형식으로 변환
     const year = kstDate.getFullYear();
@@ -169,8 +170,9 @@ const UserFeedback = () => {
         selectedDate={selectedDate}
         onVideoClick={openModal}
         userType={userType}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         getKoreanISOString={getKoreanISOString}
+        userId={userId}
 
       />
       <VideoModal
@@ -185,7 +187,7 @@ const UserFeedback = () => {
         onClose={closeFeedbackModal}
         name={userData.name}
         getKoreanISOString={getKoreanISOString}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         userData={userData}
       />
     </Container>

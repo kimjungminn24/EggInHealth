@@ -50,7 +50,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedback,feedbackData,userData }) => {
+const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedbackData,feedbackData,userData }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [memo, setMemo] = useState('');
   const [file, setFile] = useState(null); 
@@ -78,7 +78,7 @@ const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedback,feed
           setExerciseId('');
           setMemo('');
           setFile(null);
-          fetchFeedback(userData.id);
+          fetchFeedbackData() // 갱신
       } catch (error) {
         if (error.response) {
           console.error('Error response:', error.response.data);

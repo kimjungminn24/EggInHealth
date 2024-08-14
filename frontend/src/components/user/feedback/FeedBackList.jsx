@@ -74,18 +74,7 @@ const Divider = styled.div`
     background-color: #ccc;
     margin: 5px 0;
 `;
-const Box = styled.div`
-  width: 320px;
-  height: auto;
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px 20px; /* 내부 여백 추가 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px 0px;
-  color: #bbb;
-  text-align: center;
-`;
-const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedbackData,getKoreanISOString,userType,userId}) => {
+const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString,userType}) => {
     const [dropdownVisible, setDropdownVisible] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
@@ -129,45 +118,39 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
 
     return (
         <div>
-  {filteredFeedback.length > 0 ? (
-    filteredFeedback.map(item => (
-        <FeedbackItem key={item.id} onClick={() => onVideoClick(item.videoUrl, item.exerciseId)}>
-            <FeedbackContentId>{item.exerciseId}</FeedbackContentId>
-            <FeedbackMemo>{item.memo}</FeedbackMemo>
-            <FeedbackDate>{format(new Date(item.createdAt), 'MM월 dd일 HH시 mm분')}</FeedbackDate> 
+            {filteredFeedback.map(item => (
+                <FeedbackItem key={item.id} onClick={() => onVideoClick(item.videoUrl, item.exerciseId)}>
+                    <FeedbackContentId>{item.exerciseId}</FeedbackContentId>
+                    <FeedbackMemo>{item.memo}</FeedbackMemo>
+                    <FeedbackDate>{format(new Date(item.createdAt), 'MM월 dd일 HH시 mm분')}</FeedbackDate>
 
-            <ActionButton onClick={(e) => { 
-                e.stopPropagation(); // 클릭 전파 방지
-                handleDropdownToggle(item.id); 
-            }}>
-                ...
-            </ActionButton>
-            {userType === 'MEMBER' ? (
-                <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id} onClick={(e) => e.stopPropagation()}>
-                    <DropdownItem onClick={() => handleEdit(item)}>수정</DropdownItem>
-                    <Divider />
-                    <DropdownItem onClick={() => handleDelete(item.id)}>삭제</DropdownItem> 
-                </DropdownMenu>
-            ) : null}
-        </FeedbackItem>
-    ))
-) : (
-    <Box>등록된 피드백이 없습니다</Box>
-)}
-
+                    <ActionButton onClick={(e) => { 
+                        e.stopPropagation(); // 클릭 전파 방지
+                        handleDropdownToggle(item.id); 
+                    }}>
+                        ...
+                    </ActionButton>
+                    {userType === 'MEMBER' ?
+                    <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id} onClick={(e) => e.stopPropagation()}>
+                        <DropdownItem onClick={() => handleEdit(item)}>수정</DropdownItem>
+                        <Divider />
+                        <DropdownItem onClick={() => handleDelete(item.id)}>삭제</DropdownItem> 
+                    </DropdownMenu>
+                    : null}
+                </FeedbackItem>
+            ))}
             <FeedbackModal 
-            isOpen={isModalOpen} 
+                isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
                 feedbackData={selectedFeedback} // 수정할 피드백 데이터 전달
-                fetchFeedbackData={fetchFeedbackData}
+                fetchFeedback={fetchFeedback}
                 getKoreanISOString={getKoreanISOString} // 피드백 데이터 새로고침 함수 전달
             />
             <ModalDeleteFeedback
                 isOpen={isDeleteOpen}
                 feedbackData={selectedFeedback} 
-                onClose={() => setIsDeleteOpen(false)}
-                fetchFeedbackData={fetchFeedbackData}
-
+                fetchFeedback={fetchFeedback}
+            
             />
         </div>
     );

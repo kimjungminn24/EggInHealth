@@ -36,10 +36,6 @@ public class MemberController {
     @PatchMapping("/role")
     public ResponseEntity<Void> patchMemberRoleBy(@RequestBody MemberRoleDto roleDto, HttpServletResponse response) {
         memberService.patchMemberRoleBy(roleDto.role(), SecurityUtil.getUserId());
-
-        //TODO : 프론트 수정시 삭제
-        response.addCookie(cookieUtil.createCookie("Role", roleDto.role(), false));
-
         response.addCookie(cookieUtil.createCookieAccessToken(roleDto.role()));
         SecurityUtil.updateRoleInSecurityContext(roleDto.role());
         return new ResponseEntity<>(HttpStatus.OK);

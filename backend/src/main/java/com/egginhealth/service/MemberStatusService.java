@@ -66,7 +66,7 @@ public class MemberStatusService {
 
         memberStatus.forEach(status -> {
             int day = status.date().getDayOfMonth() - 1;
-            if (status.isDiet() || status.isExercise()) {
+            if (day >= 0 && day < eggs.size() && (status.isDiet() || status.isExercise())) {
                 eggs.set(day, makeRandomNumber());
             }
         });

@@ -4,7 +4,6 @@ import com.egginhealth.data.dto.feedback.FeedbackSetDto;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,14 +18,11 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "fb_motion_similarity")
-    private BigDecimal motionSimilarity;
-
     @Column(name = "fb_memo", length = 500)
     private String memo;
 
     @Column(name = "fb_exercise_id", nullable = false)
-    private int exerciseId;
+    private String exerciseName;
 
     @Column(name = "fb_video_url", length = 500)
     private String videoUrl;
@@ -46,9 +42,8 @@ public class Feedback {
     private Member member;
 
     public void updateFeedbackBy(FeedbackSetDto feedbackSetDto) {
-        this.motionSimilarity = feedbackSetDto.motionSimilarity();
         this.memo = feedbackSetDto.memo();
-        this.exerciseId = feedbackSetDto.exerciseId();
+        this.exerciseName = feedbackSetDto.exerciseName();
         this.updatedAt = feedbackSetDto.updatedAt();
         this.videoUrl = feedbackSetDto.url();
     }

@@ -7,7 +7,7 @@ import SurveyPage2 from '../components/user/survey/UserSurvey2';
 import SurveyPage3 from '../components/user/survey/UserSurvey3';
 import SurveyPage4 from '../components/user/survey/UserSurvey4';
 import { updateUserRole, updateUserGole, updateUserInfo } from '../api/survey';
-import { useStore } from '../store/store';  
+import { useStore,useUserInfoStore } from '../store/store';  
 
 const Select = () => {
   const { userType } = useStore((state) => state);
@@ -19,9 +19,16 @@ const Select = () => {
   const [height, setHeight] = useState(null);
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(null);
-  
   const totalSteps = 5;
   const navigate = useNavigate();
+  const { setUserType } = useStore(); 
+  const { setUserType: setUserInfoType } = useUserInfoStore();
+
+  
+  useEffect(() => {
+      setUserType(null); 
+      setUserInfoType(null); 
+  }, [setUserType, setUserInfoType]); 
 
   useEffect(() => {
     if (userType) {
@@ -120,7 +127,6 @@ const Select = () => {
 
 const Container = styled.div`
   text-align: center;
-  font-family: 'Muli', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,6 +144,7 @@ const ProgressContainer = styled.div`
 
 const ProgressBarContainer = styled.div`
   display: flex;
+  margin-right: 30px;
   width: 100%;
   position: relative;
 `;
@@ -172,7 +179,7 @@ const ArrowLeft = styled.div`
   justify-content: center;
   cursor: pointer;
   margin-right: 10px;
-
+  margin-left: 10px;
   &::before {
     content: '⬅'; 
     font-size: 20px;
@@ -190,6 +197,7 @@ const YellowBtn = styled.button`
   justify-content: center;
   padding: 8px 16px;
   margin-top: 20px;
+  color: white;
 `;
 
 const ContentContainer = styled.div`

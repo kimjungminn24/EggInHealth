@@ -3,7 +3,12 @@ import oneIcon from '../../../assets/one.png';
 import twoIcon from '../../../assets/two.png';
 import threeIcon from '../../../assets/three.png';
 import ButtonSurvey from './../../common/button/ButtonSurvey';
+import styled from 'styled-components';
 
+const Content = styled.div`
+  font-size: 20px;
+  margin-bottom: 50px;
+`
 const SurveyPage3 = ({ setgoalCommonId }) => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
@@ -22,7 +27,7 @@ const SurveyPage3 = ({ setgoalCommonId }) => {
 
   return (
     <div>
-      <h1>식단 관리는 어느 정도가 좋을까요?</h1>
+      <Content>식단 관리는 어느 정도가 좋을까요?</Content>
       {survey.map((item) => (
         <ButtonSurvey
           key={item.id}

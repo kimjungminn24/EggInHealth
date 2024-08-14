@@ -4,7 +4,12 @@ import SurvayIcon1 from '../../../assets/surveyicon1.png';
 import SurvayIcon2 from '../../../assets/surveyicon2.png';
 import SurvayIcon3 from '../../../assets/surveyicon3.png';
 import ButtonSurvey from './../../common/button/ButtonSurvey';
+import styled from 'styled-components';
 
+const Content = styled.div`
+  font-size: 20px;
+  margin-bottom: 20px;
+`
 const SurveyPage1 = ({ setexerciseCommonId }) => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
@@ -24,7 +29,7 @@ const SurveyPage1 = ({ setexerciseCommonId }) => {
 
   return (
     <div>
-      <h1>운동 목표가 무엇인가요?</h1>
+      <Content>운동 목표가 무엇인가요?</Content>
       {survey.map((item) => (
         <ButtonSurvey
           key={item.id}

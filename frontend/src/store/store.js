@@ -3,13 +3,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { userInfo, userEgg, userRole } from '../api/main';
 
-// 사용자 정보를 업데이트하는 store
+
 export const useStore = create(
   persist(
     (set) => ({
       userInfo: null,
       userId: null,
       userType: null,
+      setUserType: (type) => set({ userType: type }), 
       userUpdate: async () => {
         try {
           const info = await userRole();
@@ -38,6 +39,7 @@ export const useUserInfoStore = create(
       userEggData: null,
       userId: null,
       userType: null,
+      setUserType: (type) => set({ userType: type }),
       loading: true,
       error: null,
       fetchData: async (userId, formatMonth, formatYear) => {
@@ -74,4 +76,3 @@ export const useUserInfoStore = create(
     }
   )
 );
-

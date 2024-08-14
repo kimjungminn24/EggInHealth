@@ -105,17 +105,15 @@ export const registerFeedbackToAI = async (record, exerciseName) => {
     ? 1
     : -1;
 
-  return record;
-
-  // if (mode == -1) return record;
-  // formData.append(`mode`, mode);
-  // formData.append(`file`, record);
-  // const res = await axios.post(`${AI_BASE_URL}/feedback`, formData, {
-  //   headers: {
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // });
-  // return res.data;
+  if (mode === -1) return record;
+  formData.append(`mode`, mode);
+  formData.append(`file`, record);
+  const res = await axios.post(`${AI_BASE_URL}/feedback`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
 };
 
 export const registerFeedback = async (memo, exerciseId, record, createdAt) => {
@@ -164,13 +162,6 @@ export const updateFeedback = async (
 
 export const deleteFeedback = async (id) => {
   const res = await axios.delete(`${BASE_URL}/feedback/${id}`);
-  console.log(id);
-  return res.data;
-};
-
-export const deleteFeedback = async (id) => {
-  const res = await axios.delete(`${BASE_URL}/feedback/${id}`);
-  console.log(id);
   return res.data;
 };
 

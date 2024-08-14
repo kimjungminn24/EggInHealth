@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import heightIcon from '../../../assets/height.png';
 import ageIcon from '../../../assets/age.png';
 
+
 const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
   const [localHeight, setLocalHeight] = useState('');
   const [localAge, setLocalAge] = useState('');
@@ -33,7 +34,7 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
 
   return (
     <div>
-      <h1>키와 나이, 성별을 입력해 주세요</h1>
+      <Content>키와 나이, 성별을 입력해 주세요</Content>
       
       <Surveybtn>
         <img src={heightIcon} alt="heightIcon" />
@@ -55,14 +56,12 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
         />
       </Surveybtn>
       
-      <Surveybtn>
-        <Label>♂️♀️</Label>
         <GenderContainer>
           <GenderOption
             selected={localGender === 'M'}
             onClick={() => handleGenderChange('M')}
           >
-            🧔‍♂️ <br/>남성
+            🧔 <br/>남성
           </GenderOption>
           <GenderOption
             selected={localGender === 'F'}
@@ -71,11 +70,13 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
             👩‍🦰 <br/>여성
           </GenderOption>
         </GenderContainer>
-      </Surveybtn>
     </div>
   );
 };
-
+const Content = styled.div`
+  font-size: 20px;
+  margin-bottom: 50px;
+`
 const Surveybtn = styled.div`
   background-color: #ffffff;
   border-radius: 20px;
@@ -100,7 +101,8 @@ const Input = styled.input`
 const GenderContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 10px;
+  margin-left: 70px;
+  margin-bottom: 20px;
 `;
 
 const GenderOption = styled.div`
@@ -121,11 +123,5 @@ const GenderOption = styled.div`
   }
 `;
 
-const Label = styled.label`
-  font-size: 16px;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
 
 export default SurveyPage4;

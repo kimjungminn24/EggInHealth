@@ -14,6 +14,7 @@ public record MemberDetailDto(
         String phoneNumber,
         int age,
         int height,
+        String gender,
         String info,
         String imgUrl,
         int PTCount,
@@ -35,14 +36,15 @@ public record MemberDetailDto(
                 .age(member.getAge())
                 .height(member.getHeight())
                 .info(member.getInfo())
+                .gender(member.getGender())
                 .imgUrl(member.getImgUrl())
                 .PTCount(member.getPTCount())
                 .type(member.getType())
                 .totalEgg(member.getTotalEgg())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
-                .trId(trainer==null?0:trainer.getId())
-                .trName(trainer==null?null:trainer.getName())
+                .trId(trainer == null ? 0 : trainer.getId())
+                .trName(trainer == null ? null : trainer.getName())
                 .build();
     }
 

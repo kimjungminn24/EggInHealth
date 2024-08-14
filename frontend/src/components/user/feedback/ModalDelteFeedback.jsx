@@ -1,7 +1,7 @@
-import React from 'react';
-import Modal from 'react-modal';
-import styled from 'styled-components';
-import { deleteFeedback } from '../../../api/exercise';
+import React from "react";
+import Modal from "react-modal";
+import styled from "styled-components";
+import { deleteFeedback } from "../../../api/exercise";
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -23,12 +23,17 @@ const Button = styled.button`
   margin-top: 10px;
   border-radius: 5px;
   border: none;
-  background-color: ${props => (props.close ? '#6c757d' : 'red')};
+  background-color: ${(props) => (props.close ? "#6c757d" : "red")};
   color: #fff;
   cursor: pointer;
 `;
 
-const ModalDeleteFeedback = ({ isOpen, feedbackData, onClose, fetchFeedback }) => {
+const ModalDeleteFeedback = ({
+  isOpen,
+  feedbackData,
+  onClose,
+  fetchFeedback,
+}) => {
   const handleSubmit = async () => {
     if (feedbackData) {
       try {
@@ -36,7 +41,7 @@ const ModalDeleteFeedback = ({ isOpen, feedbackData, onClose, fetchFeedback }) =
         fetchFeedback(); // 삭제 후 피드백 데이터 새로 고침
         onClose(); // 삭제 후 모달을 닫습니다.
       } catch (error) {
-        console.error('Error deleting Feedback:', error);
+        console.error("Error deleting Feedback:", error);
       }
     }
   };
@@ -45,7 +50,9 @@ const ModalDeleteFeedback = ({ isOpen, feedbackData, onClose, fetchFeedback }) =
     <StyledModal isOpen={isOpen} onRequestClose={onClose}>
       <h2>삭제하시겠습니까?</h2>
       <Button onClick={handleSubmit}>삭제</Button>
-      <Button close onClick={onClose}>취소</Button>
+      <Button close onClick={onClose}>
+        취소
+      </Button>
     </StyledModal>
   );
 };

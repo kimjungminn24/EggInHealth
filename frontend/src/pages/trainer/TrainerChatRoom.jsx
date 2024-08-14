@@ -150,12 +150,12 @@ function TrainerChatRoom() {
                 <div id='room' className="absolute bg-white top-0 w-screen h-screen z-10">
                     <div id='room-header'>
                         {/* <h2 id='room-title'>{roomName}</h2> */}
-                        <button className='btn-danger bg-white absolute bottom-0 flex left-0 right-0 items-center justify-center m-auto bottom-[20px]' id='leave-room-button' onClick={leaveRoom}>
+                        <button className='btn-danger bg-white absolute bottom-0 flex left-0 right-0 items-center justify-center m-auto bottom-[40px]' id='leave-room-button' onClick={leaveRoom}>
                             <img src={LeaveRoom} alt="" />
                         </button>
                     </div>
                     <div id='layout-container'>
-                        <div className="overflow-hidden w-[133px] h-[133px] fixed left-0 bottom-[85px] m-auto flex items-center justify-center z-30 rounded-[19px]">
+                        <div className="overflow-hidden w-[133px] h-[133px] fixed left-0 bottom-[105px] m-auto flex items-center justify-center z-30 rounded-[19px]">
                             {localTrack && (
                                 <VideoComponent
                                     track={localTrack}
@@ -164,7 +164,7 @@ function TrainerChatRoom() {
                                 />
                             )}
                         </div>
-                        <div className="overflow-hidden w-[360px] h-[715px] fixed left-0 right-0 bottom-[85px] m-auto flex items-center flex justify-center z-20 rounded-[19px]">
+                        <div className="overflow-hidden w-[360px] h-[715px] fixed left-0 right-0 bottom-[105px] m-auto flex items-center flex justify-center z-20 rounded-[19px]">
                             {remoteTracks.map((remoteTrack) =>
                                 remoteTrack.trackPublication.kind === "video" ? (
                                     <VideoComponent

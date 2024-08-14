@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import Arrow from "../../assets/static/Property_Black_Arrow.png";
+import { useStore } from '../../store/store.js'
+import { userInfo } from "../../api/main";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
@@ -11,6 +13,17 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
     const receiverId = receiver; // 수신자 ID 상태 추가
     const stompClientRef = useRef(null);
     const messagesEndRef = useRef(null); // 스크롤 조정을 위한 ref 추가
+    const userName = useStore(state => state.userInfo)
+    const [userNameTr,setuserNameTr] = useState('')
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            const response = await userInfo(roomName)
+            setuserNameTr(response)
+        }
+        fetchData()
+    },[])
+
 
     useEffect(() => {
         if (stompClientRef.current) {
@@ -114,8 +127,22 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
         <div id="chat-container">
             {receiver == 0 ? <div>잘못된 접근입니다.</div> : <div><div id="messages" className='max-h-[660px] overflow-auto top-0'>
                 {chatMessages.map((message, index) => (
-                    <div key={index}>
-                        <strong>{message.senderId}</strong>: {message.content}
+                    <div key={index} className={`flex p-[10px] ${message.senderId == participantName ? 'justify-end' : 'justify-start'}`}>
+                        {message.senderId == participantName ? (
+                            <div>
+                                {message.content}
+                            </div>
+                        ) : (
+                            userName.type === 'MEMBER' ? (
+                                <div>
+                                    <strong>{userName.trName}</strong>: {message.content}
+                                </div>
+                            ) : (
+                                <div>
+                                    <strong>{userNameTr.name}</strong>: {message.content}
+                                </div>
+                            )
+                        )}
                     </div>
                 ))}
                 <div ref={messagesEndRef} /> {/* 스크롤을 위한 빈 div 추가 */}
@@ -128,7 +155,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                         placeholder="메세지를 입력해주세요"
                         className="w-full"
                     />
-                    <button type="submit" className="absolute m-auto right-[20px] top-0 bottom-0">
+                    <button type="submit" className="absolute m-auto right-[20px] top-0 bottom-[20PX]">
                         <img src={Arrow} />
                     </button>
                 </form></div>}

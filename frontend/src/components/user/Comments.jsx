@@ -4,12 +4,12 @@ import {
   CommentsSection,
   CommentsList,
   CommentInput,
-  CommentButton,
   CommentInputWrapper,
   CommentIcon
 } from '../common/StyledComponents';
 import { registerComment } from '../../api/diet';
 import { registerExComment } from '../../api/exercise';
+import { userInfo } from '../../api/main';
 
 const CommentItem = styled.div`
   display: flex;
@@ -60,6 +60,43 @@ const TimeStamp = styled.div`
 const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExData, userId, userData }) => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [userDetails, setUserDetails] = useState({}); // 사용자 정보 저장 상태
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const filteredDietComments = dietData
+        ? dietData.filter(
+            (item) => extractDate(item.date) === date && item.type === dietType
+          ).flatMap(item => item.commentList || [])
+        : [];
+
+      const filteredExerciseComments = exData && extractDate(exData.date) === date
+        ? (exData.comments || [])
+        : [];
+
+      setComments([...filteredDietComments, ...filteredExerciseComments]);
+
+      // 사용자 정보를 가져온다
+      const fetchUserDetails = async () => {
+        const details = {};
+        const uniqueUserIds = new Set([...filteredDietComments, ...filteredExerciseComments].map(c => c.writerId || c.memberId));
+        console.log(uniqueUserIds)
+        for (const id of uniqueUserIds) {
+          try {
+            const user = await userInfo(id);
+            details[id] = { imgUrl: user.imgUrl, name: user.name }; // 사용자 이미지 URL과 이름 저장
+          } catch (error) {
+            console.error(`사용자 정보 가져오기 실패: ${id}`, error);
+          }
+        }
+        setUserDetails(details);
+      };
+
+      fetchUserDetails();
+    };
+
+    fetchComments();
+  }, [dietData, exData, date, dietType, type]);
 
   const extractDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
@@ -117,50 +154,53 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
     }
   };
 
+  
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleAddComment();
     }
   };
-return (
-  <CommentsSection>
-    <CommentsList>
-      {comments.length > 0 ? (
-        comments.map((c) => {
-          const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
-          const datePart = extractDate(c.createdAt);
-          const timePart = extractTime(c.createdAt);
-          return (
-            <CommentItem key={c.id} isUser={isUser}>
-              <CommentContent isUser={isUser}>
-                <CommentProfile isUser={isUser}>
-                  <ProfileImage src={userData.imgUrl || '/path/to/default/image.jpg'} alt="" />
-                  {userData.name}
-                </CommentProfile>
-                <CommentBubble isUser={isUser}>
 
-                <CommentText isUser={isUser}>
-                  {c.content}
-                </CommentText>
-                <TimeStamp>{datePart} {timePart}</TimeStamp>
-               </CommentBubble>   
-              </CommentContent>
-            </CommentItem>
-          );
-        })
-      ) : null}
-    </CommentsList>
-    <CommentInputWrapper>
-      <CommentInput
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder='댓글 남기기'
-      />
-      <CommentIcon onClick={handleAddComment} />
-    </CommentInputWrapper>
-  </CommentsSection>
+  return (
+    <CommentsSection>
+      <CommentsList>
+        {comments.length > 0 ? (
+          comments.map((c) => {
+            const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
+            const datePart = extractDate(c.createdAt);
+            const timePart = extractTime(c.createdAt);
+            const user = userDetails[c.writerId] || { imgUrl: '/path/to/default/image.jpg', name: '알 수 없는 사용자' }; // 기본값 설정
 
+            return (
+              <CommentItem key={c.id} isUser={isUser}>
+                <CommentContent isUser={isUser}>
+                  <CommentProfile isUser={isUser}>
+                    <ProfileImage src={user.imgUrl} alt={user.name} />
+                    {user.name}
+                  </CommentProfile>
+                  <CommentBubble isUser={isUser}>
+                    <CommentText isUser={isUser}>
+                      {c.content}
+                    </CommentText>
+                    <TimeStamp>{datePart} {timePart}</TimeStamp>
+                  </CommentBubble>   
+                </CommentContent>
+              </CommentItem>
+            );
+          })
+        ) : null}
+      </CommentsList>
+      <CommentInputWrapper>
+        <CommentInput
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder='댓글 남기기'
+        />
+        <CommentIcon onClick={handleAddComment} />
+      </CommentInputWrapper>
+    </CommentsSection>
   );
 };
 

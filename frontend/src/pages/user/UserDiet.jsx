@@ -151,9 +151,10 @@ const UserDietPage = () => {
         dietType={selectedTab}
         fetchDiet={fetchDietData} 
          userId={userLoginId}
+         userLoginData={userLoginData}
          userData={userData}
-        />
-    </PageContainer>
+         />
+         </PageContainer>
   );
 };
 

@@ -27,7 +27,6 @@ services:
     ports:
       - 8000:8000
     environment:
-      FCM_KEY_JSON: ${FCM_KEY_JSON}
       MYSQL_URL: ${MYSQL_URL}
       MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -47,6 +46,17 @@ services:
       SERVER_PORT: ${SERVER_PORT}
       FRONT_URL: ${FRONT_URL}
       OPEN_VIDU_URL: ${OPEN_VIDU_URL}
+      FCM_TYPE: ${FCM_TYPE}
+      FCM_PROJECT_ID: ${FCM_PROJECT_ID}
+      FCM_PRIVATE_KEY_ID: ${FCM_PRIVATE_KEY_ID}
+      FCM_PRIVATE_KEY: ${FCM_PRIVATE_KEY}
+      FCM_CLIENT_EMAIL: firebase-adminsdk-qc1cm@egginhealth.iam.gserviceaccount.com
+      FCM_CLIENT_ID: ${FCM_CLIENT_ID}
+      FCM_AUTH_URI: ${FCM_AUTH_URI}
+      FCM_TOKEN_URI: ${FCM_TOKEN_URI}
+      FCM_AUTH_PROVIDER_X509_CERT_URL: ${FCM_AUTH_PROVIDER_X509_CERT_URL}
+      FCM_CLIENT_X509_CERT_URL: ${FCM_CLIENT_X509_CERT_URL}
+      FCM_UNIVERSE_DOMAIN: ${FCM_UNIVERSE_DOMAIN}
 
 networks:
   mynetwork:

@@ -18,8 +18,14 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
 
     useEffect(()=>{
         const fetchData = async ()=>{
-            const response = await userInfo(roomName)
-            setuserNameTr(response)
+            if (participantName ==roomName){
+                const response = await userInfo(receiver)
+                setuserNameTr(response)
+            }
+            else{
+                const response = await userInfo(roomName)
+                setuserNameTr(response)
+            }
         }
         fetchData()
     },[])
@@ -123,23 +129,62 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
         }
     }
 
+    const formatTime = (isoString) => {
+        const date = new Date(isoString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? '오후' : '오전';
+        const formattedHours = hours % 12 || 12;
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        return `${ampm} ${formattedHours}:${formattedMinutes}`;
+    };
+
     return (
         <div id="chat-container">
             {receiver == 0 ? <div>잘못된 접근입니다.</div> : <div><div id="messages" className='max-h-[660px] overflow-auto top-0'>
                 {chatMessages.map((message, index) => (
                     <div key={index} className={`flex p-[10px] ${message.senderId == participantName ? 'justify-end' : 'justify-start'}`}>
                         {message.senderId == participantName ? (
-                            <div>
-                                {message.content}
+                            <div className="flex flex-row-reverse items-center">
+                            <div className="bg-yellow-400 text-white rounded-t-[10px] rounded-l-[10px] p-[10px] max-w-full">
+                                <div className="mr-[10px]">
+                               {message.content}
+                               </div>
+                               <div className="text-[10px] text-gray-500 mt-[5px]">
+                                    {formatTime(message.createdAt)}
+                               </div>
                             </div>
+                        </div>
                         ) : (
                             userName.type === 'MEMBER' ? (
-                                <div>
-                                    <strong>{userName.trName}</strong>: {message.content}
+                                <div className="flex flex-row items-center">
+                                    <div className="flex flex-col items-center mr-[10px]">
+                                            <img src={userNameTr.imgUrl} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                        <strong>{userName.trName}</strong>
+                                    </div>
+                                    <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">
+                                        <div className="ml-[10px]">
+                                       {message.content}
+                                       </div>
+                                       <div className="text-[10px] text-gray-500 mt-[5px]">
+                                            {formatTime(message.createdAt)}
+                                       </div>
+                                    </div>
                                 </div>
                             ) : (
-                                <div>
-                                    <strong>{userNameTr.name}</strong>: {message.content}
+                                <div className="flex flex-row items-center">
+                                    <div className="flex flex-col items-center mr-[10px]">
+                                            <img src={userNameTr.imgUrl} alt="유저사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                        <strong>{userNameTr.name}</strong>
+                                    </div>
+                                    <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">
+                                        <div className="ml-[10px]">
+                                       {message.content}
+                                       </div>
+                                       <div className="text-[10px] text-gray-500 mt-[5px]">
+                                             {formatTime(message.createdAt)}
+                                       </div>
+                                    </div>
                                 </div>
                             )
                         )}

@@ -6,19 +6,22 @@ import naverLogin from '../assets/naverLogin.png';
 import { useStore, useUserInfoStore } from '../store/store';
 
 const Container = styled.div`
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #FFE791;
     width: 360px;
     height: 800px;
+    top: 0;
 `;
 
 const Logo = styled.div`
     text-align: center;
     margin-right: 5px;
+    margin-top: 50px;
     margin-bottom: 50px;
-    width: 80%;
+    width: 70%;
 `;
 const Title = styled.div`
     text-align: center;

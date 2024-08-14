@@ -6,11 +6,14 @@ const ButtonSurvey = ({ lst, isSelected, onClick }) => {
     <Surveybtn onClick={onClick} active={isSelected ? 'true' : 'false'}>
       <img src={lst.logo} alt={lst.title} />
       <p>{lst.title}</p>
-      <p>{lst.content}</p>
+      <Content>{lst.content}</Content>
     </Surveybtn>
   );
 };
-
+const Content = styled.div`
+  font-size: 14px;
+  color: #888;
+`
 const Surveybtn = styled.div`
   background-color: #fff;
   border-radius: 20px;

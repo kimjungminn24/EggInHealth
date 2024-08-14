@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import camera from '../../../assets/camera.png'
 const CaptureButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -20,11 +20,9 @@ const CaptureButtonContainer = styled.div`
   }
 `;
 
-const ShutterButton = styled.div`
+const ShutterButton = styled.img`
   width: 30px;
   height: 30px;
-  background-color: #f00; 
-  border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,7 +32,7 @@ const ShutterButton = styled.div`
 const ButtonCapture = ({ onClick }) => {
   return (
     <CaptureButtonContainer onClick={onClick}>
-      <ShutterButton />
+      <ShutterButton src={camera}/>
     </CaptureButtonContainer>
   );
 };

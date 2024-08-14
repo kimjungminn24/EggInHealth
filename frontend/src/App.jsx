@@ -21,9 +21,13 @@ import TrainerChat from "./pages/trainer/TrainerChat";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerUserList from "./pages/trainer/TrainerUserList";
 import TrainerChatRoom from "./pages/trainer/TrainerChatRoom.jsx";
-
 import UserFeedback from "./pages/user/UserFeedback";
 import { useStore, useUserInfoStore } from "./store/store.js";
+import styled from "styled-components";
+
+const Block = styled.div`
+    margin-bottom: 76px;
+`
 
 function App() {
     const userType = useStore((state) => state.userType);
@@ -75,7 +79,7 @@ function App() {
                 {/* Dynamic Route */}
                 <Route path='/trainerchat/:trainerId/:userId' element={<TrainerChatRoom />} />
             </Routes>
-            {/* Conditionally render navbar */}
+            <Block></Block>
             {renderNavbar && <div className='nav'>{renderNavbar}</div>}
         </div>
     );

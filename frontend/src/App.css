@@ -6,7 +6,7 @@
   margin-right: auto;
   background-color: #f8f8f8;
   padding-top: 40px;
-  padding-bottom: 56px;
+  padding-bottom: 96px;
 }
 
 .header {
@@ -23,7 +23,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 56px;
+  height: 76px;
+  border-top:solid 0.5px #D9D9D9 ;
   background-color:  white;
   padding: 1px 0px;
   max-width: 360px;

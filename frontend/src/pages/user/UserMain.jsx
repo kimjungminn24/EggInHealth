@@ -9,8 +9,17 @@ import { requestPermission } from "../../firebase.jsx";
 
 const Container = styled.div`
     max-height: 800px;
-    overflow: auto;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
 `;
+
 
 
 
@@ -38,7 +47,7 @@ const ScheduleContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 const formatTime = (date) => {
@@ -74,7 +83,6 @@ const UserMain = () => {
           const hasVisited = localStorage.getItem('hasVisited');
           if (!hasVisited) {
            requestPermission();
-            // 방문 기록 저장
             localStorage.setItem('hasVisited', 'true');
           }
 
@@ -90,11 +98,9 @@ const UserMain = () => {
         if (trainer) {
             userSchedule(userId)
                 .then((response) => {
-                    console.log(response);
                     const convertedTimebox = response.map((schedule) => {
                         const startDate = new Date(schedule.startTime);
                         const endDate = new Date(schedule.endTime);
-
                         const formattedDate = `${startDate.getMonth() + 1}.${startDate.getDate()}(${
                             ["일", "월", "화", "수", "목", "금", "토"][startDate.getDay()]
                         })`;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useStore, useUserInfoStore } from "../../store/store.js";
-import { styled } from "styled-components";
 import RenderDaysForTrainer from "../../components/trainer/Calender/RenderDaysForTrainer.jsx";
 import SheduleLogo from "../../assets/static/Property_Schedule.png";
 import BtnRegister from "../../components/trainer/BtnRegister.jsx";
@@ -10,7 +9,7 @@ import BoxSchedule from "../../components/trainer/BoxSchedule.jsx";
 import { ModalEditSchedule } from "../../components/trainer/ModalEditSchedule.jsx";
 import plusbutton from "../../assets/plusbutton.png";
 import { ModalAddSchedule } from "../../components/trainer/ModalAddSchedule.jsx";
-import { checkMemberList, checkPtPlan } from "../../api/trainer.js";
+import { checkMemberList } from "../../api/trainer.js";
 import { requestPermission } from "../../firebase.jsx";
 
 
@@ -27,7 +26,7 @@ const TrainerMain = () => {
     const { userData, fetchData } = useUserInfoStore();
     const trainer = userData?.trId;
     const userId = useStore((state) => state.userId);
-
+   
     useEffect(() => {
         const today = new Date();
         const formatMonth = `${today.getMonth() + 1}`;
@@ -51,8 +50,7 @@ const TrainerMain = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const memberList = await checkMemberList(today.getFullYear(), today.getMonth(), today.getDate());
-
+                const memberList = await checkMemberList();
         // 멤버 리스트가 비어있는지 확인
         if (memberList && memberList.length > 0) {
           setIsMemListEmpty(false);
@@ -157,12 +155,13 @@ const TrainerMain = () => {
                         </div>
                         <div className='flex flex-col items-start justify-start w-full'>
                             {isExpanded ? (
-                                <RenderDaysForTrainerExpand year={formatYear} month={formatMonthforAPI} />
+                                <RenderDaysForTrainerExpand year={formatYear} month={formatMonthforAPI} userId={userId} />
                             ) : (
                                 <RenderDaysForTrainer
                                     year={formatYear}
                                     month={formatMonthforAPI}
                                     onDateChange={handleDateChange}
+                                    userId={userId}
                                 />
                             )}
                         </div>
@@ -178,7 +177,7 @@ const TrainerMain = () => {
                         <div className='absolute ml-[250px]'>
                             <img src={plusbutton} alt='Add Button' onClick={openAddModal} className='cursor-pointer' />
                         </div>
-                        <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} />
+                        <ModalAddSchedule isOpen={isAddOpen} onRequestClose={closeAddModal} setSelectedMemDate={setSelectedMemDate} />
                     </div>
                     <div className='flex flex-col items-center justify-center mt-[20px]'>
     {isMemListEmpty ? (
@@ -189,7 +188,7 @@ const TrainerMain = () => {
         selectedMemDate.map((schedule, index) => (
             <div key={index} className="w-full mb-[10px]">
                 <BoxSchedule onClick={openModal} userSchedule={schedule} />
-                <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={schedule} />
+                <ModalEditSchedule isOpen={isOpen} onRequestClose={closeModal} user={schedule} setSelectedMemDate={setSelectedMemDate} />
             </div>
         ))
     ) : (

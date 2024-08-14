@@ -84,8 +84,6 @@
     const id = userData.id;
    
 
-    console.log(setId)
-
     useEffect(() => {
       if (inputType === 'setWeight') {
         setExTime(0);

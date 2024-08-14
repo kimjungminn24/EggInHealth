@@ -14,7 +14,7 @@ import {
 } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "./../../components/common/button/RegisterButton";
-import { useStore, useUserInfoStore } from "./../../store/store";
+import { useStore, useUserInfoStore,useTimeStore } from "./../../store/store";
 import { getExercise } from "./../../api/exercise";
 import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
 import BoxUser from "../../components/trainer/BoxUser";
@@ -27,9 +27,6 @@ const FeedbackContainer = styled.div`
   justify-content: space-between;
 `
 const Exercise = () => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false); 
@@ -37,6 +34,8 @@ const Exercise = () => {
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { userData } = useUserInfoStore();
+  const {selectedDate,setSelectedDate } = useTimeStore()
+
   const userType = useStore((set) => set.userType);
   const userLoginId = useStore((set) => set.userId);
   const userLoginData = useStore((set) => set.userInfo);

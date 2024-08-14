@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
-import foodIcon from '../../assets/food.png';
-import foodIcon2 from '../../assets/food2.png'; 
+import saladIcon from '../../assets/salad.png'; 
 import exerciseIcon from '../../assets/exercise.png'; 
-import exerciseIcon2 from '../../assets/exercise2.png'; 
 import videoIcon from '../../assets/feedback.png'; 
-import videoIcon2 from '../../assets/feedback2.png'; 
 import arrow from '../../assets/arrow.png';
 import { checkMemberList } from '../../api/trainer';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +14,7 @@ const Container = styled.div`
 `;
 
 const UserList = styled.div`
-  margin-top: 20px;
+  margin-top: 5px;
 `;
 
 const UserItem = styled.div`
@@ -66,28 +63,39 @@ const UserStats = styled.div`
   align-items: center;
 `;
 
-const StatIcon = styled.img`
+const Icon = styled.img`
   width: 40px;
   height: 40px;
+  margin-left: 5px;
+  filter: ${props => (props.active ? 'none' : 'grayscale(100%)')};
 `;
 
 const Arrow = styled.img`
   width: 30px;
   height: 30px;
-  `;
+`;
+
+const TitleContainer = styled.div`
+  margin-left: 140px;
+`;
+
+const TitleContent = styled.span`
+  margin-left: 8px;
+`;
 
 const TrainerUserList = () => {
-  const [userList, setUserList] = useState([])
-  const navigate = useNavigate()
+  const [userList, setUserList] = useState([]);
+  const navigate = useNavigate();
   const { fetchData } = useUserInfoStore();
   const today = new Date();
   const formatMonth = `${today.getMonth() + 1}`;
   const formatYear = `${today.getFullYear()}`;
 
-  const handleDetailMember = async(memberId)=>{
-    await fetchData(memberId,formatMonth,formatYear)
-    await navigate(`/usercalender`)
-  }
+  const handleDetailMember = async (memberId) => {
+    await fetchData(memberId, formatMonth, formatYear);
+    await navigate(`/usercalender`);
+  };
+
   useEffect(() => {
     const fetchMemberList = async () => {
       try {
@@ -102,21 +110,25 @@ const TrainerUserList = () => {
 
   return (
     <Container>
-      <h1>식단 운동 피드백</h1>
-      <UserList >
+      <TitleContainer>
+        <TitleContent>식단</TitleContent>
+        <TitleContent>운동</TitleContent>
+        <TitleContent>피드백</TitleContent>
+      </TitleContainer>
+      <UserList>
         {userList.map(user => (
-          <UserItem key={user.memberId} onClick={() =>handleDetailMember(user.memberId)}>
+          <UserItem key={user.memberId} onClick={() => handleDetailMember(user.memberId)}>
             <UserInfo>
-              <UserImage src={user.imgUrl||profile} alt={user.name} />
+              <UserImage src={user.imgUrl || profile} alt={user.name} />
               <UserNameAndCount>
                 <UserName>{user.name}</UserName>
                 <RemainingCount>남은 횟수: {user.ptCnt}</RemainingCount>
               </UserNameAndCount>
             </UserInfo>
             <UserStats>
-              <StatIcon src={user.isDiet ? foodIcon2 : foodIcon} alt="식단 아이콘" />
-              <StatIcon src={user.isExercise ? exerciseIcon2 : exerciseIcon} alt="운동 아이콘" />
-              <StatIcon src={user.isFeedback ? videoIcon2 : videoIcon} alt="영상 아이콘" />
+              <Icon src={saladIcon} alt="식단 아이콘" active={user.isDiet ? 1 : 0} />
+              <Icon src={exerciseIcon} alt="운동 아이콘" active={user.isExercise ? 1 : 0} />
+              <Icon src={videoIcon} alt="영상 아이콘" active={user.isFeedback ? 1 : 0} />
             </UserStats>
             <Arrow src={arrow} />
           </UserItem>

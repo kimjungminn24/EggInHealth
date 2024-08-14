@@ -8,7 +8,6 @@ export const getExercise = async (uid, year, month, day) => {
   const res = await axios.get(
     `${BASE_URL}/exercise/${uid}?year=${year}&month=${month}&day=${day}`
   );
-  console.log(res.data)
   return res.data;
 };
 

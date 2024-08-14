@@ -9,25 +9,25 @@ import RegisterButton from "../../components/common/button/RegisterButton";
 import SelectedDate from "../../components/common/SelectedDate";
 import Comments from "./../../components/user/Comments";
 import DietSection from "./../../components/user/diet/DietSection";
-import { useStore, useUserInfoStore } from "../../store/store";
+import { useStore, useUserInfoStore,useTimeStore } from "../../store/store";
 import { getDiet } from "../../api/diet";
 import BoxUser from "./../../components/trainer/BoxUser";
 import ModalDeleteDiet from "../../components/user/diet/ModalDeleteDiet";
 import NoImg from "../../components/user/Noimage";
 
 const UserDietPage = () => {
-  const [selectedDate, setSelectedDate] = useState("");
+
   const [selectedTab, setSelectedTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dietData, setDietData] = useState(null);
   const [hasImages, setHasImages] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { userData } = useUserInfoStore();
   const userType = useStore((set) => set.userType);
   const userLoginId= useStore((set)=> set.userId)
   const userLoginData = useStore((set)=> set.userInfo)
-
+  const { userData } = useUserInfoStore();
+  const {selectedDate,setSelectedDate } = useTimeStore()
 
 
   const getKrDate = () => {

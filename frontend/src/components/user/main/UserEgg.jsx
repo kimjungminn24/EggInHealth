@@ -15,6 +15,14 @@ import Egg9 from '../../../assets/eggs/egg9.png';
 import Egg10 from '../../../assets/eggs/egg10.png';
 import Egg11 from '../../../assets/eggs/egg11.png';
 import Egg12 from '../../../assets/eggs/egg12.png';
+import Egg13 from '../../../assets/eggs/egg13.png';
+import Egg14 from '../../../assets/eggs/egg14.png';
+import Egg15 from '../../../assets/eggs/egg15.png';
+import Egg16 from '../../../assets/eggs/egg16.png';
+import Egg17 from '../../../assets/eggs/egg17.png';
+import Egg18 from '../../../assets/eggs/egg18.png';
+import Egg19 from '../../../assets/eggs/egg19.png';
+import Egg20 from '../../../assets/eggs/egg20.png';
 
 const eggImagesMap = {
   0: Egg0,
@@ -30,7 +38,16 @@ const eggImagesMap = {
   10: Egg10,
   11: Egg11,
   12: Egg12,
+  13: Egg13,
+  14: Egg14,
+  15: Egg15,
+  16: Egg16,
+  17: Egg17,
+  18: Egg18,
+  19: Egg19,
+  20: Egg20,
 };
+
 
 const BoxContainer = styled.div`
   display: inline-block;
@@ -67,7 +84,7 @@ const Egg = styled.div`
 `;
 
 const UserEgg = () => {
-  const { userData, userEggData } = useUserInfoStore();
+  const { userData,userEggData  } = useUserInfoStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

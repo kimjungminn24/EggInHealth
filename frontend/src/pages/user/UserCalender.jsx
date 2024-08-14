@@ -1,7 +1,7 @@
 import React ,{ useEffect, useState }from 'react';
-import { useUserInfoStore, useStore } from '../../store/store.js';
-
+import { useUserInfoStore, useStore,useTimeStore } from '../../store/store.js';
 import RenderDays from '../../components/user/Calender/RenderDays.jsx';
+import BoxUser from '../../components/trainer/BoxUser';
 
 
 const UserCalender = () => {
@@ -11,10 +11,12 @@ const UserCalender = () => {
   const formatMonth = `${today.getMonth() + 1}`;
   const formatMonthforAPI = formatMonth < 10 ? `0${formatMonth}` : formatMonth
   const formatYear = `${today.getFullYear()}`;
+  const userData = useUserInfoStore((state) => state.userData);
+  const {selectedDate,setSelectedDate } = useTimeStore()
 
   return (
     <div>
-      {userType == 'TRAINER' ? <div>컴포넌트</div>: null}
+      {userType == 'TRAINER' ? <BoxUser userData={userData} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>: null}
       <div className="w-[313px] h-[620px] bg-white rounded-[20px] mt-[9px] m-auto overflow-hidden">
         <p className="w-full m-auto text-center py-[6px]">
           <span className="text-xl">{formatMonth} </span>

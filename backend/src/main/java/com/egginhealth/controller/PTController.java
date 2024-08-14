@@ -31,9 +31,9 @@ public class PTController {
         return new ResponseEntity<>(ptPlanService.getTopPTPlans(id, cnt), HttpStatus.OK);
     }
 
-    @GetMapping("/plan/top")
-    public ResponseEntity<List<PtPlanTopDto>> getTopTrainerPTPlans(@RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day) {
-        return new ResponseEntity<>(ptPlanService.getTopTrainerPTPlans(SecurityUtil.getUserId(), year, month, day), HttpStatus.OK);
+    @GetMapping("/plan/trainer/{id}")
+    public ResponseEntity<List<PtPlanTopDto>> getTopTrainerPTPlans(@PathVariable("id") int id, @RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day) {
+        return new ResponseEntity<>(ptPlanService.getTopTrainerPTPlans(id, year, month, day), HttpStatus.OK);
     }
 
     @GetMapping("/log/{uid}")

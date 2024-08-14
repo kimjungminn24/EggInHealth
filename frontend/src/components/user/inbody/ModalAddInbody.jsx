@@ -143,7 +143,7 @@ const ModalAddInbody = ({ isOpen, onRequestClose,fetchData }) => {
           <RegisterButton onClick={updateData}>등록</RegisterButton>
           <PhotoCaptureModal
             isOpen={photoModalIsOpen}
-            onRequestClose={closePhotoModal}
+            closePhotoModal={closePhotoModal}
             setInbodyData={setInbodyData}
             inbodyData={inbodyData}
           />

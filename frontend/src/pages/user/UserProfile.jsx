@@ -7,7 +7,7 @@ import InbodyPage from '../../components/user/inbody/InbodyPage';
 import ModalInbody from '../../components/user/inbody/ModalInbody';
 import ButtonInbodyEdit from '../../components/common/button/ButtonInbodyEdit';
 import ButtonProfileEdit from '../../components/common/button/ButtonProfileEdit';
-import { useUserInfoStore, useStore } from '../../store/store';
+import { useUserInfoStore, useStore,useTimeStore } from '../../store/store';
 import BoxUser from '../../components/trainer/BoxUser';
 
 const Container = styled.div`
@@ -53,7 +53,7 @@ const UserProfile = () => {
   const userData = useUserInfoStore((state) => state.userData);
   const roleType = useStore((state) => state.userType);
   const { userUpdate } = useStore();
-  const [SelectedDate,setSelectedDate ] = useState()
+  const {selectedDate,setSelectedDate } = useTimeStore()
 
   useEffect(() => {
     userUpdate();
@@ -80,7 +80,7 @@ const UserProfile = () => {
           <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
         </ProfileContainer>
       ) : (
-        <BoxUser userData={userData} setSelectedDate={setSelectedDate}/> 
+        <BoxUser userData={userData} setSelectedDate={setSelectedDate} selectedDate={selectedDate}/> 
       )}
       <ButtonGroupContainer>
         <ButtonGroup>

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import plusBtn from '../../assets/plusBtn.png';
 import ModalUserList from './ModalUserList';
-import { checkMemberList } from '../../api/trainer';
-import { updatePtPlan } from '../../api/trainer';
+import { checkMemberList,updatePtPlan,checkPtPlan } from '../../api/trainer';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png'
 import { useStore } from '../../store/store';
@@ -155,7 +154,7 @@ const ArrowImage = styled.img`
   height: 24px;
 `;
 
-export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
+export const ModalAddSchedule = ({ isOpen, onRequestClose,setSelectedMemDate }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [memberId, setmemberId] = useState(null);
   const [member, setmember] = useState(null);
@@ -163,7 +162,6 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [userList, setUserList] = useState([]);
-  const userId = useStore((state) => state.userId)
 
   useEffect(() => {
     if (isOpen) {
@@ -208,7 +206,7 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
 
   const UpdatePtPlan = async () => {
     const createdAt = new Date().toISOString(); 
-  
+
     const data = {
       memberId: memberId,        
       startTime: `${date}T${startTime}:00.000Z`, 
@@ -217,6 +215,7 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
     };
     try {
       await updatePtPlan(data); 
+      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {

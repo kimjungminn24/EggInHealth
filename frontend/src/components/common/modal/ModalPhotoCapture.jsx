@@ -2,31 +2,29 @@ import React, { useRef, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import ButtonCapture from '../button/ButtonCapture';
-import ButtonCloseCamera from '../button/ButtonCloseCamera';
 import { uploadOCR } from '../../../api/inbody';
 import { useStore } from '../../../store/store';
 import { getInbodyParsingResult } from '../../../hooks/inbodyParsing';
-import { data } from '../../../hooks/inbodyData';
-import inbody from '../../../assets/inbody.jpg'
 
 const StyledModal = styled(Modal)`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: white;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: none;
-  width: 100vw;
-  height: 100vh;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
   outline: none;
+  position: relative;
 `;
 
-  const ModalContent = styled.div`
+const ModalContent = styled.div`
   text-align: center;
   position: relative;
   width: 100%;
@@ -35,6 +33,8 @@ const StyledModal = styled(Modal)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: flex-start; 
+
 `;
 
 const VideoContainer = styled.div`
@@ -66,11 +66,14 @@ const ButtonContainer = styled.div`
   bottom: 20px;
   display: flex;
   width: 100%;
+  top: 530px;
   justify-content: center;
   gap: 10px;
+  margin-top: auto; 
+  margin-bottom: 280px; 
 `;
 
-const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
+const PhotoCaptureModal = ({ isOpen, closePhotoModal, setInbodyData }) => {
   const [stream, setStream] = useState(null);
   const [photo, setPhoto] = useState(null);
   const videoRef = useRef(null);
@@ -79,6 +82,7 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
 
   useEffect(() => {
     if (isOpen) {
+      setPhoto(null);
       startCamera();
     } else {
       stopCamera();
@@ -121,32 +125,9 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
     }
   };
 
-  const uploadPhoto =  async (dataUrl) => {
+  const uploadPhoto = async (dataUrl) => {
     try {
       const file = dataURLtoFile(dataUrl, 'captured-photo.png');
-      await testWithInbodyFile();
-
-      // const ocrResult = await uploadOCR(file);
-
-      // const formatData = getInbodyParsingResult(ocrResult)
-      // formatData.memberId=userId
-      // formatData.imageFile=file
-      // formatData.height='0'
-      // console.log(formatData);
-
-      // setInbodyData(formatData)
-      onRequestClose();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  const testWithInbodyFile = async () => {
-    try {
-      const response = await fetch(inbody);
-      const blob = await response.blob();
-      const file = new File([blob], 'inbody.jpg', { type: 'image/jpeg' });
-
       const ocrResult = await uploadOCR(file);
       const formatData = getInbodyParsingResult(ocrResult);
       formatData.memberId = userId;
@@ -155,6 +136,7 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
       console.log(formatData);
 
       setInbodyData(formatData);
+      closePhotoModal();
     } catch (error) {
       console.error(error);
     }
@@ -176,7 +158,12 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
   };
 
   return (
-    <StyledModal isOpen={isOpen} onRequestClose={onRequestClose} ariaHideApp={false}>
+    <StyledModal
+      isOpen={isOpen}
+      onRequestClose={closePhotoModal}
+      ariaHideApp={false}
+      shouldCloseOnOverlayClick={true} 
+    >
       <ModalContent>
         <VideoContainer>
           {photo ? (
@@ -189,7 +176,6 @@ const PhotoCaptureModal = ({ isOpen, onRequestClose,setInbodyData }) => {
           <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
         </VideoContainer>
         <ButtonContainer>
-          <ButtonCloseCamera onClick={onRequestClose} />
           <ButtonCapture onClick={capturePhoto} />
         </ButtonContainer>
       </ModalContent>

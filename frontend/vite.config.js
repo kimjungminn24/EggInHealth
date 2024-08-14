@@ -10,7 +10,7 @@ export default defineConfig({
       manifest: {
         name: 'EggInHealth',
         short_name: 'Eggs',
-        theme_color: '#ffffff',
+        theme_color: '#f8f8f8',
         scope: '/',
         start_url: '/',
         icons: [

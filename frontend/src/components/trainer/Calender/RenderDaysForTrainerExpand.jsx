@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { checkPtPlan } from "../../../api/trainer";
 
-const RenderDaysForTrainerExpand = ({ year, month }) => {
+const RenderDaysForTrainerExpand = ({ year, month,userId }) => {
     const [exerDate, setExerDate] = useState({})
     const today = new Date();
 
@@ -19,7 +19,7 @@ const RenderDaysForTrainerExpand = ({ year, month }) => {
                 const Datepromises = []; // 운동날짜배열
     
                 for (let day = 1; day <= daysInMonth; day++) {
-                    Datepromises.push(checkPtPlan(year, month, day));
+                    Datepromises.push(checkPtPlan(year, month, day,userId));
                 }
     
                 const Dateresults = await Promise.all(Datepromises);
@@ -29,7 +29,6 @@ const RenderDaysForTrainerExpand = ({ year, month }) => {
                 Dateresults.forEach((result, index) => {
                     if (result) { // result가 유효한지 확인
                         updatedExerDate[index+1] = result.map(item=>item.startTime); // 배열의 올바른 인덱스에 데이터 할당
-                        console.log(index+1, result);
                     }
                 });
                 setExerDate(updatedExerDate); // 최종 업데이트된 배열로 상태 갱신

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png';
-import ChatComponent from '../common/ChatComponent';
+import { useNavigate } from 'react-router-dom';
 
 const ChatListContainer = styled.div`
   margin-top: 20px;
@@ -54,8 +54,8 @@ const NameMessage = styled.div`
 `;
 
 const Arrow = styled.img`
-  /* width: ;
-  height: ; */
+  width: 40px;
+  height: 40px;
 `;
 
 const calculateTimeDifference = (timeString) => {
@@ -84,8 +84,9 @@ const calculateTimeDifference = (timeString) => {
 };
 
 const BoxChatList = ({ chats, trainerId }) => {
+  const navigate = useNavigate();
   const openChatRoom = (memberId) => {
-    ChatComponent(trainerId, memberId, memberId);
+     navigate(`/trainerchat/${trainerId}/${memberId}`); 
   };
 
   return (
@@ -96,9 +97,9 @@ const BoxChatList = ({ chats, trainerId }) => {
           onClick={() => openChatRoom(chat.memberId)}
         >
           <UserInfo>
-            <UserImage src={chat.memberImgUrl || profile} alt={chat.name} />
+            <UserImage src={chat.imgUrl || profile} alt={chat.name} />
             <NameMessage>
-              <UserName>{chat.memberName}</UserName>
+              <UserName>{chat.name}</UserName>
               <UserMessage>{chat.lastContent}</UserMessage>
             </NameMessage>
           </UserInfo>

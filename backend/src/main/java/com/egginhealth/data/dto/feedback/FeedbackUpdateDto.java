@@ -2,12 +2,9 @@ package com.egginhealth.data.dto.feedback;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-
-public record FeedbackUpdateDto (
-        BigDecimal motionSimilarity,
+public record FeedbackUpdateDto(
         String memo,
-        int exerciseId,
+        String exerciseName,
         MultipartFile record,
         String updatedAt
 ) {

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Profile from '../../assets/profile.png';
-import phone from '../../assets/info/phone.png';
 import styled from 'styled-components';
 import { useStore } from '../../store/store';
 import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
 import { ModalEditPT } from '../../components/trainer/ModalEditPT';
 import email from '../../assets/info/email.png';
+import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   width: 100%;
@@ -14,6 +14,7 @@ const Container = styled.div`
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 20px;
+  text-align: center; 
 `;
 
 const ProfileContainer = styled.div`
@@ -42,6 +43,7 @@ const InfoBox = styled.div`
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 15px;
+  
   img {
     margin-right: 10px; 
   }
@@ -68,6 +70,10 @@ const YellowBtn = styled.button`
   padding: 8px 16px;
   margin-top: 20px;
   color: white;
+  margin: 20px auto; 
+  &:hover {
+    background-color: #FFC947;
+  }
 `;
 
 const PtBtn = styled.button`
@@ -81,14 +87,22 @@ const PtBtn = styled.button`
   padding: 8px 16px;
   margin-top: 20px;
   color: white;
+  margin: 20px auto;
+  &:hover {
+    background-color: #FFC947;
+  }
 `;
-
 
 const TrainerProfile = () => {
     const userData = useStore((state) => state.userInfo);
     const [isMakeCodeModalOpen, setMakeCodeModalOpen] = useState(false);
     const [isEditPTModalOpen, setEditPTModalOpen] = useState(false);
+    const {fetchData} = useUserInfoStore()
 
+    useEffect(()=>{
+      fetchData(userData.id)
+    },[])
+    
     const openMakeCodeModal = () => {
       setMakeCodeModalOpen(true);
     };

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import { connectCode } from '../../../api/main';
-import { useUserInfoStore } from '../../../store/store';
+import { useUserInfoStore,useStore } from '../../../store/store';
+
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -45,6 +46,7 @@ const ConnectButton = styled.button`
 const ModalConnect = ({ isOpen, onRequestClose }) => {
   const [authCode, setAuthCode] = useState('');
   const { fetchData } = useUserInfoStore();
+  const userId = useStore((state)=>state.userId)
 
   const handleInputChange = (event) => {
     setAuthCode(event.target.value); 
@@ -55,7 +57,6 @@ const ModalConnect = ({ isOpen, onRequestClose }) => {
       const response = await connectCode(authCode); 
       console.log(response);
       if (response && response.data) {
-        const userId = response.data.userId; 
         const formatMonth = new Date().getMonth() + 1; 
         const formatYear = new Date().getFullYear(); 
 
@@ -65,6 +66,7 @@ const ModalConnect = ({ isOpen, onRequestClose }) => {
     } catch (error) {
       console.error("연결 중 오류 발생:", error);
     }
+    await fetchData(userId)
   };
 
   return (

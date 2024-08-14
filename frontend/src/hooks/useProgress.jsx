@@ -1,10 +1,10 @@
 const useProgress = (weightStandard, muscleStandard, fatPercentageStandard, bmiStandard, fatStandard) => {
-  const THRESHOLD = 10; // 기준치
+  const THRESHOLD = 10; // 기준치 허용 오차
+  const NUM_STEPS = 10; // 프로그래스 바를 나눌 단계 수
 
   const calculateProgress = (type, value) => {
-    console.log(type, value); // 디버깅을 위한 로그
-
     let standard;
+
     switch (type) {
       case 'weight':
         standard = weightStandard;
@@ -31,20 +31,29 @@ const useProgress = (weightStandard, muscleStandard, fatPercentageStandard, bmiS
       return '50%'; // 기본값 설정
     }
 
-    // 표준 이하일 때
+    // 기준치 이하일 때
     if (numericValue < standard - THRESHOLD) {
-      // -50%에서 0%까지 조정
-      const progress = Math.max(0, 50 - ((standard - numericValue) / THRESHOLD) * 50);
+      // -10단계에서 0단계까지 조정
+      const stepsBelow = Math.max(0, Math.floor((standard - numericValue) / THRESHOLD * NUM_STEPS));
+      const progress = Math.min(100, 100 - Math.floor(stepsBelow * 100 / NUM_STEPS));
       return `${progress}%`;
     }
-    // 표준 이상일 때
+    // 기준치 이상일 때
     else if (numericValue > standard + THRESHOLD) {
-      // 50%에서 100%까지 조정
-      const progress = Math.min(100, 50 + ((numericValue - standard) / THRESHOLD) * 50);
+      // 0단계에서 10단계까지 조정
+      const stepsAbove = Math.min(NUM_STEPS, Math.floor((numericValue - standard) / THRESHOLD * NUM_STEPS));
+      const progress = Math.max(0, Math.floor(stepsAbove * 100 / NUM_STEPS));
       return `${progress}%`;
     }
-    // 표준 근처일 때
-    return '50%';
+    // 기준치 근처일 때 (기준치 ±10% 범위)
+    else {
+      // 기준치에 가까운 정도에 따라 진행 상황 조정
+      const range = THRESHOLD * 2; // 기준치 ±10 범위
+      const deviation = Math.abs(numericValue - standard);
+      const stepsNear = NUM_STEPS - Math.floor((deviation / range) * NUM_STEPS);
+      const progress = Math.max(0, Math.floor(stepsNear * 100 / NUM_STEPS));
+      return `${progress}%`;
+    }
   };
 
   return calculateProgress;

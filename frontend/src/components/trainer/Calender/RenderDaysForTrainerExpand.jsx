@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { GetExerDate } from "../../../api/Calender";
+import { checkPtPlan } from "../../../api/trainer";
 
-const RenderDaysForTrainerExpand = ({ year, month }) => {
+const RenderDaysForTrainerExpand = ({ year, month,userId }) => {
     const [exerDate, setExerDate] = useState({})
     const today = new Date();
 
@@ -12,34 +12,36 @@ const RenderDaysForTrainerExpand = ({ year, month }) => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
     const daysInMonth = getDaysInMonth(today.getFullYear(), today.getMonth());
 
+    
     useEffect(() => {
         const fetchData = async () => {
-        try {
-            const Datepromises = []; // 운동날짜배열
-
-            for (let day = 1; day <= daysInMonth; day++) {
-            Datepromises.push(GetExerDate(year,month))
-
-            const Dateresults = await Promise.all(Datepromises)
-            const DateMap = {};
-            Dateresults[0].forEach((result) => {
-                const date = new Date(result.date);
-                const day = date.getDate();
-                DateMap[day] = result;
-            });
-            
-            setExerDate(DateMap);
+            try {
+                const Datepromises = []; // 운동날짜배열
+    
+                for (let day = 1; day <= daysInMonth; day++) {
+                    Datepromises.push(checkPtPlan(year, month, day,userId));
+                }
+    
+                const Dateresults = await Promise.all(Datepromises);
+    
+                const updatedExerDate = []; // 상태를 직접 변경하지 않고 복사본을 생성하여 작업
+    
+                Dateresults.forEach((result, index) => {
+                    if (result) { // result가 유효한지 확인
+                        updatedExerDate[index+1] = result.map(item=>item.startTime); // 배열의 올바른 인덱스에 데이터 할당
+                    }
+                });
+                setExerDate(updatedExerDate); // 최종 업데이트된 배열로 상태 갱신
+            } catch (error) {
+                console.log('에러:', error);
             }
-        } catch (error) {
-            console.log('에러:', year, month);
-        }
         };
-
+    
         fetchData();
-    }, [year, month]);
-
+    }, [year, month, daysInMonth]);
+    
     const days = [];
-    let dayCount = 1;
+    let dayCount =1;
 
     
     for (let week = 0; week < 6; week++) {
@@ -56,13 +58,26 @@ const RenderDaysForTrainerExpand = ({ year, month }) => {
         weekDays.push(
         <div key={`${week}-${day}`} className="flex-1 flex flex-col items-start justify-start border border-gray-200 h-[111px]">
             <p className="text-sm font-medium text-gray-800">{dayCount}</p>
-            {/* 임시데이터 수정필요 */}
-            {/* 데이터 렌더링 조건 반전되어 있음. 데이터 내부의 시간이 아닌 내가 지정한 값으로만 렌더링 되게 되어있음 */}
-            {ExerDateForTheDay ? <div>운동 날짜</div> : <div className="w-full h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px]">
-                <div className='font-bold text-white text-[10px]'>
-                    08:00
+            {ExerDateForTheDay && ExerDateForTheDay.length > 0 ? (
+    <div className="w-full">
+        {ExerDateForTheDay.map((item, idx) => {
+            const date = new Date(item); // item.date를 Date 객체로 변환
+            const hours = date.getHours(); // 시간 추출
+            const minutes = date.getMinutes(); // 분 추출
+            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+            return (
+                <div key={idx} className="h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px] mb-[2px]">
+                    <div className='font-bold text-white text-[10px] mt-[1px]'>
+                        {formattedTime}
                     </div>
-                    </div>}
+                </div>
+            );
+        })}
+    </div>
+) : (
+    <div></div>
+)}
         </div>
         );
         dayCount++;

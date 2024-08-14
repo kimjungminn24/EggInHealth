@@ -68,8 +68,19 @@ const Egg = styled.div`
 
 const UserEgg = () => {
   const { userData, userEggData } = useUserInfoStore();
+  const [loading, setLoading] = useState(true);
 
-  const eggsToShow = Array.isArray(userEggData) ? userEggData.slice(0, 30).map(item => eggImagesMap[item] || EmptyEgg) : [];
+  useEffect(() => {
+    if (userData && userEggData) {
+      setLoading(false);
+    }
+  }, [userData, userEggData]);
+
+  if (loading) {
+    return <p>로딩 중...</p>; 
+  }
+
+  const eggsToShow = Array.isArray(userEggData.eggList) ? userEggData.eggList.slice(0, 30).map(item => eggImagesMap[item] || EmptyEgg) : [];
 
   return (
     <BoxContainer>

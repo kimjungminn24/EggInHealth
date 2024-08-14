@@ -1,19 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Arrow from "../../assets/static/Property_Arrow.png";
+import Arrow from "../../assets/static/whitearrow.png";
 
 //양식만 맞춰놈, 수정필요
 const initialItems = [
   { id: 1, label: '운동', path: '/userexercise' },
   { id: 2, label: '프로필', path: '/userprofile' },
-  { id: 3, label: '채팅', path: '/userchatroom' },
-  { id: 4, label: '식단', path: '/userfood' },
-  { id: 5, label: '에그', path: '/usermain' },
-  { id: 6, label: '캘린더', path: '/usercalender' },
-  { id: 7, label: '운동', path: '/userexercise' },
-  { id: 8, label: '프로필', path: '/userprofile' },
-  { id: 9, label: '채팅', path: '/userchatroom' },
-  { id: 10, label: '식단', path: '/userfood' },
+  { id: 3, label: '식단', path: '/userdiet' },
+  { id: 4, label: '캘린더', path: '/usercalender' },
+  { id: 5, label: '운동', path: '/userexercise' },
+  { id: 6, label: '프로필', path: '/userprofile' },
+  { id: 7, label: '식단', path: '/userdiet' },
+  { id: 8, label: '캘린더', path: '/usercalender' },
 ];
 
 const TrainerUserDetailHeader = () => {
@@ -27,28 +25,22 @@ const TrainerUserDetailHeader = () => {
   useEffect(() => {
     // URL 경로에 따른 스크롤 위치 설정
     switch (location.pathname) {
-      case '/userchatroom':
-        if (scrollPosition == 800){
-          setScrollPosition(800)
+      case '/userdiet':
+        if (scrollPosition == 600){
+          setScrollPosition(600)
         }
         else{
         setScrollPosition(200); // 원하는 위치로 설정
         }
         break;
-      case '/userfood':
+      case '/usercalender':
         setScrollPosition(300);
         break;
-      case '/usermain':
+      case '/userexercise':
         setScrollPosition(400);
         break;
-      case '/usercalender':
-        setScrollPosition(500);
-        break;
-      case '/userexercise':
-        setScrollPosition(600);
-        break;
       case '/userprofile':
-        setScrollPosition(700);
+        setScrollPosition(500);
         break;
     //   default:
     //     setScrollPosition(400);
@@ -78,44 +70,40 @@ const TrainerUserDetailHeader = () => {
       });
       if (scrollPosition <= 190) {
         navigate('/userprofile')
-        scrollContainerRef.current.scrollLeft = 840;
-        setScrollPosition(700);
-        navigate('/userprofile')
+        scrollContainerRef.current.scrollLeft = 600;
+        setScrollPosition(500);
+        navigate('/userpofile')
       }
-      else if (scrollPosition >= 810) {
+      else if (scrollPosition >= 700) {
         scrollContainerRef.current.scrollLeft = 140;
         setScrollPosition(300);
-        navigate('/userfood')
-      }
-      else if (scrollPosition == 200 || scrollPosition ==800){
-        navigate('/userchatroom')
-      }
-      else if (scrollPosition == 300){
-        navigate('/userfood')
-      }
-      else if (scrollPosition == 400){
-        navigate('/usermain')
-      }
-      else if (scrollPosition == 500){
         navigate('/usercalender')
       }
-      else if (scrollPosition == 600){
+      else if (scrollPosition == 200 || scrollPosition ==600){
+        navigate('/userdiet')
+      }
+      else if (scrollPosition == 300){
+        navigate('/usercalender')
+      }
+      else if (scrollPosition == 400){
         navigate('/userexercise')
       }
-      else if (scrollPosition == 700){
+      else if (scrollPosition == 500){
         navigate('/userprofile')
       }
     }
   }, [scrollPosition]);
 
   return (
-    <div className='relative'>
-      <div className='absolute z-30 left-6 top-1/2 transform -translate-y-1/2 cursor-pointer' onClick={handleScrollLeft}>
-        <img src={Arrow} alt="왼쪽화살표" className='w-[13px] h-[24px] -scale-x-100' />
-      </div>
+    <div>
       <div className='absolute h-[35px] w-[120px] bg-white z-10 top-0 left-0 right-0 bottom-0 m-auto rounded-full'></div>
-      <div className='absolute z-30 top-1/2 right-6 transform -translate-y-1/2 cursor-pointer' onClick={handleScrollRight}>
-        <img src={Arrow} alt="오른쪽화살표" className='w-[13px] h-[24px]' />
+      <div className='absolute h-[35px] w-[320px] justify-between flex top-0 left-0 right-0 bottom-0 m-auto items-center'>
+        <div className='z-40 cursor-pointer' onClick={handleScrollLeft}>
+          <img src={Arrow} alt="왼쪽화살표" className='w-[26px] h-[36px] -scale-x-100' />
+        </div>
+        <div className='z-40 cursor-pointer' onClick={handleScrollRight}>
+          <img src={Arrow} alt="오른쪽화살표" className='w-[26px] h-[36px]' />
+        </div>
       </div>
       <div
         className="relative w-[330px] flex gap-5 snap-x snap-mandatory overflow-x-auto bg-yellow-400 h-[40px] rounded-full top-0 left-0 right-0 bottom-0 m-auto justify-items-center items-center"

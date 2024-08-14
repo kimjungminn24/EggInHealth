@@ -11,11 +11,10 @@ const Container = styled.div`
   width: 90%;
   padding: 10px 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-left: 20px  ;
-  margin-bottom: 10px;
+  margin: 10px 0 10px 20px;
   cursor: pointer;
-
 `;
+
 
 const UserImage = styled.img`
   width: 50px;

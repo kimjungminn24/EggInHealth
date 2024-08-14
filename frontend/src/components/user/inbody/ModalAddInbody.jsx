@@ -76,7 +76,7 @@ const CameraButtonWrapper = styled.div`
   right: 10px;
 `;
 
-const ModalAddInbody = ({ isOpen, onRequestClose }) => {
+const ModalAddInbody = ({ isOpen, onRequestClose,fetchData }) => {
   const [photoModalIsOpen, setPhotoModalIsOpen] = useState(false);
   const [inbodyData, setInbodyData] = useState({
     weight: '',
@@ -110,13 +110,14 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
     { key: 'muscle', label: '골격근량', unit: 'kg' },
     { key: 'fat', label: '체지방량', unit: 'kg' },
     { key: 'bmi', label: 'BMI', unit: 'kg/㎡' },
-    { key: 'fatPercent', label: '체지방률', unit: '%' },
+    { key: 'fatPercentage', label: '체지방률', unit: '%' },
     { key: 'compositionScore', label: '종합점수', unit: '점' },
   ];
 
-  const updateData = () => {
-    uploadInbodyData(inbodyData);
-    onRequestClose();
+  const updateData = async() => {
+    await uploadInbodyData(inbodyData);
+    await onRequestClose();
+    await fetchData()
   };
 
   return (
@@ -142,7 +143,7 @@ const ModalAddInbody = ({ isOpen, onRequestClose }) => {
           <RegisterButton onClick={updateData}>등록</RegisterButton>
           <PhotoCaptureModal
             isOpen={photoModalIsOpen}
-            onRequestClose={closePhotoModal}
+            closePhotoModal={closePhotoModal}
             setInbodyData={setInbodyData}
             inbodyData={inbodyData}
           />

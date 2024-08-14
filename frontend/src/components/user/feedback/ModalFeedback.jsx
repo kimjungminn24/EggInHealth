@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import styled from 'styled-components';
-import { registerFeedback } from './../../../api/exercise';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import styled from "styled-components";
+import {
+  registerFeedback,
+  registerFeedbackToAI,
+  updateFeedback,
+} from "./../../../api/exercise";
 
 // Styled Components
 const StyledModal = styled(Modal)`
@@ -45,14 +49,21 @@ const Button = styled.button`
   margin-top: 10px;
   border-radius: 15px;
   border: none;
-  background-color: ${props => props.close ? '#6c757d' : '#FFD66B'};
+  background-color: ${(props) => (props.close ? "#6c757d" : "#FFD66B")};
   color: #fff;
   cursor: pointer;
 `;
 
-const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbackData }) => {
-  const [exerciseId, setExerciseId] = useState('');
-  const [memo, setMemo] = useState('');
+const FeedbackModal = ({
+  isOpen,
+  onClose,
+  getKoreanISOString,
+  fetchFeedback,
+  feedbackData,
+  userData,
+}) => {
+  const [exerciseName, setExerciseName] = useState("");
+  const [memo, setMemo] = useState("");
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -62,30 +73,41 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
     }
   };
 
-  const motionSimilarity = 0;
-
   const handleFileUpload = async () => {
     if (file) {
       const record = file;
-      const createdAt = getKoreanISOString() + 'Z';
+      const createdAt = getKoreanISOString() + "Z";
       try {
-        await registerFeedback(motionSimilarity, memo, exerciseId, record, createdAt);
+        if (feedbackData) {
+          const aiVideo = await registerFeedbackToAI(record, exerciseName);
+          await updateFeedback(
+            memo,
+            exerciseName,
+            aiVideo,
+            createdAt,
+            feedbackData.id
+          );
+        } else {
+          const aiVideo = await registerFeedbackToAI(record, exerciseName);
+          await registerFeedback(memo, exerciseName, aiVideo, createdAt);
+        }
+
+        await fetchFeedback(userData.id);
         onClose();
-        setExerciseId('');
-        setMemo('');
+        setExerciseName("");
+        setMemo("");
         setFile(null);
-        fetchFeedbackData();
       } catch (error) {
         if (error.response) {
-          console.error('Error response:', error.response.data);
+          console.error("Error response:", error.response.data);
         } else if (error.request) {
-          console.error('Error request:', error.request);
+          console.error("Error request:", error.request);
         } else {
-          console.error('Error message:', error.message);
+          console.error("Error message:", error.message);
         }
       }
     } else {
-      alert('파일을 선택해주세요.');
+      alert("파일을 선택해주세요.");
     }
   };
 
@@ -95,8 +117,8 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
       <Input
         type="text"
         placeholder="운동 ID"
-        value={exerciseId}
-        onChange={(e) => setExerciseId(e.target.value)}
+        value={exerciseName}
+        onChange={(e) => setExerciseName(e.target.value)}
       />
       <Textarea
         placeholder="메모"
@@ -104,8 +126,12 @@ const FeedbackModal = ({ isOpen, onClose, name, getKoreanISOString, fetchFeedbac
         onChange={(e) => setMemo(e.target.value)}
       />
       <FileInput type="file" accept="video/*" onChange={handleFileChange} />
-      <Button onClick={handleFileUpload}>등록</Button>
-      <Button close onClick={onClose}>닫기</Button>
+      <Button onClick={handleFileUpload}>
+        {feedbackData ? "수정" : "등록"}
+      </Button>
+      <Button close onClick={onClose}>
+        닫기
+      </Button>
     </StyledModal>
   );
 };

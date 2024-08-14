@@ -19,7 +19,7 @@ const updateInbody = (keys, obj) => {
     muscle: null,
     fat: null,
     bmi: null,
-    fatPercent: null,
+    fatPercentage: null,
     compositionScore: null,
   };
 
@@ -41,10 +41,10 @@ const updateInbody = (keys, obj) => {
         acc.fat === null ? checkFat(text, beforeText, afterText) : acc.fat;
       const bmiResult =
         acc.bmi === null ? checkBMI(text, beforeText, afterText) : acc.bmi;
-      const fatPercentResult =
-        acc.fatPercent === null
-          ? checkFatPercent(text, beforeText, afterText)
-          : acc.fatPercent;
+      const fatPercentageResult =
+        acc.fatPercentage === null
+          ? checkFatPercentage(text, beforeText, afterText)
+          : acc.fatPercentage;
       const compositionScoreResult =
         acc.compositionScore === null
           ? checkCompositionScore(text, beforeText, afterText)
@@ -56,7 +56,7 @@ const updateInbody = (keys, obj) => {
         muscle: muscleResult,
         fat: fatResult,
         bmi: bmiResult,
-        fatPercent: fatPercentResult,
+        fatPercentage: fatPercentageResult,
         compositionScore: compositionScoreResult,
       };
     },
@@ -94,7 +94,7 @@ const checkFat = (text, beforeText, afterText) => {
   return null;
 };
 //체지방률
-const checkFatPercent = (text, beforeText, afterText) => {
+const checkFatPercentage = (text, beforeText, afterText) => {
   if (text.includes("부위") && text.includes("지방") && isNumber(beforeText))
     return beforeText;
   if (text.includes("Fat") && isNumber(afterText)) return afterText;

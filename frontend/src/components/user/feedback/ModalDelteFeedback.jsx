@@ -1,7 +1,7 @@
-import React from 'react';
-import Modal from 'react-modal';
-import styled from 'styled-components';
-import { deleteDiet } from '../../../api/diet'; // deleteDiet 함수가 이 경로에 있다고 가정합니다.
+import React from "react";
+import Modal from "react-modal";
+import styled from "styled-components";
+import { deleteFeedback } from "../../../api/exercise";
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -23,30 +23,38 @@ const Button = styled.button`
   margin-top: 10px;
   border-radius: 5px;
   border: none;
-  background-color: ${props => (props.close ? '#6c757d' : 'red')};
+  background-color: ${(props) => (props.close ? "#6c757d" : "red")};
   color: #fff;
   cursor: pointer;
 `;
 
-const ModalDeleteDiet = ({ filteredData, onClose }) => {
+const ModalDeleteFeedback = ({
+  isOpen,
+  feedbackData,
+  onClose,
+  fetchFeedbackData,
+}) => {
   const handleSubmit = async () => {
-    if (filteredData && filteredData.length > 0) {
+    if (feedbackData) {
       try {
-        await deleteDiet(filteredData[0].id)      ;
+        await deleteFeedback(feedbackData);
+        fetchFeedbackData(); // 삭제 후 피드백 데이터 새로 고침
         onClose(); // 삭제 후 모달을 닫습니다.
       } catch (error) {
-        console.error('Error deleting diet:', error);
+        console.error("Error deleting Feedback:", error);
       }
     }
   };
 
   return (
-    <StyledModal isOpen={true} onRequestClose={onClose}>
+    <StyledModal isOpen={isOpen} onRequestClose={onClose}>
       <h2>삭제하시겠습니까?</h2>
       <Button onClick={handleSubmit}>삭제</Button>
-      <Button close onClick={onClose}>취소</Button>
+      <Button close onClick={onClose}>
+        취소
+      </Button>
     </StyledModal>
   );
-};  
+};
 
-export default ModalDeleteDiet;
+export default ModalDeleteFeedback;

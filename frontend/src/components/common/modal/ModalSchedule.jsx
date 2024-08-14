@@ -45,15 +45,23 @@ const CloseButton = styled.button`
   }
 `;
 
-const ModalSchedule = ({ onClose }) => (
+const Content = styled.div`
+  font-size: 20px;
+  margin-bottom: 10px;
+
+`
+const ModalSchedule = ({ onClose,userId }) => {
+  const today = new Date();
+  const month = `${today.getMonth() + 1}`;
+  const year = `${today.getFullYear()}`;
+  return(
   <ModalOverlay>
-    
     <ModalContent>
-      <h1>트레이너 일정</h1>
-      <RenderDaysForTrainerExpand/>
+      <Content>트레이너 일정</Content>
+      <RenderDaysForTrainerExpand year={year} month={month} userId={userId}/>
       <CloseButton onClick={onClose}>닫기</CloseButton>
     </ModalContent>
   </ModalOverlay>
-);
+)};
 
 export default ModalSchedule;

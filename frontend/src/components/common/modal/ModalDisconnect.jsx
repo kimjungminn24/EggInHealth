@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useUserInfoStore } from '../../../store/store';
+import { disconnectUser } from '../../../api/user';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -72,16 +74,31 @@ const CancelButton = styled.button`
   }
 `;
 
-const ModalDisconnect = ({ onClose }) => (
-  <ModalOverlay>
-    <ModalContent>
-      <Message>PT 횟수가 25회 남았습니다. <br />트레이너와의 연결을 끊으시겠습니까?</Message>
-      <ButtonContainer>
-        <ConnectButton onClick={onClose}>연결끊기</ConnectButton>
-        <CancelButton onClick={onClose}>취소</CancelButton>
-      </ButtonContainer>
-    </ModalContent>
-  </ModalOverlay>
-);
+
+
+const ModalDisconnect = ({onClose}) => {
+  const uid = useUserInfoStore(((state)=>state.userData.id))
+  const ptCnt = useUserInfoStore((state)=>state.userData.PTCount)
+  const { fetchData } = useUserInfoStore();
+
+
+  const handleDissconnect = async()=>{
+    await disconnectUser(uid)
+    await fetchData(uid)
+    await onClose()
+  }
+  return (
+    <ModalOverlay>
+      <ModalContent>
+        <Message>PT 횟수가 {ptCnt}회 남았습니다. <br />트레이너와의 연결을 끊으시겠습니까?</Message>
+        <ButtonContainer>
+          <ConnectButton onClick={handleDissconnect}>연결끊기</ConnectButton>
+          <CancelButton onClick={onClose}>취소</CancelButton>
+        </ButtonContainer>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
 
 export default ModalDisconnect;
+

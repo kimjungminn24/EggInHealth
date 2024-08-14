@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { deleteDiet } from '../../../api/diet'; // deleteDiet 함수가 이 경로에 있다고 가정합니다.
+import { deleteExImg } from '../../../api/exercise';
 
 const StyledModal = styled(Modal)`
   position: absolute;
@@ -28,14 +28,14 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ModalDeleteDiet = ({ filteredData, onClose }) => {
+const ModalDeleteExImg = ({ exData, onClose }) => {
   const handleSubmit = async () => {
-    if (filteredData && filteredData.length > 0) {
+    if (exData ) {
       try {
-        await deleteDiet(filteredData[0].id)      ;
+        await deleteExImg(exData.report.reportId);
         onClose(); // 삭제 후 모달을 닫습니다.
       } catch (error) {
-        console.error('Error deleting diet:', error);
+        console.error('Error deleting ExImg:', error);
       }
     }
   };
@@ -49,4 +49,4 @@ const ModalDeleteDiet = ({ filteredData, onClose }) => {
   );
 };  
 
-export default ModalDeleteDiet;
+export default ModalDeleteExImg;

@@ -43,13 +43,28 @@ const RenderDays = ({ id, year, month }) => {
             foodDataMap[index + 1] = result;
             });
             Exerresults.forEach((result, index) => {
-            ExerDataMap[index + 1] = result;
+            ExerDataMap[index + 1] = result.report;
             });
-            Dateresults[0].forEach((result) => {
-                const date = new Date(result.date);
-                const day = date.getDate();
-                DateMap[day] = result;
-            });
+
+            for (let i = 0; i < Dateresults[0].length; i++) {
+                const startTimeString = Dateresults[0][i].startTime; // 문자열로 가져옴
+                const date = new Date(startTimeString); // 문자열을 Date 객체로 변환
+                const DateDay = date.getDate(); // 일자 추출
+                const DateHour = date.getHours(); // 시간 추출
+                const DateMin = date.getMinutes(); // 분 추출
+                const formatDate = `${DateHour.toString().padStart(2, '0')}:${DateMin.toString().padStart(2, '0')}`; // 포맷된 시간 문자열
+
+                // DateMap[DateDay]가 이미 존재하는지 확인
+                if (DateMap[DateDay]) {
+                    // 값이 이미 있으면 배열에 추가
+                    DateMap[DateDay].push(formatDate);
+                } else {
+                    // 값이 없으면 새 배열을 만들어서 추가
+                    DateMap[DateDay] = [formatDate];
+                }
+            }
+
+
             
             setFoodData(foodDataMap);
             setExerData(ExerDataMap);
@@ -83,18 +98,20 @@ const RenderDays = ({ id, year, month }) => {
         <div key={`${week}-${day}`} className="flex-1 flex flex-col items-start justify-start border border-gray-200 h-[111px]">
             <p className="text-sm font-medium text-gray-800">{dayCount}</p>
             <div className='flex flex-row gap-1 w-[18px]'>
-                {/* 임시데이터 수정필요 */}
-                {/* 데이터 렌더링 조건 반전되어 있음*/}
-                {foodForTheDay && foodForTheDay.length > 0 ? '':<img src={FoodOn} alt="Food" /> }
-                {ExerForTheDay && ExerForTheDay.length > 0 ? '':<img src={ExerOn} alt="Food" /> }
+                {foodForTheDay && foodForTheDay.length > 0 ? <img src={FoodOn} alt="Food" />:'' }
+                {ExerForTheDay && ExerForTheDay !== null ? <img src={ExerOn} alt="Exer" />:'' }
             </div>
-            {/* 임시데이터 수정필요 */}
-            {/* 데이터 렌더링 조건 반전되어 있음. 데이터 내부의 시간이 아닌 내가 지정한 값으로만 렌더링 되게 되어있음 */}
-            {ExerDateForTheDay ? <div>운동 날짜</div> : <div className="w-full h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px]">
-                <div className='font-bold text-white text-[10px]'>
-                    08:00
+            {ExerDateForTheDay && ExerDateForTheDay.length > 0 ? (
+                    <div className="w-full">
+                        {ExerDateForTheDay.map((time, idx) => (
+                            <div key={idx} className="w-full h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px] mb-[2px]">
+                                <div className='font-bold text-white text-[10px]'>
+                                    {time}
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    </div>}
+                ) : <div></div>}
         </div>
         );
         dayCount++;

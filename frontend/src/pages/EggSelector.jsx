@@ -9,7 +9,7 @@ const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
  
   return (
     <div>
-      <h4>이용 목적이 무엇인가요?</h4>
+      <Content>이용 목적이 무엇인가요?</Content>
       <ContainerEgg>
         <ContainerRow>
           <div>
@@ -33,12 +33,17 @@ const EggSelector = ({ activeImage, onTrainerClick, onUserClick }) => {
     </div>
   );
 };
-
+const Content = styled.div`
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 70px;
+`
 const ContainerEgg = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px; 
+  margin-bottom: 100px;
 `;
 
 const ContainerRow = styled.div`

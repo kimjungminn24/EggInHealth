@@ -43,10 +43,31 @@ export const checkGoal = async (uid) => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true, 
         }
       );
       return response.data;
     } catch(error) {
       console.log("token 전송 실패");
+    }
+  };
+
+
+  export const disconnectUser = async (uid) => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/code/${uid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log('연결끊기완료');
+      
+      return response.data;
+    } catch (error) {
+      console.log("연결끊기실패");
+      console.error(error);
     }
   };

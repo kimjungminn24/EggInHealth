@@ -57,9 +57,9 @@ public class ChatController {
             String receiverSessionId = userSessionService.getUserSession(message.receiverId()).sessionId();
             messagingTemplate.convertAndSendToUser(receiverSessionId, path, message, chatRoomService.createHeaders(receiverSessionId));
         } else {
-            DeviceToken devicetoken = fcmService.getDeviceToken(message.senderId());
+            DeviceToken devicetoken = fcmService.getDeviceToken(message.receiverId());
             if (devicetoken.getToken() != null) {
-                fcmService.sendMessage(devicetoken.getToken(), "메세지", "메세지가 도착했습니다.", null);
+                fcmService.sendMessage(devicetoken.getToken(), "메세지 도착", message.receiverId() + "님의 메세지가 도착했습니다", null);
             }
         }
     }

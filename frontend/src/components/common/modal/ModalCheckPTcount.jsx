@@ -104,9 +104,7 @@ const ModalCheckPTcount = ({ onClose }) => {
     <ModalOverlay>
       <ModalContent>
         <Header>기록</Header>
-        <DateContainer>
-          <DateTitle>2024.07</DateTitle>
-        </DateContainer>
+
 
         {userPtCount.length > 0 ? (
           <Table>
@@ -120,7 +118,7 @@ const ModalCheckPTcount = ({ onClose }) => {
             ))}
           </Table>
         ) : (
-          <p>스케줄을 등록해주세요</p>
+          <p>PT를 등록해주세요</p>
         )}
 
         <CloseButton onClick={onClose}>닫기</CloseButton>

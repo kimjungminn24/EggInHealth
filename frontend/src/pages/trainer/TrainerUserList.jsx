@@ -14,8 +14,6 @@ import { useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
   padding: 20px;
-  background-color: #f9f9f9;
-  height: 100vh;
 `;
 
 const UserList = styled.div`
@@ -44,6 +42,7 @@ const UserInfo = styled.div`
 const UserImage = styled.img`
   width: 50px;
   height: 50px;
+  border-radius: 50%;
   margin-right: 15px;
 `;
 
@@ -72,7 +71,10 @@ const StatIcon = styled.img`
   height: 40px;
 `;
 
-const Arrow = styled.img``;
+const Arrow = styled.img`
+  width: 30px;
+  height: 30px;
+  `;
 
 const TrainerUserList = () => {
   const [userList, setUserList] = useState([])
@@ -85,7 +87,7 @@ const TrainerUserList = () => {
 
   const handleDetailMember = async(memberId)=>{
     await fetchData(memberId,formatMonth,formatYear)
-    await navigate(`/userexercise`)
+    await navigate(`/usercalender`)
   }
   useEffect(() => {
     const fetchMemberList = async () => {

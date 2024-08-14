@@ -4,11 +4,9 @@ import BoxChatList from '../../components/trainer/BoxChatList';
 import ModalUserList from '../../components/trainer/ModalUserList'; 
 import plusbutton from '../../assets/plusbutton.png';
 import { checkChat } from '../../api/trainer';
-import { useStore } from '../../store/store';
+import { useStore,useUserInfoStore } from '../../store/store';
 
 const Container = styled.div`
-  background-color: #f8f8f8;
-  height: 100vh;
   padding: 20px;
   position: relative;
 `;
@@ -34,6 +32,7 @@ const PlusButton = styled.img`
   cursor: pointer;
   background-color: #FFD66B;
   border-radius: 50%;
+  margin-left: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -43,11 +42,16 @@ const TrainerChat = () => {
   const [chatList, setChatList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); 
   const trainerId = useStore((state) => state.userId);
+  const {fetchData} = useUserInfoStore()
 
+  useEffect(()=>{
+    fetchData(trainerId)
+  },[])
   useEffect(() => {
     const fetchData = async () => {
       try {
         const chatData = await checkChat();
+        
         const chats = [];
         const users = [];
 
@@ -58,7 +62,7 @@ const TrainerChat = () => {
             users.push(chat);
           }
         });
-
+        
         setChatList(chats);
         setUserList(users);
       } catch (error) {
@@ -70,7 +74,7 @@ const TrainerChat = () => {
   }, []);
 
   const filteredChatList = chatList.filter((chat) =>
-    chat.memberName.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -82,6 +86,11 @@ const TrainerChat = () => {
           value={searchTerm}  
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <PlusButton 
+        src={plusbutton}
+        alt="Plus Button"
+        onClick={() => setIsModalOpen(true)} 
+      />
       </SearchContainer>
 
       <BoxChatList 
@@ -98,11 +107,7 @@ const TrainerChat = () => {
         />
       )}
 
-      <PlusButton 
-        src={plusbutton}
-        alt="Plus Button"
-        onClick={() => setIsModalOpen(true)} 
-      />
+      
     </Container>
   );
 };

@@ -40,12 +40,11 @@ export const updateUserGole = async (exerciseCommonId,dietCommonId,goalCommonId)
   }
 };
 
-export const updateUserInfo = async (height,age) => {
+export const updateUserInfo = async (height,age,gender) => {
   try {
-    console.log(height,age);
     const response = await axios.patch(
       `${BASE_URL}/user`, 
-      { height ,age}, 
+      { height ,age,gender}, 
       {
         headers: {
           'Content-Type': 'application/json',

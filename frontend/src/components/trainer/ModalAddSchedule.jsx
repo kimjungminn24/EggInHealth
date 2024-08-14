@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import plusBtn from '../../assets/plusBtn.png';
 import ModalUserList from './ModalUserList';
-import { checkMemberList } from '../../api/trainer';
-import { updatePtPlan } from '../../api/trainer';
+import { checkMemberList,updatePtPlan,checkPtPlan } from '../../api/trainer';
 import profile from '../../assets/profile.png';
 import arrow from '../../assets/arrow.png'
+import { useStore } from '../../store/store';
+
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -153,7 +154,7 @@ const ArrowImage = styled.img`
   height: 24px;
 `;
 
-export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
+export const ModalAddSchedule = ({ isOpen, onRequestClose,setSelectedMemDate }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [memberId, setmemberId] = useState(null);
   const [member, setmember] = useState(null);
@@ -161,6 +162,19 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const now = new Date();
+      const currentDate = now.toISOString().split('T')[0];
+      const currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
+  
+      setDate(currentDate);
+      setStartTime(currentTime);
+      setEndTime(currentTime);
+    }
+  }, [isOpen]);
+
 
   useEffect(() => {
     const fetchMemberList = async () => {
@@ -192,16 +206,16 @@ export const ModalAddSchedule = ({ isOpen, onRequestClose }) => {
 
   const UpdatePtPlan = async () => {
     const createdAt = new Date().toISOString(); 
-  
+
     const data = {
       memberId: memberId,        
       startTime: `${date}T${startTime}:00.000Z`, 
       endTime: `${date}T${endTime}:00.000Z`,    
       createdAt: createdAt,     
     };
-    console.log(data);
     try {
-      await updatePtPlan(data);   
+      await updatePtPlan(data); 
+      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
@@ -230,7 +244,7 @@ const handleEndTimeChange = (e) => {
         {member ? (
           <UserItem onClick={openModal}>
             <UserInfo>
-              <UserImage src={member.ImgUrl || profile} alt={member.name} />
+              <UserImage src={member.imgUrl || profile} alt={member.name} />
               <span>{member.name}</span>
             </UserInfo>
             <span>남은 횟수: {member.ptCnt}</span>

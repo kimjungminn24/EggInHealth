@@ -7,20 +7,24 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
   const [localHeight, setLocalHeight] = useState('');
   const [localAge, setLocalAge] = useState('');
   const [localGender, setLocalGender] = useState('');
-
+  
   const handleHeightChange = (e) => {
     const value = e.target.value;
-    setLocalHeight(value);
-    if (setHeight) {
-      setHeight(value);
+    if (value.length <= 3) {
+      setLocalHeight(value);
+      if (setHeight) {
+        setHeight(value);
+      }
     }
   };
 
   const handleAgeChange = (e) => {
     const value = e.target.value;
-    setLocalAge(value);
-    if (setAge) {
-      setAge(value);
+    if (value.length <= 3) { 
+      setLocalAge(value);
+      if (setAge) {
+        setAge(value);
+      }
     }
   };
 
@@ -33,7 +37,7 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
 
   return (
     <div>
-      <h1>키와 나이, 성별을 입력해 주세요</h1>
+      <Content>키와 나이, 성별을 입력해 주세요</Content>
       
       <Surveybtn>
         <img src={heightIcon} alt="heightIcon" />
@@ -55,26 +59,28 @@ const SurveyPage4 = ({ setHeight, setAge, setGender }) => {
         />
       </Surveybtn>
       
-      <Surveybtn>
-        <Label>♂️♀️</Label>
-        <GenderContainer>
-          <GenderOption
-            selected={localGender === 'male'}
-            onClick={() => handleGenderChange('male')}
-          >
-            🧔‍♂️ <br/>남성
-          </GenderOption>
-          <GenderOption
-            selected={localGender === 'female'}
-            onClick={() => handleGenderChange('female')}
-          >
-            👩‍🦰 <br/>여성
-          </GenderOption>
-        </GenderContainer>
-      </Surveybtn>
+      <GenderContainer>
+        <GenderOption
+          selected={localGender === 'M'}
+          onClick={() => handleGenderChange('M')}
+        >
+          🧔 <br/>남성
+        </GenderOption>
+        <GenderOption
+          selected={localGender === 'F'}
+          onClick={() => handleGenderChange('F')}
+        >
+          👩‍🦰 <br/>여성
+        </GenderOption>
+      </GenderContainer>
     </div>
   );
 };
+
+const Content = styled.div`
+  font-size: 20px;
+  margin-bottom: 50px;
+`;
 
 const Surveybtn = styled.div`
   background-color: #ffffff;
@@ -100,7 +106,8 @@ const Input = styled.input`
 const GenderContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 10px;
+  margin-left: 70px;
+  margin-bottom: 20px;
 `;
 
 const GenderOption = styled.div`
@@ -116,16 +123,10 @@ const GenderOption = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  
   &:hover {
     background-color: #f0f0f0;
   }
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
 `;
 
 export default SurveyPage4;

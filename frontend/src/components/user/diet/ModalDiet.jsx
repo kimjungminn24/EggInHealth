@@ -92,8 +92,7 @@ const ModalDiet = ({ date, type, onClose ,setHasImages,hasImages,filteredData}) 
   }, [hasImages, setHasImages]);
 
   const dateChange = date+'T00:00:00Z';
-  console.log(filteredData);
-  console.log(type);
+  
 
   const handleSubmit = async () => {
     if (image) {

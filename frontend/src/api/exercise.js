@@ -78,10 +78,11 @@ export const deleteExImg = async (reportId) => {
   return res.data;
 };
 
-export const updateEx = async (setId, set, weight, name, time, date) => {
+export const updateEx = async (setId, set, ref, weight, name, time, date) => {
   const res = await axios.patch(`${BASE_URL}/exercise`, {
     setId,
     set,
+    ref,
     weight,
     name,
     time,
@@ -90,7 +91,9 @@ export const updateEx = async (setId, set, weight, name, time, date) => {
   return res.data;
 };
 export const deleteEx = async (setId) => {
-  const res = await axios.delete(`${BASE_URL}/exercise${setId}`);
+  console.log(setId);
+
+  const res = await axios.delete(`${BASE_URL}/exercise?setId=${setId}`);
   return res.data;
 };
 
@@ -163,4 +166,14 @@ export const deleteFeedback = async (id) => {
   const res = await axios.delete(`${BASE_URL}/feedback/${id}`);
   console.log(id);
   return res.data;
+};
+
+export const deleteFeedback = async (id) => {
+  const res = await axios.delete(`${BASE_URL}/feedback/${id}`);
+  console.log(id);
+  return res.data;
+};
+
+export const readFeedback = async (id) => {
+  const res = await axios.get(`${BASE_URL}/feedback/read/${id}`);
 };

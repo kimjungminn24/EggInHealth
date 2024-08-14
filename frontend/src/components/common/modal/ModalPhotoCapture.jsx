@@ -2,12 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import ButtonCapture from '../button/ButtonCapture';
-import ButtonCloseCamera from '../button/ButtonCloseCamera';
 import { uploadOCR } from '../../../api/inbody';
 import { useStore } from '../../../store/store';
 import { getInbodyParsingResult } from '../../../hooks/inbodyParsing';
-import { data } from '../../../hooks/inbodyData';
-import inbody from '../../../assets/inbody.jpg';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -131,11 +128,8 @@ const PhotoCaptureModal = ({ isOpen, closePhotoModal, setInbodyData }) => {
   const uploadPhoto = async (dataUrl) => {
     try {
       const file = dataURLtoFile(dataUrl, 'captured-photo.png');
-      // await testWithInbodyFile();
-
-      // const ocrResult = await uploadOCR(file);
-      // const formatData = getInbodyParsingResult(ocrResult);
-      const formatData = getInbodyParsingResult(data);
+      const ocrResult = await uploadOCR(file);
+      const formatData = getInbodyParsingResult(ocrResult);
       formatData.memberId = userId;
       formatData.imageFile = file;
       formatData.height = '0';
@@ -161,24 +155,6 @@ const PhotoCaptureModal = ({ isOpen, closePhotoModal, setInbodyData }) => {
       u8arr[n] = bstr.charCodeAt(n);
     }
     return new File([u8arr], filename, { type: mime });
-  };
-
-  const testWithInbodyFile = async () => {
-    try {
-      const response = await fetch(inbody);
-      const blob = await response.blob();
-      const file = new File([blob], 'inbody.jpg', { type: 'image/jpeg' });
-      const ocrResult = await uploadOCR(file);
-      const formatData = getInbodyParsingResult(ocrResult);
-      formatData.memberId = userId;
-      formatData.imageFile = file;
-      formatData.height = '0';
-      console.log(formatData);
-
-      setInbodyData(formatData);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (

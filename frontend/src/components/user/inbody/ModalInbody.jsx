@@ -6,6 +6,7 @@ import ModalAddInbody from './ModalAddInbody';
 import PhotoCaptureModal from '../../../components/common/modal/ModalPhotoCapture';
 import { fetchBodyData } from '../../../api/inbody';
 import { useStore } from '../../../store/store';
+
 const StyledModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -65,7 +66,7 @@ const DropdownButton = styled.button`
 `;
 
 const DropdownMenu = styled.div`
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ open }) => (open ? 'block' : 'none')};
   position: absolute;
   background-color: #ffffff;
   border: 1px solid #ddd;
@@ -105,8 +106,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
   const [bodyData, setBodyData] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { userInfo,userId,userType} = useStore()
-
+  const { userInfo, userId, userType } = useStore();
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -131,7 +131,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
       const data = await fetchBodyData(userId, year, month);
       setBodyData(data);
       if (data.length > 0) {
-        setSelectedPhoto(data[data.length-1]);
+        setSelectedPhoto(data[data.length - 1]);
       }
     } catch (error) {
       console.error(error);
@@ -169,7 +169,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
               {selectedPhoto ? new Date(selectedPhoto.createdAt).toLocaleDateString() : 'Select Date'}
               <span>&#9662;</span>
             </DropdownButton>
-            <DropdownMenu isOpen={dropdownOpen}>
+            <DropdownMenu open={dropdownOpen}>
               {bodyData.map(item => (
                 <DropdownItem key={item.id} onClick={() => handleDateClick(item)}>
                   {new Date(item.createdAt).toLocaleDateString()}
@@ -178,7 +178,7 @@ const ModalInbody = ({ isOpen, onRequestClose }) => {
             </DropdownMenu>
           </DropdownContainer>
 
-          <ModalAddInbody isOpen={modalIsOpen} onRequestClose={closeModal} fetchData={fetchData}/>
+          <ModalAddInbody isOpen={modalIsOpen} onRequestClose={closeModal} fetchData={fetchData} />
           <PhotoCaptureModal isOpen={photoModalIsOpen} onRequestClose={closePhotoModal} />
         </ModalContent>
       </StyledModal>

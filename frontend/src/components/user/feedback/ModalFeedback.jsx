@@ -78,7 +78,7 @@ const FeedbackModal = ({ isOpen, onClose, getKoreanISOString, fetchFeedbackData,
           setExerciseId('');
           setMemo('');
           setFile(null);
-          fetchFeedbackData() ;
+          fetchFeedbackData() // 갱신
       } catch (error) {
         if (error.response) {
           console.error('Error response:', error.response.data);

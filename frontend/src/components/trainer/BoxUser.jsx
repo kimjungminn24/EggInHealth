@@ -8,7 +8,8 @@ import SelectedDate from './../common/SelectedDate';
 
 
 const ChatListContainer = styled.div`
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  
 `;
 
 const ChatItem = styled.div`
@@ -26,6 +27,7 @@ const ChatItem = styled.div`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
+   flex-grow: 1;
 `;
 
 const UserImage = styled.img`
@@ -37,27 +39,9 @@ const UserImage = styled.img`
 
 const UserName = styled.span`
   font-weight: bold;
+  margin-right: 20px; 
 `;
 
-const UserMessage = styled.span`
-  font-size: 12px;
-  color: #888;
-`;
-
-const TimeStamp = styled.span`
-  color: #888;
-  margin-left: 10px;
-`;
-
-const NameMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Arrow = styled.img`
-  /* width: ;
-  height: ; */
-`;
 
 const BoxUser = ({ userData ,selectedDate,setSelectedDate }) => {
     
@@ -72,7 +56,7 @@ const BoxUser = ({ userData ,selectedDate,setSelectedDate }) => {
           <UserName>
             {userData.name}
           </UserName>
-          <SelectedDate    selectedDate={selectedDate}
+          <SelectedDate selectedDate={selectedDate}
       setSelectedDate={setSelectedDate}/>
         </UserInfo>
       </ChatItem>

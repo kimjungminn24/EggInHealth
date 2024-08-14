@@ -5,7 +5,6 @@ import { AddButton } from "../../common/StyledComponents";
 import styled from "styled-components";
 import ActionModal from "./ModalUpdateEx";
 
-
 const StyledTd = styled.td`
   padding: 15px;
   text-align: center;
@@ -15,12 +14,23 @@ const StyledTd = styled.td`
 
 const Box = styled.div`
   width: 320px;
-  height: auto; 
+  height: auto;
   background-color: white;
   border-radius: 15px;
   padding: 10px 20px; /* 내부 여백 추가 */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 10px 0px;
+`;
+const Box2 = styled.div`
+  width: 320px;
+  height: auto;
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px 20px; /* 내부 여백 추가 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0px;
+  text-align: center;
+color: #ccc;
 `;
 
 const StyledTr = styled.div`
@@ -29,8 +39,8 @@ const StyledTr = styled.div`
   align-items: center; /* 수직 중앙 정렬 */
   padding: 10px 0; /* 위아래 여백 */
   border-bottom: 1px solid #eee; /* 하단 경계선 */
-  cursor: pointer;  
-  
+  cursor: pointer;
+
   &:last-child {
     border-bottom: none; /* 마지막 항목의 경계선 제거 */
   }
@@ -49,31 +59,46 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end; /* 오른쪽 정렬 */
   margin-right: 10px; /* 위쪽 여백 추가 */
-`
+`;
 
-const ExerciseList = ({ selectedDate, exData, userLoginData, userData,fetchExData }) => {
+const ExerciseList = ({
+  selectedDate,
+  exData,
+  userLoginData,
+  userData,
+  fetchExData,
+}) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState(null); 
+  const [selectedExercise, setSelectedExercise] = useState(null);
 
   const openAddModal = () => setIsAddModalOpen(true);
-  const closeAddModal = () => setIsAddModalOpen(false);
+  
+  const closeAddModal = () => {
+    setIsAddModalOpen(false);
+    setSelectedExercise(null); // 초기화
+  };
+  
   const openActionModal = (exercise) => {
     setSelectedExercise(exercise);
     setIsActionModalOpen(true);
   };
-  const closeActionModal = () => setIsActionModalOpen(false);
+  
+  const closeActionModal = () => {
+    setIsActionModalOpen(false);
+  };
 
   const handleEdit = () => {
-    openAddModal(selectedExercise)
-    closeActionModal();
+    openAddModal();
+    closeActionModal(); // 수정 모달을 닫지 않도록 변경
   };
 
   const handleDelete = () => {
     console.log("삭제:", selectedExercise);
-    closeActionModal();
+    // 삭제 로직 추가
+    closeActionModal(); // 삭제 후 모달 닫기
+    setSelectedExercise(null); // 삭제 후 초기화
   };
-
 
   const headers = [
     {
@@ -94,33 +119,14 @@ const ExerciseList = ({ selectedDate, exData, userLoginData, userData,fetchExDat
     },
   ];
 
-  const timeHeaders = [
-    {
-      text: "",
-      value: "name",
-    },
-    {
-      text: "MINUATE",
-      value: "time",
-    },
-  ];
-
   const today = new Date().toISOString().split("T")[0];
 
-  const getKoreanISOString = () => {
-    const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
-    const kstDate = new Date(now.getTime() + kstOffset);
-
-    return kstDate.toISOString();
-  };
-console.log(selectedExercise)
   return (
     <div>
-      {selectedDate && exData ? (
+      {selectedDate && exData && exData.sets && exData.sets.length > 0 ? (
         <div>
           {exData.sets
-            ?.filter((set) => set.time > 0)
+            .filter((set) => set.time > 0)
             .map((set, index) => (
               <Box key={index}>
                 <StyledTr onClick={() => openActionModal(set)}>
@@ -132,7 +138,7 @@ console.log(selectedExercise)
             ))}
           <DataTable headers={headers}>
             {exData.sets
-              ?.filter((set) => set.set > 0)
+              .filter((set) => set.set > 0)
               .map((set, index) => (
                 <Box key={index}>
                   <StyledTr onClick={() => openActionModal(set)}>
@@ -146,33 +152,35 @@ console.log(selectedExercise)
           </DataTable>
         </div>
       ) : (
-        <p>운동 목록이 없습니다.</p>
+        <Box2>운동 목록이 없습니다</Box2>
       )}
-
-      <ButtonContainer>
-        {selectedDate >= today && userLoginData.type === "TRAINER" ? (
-          <AddButton onClick={openAddModal}>+</AddButton>
-        ) : null}
-        
-        <AddExerciseModal
-          isOpen={isAddModalOpen}
-          onClose={closeAddModal}
-          selectedDate={selectedDate}
-          userData={userData}
-          setId={selectedExercise?.setId}
-          fetchExData={fetchExData}
-        />
-        
-        <ActionModal
-          isOpen={isActionModalOpen}
-          onClose={closeActionModal}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          setId={selectedExercise?.setId} // selectedExercise에서 setId를 가져옴
-        />
-      </ButtonContainer>
+      {userLoginData.type === "TRAINER" ? (
+        <ButtonContainer>
+          {selectedDate >= today && userLoginData.type === "TRAINER" ? (
+            <AddButton onClick={openAddModal}>+</AddButton>
+          ) : null}
+  
+          <AddExerciseModal
+            isOpen={isAddModalOpen}
+            onClose={closeAddModal}
+            selectedDate={selectedDate}
+            userData={userData}
+            setId={selectedExercise?.setId}
+            fetchExData={fetchExData}
+          />
+  
+          <ActionModal
+            isOpen={isActionModalOpen}
+            onClose={closeActionModal}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            setId={selectedExercise?.setId}
+          />
+        </ButtonContainer>
+      ) : null}
     </div>
   );
+  
 };
 
 export default ExerciseList;

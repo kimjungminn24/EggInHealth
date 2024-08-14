@@ -71,10 +71,11 @@ export const deleteExImg = async (reportId) => {
 }
 
 
-export const updateEx = async (setId, set, weight, name, time, date) => {
+export const updateEx = async (setId, set,ref, weight, name, time, date) => {
   const res = await axios.patch(`${BASE_URL}/exercise`, {
     setId,
     set,
+    ref,
     weight,
     name,
     time,
@@ -157,4 +158,8 @@ export const deleteFeedback = async (id)=>
   {const res = await axios.delete(`${BASE_URL}/feedback/${id}`)
   console.log(id)
 return res.data
+}
+
+export const readFeedback = async (id) => {
+  const res = await axios.get(`${BASE_URL}/feedback/read/${id}`)
 }

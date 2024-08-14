@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RequestMapping("/rtc")
+@RequestMapping("/wrtc")
 @RestController
 public class WebRTCController {
 

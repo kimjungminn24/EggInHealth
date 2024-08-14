@@ -54,8 +54,8 @@ const NameMessage = styled.div`
 `;
 
 const Arrow = styled.img`
-  /* width: ;
-  height: ; */
+  width: 40px;
+  height: 40px;
 `;
 
 const calculateTimeDifference = (timeString) => {

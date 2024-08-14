@@ -31,6 +31,7 @@ const ModalContent = styled.div`
 
 const ImageContainer = styled.div`
   margin-top: 20px;
+  margin-left: 20px;
   img {
     max-width: 100%;
     height: auto;

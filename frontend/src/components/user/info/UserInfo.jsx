@@ -78,7 +78,7 @@ const InfoText = styled.div`
 `;
 
 const InfoContainer = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 `;
 
 const InfoImg = styled.img`
@@ -194,7 +194,7 @@ const UserInfo = () => {
         <ButtonCheckPTcount />
        
       </InfoBox>
-      {isModalScheduleOpen && <ModalSchedule onClose={handleCloseModalSchedule} />}
+      {isModalScheduleOpen && <ModalSchedule onClose={handleCloseModalSchedule} userId={userData.trId}/>}
     </InfoContainer>
   );
 };

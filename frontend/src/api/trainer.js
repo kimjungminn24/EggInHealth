@@ -123,15 +123,14 @@ export const checkCode = async () => {
     }
   }
   
-  export const checkPtPlan = async (year,month,day) => {
+  export const checkPtPlan = async (year,month,day,trainer) => {
     try {
-      const response = await axios.get(`${BASE_URL}/pt/plan/top?year=${year}&month=${month}&day=${day}`, {
+      const response = await axios.get(`${BASE_URL}/pt/plan/trainer/${trainer}?year=${year}&month=${month}&day=${day}`, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true, 
       });
-      // console.log(response.data);
       return response.data; 
     } catch (error) {
       throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');

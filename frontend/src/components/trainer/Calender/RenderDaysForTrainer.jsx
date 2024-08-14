@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { checkPtPlan } from "../../../api/trainer";
 
-const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
+const RenderDaysForTrainer = ({ year, month, onDateChange,userId }) => {
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState(today.getDate());
     const [memDate, setMemDate] = useState([]);
@@ -20,7 +20,7 @@ const RenderDaysForTrainer = ({ year, month, onDateChange }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await checkPtPlan(year, month, selectedDay);
+                const result = await checkPtPlan(year, month, selectedDay,userId);
                 setMemDate(result.length > 0 ? result : []);
             } catch (error) {
                 console.log("에러", year, month);

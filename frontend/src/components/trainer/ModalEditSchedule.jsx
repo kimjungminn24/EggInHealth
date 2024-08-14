@@ -185,6 +185,7 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
       console.log(error);
     } finally {
       onRequestClose();
+      window.location.reload();
     }
   };
 
@@ -195,6 +196,7 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
       console.log(error);
     } finally {
       onRequestClose();
+      window.location.reload();
     }
   };
 

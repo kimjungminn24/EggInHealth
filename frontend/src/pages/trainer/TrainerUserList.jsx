@@ -71,7 +71,10 @@ const StatIcon = styled.img`
   height: 40px;
 `;
 
-const Arrow = styled.img``;
+const Arrow = styled.img`
+  width: 30px;
+  height: 30px;
+  `;
 
 const TrainerUserList = () => {
   const [userList, setUserList] = useState([])

@@ -47,8 +47,7 @@ const eggImagesMap = {
   19: Egg19,
   20: Egg20,
 };
-const userEggData = {eggList:[1,2,3,4,5,6,7,8,9,10,13,14,15,18,20
-  ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+
 
 const BoxContainer = styled.div`
   display: inline-block;
@@ -85,7 +84,7 @@ const Egg = styled.div`
 `;
 
 const UserEgg = () => {
-  const { userData  } = useUserInfoStore();
+  const { userData,userEggData  } = useUserInfoStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

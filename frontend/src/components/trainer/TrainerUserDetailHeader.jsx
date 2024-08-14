@@ -6,14 +6,12 @@ import Arrow from "../../assets/static/whitearrow.png";
 const initialItems = [
   { id: 1, label: '운동', path: '/userexercise' },
   { id: 2, label: '프로필', path: '/userprofile' },
-  { id: 3, label: '채팅', path: '/userchatroom' },
-  { id: 4, label: '식단', path: '/userfood' },
-  { id: 5, label: '에그', path: '/usermain' },
-  { id: 6, label: '캘린더', path: '/usercalender' },
-  { id: 7, label: '운동', path: '/userexercise' },
-  { id: 8, label: '프로필', path: '/userprofile' },
-  { id: 9, label: '채팅', path: '/userchatroom' },
-  { id: 10, label: '식단', path: '/userfood' },
+  { id: 3, label: '식단', path: '/userdiet' },
+  { id: 4, label: '캘린더', path: '/usercalender' },
+  { id: 5, label: '운동', path: '/userexercise' },
+  { id: 6, label: '프로필', path: '/userprofile' },
+  { id: 7, label: '식단', path: '/userdiet' },
+  { id: 8, label: '캘린더', path: '/usercalender' },
 ];
 
 const TrainerUserDetailHeader = () => {
@@ -27,28 +25,22 @@ const TrainerUserDetailHeader = () => {
   useEffect(() => {
     // URL 경로에 따른 스크롤 위치 설정
     switch (location.pathname) {
-      case '/userchatroom':
-        if (scrollPosition == 800){
-          setScrollPosition(800)
+      case '/userdiet':
+        if (scrollPosition == 600){
+          setScrollPosition(600)
         }
         else{
         setScrollPosition(200); // 원하는 위치로 설정
         }
         break;
-      case '/userfood':
+      case '/usercalender':
         setScrollPosition(300);
         break;
-      case '/usermain':
+      case '/userexercise':
         setScrollPosition(400);
         break;
-      case '/usercalender':
-        setScrollPosition(500);
-        break;
-      case '/userexercise':
-        setScrollPosition(600);
-        break;
       case '/userprofile':
-        setScrollPosition(700);
+        setScrollPosition(500);
         break;
     //   default:
     //     setScrollPosition(400);
@@ -78,31 +70,25 @@ const TrainerUserDetailHeader = () => {
       });
       if (scrollPosition <= 190) {
         navigate('/userprofile')
-        scrollContainerRef.current.scrollLeft = 840;
-        setScrollPosition(700);
-        navigate('/userprofile')
+        scrollContainerRef.current.scrollLeft = 600;
+        setScrollPosition(500);
+        navigate('/userpofile')
       }
-      else if (scrollPosition >= 810) {
+      else if (scrollPosition >= 700) {
         scrollContainerRef.current.scrollLeft = 140;
         setScrollPosition(300);
-        navigate('/userfood')
-      }
-      else if (scrollPosition == 200 || scrollPosition ==800){
-        navigate('/userchatroom')
-      }
-      else if (scrollPosition == 300){
-        navigate('/userfood')
-      }
-      else if (scrollPosition == 400){
-        navigate('/usermain')
-      }
-      else if (scrollPosition == 500){
         navigate('/usercalender')
       }
-      else if (scrollPosition == 600){
+      else if (scrollPosition == 200 || scrollPosition ==600){
+        navigate('/userdiet')
+      }
+      else if (scrollPosition == 300){
+        navigate('/usercalender')
+      }
+      else if (scrollPosition == 400){
         navigate('/userexercise')
       }
-      else if (scrollPosition == 700){
+      else if (scrollPosition == 500){
         navigate('/userprofile')
       }
     }

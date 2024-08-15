@@ -75,12 +75,10 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
         : [];
 
       setComments([...filteredDietComments, ...filteredExerciseComments]);
-
       // 사용자 정보를 가져온다
       const fetchUserDetails = async () => {
         const details = {};
         const uniqueUserIds = new Set([...filteredDietComments, ...filteredExerciseComments].map(c => c.writerId || c.memberId));
-        console.log(uniqueUserIds)
         for (const id of uniqueUserIds) {
           try {
             const user = await userInfo(id);
@@ -170,7 +168,7 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
             const isUser = (type === 'D' && c.writerId === userId) || (type === 'E' && c.memberId === userId);
             const datePart = extractDate(c.createdAt);
             const timePart = extractTime(c.createdAt);
-            const user = userDetails[c.writerId] || { imgUrl: '/path/to/default/image.jpg', name: '알 수 없는 사용자' }; // 기본값 설정
+            const user = userDetails[c.writerId]|| userDetails[c.memberId] || { imgUrl: '/path/to/default/image.jpg', name: '알 수 없는 사용자' }; // 기본값 설정
 
             return (
               <CommentItem key={c.id} isUser={isUser}>

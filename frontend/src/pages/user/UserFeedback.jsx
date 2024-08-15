@@ -93,7 +93,6 @@ const UserFeedback = () => {
       try {
         const data = await fetchFeedback(userId);
         setFeedback(data);
-        console.log(data)
       } catch (error) {
         console.error(
           "피드백 데이터를 가져오는 중 오류가 발생했습니다.",

@@ -76,11 +76,11 @@ const Exercise = () => {
   }, [
       selectedDate,
       userData,
-      ExerciseImg,
+      // ExerciseImg,
       isModalOpen,
       isDeleteModalOpen,
 
-    // exData
+    exData
   ]);
 
   const navigate = useNavigate();

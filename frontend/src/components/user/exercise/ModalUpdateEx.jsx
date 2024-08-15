@@ -12,7 +12,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3;
+  z-index: 1;
 `;
 
 const ModalContainer = styled.div`
@@ -44,19 +44,20 @@ const Button = styled.button`
 
 const ActionModal = ({ isOpen, onClose, onEdit, onDelete, setId }) => {
   if (!isOpen) return null;
-  console.log(setId)
   const handleOverlayClick = (e) => {
     // Overlay를 클릭했을 때만 모달을 닫음
+    
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
-
   const handleDelete = async () => {
     try {
       await deleteEx(setId); // deleteEx API 호출
       onDelete(); // 삭제 후 onDelete 함수 호출 (상태 업데이트 등)
       onClose(); // 모달 닫기
+
+      
     } catch (error) {
       console.error("삭제 오류:", error);
       // 오류 처리 로직 추가 가능

@@ -8,12 +8,10 @@ export const getExercise = async (uid, year, month, day) => {
   const res = await axios.get(
     `${BASE_URL}/exercise/${uid}?year=${year}&month=${month}&day=${day}`
   );
-  console.log(res.data)
   return res.data;
 };
 
 export const registerExh = async (set, weight,ref, name, time, date,memberId) => {
-  console.log(memberId)
   const response = axios.post(
     `${BASE_URL}/exercise`,
     {
@@ -65,7 +63,6 @@ export const registerEximg = async (date, img) => {
 };
 
 export const deleteExImg = async (reportId) => {
-  console.log(reportId);
   const res = await axios.delete(`${BASE_URL}/exercise/report?id=${reportId}`)
   return res.data
 }
@@ -84,7 +81,6 @@ export const updateEx = async (setId, set,ref, weight, name, time, date) => {
   return res.data;
 };
 export const deleteEx = async (setId) => {
-  console.log(setId);
   
   const res = await axios.delete(`${BASE_URL}/exercise?setId=${setId}`);
   return res.data;
@@ -132,12 +128,7 @@ export const updateFeedback = async (
   createdAt,
   id
 ) => {
-  console.log(motionSimilarity,
-    memo,
-    exerciseId,
-    record,
-    createdAt,
-    id)
+ 
   const formData = new FormData();
   formData.append(`motionSimiliarity`, motionSimilarity);
   formData.append(`memo`, memo);
@@ -156,7 +147,6 @@ export const updateFeedback = async (
 
 export const deleteFeedback = async (id)=>
   {const res = await axios.delete(`${BASE_URL}/feedback/${id}`)
-  console.log(id)
 return res.data
 }
 

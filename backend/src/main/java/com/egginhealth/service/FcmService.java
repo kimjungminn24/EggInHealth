@@ -1,5 +1,7 @@
 package com.egginhealth.service;
 
+import com.egginhealth.data.dto.fcm.DeviceCamOpenDto;
+import com.egginhealth.data.dto.member.MemberDetailDto;
 import com.egginhealth.data.entity.DeviceToken;
 import com.egginhealth.data.repository.FcmRepository;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -28,6 +30,7 @@ public class FcmService {
     private static final Logger logger = LoggerFactory.getLogger(FcmService.class);
 
     private final FcmRepository fcmRepository;
+    private final MemberService memberService;
 
     @Autowired
     public FcmService(@Value("${FCM_TYPE}") String type,
@@ -40,8 +43,9 @@ public class FcmService {
                       @Value("${FCM_TOKEN_URI}") String tokenUri,
                       @Value("${FCM_AUTH_PROVIDER_X509_CERT_URL}") String authProviderX509CertUrl,
                       @Value("${FCM_CLIENT_X509_CERT_URL}") String clientX509CertUrl,
-                      @Value("${FCM_UNIVERSE_DOMAIN}") String universeDomain, FcmRepository fcmRepository) throws IOException {
+                      @Value("${FCM_UNIVERSE_DOMAIN}") String universeDomain, FcmRepository fcmRepository, MemberService memberService) throws IOException {
         this.fcmRepository = fcmRepository;
+        this.memberService = memberService;
         initialize(type, projectId, privateKeyId, privateKey, clientEmail, clientId, authUri, tokenUri, authProviderX509CertUrl, clientX509CertUrl, universeDomain);
     }
 
@@ -94,6 +98,9 @@ public class FcmService {
 
         if (icon != null && !icon.isEmpty()) {
             notificationBuilder.setImage(icon);
+        } else {
+            icon = "https://egg-in-health.s3.ap-northeast-2.amazonaws.com//4bae84db-72fb-4e30-be2e-80f090bfa13c_maskable_icon.png";
+            notificationBuilder.setImage(icon);
         }
 
         Notification notification = notificationBuilder.build();
@@ -108,5 +115,10 @@ public class FcmService {
         } catch (Exception ex) {
             logger.info("Failed sent message: {}", ex.toString());
         }
+    }
+
+    public void checkReceiver(DeviceCamOpenDto deviceCamOpenDto) throws FirebaseMessagingException {
+        MemberDetailDto receiver = memberService.getMemberDetail(deviceCamOpenDto.receiverId());
+        sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.senderId())).getToken(), "화상통화 요청", receiver.name() + "님이 통화를 요청했습니다.", null);
     }
 }

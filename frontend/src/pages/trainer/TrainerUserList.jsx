@@ -110,11 +110,14 @@ const TrainerUserList = () => {
 
   return (
     <Container>
-      <TitleContainer>
-        <TitleContent>식단</TitleContent>
-        <TitleContent>운동</TitleContent>
-        <TitleContent>피드백</TitleContent>
-      </TitleContainer>
+      {userList.length > 0 && (
+        <TitleContainer>
+          <TitleContent>식단</TitleContent>
+          <TitleContent>운동</TitleContent>
+          <TitleContent>피드백</TitleContent>
+        </TitleContainer>
+      )}
+  
       <UserList>
         {userList.map(user => (
           <UserItem key={user.memberId} onClick={() => handleDetailMember(user.memberId)}>
@@ -135,7 +138,7 @@ const TrainerUserList = () => {
         ))}
       </UserList>
     </Container>
-  );
-};
+  )}
+  
 
 export default TrainerUserList;

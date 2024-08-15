@@ -6,6 +6,7 @@ import { ModalMakeCode } from '../../components/trainer/ModalMakeCode';
 import { ModalEditPT } from '../../components/trainer/ModalEditPT';
 import email from '../../assets/info/email.png';
 import { useUserInfoStore } from '../../store/store';
+import ButtonToggle from '../../components/common/button/ButtonToggle';
 
 const Container = styled.div`
   width: 100%;
@@ -123,6 +124,7 @@ const TrainerProfile = () => {
         <Container>
             <ProfileContainer>
                 <ProfilePic src={userData.imgUrl || Profile} alt="Profile" />
+                <ButtonToggle/>
             </ProfileContainer>
             <InfoBox>
                 <InfoImg src={email} alt="email" />

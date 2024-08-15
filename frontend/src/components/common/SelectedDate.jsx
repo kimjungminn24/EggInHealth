@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Date = styled.input`
-  background-color: #F8F7F4;
+  background-color: transparent;
   cursor:pointer;
-  font-size:24px;
+  font-size:18px;
 `
 
 const SelectedDate = ({ selectedDate, setSelectedDate }) => {

@@ -1,7 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { StyledModal } from '../common/StyledComponents';
 import { registerExh, updateEx } from '../../api/exercise';
 import styled from 'styled-components';
+import ReactModal from 'react-modal';
+
+
+const StyledModal = styled(ReactModal)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  background-color: #F8F7F4;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
 
 const ModalContent = styled.div`
   background-color: #F8F7F4;

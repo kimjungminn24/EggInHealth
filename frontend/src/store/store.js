@@ -88,3 +88,15 @@ export const useTimeStore = create(
     }
   )
 );
+
+export const useToggleStore = create(
+  persist(
+    (set) => ({
+      togglePermission: false,
+      setTogglePermission: (value) => set({ togglePermission: value }), 
+    }),
+    {
+      name: 'user-toggle-store',
+    }
+  )
+);

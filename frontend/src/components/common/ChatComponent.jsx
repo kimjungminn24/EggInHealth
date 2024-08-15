@@ -5,6 +5,7 @@ import Arrow from "../../assets/static/Property_Arrow.png";
 import { useStore } from '../../store/store.js'
 import { userInfo } from "../../api/main";
 import BoxMain from '../user/main/BoxMain.jsx'
+import profile from '../../assets/profile.png'
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
@@ -160,7 +161,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                             userName.type === 'MEMBER' ? (
                                 <div className="flex flex-row items-center">
                                     <div className="flex flex-col items-center mr-[10px]">
-                                            <img src={userNameTr.imgUrl} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                            <img src={userNameTr.imgUrl|| profile} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
                                         <strong>{userName.trName}</strong>
                                     </div>
                                     <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">

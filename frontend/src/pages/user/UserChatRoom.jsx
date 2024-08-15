@@ -6,7 +6,7 @@ import {
   Room,
   RoomEvent,
 } from "livekit-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
@@ -50,6 +50,14 @@ function UserChatRoom() {
   const userState = useStore((state) => state);
   const participantName = userState.userId;
   const roomName = userState.userId;
+  const {userUpdate} = useStore()
+
+  useEffect(()=> {
+    const fetchData = async ()=> {
+      await userUpdate()
+    }
+    fetchData()
+  },[])
 
   async function joinRoom() {
     // Initialize a new Room object

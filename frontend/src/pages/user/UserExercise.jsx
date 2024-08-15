@@ -14,7 +14,7 @@ import {
 } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "./../../components/common/button/RegisterButton";
-import { useStore, useUserInfoStore } from "./../../store/store";
+import { useStore, useTimeStore, useUserInfoStore } from "./../../store/store";
 import { getExercise } from "./../../api/exercise";
 import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
 import BoxUser from "../../components/trainer/BoxUser";
@@ -27,9 +27,7 @@ const FeedbackContainer = styled.div`
   justify-content: space-between;
 `
 const Exercise = () => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const {selectedDate,setSelectedDate } = useTimeStore()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false); 
@@ -53,7 +51,11 @@ const Exercise = () => {
   const fetchExData = async () => {
     if (selectedDate && userData && userData.id) {
       try {
-        const [year, month, day] = selectedDate.split("-");
+        // selectedDate가 Date 객체일 경우
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1
+        const day = String(selectedDate.getDate()).padStart(2, '0'); // 일자 포맷 맞추기
+  
         const data = await getExercise(userData.id, year, month, day);
         setExData(data);
       } catch (error) {
@@ -61,6 +63,7 @@ const Exercise = () => {
       }
     }
   };
+  
   
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -77,7 +80,6 @@ const Exercise = () => {
   }, [
       selectedDate,
       userData,
-      // ExerciseImg,
       isModalOpen,
       isDeleteModalOpen,
 

@@ -170,7 +170,7 @@ const StyledModal = styled(Modal)`
 
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 75px;
+  bottom: 77px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

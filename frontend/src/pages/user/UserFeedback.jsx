@@ -29,8 +29,11 @@ const Title = styled.h1`
 `;
 
 const StyledDatePicker = styled(DatePicker)`
-  display: block;
-  margin: 20px auto;
+  background-color: #F8F7F4;
+  cursor:pointer;
+  font-size:24px;
+  width:150px;
+
 `;
 
 const RegisterBox = styled.div`

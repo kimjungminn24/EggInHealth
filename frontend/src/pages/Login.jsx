@@ -31,6 +31,9 @@ const NaverButton = styled.img`
     width: 250px;
     cursor: pointer;
 `;
+const LogoImg = styled.img`
+width: 300px;
+`
 
 function Login() {
     const { setUserType } = useStore(); 
@@ -53,7 +56,7 @@ function Login() {
                 <img src={eggImg} alt="egg img" />
             </Logo>
             <Title> 
-                <img src={logo} alt="logo img" /> 
+                <LogoImg src={logo} alt="logo img" /> 
             </Title>
             <NaverButton src={naverLogin} onClick={naverClick} />
         </Container>

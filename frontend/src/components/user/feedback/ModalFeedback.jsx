@@ -58,7 +58,7 @@ const FeedbackModal = ({
   isOpen,
   onClose,
   getKoreanISOString,
-  fetchFeedback,
+  fetchFeedbackData,
   feedbackData,
   userData,
 }) => {
@@ -92,7 +92,7 @@ const FeedbackModal = ({
           await registerFeedback(memo, exerciseName, aiVideo, createdAt);
         }
 
-        await fetchFeedback(userData.id);
+        await fetchFeedbackData();
         onClose();
         setExerciseName("");
         setMemo("");
@@ -116,7 +116,7 @@ const FeedbackModal = ({
       <Title>피드백 등록</Title>
       <Input
         type="text"
-        placeholder="운동 ID"
+        placeholder="운동 이름"
         value={exerciseName}
         onChange={(e) => setExerciseName(e.target.value)}
       />

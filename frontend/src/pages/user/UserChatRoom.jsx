@@ -6,12 +6,13 @@ import {
   Room,
   RoomEvent,
 } from "livekit-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
-import Camera from "../../assets/static/Property_Camera.png";
+import Camera from "../../assets/static/Property_Camera.png"
+import LeaveRoom from "../../assets/closebutton.png"
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
@@ -49,6 +50,14 @@ function UserChatRoom() {
   const userState = useStore((state) => state);
   const participantName = userState.userId;
   const roomName = userState.userId;
+  const {userUpdate} = useStore()
+
+  useEffect(()=> {
+    const fetchData = async ()=> {
+      await userUpdate()
+    }
+    fetchData()
+  },[])
 
   async function joinRoom() {
     // Initialize a new Room object
@@ -128,75 +137,68 @@ function UserChatRoom() {
     return data.rtctoken;
   }
 
-  let isCamOn = false;
-
-  return (
-    <>
-      {!room ? (
-        <div>
-          <form
-            className="fixed bottom-[50px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
-            onSubmit={(e) => {
-              joinRoom();
-              e.preventDefault();
-            }}
-          >
-            <button
-              className="btn btn-lg btn-success"
-              type="submit"
-              disabled={!roomName || !participantName}
-            >
-              <img src={Camera} alt="카메라" />
-            </button>
-          </form>
-          <div>
-            {/*수정필요 */}
-            <ChatComponent
-              participantName={participantName}
-              roomName={roomName}
-              receiver={userState.userInfo.trId}
-            />
-          </div>
-        </div>
-      ) : (
-        <div id="room">
-          <div id="room-header">
-            <h2 id="room-title">{roomName}</h2>
-            <button
-              className="btn btn-danger"
-              id="leave-room-button"
-              onClick={leaveRoom}
-            >
-              Leave Room
-            </button>
-          </div>
-          <div id="layout-container">
-            {localTrack && (
-              <VideoComponent
-                track={localTrack}
-                participantIdentity={participantName}
-                local={true}
-              />
+    return (
+        <>
+            {!room ? (
+             <div>
+              {userState.userInfo.trId !== 0 ? <form className="fixed bottom-[70px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
+                    onSubmit={(e) => {
+                        joinRoom();
+                        e.preventDefault();
+                    }}
+                >
+                    <button
+                        className='btn btn-lg btn-success'
+                        type='submit'
+                        disabled={!roomName || !participantName}
+                    >
+                        <img src={Camera} alt="카메라" />
+                    </button>
+                </form> : null}
+                
+            <div>   
+                <ChatComponent participantName={participantName} roomName={roomName} receiver={userState.userInfo.trId}/>
+            </div>
+             </div>  
+            ): (
+                <div id='room' className="absolute bg-white top-0 w-screen h-screen z-10">
+                    <div id='room-header'>
+                        {/* <h2 id='room-title'>{roomName}</h2> */}
+                        <button className='btn-danger bg-white absolute bottom-0 flex left-0 right-0 items-center justify-center m-auto bottom-[20px]' id='leave-room-button' onClick={leaveRoom}>
+                        <img src={LeaveRoom} alt="" />
+                        </button>
+                    </div>
+                    <div id='layout-container'>
+                        <div className="overflow-hidden w-[133px] h-[133px] fixed left-0 bottom-[85px] m-auto flex items-center justify-center z-30 rounded-[19px]">
+                            {localTrack && (
+                                <VideoComponent 
+                                track={localTrack} 
+                                participantIdentity={participantName} 
+                                local={true} 
+                                />
+                            )}
+                        </div>
+                        <div className="overflow-hidden w-[360px] h-[715px] fixed left-0 right-0 bottom-[85px] m-auto flex items-center flex justify-center z-20 rounded-[19px]">
+                            {remoteTracks.map((remoteTrack) =>
+                                remoteTrack.trackPublication.kind === "video" ? (
+                                    <VideoComponent
+                                        key={remoteTrack.trackPublication.trackSid}
+                                        track={remoteTrack.trackPublication.videoTrack}
+                                        participantIdentity={remoteTrack.participantIdentity}
+                                    />
+                                ) : (
+                                    <AudioComponent
+                                        key={remoteTrack.trackPublication.trackSid}
+                                        track={remoteTrack.trackPublication.audioTrack}
+                                    />
+                                )
+                            )}
+                        </div>
+                    </div>
+                </div>
             )}
-            {remoteTracks.map((remoteTrack) =>
-              remoteTrack.trackPublication.kind === "video" ? (
-                <VideoComponent
-                  key={remoteTrack.trackPublication.trackSid}
-                  track={remoteTrack.trackPublication.videoTrack}
-                  participantIdentity={remoteTrack.participantIdentity}
-                />
-              ) : (
-                <AudioComponent
-                  key={remoteTrack.trackPublication.trackSid}
-                  track={remoteTrack.trackPublication.audioTrack}
-                />
-              )
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
+        </>
+    );
 }
 
 export default UserChatRoom;

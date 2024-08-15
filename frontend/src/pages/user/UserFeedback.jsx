@@ -8,11 +8,13 @@ import FeedbackList from "../../components/user/feedback/FeedBackList";
 import { useUserInfoStore, useStore } from "../../store/store";
 import { fetchFeedback } from "../../api/exercise";
 import { RegisterButtonContainer } from "../../components/common/StyledComponents";
+import { FiArrowLeft } from "react-icons/fi"; // 뒤로가기 아이콘 가져오기
 
 // Styled Components
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
+  margin-bottom:px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -73,7 +75,15 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   margin-bottom: 5px;
 `;
-
+const BackButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  margin: 0 20px;
+  top: 10px;
+  left: 10px;
+`;
 
 const UserFeedback = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -86,7 +96,6 @@ const UserFeedback = () => {
   const userData = useUserInfoStore((state) => state.userData);
   const userId = userData.id;
   const userType = useStore((set) => set.userType);
-  
 
   const fetchFeedbackData = async () => {
     if (userId) {
@@ -118,7 +127,6 @@ const UserFeedback = () => {
     setIsModalOpen(false);
   };
 
-
   const openFeedbackModal = () => {
     setIsFeedbackModalOpen(true);
   };
@@ -134,7 +142,7 @@ const UserFeedback = () => {
   const getKoreanISOString = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
-    const kstDate = new Date(now.getTime() + kstOffset);
+    const kstDate = new Date(now.getTime());
 
     // KST 시간을 "YYYY-MM-DDTHH:MM:SS" 형식으로 변환
     const year = kstDate.getFullYear();
@@ -146,17 +154,27 @@ const UserFeedback = () => {
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
-
+  // 뒤로가기 버튼 클릭 핸들러
+  const handleBackButtonClick = () => {
+    // 뒤로가기 동작 정의 (예: 이전 페이지로 이동)
+    window.history.back();
+  };
+  
   return (
     <Container>
-      
+      <BackButton onClick={handleBackButtonClick}>
+        <FiArrowLeft />
+      </BackButton>
       <StyledDatePicker
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="yyyy-MM"
         showMonthYearPicker
       />
-      <Title><ProfileImage src={userData.imgUrl}/>{userData.name} 회원님의 피드백 목록</Title>
+      <Title>
+        <ProfileImage src={userData.imgUrl} />
+        {userData.name} 회원님의 피드백 목록
+      </Title>
       {userType === "MEMBER" ? (
         <RegisterBox onClick={openFeedbackModal}>
           <PlusIconContainer>
@@ -169,23 +187,22 @@ const UserFeedback = () => {
         selectedDate={selectedDate}
         onVideoClick={openModal}
         userType={userType}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         getKoreanISOString={getKoreanISOString}
-
       />
       <VideoModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         video={selectedVideo}
         userData={userData}
-        exerciseId={selectedExerciseId} 
+        exerciseId={selectedExerciseId}
       />
       <FeedbackModal
         isOpen={isFeedbackModalOpen}
         onClose={closeFeedbackModal}
         name={userData.name}
         getKoreanISOString={getKoreanISOString}
-        fetchFeedback={fetchFeedback}
+        fetchFeedbackData={fetchFeedbackData}
         userData={userData}
       />
     </Container>

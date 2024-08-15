@@ -7,8 +7,9 @@ import InbodyPage from '../../components/user/inbody/InbodyPage';
 import ModalInbody from '../../components/user/inbody/ModalInbody';
 import ButtonInbodyEdit from '../../components/common/button/ButtonInbodyEdit';
 import ButtonProfileEdit from '../../components/common/button/ButtonProfileEdit';
-import { useUserInfoStore, useStore } from '../../store/store';
+import { useUserInfoStore, useStore,useTimeStore } from '../../store/store';
 import BoxUser from '../../components/trainer/BoxUser';
+import ButtonToggle from '../../components/common/button/ButtonToggle';
 
 const Container = styled.div`
   width: 100%;
@@ -33,19 +34,25 @@ const ButtonGroup = styled.div`
   width: 100%;
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const ProfilePic = styled.img`
   width: 40%;
   height: 40%;
   border-radius: 50%;
-  margin: 0 auto 20px;
-  margin-left: 100px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 `;
 
-const ProfileContainer = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
 `;
+
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('내정보');
@@ -53,7 +60,7 @@ const UserProfile = () => {
   const userData = useUserInfoStore((state) => state.userData);
   const roleType = useStore((state) => state.userType);
   const { userUpdate } = useStore();
-  const [SelectedDate,setSelectedDate ] = useState()
+  const {selectedDate,setSelectedDate } = useTimeStore()
 
   useEffect(() => {
     userUpdate();
@@ -71,16 +78,20 @@ const UserProfile = () => {
     <Container>
       {roleType === 'MEMBER' ? (
         <ProfileContainer>
-          <ProfilePic src={userData.imgUrl || Profile} alt="Profile" />
-          {activeTab === '내정보' ? (
-            <ButtonProfileEdit />
-          ) : (
-            <ButtonInbodyEdit openModal={openModal} />
-          )}
-          <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
-        </ProfileContainer>
+  <ButtonToggle />
+  <ProfilePic src={userData.imgUrl || Profile} alt="Profile" />
+  <ButtonWrapper>
+    {activeTab === '내정보' ? (
+      <ButtonProfileEdit />
+    ) : (
+      <ButtonInbodyEdit openModal={openModal} />
+    )}
+  </ButtonWrapper>
+  <ModalInbody isOpen={modalIsOpen} onRequestClose={closeModal} />
+</ProfileContainer>
+
       ) : (
-        <BoxUser userData={userData} setSelectedDate={setSelectedDate}/> 
+        <BoxUser userData={userData} setSelectedDate={setSelectedDate} selectedDate={selectedDate}/> 
       )}
       <ButtonGroupContainer>
         <ButtonGroup>

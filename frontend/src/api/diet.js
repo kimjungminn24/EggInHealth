@@ -7,7 +7,6 @@ axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
 
 export const getDiet = async (uid,year,month,day) => {
-  console.log(uid,year,month,day)
   const res = await axios.get(
     `${BASE_URL}/diet/${uid}?year=${year}&month=${month}&day=${day}`
   );
@@ -56,7 +55,6 @@ export const updateDiet = async (type,date,img,id) => {
   formData.append('image',img)
   formData.append('date',date);
   formData.append('type',type)
-  console.log(img,date,type,id)
   const response = await axios.patch(
     `${BASE_URL}/diet/${id}`,
     formData,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyledModal } from '../common/StyledComponents';
-import { registerExh } from '../../api/exercise';
+import { registerExh, updateEx } from '../../api/exercise';
 import styled from 'styled-components';
 
 const ModalContent = styled.div`
@@ -9,80 +9,82 @@ const ModalContent = styled.div`
   border-radius: 10px;
 `;
 
+
 const InputContent = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 `;
 
-const Count = styled.div`
-  position: absolute;
-  right: 60px; /* Count 위치 조정 */
-  
-  font-size: 15px;
-`;
+  const Count = styled.div`
+    position: absolute;
+    right: 60px; /* Count 위치 조정 */
+    
+    font-size: 15px;
+  `;
 
-const Title = styled.h2`
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-`;
+  const Title = styled.h2`
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+  `;
 
-const Select = styled.select`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 15px;
-`;
+  const Select = styled.select`
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  `;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  font-size: 15px;
+  const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    font-size: 15px;
 
-  &::placeholder {
-    color: #aaa;
-  }
-`;
+    &::placeholder {
+      color: #aaa;
+    }
+  `;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: #ffcc00;
-  border: none;
-  border-radius: 20px;
-  font-size: 18px;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 10px;
+  const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
 
-  &:hover {
-    background-color: #e6b800;
-  }
-`;
+    &:hover {
+      background-color: #e6b800;
+    }
+  `;
 
-const CloseButton = styled(Button)`
-  background-color: #ccc;
+  const CloseButton = styled(Button)`
+    background-color: #ccc;
 
-  &:hover {
-    background-color: #bbb;
-  }
-`;
+    &:hover {
+      background-color: #bbb;
+    }
+  `;
 
-const AddExerciseModal = ({ isOpen, onClose, selectedDate ,userData}) => {
+
+
+const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetchExData }) => {
   const [exhSet, setExhSet] = useState('');
   const [exhWeight, setExhWeight] = useState('');
   const [exhName, setExhName] = useState('');
   const [exTime, setExTime] = useState('');
   const [exhRep, setExhRep] = useState('');
   const [inputType, setInputType] = useState('setWeight');
-  const id= userData.id
-  console.log(id)
+  const id = userData.id;
 
   useEffect(() => {
     if (inputType === 'setWeight') {
@@ -98,18 +100,32 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate ,userData}) => {
     setExhSet('');
     setExhRep('');
   };
-
+  
   const handleAddExercise = async () => {
-    await registerExh(
-      inputType === 'setWeight' ? exhSet : null,
-      inputType === 'setWeight' ? exhWeight : null,
-      inputType === 'setWeight' ? exhRep : null,
-      exhName,
-      inputType === 'time' ? exTime : 0,
-      selectedDate,
-      id
-    );
-    onClose();
+    if (setId){
+      await updateEx(
+        setId, 
+        inputType === 'setWeight' ? exhSet : null,
+        inputType === 'setWeight' ? exhWeight : null,
+        exhName,
+        inputType === 'time' ? exTime : 0,
+        selectedDate
+      );
+    }
+    else{
+      await registerExh(
+        inputType === 'setWeight' ? exhSet : null,
+        inputType === 'setWeight' ? exhWeight : null,
+        inputType === 'setWeight' ? exhRep : null,
+        exhName,
+        inputType === 'time' ? exTime : 0,
+        selectedDate,
+        id
+      );
+    }
+      resetInputs(); // 입력 필드 초기화
+    fetchExData(); // 데이터 새로고침
+    onClose(); // 모달 닫기
   };
 
   return (
@@ -172,11 +188,11 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate ,userData}) => {
           </InputContent>
         )}
 
-        <Button onClick={handleAddExercise}>등록</Button>
-        <CloseButton onClick={onClose}>닫기</CloseButton>
-      </ModalContent>
-    </StyledModal>
-  );
-};
+          <Button onClick={handleAddExercise}>{setId ? '수정': '등록' }</Button>
+          <CloseButton onClick={onClose}>닫기</CloseButton>
+        </ModalContent>
+      </StyledModal>
+    );
+  };
 
 export default AddExerciseModal;

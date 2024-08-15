@@ -76,3 +76,15 @@ export const useUserInfoStore = create(
     }
   )
 );
+
+export const useTimeStore = create(
+  persist(
+    (set) => ({
+      selectedDate: new Date().toISOString().split("T")[0],
+      setSelectedDate: (value) => set({ selectedDate: value }), 
+    }),
+    {
+      name: 'user-time-store',
+    }
+  )
+);

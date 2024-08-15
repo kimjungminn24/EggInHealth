@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { checkPtPlan } from "../../../api/trainer";
 
 const RenderDaysForTrainer = ({ year, month, onDateChange,userId }) => {
-    const today = new Date();
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const today =new Date(now.getTime()+ kstOffset);
     const [selectedDay, setSelectedDay] = useState(today.getDate());
     const [memDate, setMemDate] = useState([]);
 

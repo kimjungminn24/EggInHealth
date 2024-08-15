@@ -104,6 +104,6 @@ public class MemberStatusService {
     }
 
     private int makeRandomNumber() {
-        return (int) (Math.random() * 14);
+        return ((int) (Math.random() * 30) + 1);
     }
 }

@@ -123,4 +123,12 @@ public class FcmService {
         sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.senderId())).getToken(), "화상통화 요청", receiver.name() + "님에게 통화를 요청했습니다.", null);
         sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.receiverId())).getToken(), "화상통화 요청", sender.name() + "님이 통화를 요청했습니다.", null);
     }
+
+    public void chatMessageSender(String receiverId) throws FirebaseMessagingException {
+        MemberDetailDto receiver = memberService.getMemberDetail(Integer.parseInt(receiverId));
+        DeviceToken devicetoken = getDeviceToken(receiverId);
+        if (devicetoken.getToken() != null) {
+            sendMessage(devicetoken.getToken(), "메세지 도착", receiver.name() + "님의 메세지가 도착했습니다", null);
+        }
+    }
 }

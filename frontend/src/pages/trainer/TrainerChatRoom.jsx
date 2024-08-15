@@ -14,6 +14,7 @@ import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
 import Camera from "../../assets/static/Property_Camera.png"
 import LeaveRoom from "../../assets/closebutton.png"
+import { Alert } from "../../api/RTC.js";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
@@ -48,7 +49,6 @@ function TrainerChatRoom() {
   const [room, setRoom] = useState(undefined);
   const [localTrack, setLocalTrack] = useState(undefined);
   const [remoteTracks, setRemoteTracks] = useState([]);
-  // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
   const userState = useStore((state) => state);
   const participantName = trainerId;
   const roomName = userId;
@@ -85,6 +85,8 @@ function TrainerChatRoom() {
 
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);
+      // 알림보내기
+      await Alert(trainerId, roomName)
 
       // Publish your camera and microphone
       await room.localParticipant.enableCameraAndMicrophone();

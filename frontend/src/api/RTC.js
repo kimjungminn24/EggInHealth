@@ -6,8 +6,7 @@ export const Alert = async (senderId, receiverId) => {
     try {
       const response = await axios.post(
         `${BASE_URL}/device/open`,
-        {senderId},
-        {receiverId},
+        {senderId, receiverId},
         {
           headers: {
             'Content-Type': 'application/json',
@@ -17,6 +16,7 @@ export const Alert = async (senderId, receiverId) => {
       );
       return response.data;
     } catch (error) {
-      throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
+      console.error("API request failed:", error.response ? error.response.data : error.message);
+   throw error.response ? error.response.data : new Error('알 수 없는 오류 발생');
     }
   };

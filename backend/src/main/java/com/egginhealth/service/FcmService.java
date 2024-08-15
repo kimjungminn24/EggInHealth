@@ -118,7 +118,9 @@ public class FcmService {
     }
 
     public void checkReceiver(DeviceCamOpenDto deviceCamOpenDto) throws FirebaseMessagingException {
+        MemberDetailDto sender = memberService.getMemberDetail(deviceCamOpenDto.senderId());
         MemberDetailDto receiver = memberService.getMemberDetail(deviceCamOpenDto.receiverId());
-        sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.senderId())).getToken(), "화상통화 요청", receiver.name() + "님이 통화를 요청했습니다.", null);
+        sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.senderId())).getToken(), "화상통화 요청", receiver.name() + "님에게 통화를 요청했습니다.", null);
+        sendMessage(getDeviceToken(String.valueOf(deviceCamOpenDto.receiverId())).getToken(), "화상통화 요청", sender.name() + "님이 통화를 요청했습니다.", null);
     }
 }

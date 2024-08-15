@@ -47,7 +47,6 @@ function UserChatRoom() {
   const [room, setRoom] = useState(undefined);
   const [localTrack, setLocalTrack] = useState(undefined);
   const [remoteTracks, setRemoteTracks] = useState([]);
-  // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
   const userState = useStore((state) => state);
   const participantName = userState.userId;
   const roomName = userState.userId;
@@ -89,8 +88,8 @@ function UserChatRoom() {
     try {
       // Get a token from your application server with the room name and participant name
       const rtctoken = await getToken(roomName, participantName);
-      const alert = await Alert(roomName,userState.userInfo.trId)
-      console.log(alert);
+       // 알림보내기
+       await Alert(participantName, userState.userInfo.trId)
 
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);

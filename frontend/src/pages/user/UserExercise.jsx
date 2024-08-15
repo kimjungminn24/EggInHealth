@@ -8,35 +8,45 @@ import {
   ImagePreview,
   Mini,
   MiniContainer,
+  MiniPointer,
   PageContainer,
+  MiniPointerContainer
 } from "../../components/common/StyledComponents"; // 이미지 프리뷰 스타일 컴포넌트
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "./../../components/common/button/RegisterButton";
-import { useStore, useUserInfoStore,useTimeStore } from "./../../store/store";
+import { useStore, useUserInfoStore } from "./../../store/store";
 import { getExercise } from "./../../api/exercise";
 import { ExerciseImg } from "./../../components/user/exercise/ExerciseImg";
 import BoxUser from "../../components/trainer/BoxUser";
 import NoImg from "../../components/user/Noimage";
 import ModalDeleteExImg from "../../components/user/exercise/ModalDeleteExImg";
+import styled from "styled-components";
 
+const FeedbackContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 const Exercise = () => {
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setIsModalOpen(false); 
   const [exData, setExData] = useState([]);
   const [hasImages, setHasImages] = useState(false); // 이미지 유무 상태 추가
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { userData } = useUserInfoStore();
-  const {selectedDate,setSelectedDate } = useTimeStore()
-
   const userType = useStore((set) => set.userType);
   const userLoginId = useStore((set) => set.userId);
   const userLoginData = useStore((set) => set.userInfo);
+
 
   const getKoreanISOString = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
     const kstDate = new Date(now.getTime() + kstOffset);
+
     return kstDate.toISOString();
   };
 
@@ -51,7 +61,7 @@ const Exercise = () => {
       }
     }
   };
-
+  
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
@@ -59,7 +69,7 @@ const Exercise = () => {
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
-
+  
   useEffect(() => {
     if (userData && userData.id) {
       fetchExData();
@@ -81,30 +91,40 @@ const Exercise = () => {
   };
 
   return (
+    
     <PageContainer>
-      <div>
-        {userType === "TRAINER" ? (
-          <BoxUser
-            userData={userData}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-          />
+    <div>
+      {userType === "TRAINER" ? (
+        <div>
+
+        <BoxUser
+          userData={userData}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          /> 
+          <MiniPointerContainer>
+          <MiniPointer onClick={handleFeedbackClick}>피드백 목록</MiniPointer>
+          </MiniPointerContainer>
+          </div>
         ) : (
+          <FeedbackContainer>
           <SelectedDate
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
           />
-        )}
+            <MiniPointer onClick={handleFeedbackClick}>피드백 목록</MiniPointer>
+        </FeedbackContainer>
+      )}
         <ExerciseList
           selectedDate={selectedDate}
           exData={exData}
           userLoginData={userLoginData}
           userData={userData}
+          fetchExData={fetchExData}
         />
         <div>
           <MiniContainer>
             <Mini>운동 사진</Mini>
-            <button onClick={handleFeedbackClick}>사용자 피드백</button>
           </MiniContainer>
           <ExerciseImg
             exData={exData}
@@ -147,8 +167,6 @@ const Exercise = () => {
           fetchExData={fetchExData}
           userId={userLoginId}
           userData={userData}
-          userLoginData={userLoginData}
-
         />
       </div>
     </PageContainer>

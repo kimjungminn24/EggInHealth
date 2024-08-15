@@ -6,7 +6,7 @@ import {
   Room,
   RoomEvent,
 } from "livekit-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VideoComponent from "../../components/common/VideoComponent";
 import AudioComponent from "../../components/common/AudioComponent";
 import ChatComponent from "../../components/common/ChatComponent"; // 추가
@@ -50,6 +50,14 @@ function UserChatRoom() {
   const userState = useStore((state) => state);
   const participantName = userState.userId;
   const roomName = userState.userId;
+  const {userUpdate} = useStore()
+
+  useEffect(()=> {
+    const fetchData = async ()=> {
+      await userUpdate()
+    }
+    fetchData()
+  },[])
 
   async function joinRoom() {
     // Initialize a new Room object
@@ -129,13 +137,11 @@ function UserChatRoom() {
     return data.rtctoken;
   }
 
-  let isCamOn = false;
-
     return (
         <>
             {!room ? (
              <div>
-                <form className="fixed bottom-[50px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
+              {userState.userInfo.trId !== 0 ? <form className="fixed bottom-[70px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
                     onSubmit={(e) => {
                         joinRoom();
                         e.preventDefault();
@@ -148,9 +154,9 @@ function UserChatRoom() {
                     >
                         <img src={Camera} alt="카메라" />
                     </button>
-                </form>
+                </form> : null}
+                
             <div>   
-                {/*수정필요 */}
                 <ChatComponent participantName={participantName} roomName={roomName} receiver={userState.userInfo.trId}/>
             </div>
              </div>  

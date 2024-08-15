@@ -22,7 +22,7 @@ const customStyles = {
 };
 
 const PageContainer = styled.div`
-  padding: 20px;
+  padding: 0px 20px 40px;
   max-width: 600px;
   margin: 0 auto;
   background-color: #F8F7F4;
@@ -166,11 +166,12 @@ const StyledModal = styled(Modal)`
   width: 300px;
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 `;
 
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 55px;
+  bottom: 75px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

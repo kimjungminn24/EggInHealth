@@ -41,7 +41,6 @@ const ExId = styled.h2`
 `;
 
 const VideoModal = ({ isOpen, onRequestClose, video, userData, exerciseId }) => {
-  console.log(exerciseId);
   
   return (
     <StyleModal isOpen={isOpen} onRequestClose={onRequestClose}>

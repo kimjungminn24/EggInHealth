@@ -8,6 +8,7 @@ import arrow from '../../assets/arrow.png';
 import { checkMemberList } from '../../api/trainer';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfoStore } from '../../store/store';
+import BtnRegister from "../../components/trainer/BtnRegister.jsx";
 
 const Container = styled.div`
   padding: 20px;

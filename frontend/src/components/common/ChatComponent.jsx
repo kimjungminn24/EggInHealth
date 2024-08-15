@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import Arrow from "../../assets/static/Property_Black_Arrow.png";
+import Arrow from "../../assets/static/Property_Arrow.png";
 import { useStore } from '../../store/store.js'
 import { userInfo } from "../../api/main";
+import BoxMain from '../user/main/BoxMain.jsx'
+import profile from '../../assets/profile.png'
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
@@ -141,7 +143,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
 
     return (
         <div id="chat-container">
-            {receiver == 0 ? <div>잘못된 접근입니다.</div> : <div><div id="messages" className='max-h-[660px] overflow-auto top-0'>
+            {receiver == 0 ? <div><BoxMain /></div> : <div><div id="messages" className='max-h-[660px] overflow-auto top-0'>
                 {chatMessages.map((message, index) => (
                     <div key={index} className={`flex p-[10px] ${message.senderId == participantName ? 'justify-end' : 'justify-start'}`}>
                         {message.senderId == participantName ? (
@@ -159,7 +161,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                             userName.type === 'MEMBER' ? (
                                 <div className="flex flex-row items-center">
                                     <div className="flex flex-col items-center mr-[10px]">
-                                            <img src={userNameTr.imgUrl} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                            <img src={userNameTr.imgUrl|| profile} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
                                         <strong>{userName.trName}</strong>
                                     </div>
                                     <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">
@@ -192,7 +194,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                 ))}
                 <div ref={messagesEndRef} /> {/* 스크롤을 위한 빈 div 추가 */}
             </div>
-                <form onSubmit={handleChatSubmit} className="w-[300px] m-auto flex fixed bottom-[50px] h-[50px] item-center justify-center ml-[70px]">
+                <form onSubmit={handleChatSubmit} className="w-[300px] m-auto flex fixed bottom-[70px] h-[50px] item-center justify-center ml-[70px]">
                     <input
                         type="text"
                         value={chatInput}
@@ -200,7 +202,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                         placeholder="메세지를 입력해주세요"
                         className="w-full"
                     />
-                    <button type="submit" className="absolute m-auto right-[20px] top-0 bottom-[20PX]">
+                    <button type="submit" className="absolute m-auto right-[20px] top-[5px] w-[30px] h-[30px]">
                         <img src={Arrow} />
                     </button>
                 </form></div>}

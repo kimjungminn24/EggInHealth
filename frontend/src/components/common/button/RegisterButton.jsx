@@ -44,6 +44,10 @@ const ButtonText = styled.span`
   color: #DFDFDF;
 `;
 
+const Container = styled.div`
+
+`
+
 const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
   useEffect(() => {
     setHasImages(hasImages);
@@ -51,9 +55,12 @@ const RegisterButton = ({ openModal, setHasImages, hasImages, onDelete }) => {
 
   return (
     <ButtonContainer>
+
       {hasImages ? (
         <RegisterButtonContainer onClick={openModal}>
+          <Container>
           수정
+        </Container>
         </RegisterButtonContainer>
       ) : (
         <RegisterBox onClick={openModal}>

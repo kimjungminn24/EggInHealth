@@ -16,71 +16,66 @@ const InputContent = styled.div`
   margin-bottom: 15px;
 `;
 
+  const Count = styled.div`
+    position: absolute;
+    right: 60px; /* Count 위치 조정 */
+    
+    font-size: 15px;
+  `;
 
-const Count = styled.div`
-  position: absolute;
-  right: 60px; /* Count 위치 조정 */
-  
-  font-size: 15px;
-`;
+  const Title = styled.h2`
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+  `;
+
+  const Select = styled.select`
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  `;
+
+  const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    font-size: 15px;
+
+    &::placeholder {
+      color: #aaa;
+    }
+  `;
+
+  const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+
+    &:hover {
+      background-color: #e6b800;
+    }
+  `;
+
+  const CloseButton = styled(Button)`
+    background-color: #ccc;
+
+    &:hover {
+      background-color: #bbb;
+    }
+  `;
 
 
-const Title = styled.h2`
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-`;
-
-
-const Select = styled.select`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 15px;
-`;
-
-
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  font-size: 15px;
-
-  &::placeholder {
-    color: #aaa;
-  }
-`;
-
-
-
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: #ffcc00;
-  border: none;
-  border-radius: 20px;
-  font-size: 18px;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 10px;
-
-  &:hover {
-    background-color: #e6b800;
-  }
-`;
-
-const CloseButton = styled(Button)`
-  background-color: #ccc;
-
-  &:hover {
-    background-color: #bbb;
-  }
-`;
 
 const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetchExData }) => {
   const [exhSet, setExhSet] = useState('');

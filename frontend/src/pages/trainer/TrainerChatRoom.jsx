@@ -166,7 +166,7 @@ function TrainerChatRoom() {
               className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-between"
             >
               <div id="layout-container" className="relative w-full flex-1 flex flex-col items-center justify-center">
-                <div className="overflow-hidden w-[133px] h-[133px] absolute bottom-[105px] flex items-center justify-center z-30 rounded-[19px] left-0">
+                <div className="overflow-hidden w-[133px] h-[133px] absolute bottom-[105px] flex items-center justify-center z-40 rounded-[19px] mr-[230px]">
                   {localTrack && (
                     <VideoComponent
                       track={localTrack}
@@ -175,7 +175,7 @@ function TrainerChatRoom() {
                     />
                   )}
                 </div>
-                <div className="overflow-hidden w-full h-full absolute bottom-[105px] flex items-center justify-center z-20 rounded-[19px]">
+                <div className="overflow-hidden w-full h-full absolute bottom-[105px] flex items-center justify-center z-30 rounded-[19px]">
                   {remoteTracks.map((remoteTrack) =>
                     remoteTrack.trackPublication.kind === "video" ? (
                       <VideoComponent
@@ -194,7 +194,7 @@ function TrainerChatRoom() {
               </div>
               <div id="room-header" className="w-full">
                 <button
-                  className="btn-danger bg-white w-full fixed bottom-0 left-0 right-0 flex items-center justify-center z-50 p-4"
+                  className="btn-danger bg-white w-full fixed bottom-0 left-0 right-0 flex items-center justify-center z-60 p-4"
                   id="leave-room-button"
                   onClick={leaveRoom}
                 >

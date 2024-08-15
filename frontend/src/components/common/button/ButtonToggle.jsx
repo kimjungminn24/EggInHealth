@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import { requestPermission } from "../../../firebase";
+import { useToggleStore } from '../../../store/store';
 
 const ToggleButton = styled.button`
   background-color:${props => props.active ? '#FFD66B' : 'grey'};
@@ -18,7 +19,7 @@ const ToggleButton = styled.button`
 `;
 
 const ButtonToggle = () => {
-  const [togglePermission, setTogglePermission] = useState(false);
+  const {togglePermission,setTogglePermission} = useToggleStore()
   useEffect(() => {
     if (togglePermission) {
       requestPermission();

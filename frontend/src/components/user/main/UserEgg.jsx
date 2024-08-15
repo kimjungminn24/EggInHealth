@@ -23,6 +23,16 @@ import Egg17 from '../../../assets/eggs/egg17.png';
 import Egg18 from '../../../assets/eggs/egg18.png';
 import Egg19 from '../../../assets/eggs/egg19.png';
 import Egg20 from '../../../assets/eggs/egg20.png';
+import Egg21 from '../../../assets/eggs/egg21.png';
+import Egg22 from '../../../assets/eggs/egg22.png';
+import Egg23 from '../../../assets/eggs/egg23.png';
+import Egg24 from '../../../assets/eggs/egg24.png';
+import Egg25 from '../../../assets/eggs/egg25.png';
+import Egg26 from '../../../assets/eggs/egg26.png';
+import Egg27 from '../../../assets/eggs/egg27.png';
+import Egg28 from '../../../assets/eggs/egg28.png';
+import Egg29 from '../../../assets/eggs/egg29.png';
+import Egg30 from '../../../assets/eggs/egg30.png';
 
 const eggImagesMap = {
   0: Egg0,
@@ -46,6 +56,16 @@ const eggImagesMap = {
   18: Egg18,
   19: Egg19,
   20: Egg20,
+  21: Egg21,
+  22: Egg22,
+  23: Egg23,
+  24: Egg24,
+  25: Egg25,
+  26: Egg26,
+  27: Egg27,
+  28: Egg28,
+  29: Egg29,
+  30: Egg30,
 };
 
 

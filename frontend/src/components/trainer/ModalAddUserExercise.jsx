@@ -8,22 +8,14 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
 `;
-const ModalContent = styled.div`
-  background-color: #F8F7F4;
-  padding: 20px;
-  border-radius: 10px;
-`;
+
 
 const InputContent = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 `;
-const InputContent = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-`;
+
 
 const Count = styled.div`
   position: absolute;
@@ -31,12 +23,7 @@ const Count = styled.div`
   
   font-size: 15px;
 `;
-const Count = styled.div`
-  position: absolute;
-  right: 60px; /* Count 위치 조정 */
-  
-  font-size: 15px;
-`;
+
 
 const Title = styled.h2`
   margin-bottom: 20px;
@@ -44,12 +31,7 @@ const Title = styled.h2`
   font-size: 24px;
   color: #333;
 `;
-const Title = styled.h2`
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-`;
+
 
 const Select = styled.select`
   width: 100%;
@@ -58,20 +40,9 @@ const Select = styled.select`
   border-radius: 5px;
   margin-bottom: 15px;
 `;
-const Select = styled.select`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 15px;
-`;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  font-size: 15px;
+
+
 const Input = styled.input`
   width: 100%;
   padding: 10px;
@@ -83,22 +54,9 @@ const Input = styled.input`
     color: #aaa;
   }
 `;
-  &::placeholder {
-    color: #aaa;
-  }
-`;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: #ffcc00;
-  border: none;
-  border-radius: 20px;
-  font-size: 18px;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 10px;
+
+
 const Button = styled.button`
   width: 100%;
   padding: 10px;
@@ -115,20 +73,10 @@ const Button = styled.button`
     background-color: #e6b800;
   }
 `;
-  &:hover {
-    background-color: #e6b800;
-  }
-`;
 
 const CloseButton = styled(Button)`
   background-color: #ccc;
-const CloseButton = styled(Button)`
-  background-color: #ccc;
 
-  &:hover {
-    background-color: #bbb;
-  }
-`;
   &:hover {
     background-color: #bbb;
   }
@@ -200,12 +148,6 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetch
           value={exhName}
           onChange={(e) => setExhName(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="운동 이름을 입력해주세요"
-          value={exhName}
-          onChange={(e) => setExhName(e.target.value)}
-        />
 
         {inputType === 'setWeight' ? (
           <>
@@ -218,27 +160,7 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetch
               />
               <Count>회</Count>
             </InputContent>
-        {inputType === 'setWeight' ? (
-          <>
-            <InputContent>
-              <Input
-                type="text"
-                placeholder="SET"
-                value={exhSet}
-                onChange={(e) => setExhSet(e.target.value)}
-              />
-              <Count>회</Count>
-            </InputContent>
 
-            <InputContent>
-              <Input
-                type="text"
-                placeholder="REP"
-                value={exhRep}
-                onChange={(e) => setExhRep(e.target.value)}
-              />
-              <Count>회</Count>
-            </InputContent>
             <InputContent>
               <Input
                 type="text"
@@ -270,34 +192,12 @@ const AddExerciseModal = ({ isOpen, onClose, selectedDate, userData, setId,fetch
             <Count>분</Count>
           </InputContent>
         )}
-            <InputContent>
-              <Input
-                type="text"
-                placeholder="WT."
-                value={exhWeight}
-                onChange={(e) => setExhWeight(e.target.value)}
-              />
-              <Count>kg</Count>
-            </InputContent>
-          </>
-        ) : (
-          <InputContent>
-            <Input
-              type="text"
-              placeholder="운동 시간"
-              value={exTime}
-              onChange={(e) => setExTime(e.target.value)}
-            />
-            <Count>분</Count>
-          </InputContent>
-        )}
 
-        <Button onClick={handleAddExercise}>{setId ? '수정': '등록' }</Button>
-        <CloseButton onClick={onClose}>닫기</CloseButton>
-      </ModalContent>
-    </StyledModal>
-  );
-};
+          <Button onClick={handleAddExercise}>{setId ? '수정': '등록' }</Button>
+          <CloseButton onClick={onClose}>닫기</CloseButton>
+        </ModalContent>
+      </StyledModal>
+    );
+  };
 
-export default AddExerciseModal;
 export default AddExerciseModal;

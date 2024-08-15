@@ -135,7 +135,7 @@ function UserChatRoom() {
         <>
             {!room ? (
              <div>
-                <form className="fixed bottom-[50px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
+                <form className="fixed bottom-[70px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
                     onSubmit={(e) => {
                         joinRoom();
                         e.preventDefault();

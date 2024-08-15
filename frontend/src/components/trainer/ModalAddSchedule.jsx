@@ -240,7 +240,6 @@ const handleEndTimeChange = (e) => {
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
-        <Header>2 수요일</Header>
         {member ? (
           <UserItem onClick={openModal}>
             <UserInfo>

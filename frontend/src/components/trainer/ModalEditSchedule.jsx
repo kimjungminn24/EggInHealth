@@ -215,7 +215,6 @@ export const ModalEditSchedule = ({ isOpen, onRequestClose, user }) => {
   return (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
-        <Header>2 수요일</Header>
         <UserItem>
           <UserInfo>
             <UserImage src={user?.imgUrl || profile} alt={user?.name || 'User'} />

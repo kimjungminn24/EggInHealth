@@ -55,7 +55,6 @@ export const updateDiet = async (type,date,img,id) => {
   formData.append('image',img)
   formData.append('date',date);
   formData.append('type',type)
-  console.log(img,date,type,id)
   const response = await axios.patch(
     `${BASE_URL}/diet/${id}`,
     formData,

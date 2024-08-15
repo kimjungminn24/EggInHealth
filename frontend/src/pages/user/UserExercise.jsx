@@ -37,7 +37,6 @@ const Exercise = () => {
     const now = new Date();
     const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
     const kstDate = new Date(now.getTime() + kstOffset);
-
     return kstDate.toISOString();
   };
 
@@ -66,12 +65,13 @@ const Exercise = () => {
       fetchExData();
     }
   }, [
-    selectedDate,
-    userData,
-    ExerciseImg,
-    isModalOpen,
-    isDeleteModalOpen,
-    userData.sets,
+      selectedDate,
+      userData,
+      // ExerciseImg,
+      isModalOpen,
+      isDeleteModalOpen,
+
+    exData
   ]);
 
   const navigate = useNavigate();
@@ -147,6 +147,8 @@ const Exercise = () => {
           fetchExData={fetchExData}
           userId={userLoginId}
           userData={userData}
+          userLoginData={userLoginData}
+
         />
       </div>
     </PageContainer>

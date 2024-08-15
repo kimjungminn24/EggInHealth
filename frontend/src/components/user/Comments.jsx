@@ -139,7 +139,9 @@ const Comments = ({ date, type, dietData, dietType, fetchDiet, exData, fetchExDa
     if (comment.trim()) {
       try {
         if (type === 'D') {
-          await registerComment(comment, getKoreanISOString(), dietData[0].id, type);
+
+          console.log(dietType)
+          await registerComment(comment, getKoreanISOString(), dietType, type);
           fetchDiet();
         } else if (type === 'E') {
           await registerExComment(comment, exData.boardId, type);

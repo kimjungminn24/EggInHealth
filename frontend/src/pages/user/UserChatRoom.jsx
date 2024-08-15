@@ -13,6 +13,7 @@ import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
 import Camera from "../../assets/static/Property_Camera.png"
 import LeaveRoom from "../../assets/closebutton.png"
+import { Alert } from "../../api/RTC.js";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
@@ -46,7 +47,6 @@ function UserChatRoom() {
   const [room, setRoom] = useState(undefined);
   const [localTrack, setLocalTrack] = useState(undefined);
   const [remoteTracks, setRemoteTracks] = useState([]);
-  // const [participantName, setParticipantName] = useState("Participant" + Math.floor(Math.random() * 100));
   const userState = useStore((state) => state);
   const participantName = userState.userId;
   const roomName = userState.userId;
@@ -88,6 +88,13 @@ function UserChatRoom() {
     try {
       // Get a token from your application server with the room name and participant name
       const rtctoken = await getToken(roomName, participantName);
+       // 알림보내기
+       try {
+        await Alert(participantName, userState.userInfo.trId);
+      } catch (error) {
+        console.error("상대 알림 OFF:", error.message);
+        // 오류가 발생하더라도 프로그램이 계속 진행되도록 예외를 무시합니다.
+      }
 
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);

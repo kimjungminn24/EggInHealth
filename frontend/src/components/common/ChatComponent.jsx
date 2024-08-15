@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import Arrow from "../../assets/static/Property_Black_Arrow.png";
+import { useStore } from '../../store/store.js'
+import { userInfo } from "../../api/main";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ChatComponent = ({ participantName, roomName, receiver }) => {
@@ -11,6 +13,23 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
     const receiverId = receiver; // 수신자 ID 상태 추가
     const stompClientRef = useRef(null);
     const messagesEndRef = useRef(null); // 스크롤 조정을 위한 ref 추가
+    const userName = useStore(state => state.userInfo)
+    const [userNameTr,setuserNameTr] = useState('')
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            if (participantName ==roomName){
+                const response = await userInfo(receiver)
+                setuserNameTr(response)
+            }
+            else{
+                const response = await userInfo(roomName)
+                setuserNameTr(response)
+            }
+        }
+        fetchData()
+    },[])
+
 
     useEffect(() => {
         if (stompClientRef.current) {
@@ -110,12 +129,65 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
         }
     }
 
+    const formatTime = (isoString) => {
+        const date = new Date(isoString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? '오후' : '오전';
+        const formattedHours = hours % 12 || 12;
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        return `${ampm} ${formattedHours}:${formattedMinutes}`;
+    };
+
     return (
         <div id="chat-container">
             {receiver == 0 ? <div>잘못된 접근입니다.</div> : <div><div id="messages" className='max-h-[660px] overflow-auto top-0'>
                 {chatMessages.map((message, index) => (
-                    <div key={index}>
-                        <strong>{message.senderId}</strong>: {message.content}
+                    <div key={index} className={`flex p-[10px] ${message.senderId == participantName ? 'justify-end' : 'justify-start'}`}>
+                        {message.senderId == participantName ? (
+                            <div className="flex flex-row-reverse items-center">
+                            <div className="bg-yellow-400 text-white rounded-t-[10px] rounded-l-[10px] p-[10px] max-w-full">
+                                <div className="mr-[10px]">
+                               {message.content}
+                               </div>
+                               <div className="text-[10px] text-gray-500 mt-[5px]">
+                                    {formatTime(message.createdAt)}
+                               </div>
+                            </div>
+                        </div>
+                        ) : (
+                            userName.type === 'MEMBER' ? (
+                                <div className="flex flex-row items-center">
+                                    <div className="flex flex-col items-center mr-[10px]">
+                                            <img src={userNameTr.imgUrl} alt="트레이너사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                        <strong>{userName.trName}</strong>
+                                    </div>
+                                    <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">
+                                        <div className="ml-[10px]">
+                                       {message.content}
+                                       </div>
+                                       <div className="text-[10px] text-gray-500 mt-[5px]">
+                                            {formatTime(message.createdAt)}
+                                       </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-row items-center">
+                                    <div className="flex flex-col items-center mr-[10px]">
+                                            <img src={userNameTr.imgUrl} alt="유저사진" className="w-[30px] h-[30px] rounded-full mb-[5px]"/>
+                                        <strong>{userNameTr.name}</strong>
+                                    </div>
+                                    <div className="bg-white text-black rounded-t-[10px] rounded-r-[10px] p-[10px] max-w-full">
+                                        <div className="ml-[10px]">
+                                       {message.content}
+                                       </div>
+                                       <div className="text-[10px] text-gray-500 mt-[5px]">
+                                             {formatTime(message.createdAt)}
+                                       </div>
+                                    </div>
+                                </div>
+                            )
+                        )}
                     </div>
                 ))}
                 <div ref={messagesEndRef} /> {/* 스크롤을 위한 빈 div 추가 */}
@@ -128,7 +200,7 @@ const ChatComponent = ({ participantName, roomName, receiver }) => {
                         placeholder="메세지를 입력해주세요"
                         className="w-full"
                     />
-                    <button type="submit" className="absolute m-auto right-[20px] top-0 bottom-0">
+                    <button type="submit" className="absolute m-auto right-[20px] top-0 bottom-[20PX]">
                         <img src={Arrow} />
                     </button>
                 </form></div>}

@@ -135,7 +135,7 @@ function TrainerChatRoom() {
         <>
             {!room ? (
              <div>
-                <form className="fixed bottom-[50px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
+                <form className="fixed bottom-[70px] bg-white flex w-[70px] h-[50px] items-center justify-center pr-[5px]"
                     onSubmit={(e) => {
                         joinRoom();
                         e.preventDefault();
@@ -150,14 +150,12 @@ function TrainerChatRoom() {
                     </button>
                 </form>
             <div>   
-                {/*수정필요 */}
                 <ChatComponent participantName={trainerId} roomName={roomName} receiver={roomName} />
             </div>
              </div>   
             ): (
                 <div id='room' className="absolute bg-white top-0 w-screen h-screen z-10">
                     <div id='room-header'>
-                        {/* <h2 id='room-title'>{roomName}</h2> */}
                         <button className='btn-danger bg-white absolute bottom-0 flex left-0 right-0 items-center justify-center m-auto bottom-[40px]' id='leave-room-button' onClick={leaveRoom}>
                             <img src={LeaveRoom} alt="" />
                         </button>

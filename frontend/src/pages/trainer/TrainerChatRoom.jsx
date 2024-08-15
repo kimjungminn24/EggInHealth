@@ -161,40 +161,47 @@ function TrainerChatRoom() {
             </div>
              </div>   
             ): (
-                <div id='room' className="absolute bg-white top-0 w-screen h-screen z-10">
-                    <div id='room-header'>
-                        <button className='btn-danger bg-white absolute bottom-0 flex left-0 right-0 items-center justify-center m-auto bottom-[40px]' id='leave-room-button' onClick={leaveRoom}>
-                            <img src={LeaveRoom} alt="" />
-                        </button>
-                    </div>
-                    <div id='layout-container'>
-                        <div className="overflow-hidden w-[133px] h-[133px] fixed left-0 bottom-[105px] m-auto flex items-center justify-center z-30 rounded-[19px]">
-                            {localTrack && (
-                                <VideoComponent
-                                    track={localTrack}
-                                    participantIdentity={participantName}
-                                    local={true}
-                                />
-                            )}
-                        </div>
-                        <div className="overflow-hidden w-[360px] h-[715px] fixed left-0 right-0 bottom-[105px] m-auto flex items-center flex justify-center z-20 rounded-[19px]">
-                            {remoteTracks.map((remoteTrack) =>
-                                remoteTrack.trackPublication.kind === "video" ? (
-                                    <VideoComponent
-                                        key={remoteTrack.trackPublication.trackSid}
-                                        track={remoteTrack.trackPublication.videoTrack}
-                                        participantIdentity={remoteTrack.participantIdentity}
-                                        />
-                                ) : (
-                                    <AudioComponent
-                                        key={remoteTrack.trackPublication.trackSid}
-                                        track={remoteTrack.trackPublication.audioTrack}
-                                    />
-                                )
-                            )}
-                        </div>
-                    </div>
+              <div
+              id="room"
+              className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-between"
+            >
+              <div id="layout-container" className="relative w-full flex-1 flex flex-col items-center justify-center">
+                <div className="overflow-hidden w-[133px] h-[133px] absolute bottom-[105px] flex items-center justify-center z-30 rounded-[19px] left-0">
+                  {localTrack && (
+                    <VideoComponent
+                      track={localTrack}
+                      participantIdentity={participantName}
+                      local={true}
+                    />
+                  )}
                 </div>
+                <div className="overflow-hidden w-full h-full absolute bottom-[105px] flex items-center justify-center z-20 rounded-[19px]">
+                  {remoteTracks.map((remoteTrack) =>
+                    remoteTrack.trackPublication.kind === "video" ? (
+                      <VideoComponent
+                        key={remoteTrack.trackPublication.trackSid}
+                        track={remoteTrack.trackPublication.videoTrack}
+                        participantIdentity={remoteTrack.participantIdentity}
+                      />
+                    ) : (
+                      <AudioComponent
+                        key={remoteTrack.trackPublication.trackSid}
+                        track={remoteTrack.trackPublication.audioTrack}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
+              <div id="room-header" className="w-full">
+                <button
+                  className="btn-danger bg-white w-full fixed bottom-0 left-0 right-0 flex items-center justify-center z-50 p-4"
+                  id="leave-room-button"
+                  onClick={leaveRoom}
+                >
+                  <img src={LeaveRoom} alt="Leave Room" />
+                </button>
+              </div>
+            </div>
             )}
             
         </>

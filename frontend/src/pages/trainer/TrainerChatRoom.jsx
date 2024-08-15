@@ -86,7 +86,12 @@ function TrainerChatRoom() {
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);
       // 알림보내기
-      await Alert(trainerId, roomName)
+      try {
+        await Alert(trainerId, roomName);
+      } catch (error) {
+        console.error("상대 알림 OFF:", error.message);
+        // 오류가 발생하더라도 프로그램이 계속 진행되도록 예외를 무시합니다.
+      }
 
       // Publish your camera and microphone
       await room.localParticipant.enableCameraAndMicrophone();

@@ -89,7 +89,12 @@ function UserChatRoom() {
       // Get a token from your application server with the room name and participant name
       const rtctoken = await getToken(roomName, participantName);
        // 알림보내기
-       await Alert(participantName, userState.userInfo.trId)
+       try {
+        await Alert(participantName, userState.userInfo.trId);
+      } catch (error) {
+        console.error("상대 알림 OFF:", error.message);
+        // 오류가 발생하더라도 프로그램이 계속 진행되도록 예외를 무시합니다.
+      }
 
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);

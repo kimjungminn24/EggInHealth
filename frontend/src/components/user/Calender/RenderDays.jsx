@@ -10,7 +10,9 @@ const RenderDays = ({ id, year, month }) => {
     const [foodData, setFoodData] = useState({});
     const [exerData, setExerData] = useState({});
     const [exerDate, setExerDate] = useState({})
-    const today = new Date();
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const today =new Date(now.getTime()+ kstOffset);
 
     const getDaysInMonth = (year, month) => {
         return new Date(year, month + 1, 0).getDate();

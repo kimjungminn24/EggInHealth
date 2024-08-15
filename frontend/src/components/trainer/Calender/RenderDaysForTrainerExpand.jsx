@@ -3,7 +3,9 @@ import { checkPtPlan } from "../../../api/trainer";
 
 const RenderDaysForTrainerExpand = ({ year, month,userId }) => {
     const [exerDate, setExerDate] = useState({})
-    const today = new Date();
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const today =new Date(now.getTime()+ kstOffset);
 
     const getDaysInMonth = (year, month) => {
         return new Date(year, month + 1, 0).getDate();
@@ -60,20 +62,20 @@ const RenderDaysForTrainerExpand = ({ year, month,userId }) => {
             <p className="text-sm font-medium text-gray-800">{dayCount}</p>
             {ExerDateForTheDay && ExerDateForTheDay.length > 0 ? (
     <div className="w-full">
-        {ExerDateForTheDay.map((item, idx) => {
-            const date = new Date(item); // item.date를 Date 객체로 변환
-            const hours = date.getHours(); // 시간 추출
-            const minutes = date.getMinutes(); // 분 추출
-            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        {ExerDateForTheDay.slice(0, 3).map((item, idx) => {
+    const date = new Date(item); // item을 Date 객체로 변환
+    const hours = date.getHours(); // 시간 추출
+    const minutes = date.getMinutes(); // 분 추출
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
-            return (
-                <div key={idx} className="h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px] mb-[2px]">
-                    <div className='font-bold text-white text-[10px] mt-[1px]'>
-                        {formattedTime}
-                    </div>
-                </div>
-            );
-        })}
+    return (
+        <div key={idx} className="h-[19px] bg-yellow-400 text-center pt-[1px] rounded-[3px] mb-[2px]">
+            <div className='font-bold text-white text-[10px] mt-[1px]'>
+                {formattedTime}
+            </div>
+        </div>
+    );
+})}
     </div>
 ) : (
     <div></div>

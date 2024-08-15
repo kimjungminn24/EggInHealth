@@ -1,12 +1,12 @@
 .mobile {
   max-width: 360px;
-  max-height: 800px;
-  height: 800px;
+  /* max-height: 800px; */
+  height: 100vh;
   margin-left: auto;
   margin-right: auto;
   background-color: #f8f8f8;
   padding-top: 40px;
-  padding-bottom: 96px;
+  margin-bottom: 96px;
 }
 
 .header {

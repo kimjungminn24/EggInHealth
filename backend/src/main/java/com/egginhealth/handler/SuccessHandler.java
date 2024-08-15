@@ -51,8 +51,6 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String role = jwtUtil.getRole(token);
 
         response.addCookie(cookieUtil.createCookie("Authorization", token, true));
-        response.addCookie(cookieUtil.createCookie("Role", role, false));
-        response.addCookie(cookieUtil.createCookie("Id", jwtUtil.getId(token), false));
 
         if (role.equals("TRAINER")) response.sendRedirect(frontUrl + "/trainermain");
         if (role.equals("MEMBER")) response.sendRedirect(frontUrl + "/usermain");

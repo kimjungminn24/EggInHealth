@@ -91,6 +91,12 @@ public class S3Service {
         String uuidFilePath = getFilePath() + uuid + "_" + originalFilename.replaceAll("\\s", "_");
 
         File convertFile = new File(uuidFilePath);
+
+        File parentDir = convertFile.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());

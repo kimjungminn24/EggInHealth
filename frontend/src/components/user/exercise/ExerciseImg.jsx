@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { DietImage } from "../../common/StyledComponents";
 
 export const ExerciseImg = ({ exData, selectedDate, setHasImages }) => {
   const [filteredData, setFilteredData] = useState(null);
@@ -24,7 +23,7 @@ export const ExerciseImg = ({ exData, selectedDate, setHasImages }) => {
   return (
     <>
       {filteredData && filteredData.report && filteredData.report.imgUrl ? (
-        <DietImage src={filteredData.report.imgUrl} alt="운동 이미지" />
+        <img src={filteredData.report.imgUrl} alt="운동 이미지" />
       ) : null}
     </>
   );

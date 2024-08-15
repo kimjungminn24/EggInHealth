@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-
+const AI_BASE_URL = import.meta.env.VITE_AI_API_URL;
 axios.defaults.withCredentials = true; // 쿠키를 포함하도록 설정
 
 export const getExercise = async (uid, year, month, day) => {
@@ -21,7 +21,7 @@ export const registerExh = async (set, weight,ref, name, time, date,memberId) =>
       name,
       time,
       date,
-      memberId
+      memberId,
     },
     {
       headers: {
@@ -68,7 +68,7 @@ export const deleteExImg = async (reportId) => {
 }
 
 
-export const updateEx = async (setId, set,ref, weight, name, time, date) => {
+export const updateEx = async (setId, set, ref, weight, name, time, date) => {
   const res = await axios.patch(`${BASE_URL}/exercise`, {
     setId,
     set,
@@ -86,17 +86,29 @@ export const deleteEx = async (setId) => {
   return res.data;
 };
 
-export const registerFeedback = async (
-  motionSimilarity,
-  memo,
-  exerciseId,
-  record,
-  createdAt
-) => {
+export const registerFeedbackToAI = async (record, exerciseName) => {
   const formData = new FormData();
-  formData.append(`motionSimiliarity`, motionSimilarity);
+  const mode = exerciseName.includes("스쿼트")
+    ? 0
+    : exerciseName.includes("이두근")
+    ? 1
+    : -1;
+
+  if (mode === -1) return record;
+  formData.append(`mode`, mode);
+  formData.append(`file`, record);
+  const res = await axios.post(`${AI_BASE_URL}/feedback`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+export const registerFeedback = async (memo, exerciseId, record, createdAt) => {
+  const formData = new FormData();
   formData.append(`memo`, memo);
-  formData.append(`exerciseId`, exerciseId);
+  formData.append(`exerciseName`, exerciseId);
   formData.append(`record`, record);
   formData.append(`createdAt`, createdAt);
   const res = await axios.post(`${BASE_URL}/feedback`, formData, {
@@ -108,31 +120,25 @@ export const registerFeedback = async (
 };
 
 export const fetchFeedback = async (uid) => {
-  const res = await axios.get(
-    `${BASE_URL}/feedback/list/${uid}`,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const res = await axios.get(`${BASE_URL}/feedback/list/${uid}`, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
-
 export const updateFeedback = async (
-  motionSimilarity,
   memo,
-  exerciseId,
+  exerciseName,
   record,
   createdAt,
   id
 ) => {
  
   const formData = new FormData();
-  formData.append(`motionSimiliarity`, motionSimilarity);
   formData.append(`memo`, memo);
-  formData.append(`exerciseId`, exerciseId);
+  formData.append(`exerciseName`, exerciseName);
   formData.append(`record`, record);
   formData.append(`createdAt`, createdAt);
   const res = await axios.patch(`${BASE_URL}/feedback/${id}`, formData, {
@@ -151,5 +157,5 @@ return res.data
 }
 
 export const readFeedback = async (id) => {
-  const res = await axios.get(`${BASE_URL}/feedback/read/${id}`)
-}
+  const res = await axios.get(`${BASE_URL}/feedback/read/${id}`);
+};

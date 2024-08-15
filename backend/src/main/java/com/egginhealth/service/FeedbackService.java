@@ -39,9 +39,8 @@ public class FeedbackService {
         LocalDateTime dateTime = DateTimeUtil.getStringToDateTime(feedbackInputDto.createdAt());
 
         Feedback feedbackData = Feedback.builder()
-                .motionSimilarity(feedbackInputDto.motionSimilarity())
                 .memo(feedbackInputDto.memo())
-                .exerciseId(feedbackInputDto.exerciseId())
+                .exerciseName(feedbackInputDto.exerciseName())
                 .videoUrl(url)
                 .createdAt(dateTime)
                 .member(member)

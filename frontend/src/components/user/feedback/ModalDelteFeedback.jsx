@@ -37,7 +37,8 @@ const ModalDeleteFeedback = ({
   const handleSubmit = async () => {
     if (feedbackData) {
       try {
-        await deleteFeedback(feedbackData);
+
+        await deleteFeedback(feedbackData.id);
         fetchFeedbackData(); // 삭제 후 피드백 데이터 새로 고침
         onClose(); // 삭제 후 모달을 닫습니다.
       } catch (error) {

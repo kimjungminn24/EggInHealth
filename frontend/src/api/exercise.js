@@ -135,12 +135,11 @@ export const updateFeedback = async (
   createdAt,
   id
 ) => {
- 
   const formData = new FormData();
   formData.append(`memo`, memo);
   formData.append(`exerciseName`, exerciseName);
   formData.append(`record`, record);
-  formData.append(`createdAt`, createdAt);
+  formData.append(`updatedAt`, createdAt);
   const res = await axios.patch(`${BASE_URL}/feedback/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",

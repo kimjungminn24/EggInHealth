@@ -66,7 +66,6 @@ const DropdownItem = styled.button`
     font-size: 14px;
     color: #000000;
     display: block;
-
 `;
 
 const Divider = styled.div`
@@ -74,11 +73,12 @@ const Divider = styled.div`
     background-color: #ccc;
     margin: 5px 0;
 `;
-const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,fetchFeedback,getKoreanISOString,userType}) => {
+
+const FeedbackList = ({ feedback, selectedDate, onVideoClick, fetchFeedbackData, getKoreanISOString, userType }) => {
     const [dropdownVisible, setDropdownVisible] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
-    const [isDeleteOpen,setIsDeleteOpen] = useState(false)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const selectedDateObj = new Date(selectedDate);
@@ -110,10 +110,11 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
     const handleDelete = (item) => {
-        setSelectedFeedback(item); // 삭제할 ID 설정
-        setIsDeleteOpen(true); // 삭제 모달 열기
-        setDropdownVisible(null); // 드롭다운 닫기
+        setSelectedFeedback(item);
+        setIsDeleteOpen(true);
+        setDropdownVisible(null);
     };
 
     return (
@@ -132,9 +133,9 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
                     </ActionButton>
                     {userType === 'MEMBER' ?
                     <DropdownMenu ref={dropdownRef} visible={dropdownVisible === item.id} onClick={(e) => e.stopPropagation()}>
-                        <DropdownItem onClick={() => handleEdit(item)}>수정</DropdownItem>
+                        <DropdownItem onClick={() => { handleEdit(item); e.stopPropagation(); }}>수정</DropdownItem>
                         <Divider />
-                        <DropdownItem onClick={() => handleDelete(item.id)}>삭제</DropdownItem> 
+                        <DropdownItem onClick={() => { handleDelete(item); e.stopPropagation(); }}>삭제</DropdownItem> 
                     </DropdownMenu>
                     : null}
                 </FeedbackItem>
@@ -142,15 +143,15 @@ const FeedbackList = ({ feedback, selectedDate, onVideoClick, onEdit, onDelete ,
             <FeedbackModal 
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
-                feedbackData={selectedFeedback} // 수정할 피드백 데이터 전달
-                fetchFeedback={fetchFeedback}
-                getKoreanISOString={getKoreanISOString} // 피드백 데이터 새로고침 함수 전달
+                feedbackData={selectedFeedback} 
+                fetchFeedbackData={fetchFeedbackData}
+                getKoreanISOString={getKoreanISOString} 
             />
             <ModalDeleteFeedback
                 isOpen={isDeleteOpen}
                 feedbackData={selectedFeedback} 
-                fetchFeedback={fetchFeedback}
-            
+                fetchFeedbackData={fetchFeedbackData}
+                onClose={() => setIsDeleteOpen(false)} // onClose prop 추가
             />
         </div>
     );

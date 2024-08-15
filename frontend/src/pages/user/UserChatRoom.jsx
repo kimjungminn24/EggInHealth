@@ -13,6 +13,7 @@ import ChatComponent from "../../components/common/ChatComponent"; // 추가
 import { useStore } from "../../store/store.js";
 import Camera from "../../assets/static/Property_Camera.png"
 import LeaveRoom from "../../assets/closebutton.png"
+import { Alert } from "../../api/RTC.js";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // For local development, leave these variables empty
@@ -88,6 +89,8 @@ function UserChatRoom() {
     try {
       // Get a token from your application server with the room name and participant name
       const rtctoken = await getToken(roomName, participantName);
+      const alert = await Alert(roomName,userState.userInfo.trId)
+      console.log(alert);
 
       // Connect to the room with the LiveKit URL and the token
       await room.connect(LIVEKIT_URL, rtctoken);

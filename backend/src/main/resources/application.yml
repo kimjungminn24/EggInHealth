@@ -73,3 +73,15 @@ livekit:
   api:
     key: ${LIVEKIT_API_KEY}
     secret: ${LIVEKIT_API_SECRET}
+
+#naver-ocr
+ocr:
+  api:
+    url: ${OCR_API_URL}
+    key: ${OCR_SECRET_KEY}
+    format: png
+    version: V1
+    imageName: demo
+
+
+

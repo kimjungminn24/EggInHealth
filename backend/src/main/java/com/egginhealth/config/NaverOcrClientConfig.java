@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 
 @RequiredArgsConstructor
-public class NaverOcrClientConfiguartion {
+public class NaverOcrClientConfig {
 
     @Bean
     public RequestInterceptor requestInterceptor(@Value("${ocr.api.key}") String apiKey) {

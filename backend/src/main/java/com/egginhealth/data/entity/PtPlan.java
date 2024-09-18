@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "pt_plan")
+@Table(name = "pt_plan", indexes = @Index(name = "idx_start_time", columnList = "pt_plan_start_time"))
 public class PtPlan {
 
     @Id

@@ -1,7 +1,9 @@
 spring:
   config:
     import: optional:file:.env[.properties]
-
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}

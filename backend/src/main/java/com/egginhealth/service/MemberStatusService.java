@@ -12,6 +12,7 @@ import com.egginhealth.data.repository.MemberRepository;
 import com.egginhealth.data.repository.MemberStatusRepository;
 import com.egginhealth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +80,7 @@ public class MemberStatusService {
         return EggListDto.from(eggs);
     }
 
+    @Cacheable(value = "memberStatusListCache", key = "#year + #month + #day")
     public List<MemberStatusDto> getMemberStatusList(int year, int month, int day) {
 
         Member trainer = memberRepository.findById(SecurityUtil.getUserId())
